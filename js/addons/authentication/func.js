@@ -9,8 +9,6 @@
     //     console.log("success")
     // });
     $(_.doc).on('click', '#test', function (event) {
-        console.log('dsfsfsd')
-
         $.ceAjax('request', fn_url('profiles.confirm'), {
             data: {
                 phone: 6546546546546, result_ids: 'jdshfkjshfj'
