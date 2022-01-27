@@ -26,7 +26,10 @@
                 {__("phone")}
             </label>
             <input
-                    type="text" id="buyer-phone" name="phone"
+                    id="buyer-phone"
+                    type="text"
+                    name="phone"
+                    placeholder="Phone Number"
                     maxlength="17"
                     class="ty-login__input"
             />
@@ -40,7 +43,10 @@
                 Code
             </label>
             <input
-                    type="text" id="buyer-phone-code" name="phone-code"
+                    id="buyer-phone-code"
+                    type="text"
+                    name="phone-code"
+                    placeholder="SMS Code"
                     maxlength="17"
                     class="ty-login__input"
             />
@@ -53,7 +59,6 @@
                 </span>
             </div>
         {/if}
-
 
         {*{hook name="index:login_buttons"}
             <div class="buttons-container clearfix">
@@ -70,7 +75,7 @@
         {$smarty.capture.login nofilter}
         <button
                 type="button"
-                class="auth_popup"
+                class="ty-btn ty-btn__secondary"
                 id="sendSMSBtn"
         >
             Send SMS
@@ -78,7 +83,7 @@
 
         <button
                 type="button"
-                class="auth_popup"
+                class="ty-btn ty-btn__secondary"
                 id="confirmCodeBtn"
                 style="display: none;"
         >

@@ -19,6 +19,7 @@
         },
         callback: function callback(response) {
           const { result } = response;
+
           if (result.status === 'success') {
             data.$phoneContainer.css('display', 'none');
             data.$sendSMSBtn.css('display', 'none');
@@ -43,7 +44,7 @@
           } else {
             result.response.message.forEach(({ text }) => {
               const p = document.createElement('p');
-              p.classList.add('ty-error-text')
+              p.classList.add('ty-error-text');
               p.textContent = text;
               data.$errorContainer.append(p);
             });
@@ -53,10 +54,8 @@
     },
   };
 
-
   $(_.doc).on('click', '#sendSMSBtn', methods.sendSMS);
 
   $(_.doc).on('click', '#confirmCodeBtn', methods.confirmCode);
 
 })(Tygh, Tygh.$);
-
