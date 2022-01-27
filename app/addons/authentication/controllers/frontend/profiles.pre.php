@@ -46,6 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ),
         ));
         $response = curl_exec($curl);
+
         $response_data = json_decode($response);
         curl_close($curl);
         $data = db_get_field('SELECT user_id FROM ?:users WHERE phone = ?i', $_REQUEST['phone']);
@@ -66,10 +67,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             fn_set_session_data('user_info', $user_info);
         }
 
+        Registry::get('ajax')->assign('result', $response_data);
+        exit();
 
     }
-
-
 
 
 //
@@ -204,8 +205,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 if ($mode == 'confirm') {
 
     $data = [
-        "phone" => "998900430246",
-        "code" => "6765"
+        "phone" => $_REQUEST['phone'],
+        "code" => $_REQUEST['code'],
     ];
     $curl = curl_init();
 
@@ -227,8 +228,9 @@ if ($mode == 'confirm') {
     $response = curl_exec($curl);
 
     curl_close($curl);
-    fn_print_die(json_decode($response));
-    echo $response;
+
+    Registry::get('ajax')->assign('result', json_decode($response));
+    exit();
 
 }
 
