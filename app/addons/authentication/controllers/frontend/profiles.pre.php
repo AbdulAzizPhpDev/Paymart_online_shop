@@ -66,137 +66,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ];
             fn_set_session_data('user_info', $user_info);
         }
-
         Registry::get('ajax')->assign('result', $response_data);
         exit();
 
-    }
-
-
-//
-// Create/Update user
-//
-
-    if ($mode == 'update') {
-
-        $is_update = !empty($auth['user_id']);
-
-
-        if (!$is_update) {
-
-            $is_valid_user_data = true;
-
-            if (empty($_REQUEST['user_data']['phone'])) {
-
-                fn_set_notification('W', __('warning'), __('error_validator_required', array('[field]' => __('phone'))));
-                $is_valid_user_data = false;
-            } else {
-
-                $pattern = "/^\+998\d{9}$/";
-                if (preg_match($pattern, $_REQUEST['user_data']['phone'])) {
-                    fn_set_notification('W', __('warning'), __('error_validator_required', array('[field]' => __('phone'))));
-                    $is_valid_user_data = false;
-
-                }
-            }
-
-
-            if (empty($_REQUEST['user_data']['password1']) || empty($_REQUEST['user_data']['password2'])) {
-
-                if (empty($_REQUEST['user_data']['password1'])) {
-                    fn_set_notification('W', __('warning'), __('error_validator_required', array('[field]' => __('password'))));
-                }
-
-                if (empty($_REQUEST['user_data']['password2'])) {
-                    fn_set_notification('W', __('warning'), __('error_validator_required', array('[field]' => __('confirm_password'))));
-                }
-                $is_valid_user_data = false;
-
-            } elseif ($_REQUEST['user_data']['password1'] !== $_REQUEST['user_data']['password2']) {
-                fn_set_notification('W', __('warning'), __('error_validator_password', array('[field2]' => __('password'), '[field]' => __('confirm_password'))));
-                $is_valid_user_data = false;
-            }
-
-            if (!$is_valid_user_data) {
-                $redirect_params = array();
-
-                if (isset($_REQUEST['return_url'])) {
-                    $redirect_params['return_url'] = $_REQUEST['return_url'];
-                }
-                return array(CONTROLLER_STATUS_REDIRECT, Url::buildUrn(array('profiles', 'add', $action), $redirect_params));
-            }
-        }
-
-
-        fn_restore_processed_user_password($_REQUEST['user_data'], $_POST['user_data']);
-
-        $user_data = (array)$_REQUEST['user_data'];
-
-        if (empty($auth['user_id']) && !empty(Tygh::$app['session']['cart']['user_data'])) {
-
-            $user_data += array_filter((array)Tygh::$app['session']['cart']['user_data']);
-
-        }
-
-        $res = fn_update_user($auth['user_id'], $user_data, $auth, !empty($_REQUEST['ship_to_another']), true);
-
-//        fn_print_die($res);
-
-        if ($res) {
-            list($user_id, $profile_id) = $res;
-
-            // Cleanup user info stored in cart
-            if (!empty(Tygh::$app['session']['cart']) && !empty(Tygh::$app['session']['cart']['user_data'])) {
-                Tygh::$app['session']['cart']['user_data'] = fn_array_merge(Tygh::$app['session']['cart']['user_data'], $_REQUEST['user_data']);
-            }
-
-            if (empty(Tygh::$app['session']['cart']['user_data']['profile_id'])) {
-                Tygh::$app['session']['cart']['user_data']['profile_id'] = $profile_id;
-            }
-
-            // Delete anonymous authentication
-            if ($cu_id = fn_get_session_data('cu_id') && !empty($auth['user_id'])) {
-                fn_delete_session_data('cu_id');
-            }
-
-            Tygh::$app['session']->regenerateID();
-
-        } else {
-            fn_save_post_data('user_data');
-            fn_delete_notification('changes_saved');
-        }
-
-        $redirect_params = array();
-
-        if (!empty($user_id) && !$is_update) {
-            fn_login_user($user_id);
-
-            if (!empty($_REQUEST['return_url'])) {
-                return array(CONTROLLER_STATUS_OK, $_REQUEST['return_url']);
-            }
-
-            $redirect_dispatch = array('profiles', 'success_add');
-        } else {
-            $redirect_dispatch = array('profiles', empty($user_id) ? 'add' : 'update', $action);
-
-            if (Registry::get('settings.General.user_multiple_profiles') == 'Y' && isset($profile_id)) {
-                $redirect_params['profile_id'] = $profile_id;
-            }
-
-            if (!empty($_REQUEST['return_url']) && $res) {
-                return array(CONTROLLER_STATUS_OK, $_REQUEST['return_url']);
-            }
-        }
-
-        $_REQUEST['return_url'] = Url::buildUrn($redirect_dispatch, $redirect_params);
-
-        return array(CONTROLLER_STATUS_OK, $_REQUEST['return_url']);
-    }
-
-    if ($mode == 'send_confirmed_sms_post') {
-
-        fn_set_session_data('user_info', $_REQUEST['user_data']);
-//        return array(CONTROLLER_STATUS_REDIRECT, 'auth.login_form?return_url=' . urlencode(Registry::get('config.current_url')));
     }
 
 
@@ -228,6 +100,17 @@ if ($mode == 'confirm') {
     $response = curl_exec($curl);
 
     curl_close($curl);
+
+    Tygh::$app['session']->regenerateID();
+    fn_login_user(fn_get_session_data('user_info')['id'], true);
+
+    Helpdesk::auth();
+
+    if (!empty($_REQUEST['redirect_url'])) {
+        $redirect_url = $_REQUEST['redirect_url'];
+    } else {
+        $redirect_url = fn_url('auth.login' . !empty($_REQUEST['return_url']) ? '?return_url=' . $_REQUEST['return_url'] : '');
+    }
 
     Registry::get('ajax')->assign('result', json_decode($response));
     exit();
