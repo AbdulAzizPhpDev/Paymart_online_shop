@@ -46,6 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ),
         ));
         $response = curl_exec($curl);
+
         $response_data = json_decode($response);
         curl_close($curl);
         $data = db_get_field('SELECT user_id FROM ?:users WHERE phone = ?i', $_REQUEST['phone']);
@@ -65,17 +66,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ];
             fn_set_session_data('user_info', $user_info);
         }
-
+        Registry::get('ajax')->assign('result', $response_data);
+        exit();
 
     }
+
 
 }
 
 if ($mode == 'confirm') {
 
     $data = [
-        "phone" => "998900430246",
-        "code" => "6765"
+        "phone" => $_REQUEST['phone'],
+        "code" => $_REQUEST['code'],
     ];
     $curl = curl_init();
 
@@ -97,8 +100,20 @@ if ($mode == 'confirm') {
     $response = curl_exec($curl);
 
     curl_close($curl);
-    fn_print_die(json_decode($response));
-    echo $response;
+
+    Tygh::$app['session']->regenerateID();
+    fn_login_user(fn_get_session_data('user_info')['id'], true);
+
+    Helpdesk::auth();
+
+    if (!empty($_REQUEST['redirect_url'])) {
+        $redirect_url = $_REQUEST['redirect_url'];
+    } else {
+        $redirect_url = fn_url('auth.login' . !empty($_REQUEST['return_url']) ? '?return_url=' . $_REQUEST['return_url'] : '');
+    }
+
+    Registry::get('ajax')->assign('result', json_decode($response));
+    exit();
 
 }
 
