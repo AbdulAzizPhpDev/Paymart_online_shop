@@ -154,8 +154,9 @@ const modal = new Vue({
           code: modal.buyerCode,
           redirect_url: $('input[name="redirect_url"]').val(),
         },
-        callback: function callback(/*response*/) {
-          window.location.reload();
+        callback: function callback(response) {
+          // window.location.reload();
+            console.log(response)
           /*const { result } = response;
 
           if (response) {
