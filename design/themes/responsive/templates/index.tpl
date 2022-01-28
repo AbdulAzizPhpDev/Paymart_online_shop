@@ -90,7 +90,9 @@ window.onerror = function(message, source, lineno, colno, error) {
     );
 };
 </script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+
 <!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.1.9/es5-shim.min.js"></script><![endif]-->
 {/if}
 {hook name="index:head_scripts"}{/hook}
