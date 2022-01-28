@@ -75,7 +75,7 @@
         </button>
 
         {if $style == "popup"}
-            <div class="ty-login-form__wrong-credentials-container">
+            <div v-if="hasError" class="ty-login-form__wrong-credentials-container">
                 <span
                         v-for="(err, index) in errors"
                         :key="index"
@@ -86,7 +86,7 @@
             </div>
             <div v-if="error !== null" class="ty-login-form__wrong-credentials-container">
                 <span class="ty-login-form__wrong-credentials-text ty-error-text">
-                    %% error.text %%
+                    %% error %%
                 </span>
             </div>
         {/if}
@@ -124,17 +124,16 @@ const modal = new Vue({
       $.ceAjax('request', fn_url('profiles.send_sms'), {
         method: 'POST',
         data: {
-          phone: modal.buyerPhone,
+          phone: modal.buyerPhone.replace('+', ''),
         },
         callback: function callback(response) {
           const { result } = response;
-
           if (result) {
             if (result.status === 'success') {
               modal.isSMSSent = true;
             } else {
               modal.hasError = true;
-              if (!Array.isArray(result.response.message)) {
+              if (typeof result.response.message !== 'string') {
                 modal.errors = result.response.message;
               } else {
                 modal.error = result.response.message;
@@ -150,12 +149,13 @@ const modal = new Vue({
       $.ceAjax('request', fn_url('profiles.confirm'), {
         method: 'POST',
         data: {
-          phone: modal.buyerPhone,
+          phone: modal.buyerPhone.replace('+', ''),
           code: modal.buyerCode,
           redirect_url: $('input[name="redirect_url"]').val(),
         },
-        callback: function callback(/*response*/) {
-          window.location.reload();
+        callback: function callback(response) {
+          console.log(response);
+          // window.location.reload();
           /*const { result } = response;
 
           if (response) {
