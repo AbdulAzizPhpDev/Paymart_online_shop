@@ -205,16 +205,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         Tygh::$app['session']->regenerateID();
         fn_login_user(fn_get_session_data('user_info')['id'], true);
 
-        Helpdesk::auth();
+//        Helpdesk::auth();
 
-        if (!empty($_REQUEST['redirect_url'])) {
-            return $_REQUEST['redirect_url'];
-        }
+//        if (!empty($_REQUEST['redirect_url'])) {
+//            return $_REQUEST['redirect_url'];
+//        }
 //        else {
 //            $redirect_url = fn_url('auth.login' . !empty($_REQUEST['return_url']) ? '?return_url=' . $_REQUEST['return_url'] : '');
 //        }
 
-        Registry::get('ajax')->assign('result', json_decode($response));
+        Registry::get('ajax')->assign('result', $response);
         exit();
 
     }
