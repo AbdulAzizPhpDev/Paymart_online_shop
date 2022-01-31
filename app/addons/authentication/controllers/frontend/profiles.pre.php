@@ -182,17 +182,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         curl_close($curl);
 
         $response = json_decode($response);
-//
-//        data:
-//        access_token: "7dbe6bed62c8535daf18ae5b42b30ea1"
-//api_token: "7dbe6bed62c8535daf18ae5b42b30ea1"
-//user_id: 371618
-//user_status: 1
-//[[Prototype]]: Object
-//is_seller: 0
-//response: {code: 200, message: Array(0), errors: Array(0)}
-//status: "success"
-
 
         if ($response->status == "success") {
             $user_info['api_key'] = $response->data->access_token;
@@ -204,15 +193,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         Tygh::$app['session']->regenerateID();
         fn_login_user(fn_get_session_data('user_info')['id'], true);
-
-//        Helpdesk::auth();
-
-//        if (!empty($_REQUEST['redirect_url'])) {
-//            return $_REQUEST['redirect_url'];
-//        }
-//        else {
-//            $redirect_url = fn_url('auth.login' . !empty($_REQUEST['return_url']) ? '?return_url=' . $_REQUEST['return_url'] : '');
-//        }
 
         Registry::get('ajax')->assign('result', $response);
         exit();
