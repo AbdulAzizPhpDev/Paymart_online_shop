@@ -29,10 +29,10 @@
             <input
                     v-model="buyerCode"
                     id="buyer-phone-code"
-                    type="text"
+                    type="tel"
                     name="phone-code"
                     placeholder="SMS Code"
-                    maxlength="17"
+                    maxlength="4"
                     class="ty-login__input"
             />
         </div>
@@ -47,13 +47,17 @@
             <input
                     v-model="buyerPhone"
                     id="buyer-phone"
-                    type="text"
+                    type="tel"
                     name="phone"
                     placeholder="Phone Number"
-                    maxlength="17"
+                    maxlength="13"
                     class="ty-login__input"
             />
         </div>
+
+        <p v-if="isSMSSent" class="ty-error-text">
+            Resend SMS %% timer %%
+        </p>
 
         <button
                 v-if="isSMSSent"
@@ -74,8 +78,18 @@
             Send SMS
         </button>
 
+        <button
+                v-if="timer === 0"
+                type="button"
+                class="ty-btn ty-btn__secondary"
+                id="confirmCodeBtn"
+                @click="resendSMS"
+        >
+            Resend SMS
+        </button>
+
         {if $style == "popup"}
-            <div class="ty-login-form__wrong-credentials-container">
+            <div v-if="hasError" class="ty-login-form__wrong-credentials-container">
                 <span
                         v-for="(err, index) in errors"
                         :key="index"
@@ -86,7 +100,7 @@
             </div>
             <div v-if="error !== null" class="ty-login-form__wrong-credentials-container">
                 <span class="ty-login-form__wrong-credentials-text ty-error-text">
-                    %% error.text %%
+                    %% error %%
                 </span>
             </div>
         {/if}
@@ -108,7 +122,10 @@
 {/if}
 
 <script>
-const modal = new Vue({
+
+Vue.directive('v-mask', VueMask.VueMaskDirective);
+
+const self = new Vue({
   delimiters: ['%%', '%%'],
   el: '.ty-login-popup',
   data: {
@@ -118,56 +135,82 @@ const modal = new Vue({
     error: null,
     buyerPhone: null,
     buyerCode: null,
+    timer: 60,
+    interval: null,
+  },
+  computed: {
+    hasClearInterval() {
+
+      return false;
+    },
   },
   methods: {
     sendSMS(event) {
       $.ceAjax('request', fn_url('profiles.send_sms'), {
         method: 'POST',
         data: {
-          phone: modal.buyerPhone,
+          phone: self.buyerPhone.replace('+', '') || null,
         },
         callback: function callback(response) {
           const { result } = response;
-
           if (result) {
             if (result.status === 'success') {
-              modal.isSMSSent = true;
+              self.isSMSSent = true;
+              self.interval = setInterval(() => {
+                if (self.timer !== 0) {
+                  self.timer -= 1;
+                } else {
+                  clearInterval(self.interval);
+                }
+              }, 1000);
+
             } else {
-              modal.hasError = true;
-              if (!Array.isArray(result.response.message)) {
-                modal.errors = result.response.message;
+              self.hasError = true;
+              if (typeof result.response.message !== 'string') {
+                self.errors = result.response.message;
               } else {
-                modal.error = result.response.message;
+                self.error = result.response.message;
               }
             }
           } else {
             console.error('Result does not exist. %cmethod[fn_url=profiles.send_sms]', 'color: white; padding: 2px 5px; border: 1px dashed green');
           }
-        }
+        },
       });
+    },
+    resendSMS(event) {
+      if (self.timer === 0) {
+        self.sendSMS();
+        self.timer = 60;
+      } else {
+        event.preventDefault();
+      }
     },
     confirmCode: function (event) {
       $.ceAjax('request', fn_url('profiles.confirm'), {
         method: 'POST',
         data: {
-          phone: modal.buyerPhone,
-          code: modal.buyerCode,
+          phone: self.buyerPhone.replace('+', ''),
+          code: self.buyerCode,
           redirect_url: $('input[name="redirect_url"]').val(),
         },
         callback: function callback(response) {
-          // window.location.reload();
-            console.log(response)
-          /*const { result } = response;
+          const { result } = response;
 
           if (response) {
             if (result.status === 'success') {
-              console.log('success');
+              window.location.reload();
             } else {
-              methods.showErrors(result.response.message);
+              self.hasError = true;
+              if (typeof result.response.message !== 'string') {
+                self.errors = result.response.message;
+              } else {
+                self.error = result.response.message;
+              }
             }
           } else {
-            console.error('response does not exist!');
-          }*/
+            console.error('Result does not exist. %cmethod[fn_url=profiles.confirm]', 'color: white; padding: 2px 5px; border: 1px dashed green');
+          }
         },
       });
     },
