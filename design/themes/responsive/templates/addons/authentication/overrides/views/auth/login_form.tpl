@@ -123,8 +123,6 @@
 
 <script>
 
-Vue.directive('v-mask', VueMask.VueMaskDirective);
-
 const self = new Vue({
   delimiters: ['%%', '%%'],
   el: '.ty-login-popup',
@@ -137,12 +135,6 @@ const self = new Vue({
     buyerCode: null,
     timer: 60,
     interval: null,
-  },
-  computed: {
-    hasClearInterval() {
-
-      return false;
-    },
   },
   methods: {
     sendSMS(event) {
