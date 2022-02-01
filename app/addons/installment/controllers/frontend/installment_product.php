@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 if ($mode == 'index') {
 
 //    fn_print_die($_REQUEST);
-    Registry::get('view')->assign('id', $_REQUEST['id']);
+//    Registry::get('view')->assign('id', $_REQUEST['id']);
 
 }
 if ($mode == "view") {
