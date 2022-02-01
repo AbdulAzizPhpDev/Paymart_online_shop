@@ -22,8 +22,8 @@ if (!defined('BOOTSTRAP')) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    if ($mode == "sms_send") {
-        fn_print_die($_REQUEST);
+    if ($mode == "index") {
+
     }
 
 }
