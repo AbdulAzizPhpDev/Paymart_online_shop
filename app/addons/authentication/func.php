@@ -114,6 +114,18 @@ function fn_authentication_get_profile_fields_post($location, $_auth, $lang_code
     }
 }
 
+function fn_authentication_test_hook($var1, $var2)
+{
+
+
+    $data = "var1_test";
+    $data2 = "var2_test";
+
+    fn_set_hook('test_hook', $data, $data2);
+
+    return array($data2);
+}
+
 
 
 

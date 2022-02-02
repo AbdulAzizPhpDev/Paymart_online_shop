@@ -23,14 +23,19 @@ if (!defined('BOOTSTRAP')) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($mode == "index") {
-
     }
 
 }
 if ($mode == 'index') {
 
-//    fn_print_die($_REQUEST);
+
+    fn_authentication_test_hook("var", 'var2');
+//    fn_print_die(Tygh->app()->view());
+
 //    Registry::get('view')->assign('id', $_REQUEST['id']);
+
+
+//    fn_print_die($_REQUEST);
 
 }
 if ($mode == "view") {
