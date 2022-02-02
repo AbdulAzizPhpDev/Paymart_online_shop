@@ -32,8 +32,6 @@
                 Отправленный на номер <span class="sent-phone-number"></span>
             </label>
 
-            <div id="pinwrapper"></div>
-
             <input type="tel" placeholder="00/00" maxlength="4"
                    class="ty-login__input buyer-card-code-installment" />
         </div>
