@@ -30,14 +30,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 if ($mode == 'index') {
 
 //    fn_print_die($_REQUEST);
-//    Registry::get('view')->assign('id', $_REQUEST['id']);
+//    Registry::get('view')->assign('id', $_REQUEST['number']);
 
 }
-if ($mode == "view") {
+if ($mode == "card-add") {
 
 //    fn_print_die($_REQUEST);
 
-    Registry::get('view')->assign('id', $_REQUEST['id']);
+//    Registry::get('view')->assign('id', $_REQUEST['id']);
+
+}
+
+if ($mode == "type-passport") {
+
+//    fn_print_die($_REQUEST);
+
+//    Registry::get('view')->assign('id', $_REQUEST['id']);
+
+}
+
+if ($mode == 'upload-passport') {
+
+}
+
+if ($mode == 'upload-passport-id') {
 
 }
 
