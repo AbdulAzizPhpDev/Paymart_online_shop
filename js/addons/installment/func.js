@@ -78,7 +78,13 @@
             if (result.status === 'success') {
               installmentState.userStatus = result.data.user_status;
               Cookies.set('api_token', result.data.api_token, { expires: 2 });
-              Cookies.set('buyer-phone', $buyerPhone.val())
+              Cookies.set('buyer-phone', $buyerPhone.val());
+
+              if (result.data.id) {
+                Cookies.set('user_id', result.data.id);
+              } else {
+                Cookies.set('user_id', result.data.user_id);
+              }
 
               switch (installmentState.userStatus) {
                 case 0:

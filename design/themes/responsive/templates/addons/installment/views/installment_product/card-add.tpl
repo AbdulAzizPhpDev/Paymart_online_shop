@@ -24,7 +24,7 @@
         </button>
     </div>
 
-    <div class="card-confirm d-none">
+    <div class="card-confirm hidden">
         <h1>Введите SMS код </h1>
 
         <div class="ty-control-group">

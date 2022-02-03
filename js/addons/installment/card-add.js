@@ -55,8 +55,8 @@
           success: function (response) {
             if (response) {
               if (response.status === 'success') {
-                $cardNumberContainer.addClass('d-none');
-                $cardExpContainer.removeClass('d-none');
+                $cardNumberContainer.addClass('hidden');
+                $cardExpContainer.removeClass('hidden');
               } else {
                 if (response.hasOwnProperty('info')) {
                   if (response.info === 'error_card_equal') {
