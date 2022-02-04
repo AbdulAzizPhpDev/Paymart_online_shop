@@ -1,0 +1,19 @@
+@import "mixins";
+@import "variables";
+
+.await-page {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 80px;
+
+  h1 {
+    .font(@fs: 40px, @fw: 900, @lh: 40px);
+    margin-bottom: 12px;
+  }
+
+  span {
+    .font(@fw: normal);
+    margin-bottom: 32px;
+  }
+}

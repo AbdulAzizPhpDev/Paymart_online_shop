@@ -1,0 +1,42 @@
+@import "mixins";
+@import "variables";
+
+.type-passport-page {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 80px;
+
+  h1 {
+    .font(@fs: 40px, @fw: 900, @lh: 40px);
+    margin-bottom: 12px;
+  }
+
+  span {
+    .font(@fw: normal);
+    margin-bottom: 32px;
+  }
+
+
+  .passports {
+    display: flex;
+
+    .passport {
+      background: @gray;
+      border-radius: 12px;
+      width: 208px;
+      height: 208px;
+      .centering();
+      flex-direction: column;
+      cursor: pointer;
+
+      p {
+        .font(@fs: 16.5px, @fw: 600, @lh: 30px, @ls: .33px, @color: #333333);
+      }
+
+      &:first-child {
+        margin-right: 16px;
+      }
+    }
+  }
+}

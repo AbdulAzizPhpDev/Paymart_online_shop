@@ -8,17 +8,21 @@
 
   const $errorContainer = $('.error-card-installment');
 
+  const $sentPhoneNumber = $('.sent-phone-number');
+
   const cardState = {
     baseUrl: 'https://dev.paymart.uz/api/v1',
     api_token: Cookies.get('api_token'),
+    buyerPhone: Cookies.get('buyer-phone'),
   };
+
+  $sentPhoneNumber.text(cardState.buyerPhone);
 
   const cardMethods = {
     makeRoute({ controller = 'installment_product', action = 'index' }) {
       return window.location.href = `http://market.paymart.uz/index.php?dispatch=${controller}.${action}`;
     },
     renderErrors: function (errors) {
-      console.log('render-error-method', errors);
       if (typeof errors !== 'string') {
         errors.forEach(error => {
           if (error.hasOwnProperty('text')) {
@@ -49,15 +53,13 @@
             Authorization: `Bearer ${cardState.api_token}`,
           },
           success: function (response) {
-            console.log(response);
             if (response) {
               if (response.status === 'success') {
-                $cardNumberContainer.addClass('d-none');
-                $cardExpContainer.removeClass('d-none');
+                $cardNumberContainer.addClass('hidden');
+                $cardExpContainer.removeClass('hidden');
               } else {
                 if (response.hasOwnProperty('info')) {
                   if (response.info === 'error_card_equal') {
-                    console.log(response.card_data);
                     cardMethods.renderErrors([
                       response.info,
                       response.card_data?.card_owner,
@@ -128,7 +130,7 @@
               if (result.status === 'success') {
                 cardMethods.makeRoute({ action: 'type-passport' });
               } else {
-                methods.renderErrors(result.response.message);
+                cardMethods.renderErrors(result.response.message);
               }
             } else {
               console.error('Result does not exist. %cmethod[/buyer/send-sms-code-uz]', 'color: white; padding: 2px 5px; border: 1px dashed green');

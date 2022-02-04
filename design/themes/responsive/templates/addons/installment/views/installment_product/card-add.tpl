@@ -24,15 +24,13 @@
         </button>
     </div>
 
-    <div class="card-confirm d-none">
+    <div class="card-confirm hidden">
         <h1>Введите SMS код </h1>
 
         <div class="ty-control-group">
             <label for="buyer-phone" class="ty-login__filed-label ty-control-group__label cm-required cm-trim ">
                 Отправленный на номер <span class="sent-phone-number"></span>
             </label>
-
-            <div id="pinwrapper"></div>
 
             <input type="tel" placeholder="00/00" maxlength="4"
                    class="ty-login__input buyer-card-code-installment" />
