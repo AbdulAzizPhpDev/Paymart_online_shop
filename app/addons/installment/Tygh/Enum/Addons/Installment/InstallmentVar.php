@@ -12,51 +12,29 @@
  * "copyright.txt" FILE PROVIDED WITH THIS DISTRIBUTION PACKAGE.            *
  ****************************************************************************/
 
-use Tygh\Registry;
-use Tygh\Tools\Url;
+namespace Tygh\Enum\Addons\Installment;
 
-if (!defined('BOOTSTRAP')) {
-    die('Access denied');
+class InstallmentVar
+{
+    const Pages = [
+        0 => 'index',
+        1 => 'card-add',
+        2 => 'await',
+        6 => 'await',
+        4 => 'contract-create',
+        5 => 'type-passport',
+        10 => 'type-passport',
+        11 => 'type-passport',
+        12 => 'guarant',
+        8 => 'refusal',
+    ];
+
+//    public static function getAll()
+//    {
+//        return array(
+//            self::SEMICOLON => ';',
+//            self::COMMA     => ',',
+//            self::TAB       => "\t",
+//        );
+//    }
 }
-
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-}
-if ($mode == 'index') {
-
-
-    if ($auth['user_id']) {
-        return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . checkInstallmentStep($auth['user_id']));
-    }
-}
-if ($mode == "card-add") {
-
-    if (!$auth['user_id']) {
-        return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
-    }
-
-}
-
-if ($mode == "type-passport") {
-
-    if (!$auth['user_id']) {
-        return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
-    }
-}
-
-if ($mode == 'upload-passport') {
-
-    if (!$auth['user_id']) {
-        return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
-    }
-}
-
-if ($mode == 'upload-passport-id') {
-    if (!$auth['user_id']) {
-        return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
-    }
-
-}
-
-
