@@ -23,11 +23,11 @@ if (!defined('BOOTSTRAP')) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($mode == "index") {
+
     }
 
 }
 if ($mode == 'index') {
-
 
 //    fn_print_die($_REQUEST);
 //    Registry::get('view')->assign('id', $_REQUEST['number']);
