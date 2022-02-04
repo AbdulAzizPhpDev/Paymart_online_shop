@@ -5,15 +5,19 @@
   const $cardExpContainer = $('.card-confirm');
   const $cardExp = $('.buyer-card-exp-installment');
   const $cardConfirmCode = $('.buyer-card-code-installment');
+  const $cardPin = $('#card-pin-wrapper');
 
   const $errorContainer = $('.error-card-installment');
 
   const $sentPhoneNumber = $('.sent-phone-number');
+  const $timerSlot = $('.timer');
 
   const cardState = {
     baseUrl: 'https://dev.paymart.uz/api/v1',
     api_token: Cookies.get('api_token'),
     buyerPhone: Cookies.get('buyer-phone'),
+    timer: 60,
+    interval: null,
   };
 
   $sentPhoneNumber.text(cardState.buyerPhone);
@@ -55,8 +59,19 @@
           success: function (response) {
             if (response) {
               if (response.status === 'success') {
-                $cardNumberContainer.addClass('hidden');
-                $cardExpContainer.removeClass('hidden');
+                $cardNumberContainer.addClass('d-none');
+                $cardExpContainer.removeClass('d-none');
+                $cardPin.removeClass('d-none');
+
+                let { interval, timer } = cardState;
+                interval = setInterval(() => {
+                  if (timer === 0) {
+                    clearInterval(interval);
+                  } else {
+                    timer -= 1;
+                    $timerSlot.text(timer);
+                  }
+                }, 1000);
               } else {
                 if (response.hasOwnProperty('info')) {
                   if (response.info === 'error_card_equal') {
