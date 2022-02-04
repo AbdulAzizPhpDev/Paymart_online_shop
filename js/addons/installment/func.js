@@ -6,6 +6,7 @@
   const $confirmCodeBtn = $('#installmentConfirmCodeBtn');
   const $buyerSmsCode = $('.buyer-sms-code-installment');
   const $buyerSmsCodeContainer = $('.installment-code-container');
+  const $pin = $('#pinwrapper');
 
   const $errorContainer = $('.error-installment');
 
@@ -51,6 +52,7 @@
             if (result.status === 'success') {
               $buyerSmsCodeContainer.removeClass('d-none');
               $confirmCodeBtn.removeClass('d-none');
+              $pin.removeClass('d-none');
 
               $buyerPhoneContainer.addClass('d-none');
               $sendSmsBtn.addClass('d-none');
@@ -76,7 +78,6 @@
 
           if (response) {
             if (result.status === 'success') {
-              installmentState.userStatus = result.data.user_status;
               Cookies.set('api_token', result.data.api_token, { expires: 2 });
               Cookies.set('buyer-phone', $buyerPhone.val());
 
@@ -86,20 +87,23 @@
                 Cookies.set('user_id', result.data.user_id);
               }
 
-              switch (installmentState.userStatus) {
+              switch (result.data.user_status) {
                 case 0:
                   methods.makeRoute({ action: 'index' });
                   break;
                 case 1:
                   methods.makeRoute({ action: 'card-add' });
                   break;
-                case 2 || 6:
+                case 2:
+                case 6:
                   methods.makeRoute({ action: 'await' });
                   break;
                 case 4:
                   methods.makeRoute({ action: 'contract-create' });
                   break;
-                case 5 || 10 || 11:
+                case 5:
+                case 10:
+                case 11:
                   methods.makeRoute({ action: 'type-passport' });
                   break;
                 case 12:

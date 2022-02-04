@@ -1,4 +1,6 @@
 {script src="js/addons/installment/func.js"}
+{script src="https://cdn.jsdelivr.net/npm/jquery-pinlogin@1.0.3/src/jquery.pinlogin.min.js"}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-pinlogin@1.0.3/src/jquery.pinlogin.css">
 
 <div class="wrapper">
     <h1>Авторизуйтесь</h1>
@@ -8,7 +10,7 @@
             <label for="buyer-phone" class="ty-login__filed-label ty-control-group__label cm-required cm-trim ">
                 {__("phone")}
             </label>
-            <input type="tel" placeholder="Phone Number" maxlength="13"
+            <input type="tel" placeholder="Phone Number" maxlength="12"
                    class="ty-login__input buyer-phone-installment" value="998" />
         </div>
         {* Send SMS Code Button *}
@@ -22,8 +24,9 @@
             <label for="buyer-phone-code" class="ty-login__filed-label ty-control-group__label cm-required cm-trim ">
                 Code
             </label>
-            <input type="tel" placeholder="SMS Code" maxlength="4" class="ty-login__input buyer-sms-code-installment" />
+            <input type="text" hidden class="ty-login__input buyer-sms-code-installment" />
         </div>
+        <div id="pinwrapper" class="d-none"></div>
         {* Confirmation SMS Code Button *}
         <button class="ty-btn ty-btn__secondary d-none" type="button" id="installmentConfirmCodeBtn">
             Confirm Code
@@ -49,6 +52,17 @@
     </form>
 </div>
 
+<script>
+$('#pinwrapper').pinlogin({
+  placeholder: '*',
+  hideinput: false,
+  fields: 4,
+  reset: false,
+  complete: function (pin) {
+    $('.buyer-sms-code-installment').attr('value', pin);
+  },
+});
+</script>
 
 {*<div class="modal-content">
                 <form method="post" action="https://dev.paymart.uz/api/v1/login/send-sms-code">

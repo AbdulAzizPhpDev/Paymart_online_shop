@@ -1,4 +1,4 @@
-{style src="addons/installment/styles.scss"}
+{style src="addons/installment/styles.less"}
 {style src="addons/installment/card-add.scss"}
 {style src="addons/installment/type-passport.less"}
 {style src="addons/installment/upload-passport.less"}
