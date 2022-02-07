@@ -32,4 +32,10 @@
     <div class="ty-login-form__wrong-credentials-container">
         <span class="ty-login-form__wrong-credentials-text ty-error-text error-guarant-installment"></span>
     </div>
+
+    <ul class="stepper">
+        <li class="step"></li>
+        <li class="step"></li>
+        <li class="step active"></li>
+    </ul>
 </div>
