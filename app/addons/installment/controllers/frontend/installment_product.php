@@ -25,7 +25,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 if ($mode == 'index') {
 
-
     if ($auth['user_id']) {
         return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . checkInstallmentStep($auth['user_id']));
     }
