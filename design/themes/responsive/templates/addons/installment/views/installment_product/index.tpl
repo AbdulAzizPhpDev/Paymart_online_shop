@@ -3,52 +3,56 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-pinlogin@1.0.3/src/jquery.pinlogin.css">
 
 <div class="wrapper">
-    <h1>Авторизуйтесь</h1>
+
     <form class="cm-ajax ">
-        {* Send SMS Code Input *}
-        <div class="ty-control-group installment-phone-container">
-            <label for="buyer-phone" class="ty-login__filed-label ty-control-group__label cm-required cm-trim ">
-                {__("phone")}
-            </label>
-            <input type="tel" placeholder="Phone Number" maxlength="12"
-                   class="ty-login__input buyer-phone-installment" value="998" />
+        {* ------------------------------------------------------------------------------------- *}
+        {* Sending SMS *}
+        <div class="sending-sms d-none">
+            <h1>Вход</h1>
+
+            <div class="ty-control-group installment-phone-container">
+                <label for="buyer-phone" class="ty-login__filed-label ty-control-group__label cm-required cm-trim ">
+                    Номер телефона
+                </label>
+                <input type="tel" placeholder="Phone Number" maxlength="12"
+                       class="ty-login__input buyer-phone-installment" value="998" />
+            </div>
+            <button class="ty-btn ty-btn__secondary" type="button" id="installmentSendSMSBtn">
+                Отправить заявку
+            </button>
         </div>
-        {* Send SMS Code Button *}
-        <button class="ty-btn ty-btn__secondary" type="button" id="installmentSendSMSBtn">
-            Send SMS
-        </button>
 
         {* ------------------------------------------------------------------------------------- *}
-        {* Confirmation SMS Code Input *}
-        <div class="ty-control-group installment-code-container d-none">
-            <label for="buyer-phone-code" class="ty-login__filed-label ty-control-group__label cm-required cm-trim ">
-                Code
-            </label>
-            <input type="text" hidden class="ty-login__input buyer-sms-code-installment" />
-        </div>
-        <div id="pinwrapper" class="d-none"></div>
-        {* Confirmation SMS Code Button *}
-        <button class="ty-btn ty-btn__secondary d-none" type="button" id="installmentConfirmCodeBtn">
-            Confirm Code
-        </button>
+        {* Confirmation code *}
+        <div class="confirmation ">
+            <h1>Введите SMS код </h1>
+            <p>Отправленный на номер +998 99 *** ** 44</p>
 
-        {*<button
-                type="button"
-                class="ty-btn ty-btn__secondary"
-                id="confirmCodeBtn"
-        >
-            Resend SMS
-        </button>*}
+            <div class="ty-control-group installment-code-container">
+                <label for="buyer-phone-code"
+                       class="ty-login__filed-label ty-control-group__label cm-required cm-trim ">
+                    Code
+                </label>
+                <input type="text" hidden class="ty-login__input buyer-sms-code-installment" />
+            </div>
+            <div id="pinwrapper"></div>
+
+            <p>Отправить SMS еще раз (через <span class="timer">60</span> сек.)</p>
+
+            <button class="ty-btn ty-btn__secondary" type="button" id="installmentConfirmCodeBtn">
+                Продолжить
+            </button>
+
+            <button class="ty-btn ty-btn__secondary" type="button" id="installmentChangePhoneBtn">
+                Изменить номер
+            </button>
+        </div>
 
         {* ------------------------------------------------------------------------------------- *}
         {* Rendering Errors *}
         <div class="ty-login-form__wrong-credentials-container">
             <span class="ty-login-form__wrong-credentials-text ty-error-text error-installment"></span>
         </div>
-
-        {*<p class="ty-error-text">
-           Resend SMS %% timer %%
-       </p>*}
     </form>
 </div>
 

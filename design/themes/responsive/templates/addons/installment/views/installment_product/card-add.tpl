@@ -2,7 +2,7 @@
 {script src="https://cdn.jsdelivr.net/npm/jquery-pinlogin@1.0.3/src/jquery.pinlogin.min.js"}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-pinlogin@1.0.3/src/jquery.pinlogin.css">
 
-<div class="wrapper">
+<div class="card-add-page">
     <div class="card-info">
         <h1>Пройдите одноразувую верификацию</h1>
         <div class="ty-control-group">

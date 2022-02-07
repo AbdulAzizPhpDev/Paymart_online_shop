@@ -10,11 +10,11 @@
             style="width: 310px"
     ></lottie-player>
 
-    <h1>Доверительное лицо</h1>
-    <span>Введите данные доверительных лиц</span>
+    <h1>Ваша заявка обрабатывается</h1>
+    <span>Это может занять несколько минут</span>
 
     <button class="ty-btn ty-btn__secondary" type="button" id="await-btn">
-        Продолжить
+        Посмотреть статус
     </button>
 
     <div class="ty-login-form__wrong-credentials-container">

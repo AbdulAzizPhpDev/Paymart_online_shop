@@ -8,6 +8,7 @@
   const $buyerSmsCodeContainer = $('.installment-code-container');
   const $pin = $('#pinwrapper');
 
+  const $changePhoneBtn = $('#installmentChangePhoneBtn');
   const $errorContainer = $('.error-installment');
 
   const installmentState = {
@@ -125,10 +126,14 @@
         },
       });
     },
+    changePhone: function () {
+      console.log('change phone');
+    }
   };
 
   $(_.doc).on('click', '#installmentSendSMSBtn', methods.sendSMS);
   $(_.doc).on('click', '#installmentConfirmCodeBtn', methods.confirmCode);
+  $changePhoneBtn.on('click', methods.changePhone)
 })(Tygh, Tygh.$);
 /*
 $(document).on('click', '#installmentSendSMSBtn', function () {
