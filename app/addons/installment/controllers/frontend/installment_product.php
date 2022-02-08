@@ -36,6 +36,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     }
 }
+if ($mode == 'get_qty') {
+    $qty = $_REQUEST['qty'];
+    $product_id = $_REQUEST['product_id'];
+
+    fn_set_session_data('product_id', $product_id);
+    fn_set_session_data('product_qty', $qty);
+
+    Registry::get('ajax')->assign('result', [
+        'status' => 'success',
+        'redirect_to' => 'installment_product.index'
+    ]);
+}
+
 if ($mode == 'index') {
 
     if ($auth['user_id']) {
