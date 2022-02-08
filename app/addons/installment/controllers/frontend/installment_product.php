@@ -32,9 +32,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
 
     }
-    if ($mode == 'get_cart') {
+    if ($mode == 'set_card') {
 
     }
+    if ($mode == 'set_passport') {
+
+    }
+    if ($mode == 'set_passport_id') {
+
+    }
+    if ($mode == 'set_passport_id') {
+
+    }
+    if ($mode == 'set_guarantee') {
+
+    }
+    if ($mode == 'check_status') {
+
+    }
+
+
 }
 if ($mode == 'index') {
 
@@ -65,25 +82,27 @@ if ($mode == "card-add") {
 if ($mode == "type-passport") {
     if (!$auth['user_id']) {
         return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
-    } else {
-        list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
-        $user_step = checkInstallmentStep($auth['user_id']);
-        if ($mode_type !== $user_step) {
-            return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
-        }
     }
+//    else {
+//        list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
+//        $user_step = checkInstallmentStep($auth['user_id']);
+//        if ($mode_type !== $user_step) {
+//            return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
+//        }
+//    }
 }
 
 if ($mode == 'upload-passport') {
     if (!$auth['user_id']) {
         return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
-    } else {
-        list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
-        $user_step = checkInstallmentStep($auth['user_id']);
-        if ($mode_type !== $user_step) {
-            return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
-        }
     }
+//    else {
+//        list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
+//        $user_step = checkInstallmentStep($auth['user_id']);
+//        if ($mode_type !== $user_step) {
+//            return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
+//        }
+//    }
 }
 
 if ($mode == 'upload-passport-id') {
