@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($mode == 'get_quantity') {
 
         $product = $_REQUEST['product_data'];
-        fn_print_die($_REQUEST);
+//        fn_print_die($_REQUEST);
         foreach ($product as $item => $key) {
             fn_set_session_data('product_info', $key);
         }
