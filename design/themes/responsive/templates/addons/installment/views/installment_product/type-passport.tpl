@@ -15,4 +15,10 @@
             <p>ID карта</p>
         </div>
     </div>
+
+    <ul class="stepper">
+        <li class="step"></li>
+        <li class="step active"></li>
+        <li class="step"></li>
+    </ul>
 </div>

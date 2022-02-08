@@ -7,7 +7,7 @@
     <form class="cm-ajax ">
         {* ------------------------------------------------------------------------------------- *}
         {* Sending SMS *}
-        <div class="sending-sms d-none">
+        <div class="sending-sms">
             <h1>Вход</h1>
 
             <div class="ty-control-group installment-phone-container">
@@ -17,27 +17,38 @@
                 <input type="tel" placeholder="Phone Number" maxlength="12"
                        class="ty-login__input buyer-phone-installment" value="998" />
             </div>
-            <button class="ty-btn ty-btn__secondary" type="button" id="installmentSendSMSBtn">
+
+            <div class="oferta-container">
+                <a href="#">
+                    <img src="/design/themes/responsive/media/icons/oferta.svg" alt="oferta">
+                    <span>Публичная оферта</span>
+                </a>
+            </div>
+
+            <div class="agreement">
+                <label>
+                    <input type="checkbox">
+                    Согласие на обработку персональных данных
+                </label>
+            </div>
+
+            <button class="ty-btn ty-btn__secondary" type="button" disabled id="installmentSendSMSBtn">
                 Отправить заявку
             </button>
         </div>
 
         {* ------------------------------------------------------------------------------------- *}
         {* Confirmation code *}
-        <div class="confirmation ">
+        <div class="confirmation d-none">
             <h1>Введите SMS код </h1>
-            <p>Отправленный на номер +998 99 *** ** 44</p>
+            <p>Отправленный на номер <span class="user-phone-sms-sent"></span></p>
 
             <div class="ty-control-group installment-code-container">
-                <label for="buyer-phone-code"
-                       class="ty-login__filed-label ty-control-group__label cm-required cm-trim ">
-                    Code
-                </label>
                 <input type="text" hidden class="ty-login__input buyer-sms-code-installment" />
             </div>
             <div id="pinwrapper"></div>
 
-            <p>Отправить SMS еще раз (через <span class="timer">60</span> сек.)</p>
+            <p class="resend-sms-phone">Отправить SMS еще раз (через <span class="phone-timer">60</span> сек.)</p>
 
             <button class="ty-btn ty-btn__secondary" type="button" id="installmentConfirmCodeBtn">
                 Продолжить
