@@ -1,11 +1,17 @@
 (function (_, $) {
   const $sendSmsBtn = $('#installmentSendSMSBtn');
-  const $buyerPhone = $('.buyer-phone-installment');
-  const $buyerPhoneContainer = $('.installment-phone-container');
 
-  const $confirmCodeBtn = $('#installmentConfirmCodeBtn');
+  const $buyerPhone = $('.buyer-phone-installment');
   const $buyerSmsCode = $('.buyer-sms-code-installment');
-  const $buyerSmsCodeContainer = $('.installment-code-container');
+
+  const $changePhoneBtn = $('#installmentChangePhoneBtn');
+  const $userPhoneSmsSent = $('.user-phone-sms-sent');
+  const $timerSlot = $('.phone-timer');
+  const $agreementCheckbox = $('.agreement input[type="checkbox"]');
+  const $resendSms = $('.resend-sms-phone');
+
+  const $confirmation = $('.confirmation');
+  const $sendingSms = $('.sending-sms');
 
   const $errorContainer = $('.error-installment');
 
@@ -15,6 +21,8 @@
     userStatus: 0,
     errors: [],
     error: null,
+    userPhoneNumber: Cookies.get('buyer-phone') || '+998 ********',
+    hasAgree: false,
   };
 
   const methods = {
@@ -31,15 +39,20 @@
       }
     },
     timerResendSms: function () {
-      installmentState.interval = setInterval(() => {
-        if (installmentState.timer !== 0) {
-          installmentState.timer -= 1;
-        } else {
-          clearInterval(installmentState.interval);
+      let { interval, timer } = installmentState;
+      interval = setInterval(() => {
+        timer -= 1;
+        $timerSlot.text(timer);
+
+        if (timer === 0) {
+          clearInterval(interval);
+          $resendSms.addClass('active');
         }
       }, 1000);
     },
     sendSMS: function (event) {
+      installmentState.userPhoneNumber = $buyerPhone.val();
+
       $.ceAjax('request', fn_url('profiles.send_sms'), {
         method: 'POST',
         data: {
@@ -47,13 +60,12 @@
         },
         callback: function callback(response) {
           const { result } = response;
-          if (result) {
+          if (response) {
             if (result.status === 'success') {
-              $buyerSmsCodeContainer.removeClass('d-none');
-              $confirmCodeBtn.removeClass('d-none');
+              $confirmation.removeClass('d-none');
+              methods.timerResendSms();
 
-              $buyerPhoneContainer.addClass('d-none');
-              $sendSmsBtn.addClass('d-none');
+              $sendingSms.addClass('d-none');
             } else {
               methods.renderErrors(result.response.message);
             }
@@ -76,7 +88,6 @@
 
           if (response) {
             if (result.status === 'success') {
-              installmentState.userStatus = result.data.user_status;
               Cookies.set('api_token', result.data.api_token, { expires: 2 });
               Cookies.set('buyer-phone', $buyerPhone.val());
 
@@ -86,20 +97,23 @@
                 Cookies.set('user_id', result.data.user_id);
               }
 
-              switch (installmentState.userStatus) {
+              switch (result.data.user_status) {
                 case 0:
                   methods.makeRoute({ action: 'index' });
                   break;
                 case 1:
                   methods.makeRoute({ action: 'card-add' });
                   break;
-                case 2 || 6:
+                case 2:
+                case 6:
                   methods.makeRoute({ action: 'await' });
                   break;
                 case 4:
                   methods.makeRoute({ action: 'contract-create' });
                   break;
-                case 5 || 10 || 11:
+                case 5:
+                case 10:
+                case 11:
                   methods.makeRoute({ action: 'type-passport' });
                   break;
                 case 12:
@@ -121,10 +135,34 @@
         },
       });
     },
+    changePhone: function () {
+      $confirmation.addClass('d-none');
+      $sendingSms.removeClass('d-none');
+    },
+    agreement: function (e) {
+      const hasChecked = e.target.checked;
+
+      if (hasChecked && Boolean($buyerPhone.val())) {
+        $sendSmsBtn.removeAttr('disabled', 'disabled');
+      } else {
+        $sendSmsBtn.attr('disabled', 'disabled');
+      }
+    },
+    makePhoneNumberHidden: function () {
+      const phoneNumberArray = installmentState.userPhoneNumber.split('');
+      phoneNumberArray.splice(5, 5, '*', '*', '*', '*', '*');
+
+      return phoneNumberArray.join('');
+    },
   };
 
   $(_.doc).on('click', '#installmentSendSMSBtn', methods.sendSMS);
   $(_.doc).on('click', '#installmentConfirmCodeBtn', methods.confirmCode);
+  $changePhoneBtn.on('click', methods.changePhone);
+  $agreementCheckbox.on('change', methods.agreement);
+  $resendSms.on('click', methods.sendSMS);
+
+  $userPhoneSmsSent.text(methods.makePhoneNumberHidden);
 })(Tygh, Tygh.$);
 /*
 $(document).on('click', '#installmentSendSMSBtn', function () {

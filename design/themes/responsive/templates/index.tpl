@@ -42,6 +42,10 @@ $auth.user_type === "UserTypes::ADMIN"|enum
         class="{if $pb_is_bottom_panel_open}bp-panel-active{/if}"
 >
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+
+
     {capture name="page_title"}
         {hook name="index:title"}
         {if $page_title}
@@ -91,8 +95,6 @@ $auth.user_type === "UserTypes::ADMIN"|enum
           );
         };
         </script>
-        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
-        <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
         <!--[if lt IE 9]>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.1.9/es5-shim.min.js"></script><![endif]-->
     {/if}

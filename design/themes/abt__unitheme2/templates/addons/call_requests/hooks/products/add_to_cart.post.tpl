@@ -37,7 +37,7 @@
                 }
             {/if}
         {else}
-            {include file="buttons/button.tpl" 
+            {include file="buttons/button.tpl"
                 but_text=__("call_requests.buy_now_with_one_click")
                 but_href="products.view?product_id=`$product.product_id`"
                 but_role="text"

@@ -5,18 +5,21 @@
   const $cardExpContainer = $('.card-confirm');
   const $cardExp = $('.buyer-card-exp-installment');
   const $cardConfirmCode = $('.buyer-card-code-installment');
+  const $cardPin = $('#card-pin-wrapper');
 
   const $errorContainer = $('.error-card-installment');
 
   const $sentPhoneNumber = $('.sent-phone-number');
+  const $timerSlot = $('.card-resend-sms-timer');
+  const $resendCardSms = $('.resend-sms-card');
 
   const cardState = {
     baseUrl: 'https://dev.paymart.uz/api/v1',
     api_token: Cookies.get('api_token'),
     buyerPhone: Cookies.get('buyer-phone'),
+    timer: 60,
+    interval: null,
   };
-
-  $sentPhoneNumber.text(cardState.buyerPhone);
 
   const cardMethods = {
     makeRoute({ controller = 'installment_product', action = 'index' }) {
@@ -37,6 +40,24 @@
         $errorContainer.text(errors);
       }
     },
+    timerResendSms: function () {
+      let { interval, timer } = cardState;
+      interval = setInterval(() => {
+        timer -= 1;
+        $timerSlot.text(timer);
+
+        if (timer === 0) {
+          clearInterval(interval);
+          $resendCardSms.addClass('active');
+        }
+      }, 1000);
+    },
+    makePhoneNumberHidden: function () {
+      const phoneNumberArray = cardState.buyerPhone.split('');
+      phoneNumberArray.splice(5, 5, '*', '*', '*', '*', '*');
+
+      return phoneNumberArray.join('');
+    },
     sendSMS: function () {
       $errorContainer.text('');
       const isValid = Boolean($cardNumber.val()) && $cardNumber.val().length >= 16 && Boolean($cardExp.val());
@@ -55,8 +76,12 @@
           success: function (response) {
             if (response) {
               if (response.status === 'success') {
-                $cardNumberContainer.addClass('hidden');
-                $cardExpContainer.removeClass('hidden');
+                $cardNumberContainer.addClass('d-none');
+                cardMethods.timerResendSms();
+
+                $cardExpContainer.removeClass('d-none');
+                $cardPin.removeClass('d-none');
+
               } else {
                 if (response.hasOwnProperty('info')) {
                   if (response.info === 'error_card_equal') {
@@ -148,4 +173,8 @@
 
   $(_.doc).on('click', '#installmentSendSMSCardBtn', cardMethods.sendSMS);
   $(_.doc).on('click', '#installmentSendCardCodeBtn', cardMethods.confirmCode);
+
+  $sentPhoneNumber.text(cardMethods.makePhoneNumberHidden);
+
+  $resendCardSms.on('click', cardMethods.sendSMS);
 })(Tygh, Tygh.$);

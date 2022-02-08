@@ -1,0 +1,86 @@
+@import "variables";
+@import "mixins";
+@import "custom";
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  form {
+    margin-top: 100px;
+    width: 430px;
+
+    .sending-sms {
+      h1 {
+        text-align: center;
+        .font(@fs: 40px, @fw: 900, @lh: 40px);
+
+        @media (max-width: @mobile) {
+          font-size: 28px;
+        }
+      }
+
+      .oferta-container {
+        margin-bottom: 28px;
+
+        a {
+          color: @main;
+        }
+      }
+
+      .agreement {
+        margin-bottom: 40px;
+        cursor: pointer;
+
+        input {
+          border-color: @main;
+
+          &:focus {
+            box-shadow: unset;
+          }
+
+          &:checked {
+            background-color: @main;
+          }
+        }
+      }
+    }
+
+    .confirmation {
+      text-align: center;
+
+      .installment-code-container {
+        margin: 0
+      }
+
+      .resend-sms-phone {
+        pointer-events: none;
+
+        &.active {
+          color: @main;
+          pointer-events: unset;
+          cursor: pointer;
+        }
+      }
+    }
+
+    #pinwrapper {
+      margin-bottom: 12px;
+    }
+
+    button {
+      width: 100%;
+      margin-left: 0 !important;
+
+      &#installmentConfirmCodeBtn {
+        margin: 12px 0;
+      }
+
+      &:disabled {
+        background: @gray;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
