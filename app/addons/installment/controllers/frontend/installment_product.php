@@ -21,43 +21,75 @@ if (!defined('BOOTSTRAP')) {
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if ($mode == 'get_quantity') {
 
-    if ($mode == "index") {
+        $product = $_REQUEST['product_data'];
+        fn_print_die($_REQUEST);
+        foreach ($product as $item => $key) {
+            fn_set_session_data('product_info', $key);
+        }
+
+        return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
 
     }
+    if ($mode == 'get_cart') {
 
+    }
 }
 if ($mode == 'index') {
 
-//    fn_print_die($_REQUEST);
-//    Registry::get('view')->assign('id', $_REQUEST['number']);
+    if ($auth['user_id']) {
+        return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . checkInstallmentStep($auth['user_id']));
+    }
 
 }
+
 if ($mode == "card-add") {
-
-//    fn_print_die($_REQUEST);
-
-
-//    Registry::get('view')->assign('id', $_REQUEST['id']);
-
-
-//    fn_print_die($_REQUEST);
-
+    if (!$auth['user_id']) {
+        return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
+    } else {
+        list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
+        $user_step = checkInstallmentStep($auth['user_id']);
+        if ($mode_type !== $user_step) {
+            return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
+        }
+    }
 }
 
 if ($mode == "type-passport") {
-
-//    fn_print_die($_REQUEST);
-
-//    Registry::get('view')->assign('id', $_REQUEST['id']);
-
+    if (!$auth['user_id']) {
+        return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
+    } else {
+        list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
+        $user_step = checkInstallmentStep($auth['user_id']);
+        if ($mode_type !== $user_step) {
+            return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
+        }
+    }
 }
 
 if ($mode == 'upload-passport') {
-
+    if (!$auth['user_id']) {
+        return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
+    } else {
+        list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
+        $user_step = checkInstallmentStep($auth['user_id']);
+        if ($mode_type !== $user_step) {
+            return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
+        }
+    }
 }
 
 if ($mode == 'upload-passport-id') {
+    if (!$auth['user_id']) {
+        return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
+    } else {
+        list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
+        $user_step = checkInstallmentStep($auth['user_id']);
+        if ($mode_type !== $user_step) {
+            return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
+        }
+    }
 
 }
 

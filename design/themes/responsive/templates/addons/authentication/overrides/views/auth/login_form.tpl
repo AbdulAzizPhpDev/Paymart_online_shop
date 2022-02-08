@@ -120,3 +120,4 @@
 {/if}
 
 {script src="js/addons/authentication/func.js"}
+

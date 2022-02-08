@@ -12,8 +12,10 @@
  * PLEASE READ THE FULL TEXT  OF THE SOFTWARE  LICENSE   AGREEMENT  IN  THE *
  * "copyright.txt" FILE PROVIDED WITH THIS DISTRIBUTION PACKAGE.            *
  ****************************************************************************/
+
 use Tygh\Languages\Languages;
 use Tygh\Registry;
+use Tygh\Enum\Addons\Installment\InstallmentVar;
 
 if (!defined('BOOTSTRAP')) {
     die('Access denied');
@@ -61,10 +63,16 @@ function fn_installment_test_hook($var1, $var2)
 //    curl_close($curl);
 
 
-
-    fn_print_die($path,Registry::get('config.dir.root'),$import_schema,$schema_size);
+    fn_print_die($path, Registry::get('config.dir.root'), $import_schema, $schema_size);
     return $var1;
 }
+
+function checkInstallmentStep($user_id)
+{
+    $user = db_get_row('select * from ?:users where user_id = ?s', $user_id);
+    return InstallmentVar::Pages[$user['i_step']];
+}
+
 
 
 
