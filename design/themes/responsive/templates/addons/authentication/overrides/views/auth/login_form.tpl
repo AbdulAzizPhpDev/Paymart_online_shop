@@ -1,7 +1,5 @@
 {assign var="id" value=$id|default:"main_login"}
 
-{script src="js/addons/authentication/func.js"}
-
 {capture name="login"}
     <form
             name="{$id}_form"
@@ -121,7 +119,5 @@
     </div>
 {/if}
 
-<script>
+{script src="js/addons/authentication/func.js"}
 
-
-</script>

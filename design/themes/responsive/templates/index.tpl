@@ -42,7 +42,7 @@ $auth.user_type === "UserTypes::ADMIN"|enum
         class="{if $pb_is_bottom_panel_open}bp-panel-active{/if}"
 >
 <head>
-
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
 
 
@@ -70,30 +70,30 @@ $auth.user_type === "UserTypes::ADMIN"|enum
     {include file="meta.tpl"}
     {hook name="index:links"}
         <link href="{$logos.favicon.image.image_path|fn_query_remove:'t'}" rel="shortcut icon"
-              type="{$logos.favicon.image.absolute_path|fn_get_mime_content_type}"/>
+              type="{$logos.favicon.image.absolute_path|fn_get_mime_content_type}" />
     {/hook}
     {include file="common/styles.tpl" include_dropdown=true}
     {if "DEVELOPMENT"|defined && $smarty.const.DEVELOPMENT == true}
         <script data-no-defer>
-            window.jsErrors = [];
-            window.onerror = function (message, source, lineno, colno, error) {
-                var verboseMessage = message;
-                if (source) {
-                    verboseMessage = source + '@' + lineno + ':' + colno + '\n\n' + message;
-                }
+        window.jsErrors = [];
+        window.onerror = function (message, source, lineno, colno, error) {
+          var verboseMessage = message;
+          if (source) {
+            verboseMessage = source + '@' + lineno + ':' + colno + '\n\n' + message;
+          }
 
-                console.error(verboseMessage);
+          console.error(verboseMessage);
 
-                if (error && error.stack) {
-                    console.log(error.stack);
-                }
+          if (error && error.stack) {
+            console.log(error.stack);
+          }
 
-                document.write('<pre data-ca-debug="1" style="border: 2px solid red; margin: 2px;">'
-                    + verboseMessage + '\n\n'
-                    + (error && error.stack ? error.stack : '')
-                    + '</pre>',
-                );
-            };
+          document.write('<pre data-ca-debug="1" style="border: 2px solid red; margin: 2px;">'
+            + verboseMessage + '\n\n'
+            + (error && error.stack ? error.stack : '')
+            + '</pre>',
+          );
+        };
         </script>
         <!--[if lt IE 9]>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.1.9/es5-shim.min.js"></script><![endif]-->

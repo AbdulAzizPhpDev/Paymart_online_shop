@@ -97,7 +97,7 @@
                 Cookies.set('user_id', result.data.user_id);
               }
 
-              /*switch (result.data.user_status) {
+              switch (result.data.user_status) {
                 case 0:
                   methods.makeRoute({ action: 'index' });
                   break;
@@ -125,7 +125,7 @@
                 default:
                   methods.makeRoute({ action: 'index' });
                   break;
-              }*/
+              }
             } else {
               methods.renderErrors(result.response.message);
             }
