@@ -39,7 +39,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 if ($mode == 'index') {
 
     if ($auth['user_id']) {
-        return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . checkInstallmentStep($auth['user_id']));
+        checkUserFromPaymart($auth['user_id']);
+        list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
+        $user_step = checkInstallmentStep($auth['user_id']);
+        if ($mode_type !== $user_step) {
+            return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . checkInstallmentStep($auth['user_id']));
+        }
+
     }
 
 }
