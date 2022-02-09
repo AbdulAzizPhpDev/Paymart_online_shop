@@ -198,7 +198,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             Registry::get('ajax')->assign('result', $response);
             exit();
         }
-        Registry::get('ajax')->assign('result', $response);
+            Registry::get('ajax')->assign('result', $response);
         exit();
 
 
