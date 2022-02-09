@@ -34,9 +34,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     if ($mode == 'set_card') {
 
+
+//        php_curl('/buyer/send-sms-code-uz');
+
     }
     if ($mode == 'set_passport') {
-
+        php_curl();
     }
     if ($mode == 'set_passport_id') {
 
@@ -53,6 +56,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
 }
+
+
+//if ($mode = "test") {
+//    $data = ['phone' => 998919612729];
+//    php_curl('/login/send-sms-code', $data, 'POST', 'dskjfhskjdfhk');
+//}
+
+
 if ($mode == 'index') {
 
     if ($auth['user_id']) {
