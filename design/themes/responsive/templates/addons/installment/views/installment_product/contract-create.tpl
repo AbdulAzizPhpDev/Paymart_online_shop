@@ -1,7 +1,6 @@
 {script src="js/addons/installment/contract-create.js"}
-{*<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">*}
-{*<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>*}
-
+{script src="https://cdn.jsdelivr.net/npm/jquery-pinlogin@1.0.3/src/jquery.pinlogin.min.js"}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-pinlogin@1.0.3/src/jquery.pinlogin.css">
 
 
 <div class="main-page">
@@ -9,7 +8,7 @@
         <img src="design/themes/responsive/media/images/addons/installment_image/back-arrow.png" alt="Arrow image">
     </div>
     <div class="container table-page" >
-        <div class="container">
+        <div class="">
             <div class="section-one">
                 <div class="main">
                     <div class="main-first">
@@ -115,11 +114,42 @@
 
 <!-- The Modal -->
 <div id="myModal" class="modal">
-
     <!-- Modal content -->
     <div class="modal-content">
-        <span class="close">&times;</span>
-        <p>Some text in the Modal..</p>
-    </div>
+        <span class="close">
+            <img src="design/themes/responsive/media/images/addons/installment_image/Thin.png" alt="Close img">
+        </span>
+        <div class="card-add__page">
+            <div class="card-confirm">
+                <h1>Введите SMS код </h1>
 
+                <div class="ty-control-group">
+                    <p>Отправленный на номер <span class="sent-phone-number"></span></p>
+
+                    <input type="tel" hidden
+                           class="ty-login__input buyer-card-code-installment" />
+                </div>
+                <div id="card-pin-wrapper"></div>
+
+                <p class="resend-sms-card">Отправить SMS еще раз (через <span class="card-resend-sms-timer">60</span> сек.)</p>
+
+                <button class="ty-btn ty-btn__secondary" type="button" id="installmentSendCardCodeBtn">
+                    Продолжить
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
+
+
+<script>
+    $('#card-pin-wrapper').pinlogin({
+        placeholder: '*',
+        hideinput: false,
+        fields: 4,
+        reset: false,
+        complete: function (pin) {
+            $('.buyer-card-code-installment').attr('value', pin);
+        },
+    });
+</script>

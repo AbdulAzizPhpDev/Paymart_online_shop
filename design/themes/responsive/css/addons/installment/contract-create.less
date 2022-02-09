@@ -231,11 +231,16 @@ p h1 h2 h3 h4 h5{
 
 /* Modal Content/Box */
 .modal-content {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
-  padding: 20px;
+  margin: 8% auto; /* 15% from the top and centered */
+  padding: 48px;
+  border-radius: 8px;
   border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
+  width: 31%; /* Could be more or less, depending on screen size */
 }
 
 /* The Close Button */
@@ -244,6 +249,8 @@ p h1 h2 h3 h4 h5{
   float: right;
   font-size: 28px;
   font-weight: bold;
+  top: 24px;
+  right: 23px;
 }
 
 .close:hover,
@@ -252,3 +259,56 @@ p h1 h2 h3 h4 h5{
   text-decoration: none;
   cursor: pointer;
 }
+
+
+
+.card-add__page {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 10px;
+  .card-confirm{
+    width: 564px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .ty-control-group {
+      text-align: center;
+    }
+
+    #card-pin-wrapper {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .resend-sms-card {
+      text-align: center;
+      pointer-events: none;
+
+      &.active {
+        color: @main;
+        pointer-events: unset;
+        cursor: pointer;
+      }
+    }
+  }
+
+  h1 {
+    margin-bottom: 32px;
+    text-align: center;
+    .font(@fs: 40px, @fw: 900, @lh: 40px);
+
+    @media (max-width: @mobile) {
+      font-size: 28px;
+    }
+  }
+
+  button {
+    width: 57%;
+    margin: 24px 12% 0 12%;
+    background-color: @main;
+  }
+
+  .stepperStyle();
+}
+
