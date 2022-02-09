@@ -34,9 +34,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     if ($mode == 'set_card') {
 
+
+//        php_curl('/buyer/send-sms-code-uz');
+
     }
     if ($mode == 'set_passport') {
-
+        php_curl();
     }
     if ($mode == 'set_passport_id') {
 
@@ -53,6 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
 }
+
 if ($mode == 'get_qty') {
     $qty = $_REQUEST['qty'];
     $product_id = $_REQUEST['product_id'];
@@ -65,6 +69,7 @@ if ($mode == 'get_qty') {
         'redirect_to' => 'installment_product.index'
     ]);
 }
+
 
 if ($mode == 'index') {
 

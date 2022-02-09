@@ -26,7 +26,6 @@ if (!defined('BOOTSTRAP')) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-
     if ($mode == 'send_sms') {
 
         $pattern = "/^998\d{9}$/";
