@@ -73,6 +73,38 @@ function checkInstallmentStep($user_id)
     return InstallmentVar::Pages[$user['i_step']];
 }
 
+function checkUserFromPaymart($user_id)
+{
+    $user = db_get_row('select * from ?:users where user_id = ?s', $user_id);
+
+    if (!empty($user['api_key'])) {
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => PAYMART_URL . '/buyer/check_status',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $user['api_key']
+            ),
+        ));
+        $response = json_decode(curl_exec($curl));
+        curl_close($curl);
+        if ($response->data->status != $user['i_step']) {
+            $user_info = [
+                'i_step' => $response->data->status
+            ];
+            db_query('UPDATE ?:users SET ?u WHERE user_id = ?i', $user_info, $user['user_id']);
+        }
+        return true;
+    }
+    return false;
+}
+
 
 
 
