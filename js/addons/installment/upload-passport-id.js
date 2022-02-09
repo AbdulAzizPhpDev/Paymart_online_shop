@@ -91,17 +91,12 @@
 
         formData.append('step', '2');
 
-        $.ajax({
-          url: `${passportState.baseUrl}/buyer/verify/modify`,
-          type: 'POST',
+        $.ceAjax('request', fn_url('installment_product.set_passport_id'),{
+          method: 'POST',
           data: formData,
-          processData: false,
-          contentType: false,
-          headers: {
-            Authorization: `Bearer ${passportState.api_token}`,
-          },
-          success: function (response) {
-            const { data: result } = response;
+          callback: function (response) {
+            console.log(response);
+            /*const { data: result } = response;
 
             if (response) {
               if (result.status === 'success') {
@@ -114,10 +109,7 @@
 
             } else {
               console.error('Result does not exist. %cmethod[/buyer/send-sms-code-uz]', 'color: white; padding: 2px 5px; border: 1px dashed green');
-            }
-          },
-          error: function (error) {
-            console.log(error);
+            }*/
           },
         });
       } else {

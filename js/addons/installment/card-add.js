@@ -16,7 +16,7 @@
   const cardState = {
     baseUrl: 'https://dev.paymart.uz/api/v1',
     api_token: Cookies.get('api_token'),
-    buyerPhone: Cookies.get('buyer-phone'),
+    buyerPhone: Cookies.get('buyer-phone') || 998999000009,
     timer: 60,
     interval: null,
   };
@@ -53,7 +53,11 @@
       }, 1000);
     },
     makePhoneNumberHidden: function () {
-      const phoneNumberArray = cardState.buyerPhone.split('');
+      const buyerPhone = typeof cardState.buyerPhone !== 'string'
+        ? String(cardState.buyerPhone)
+        : cardState.buyerPhone;
+
+      const phoneNumberArray = buyerPhone.split('');
       phoneNumberArray.splice(5, 5, '*', '*', '*', '*', '*');
 
       return phoneNumberArray.join('');
@@ -63,8 +67,8 @@
       const isValid = Boolean($cardNumber.val()) && $cardNumber.val().length >= 16 && Boolean($cardExp.val());
 
       if (isValid) {
-        $.ceAjax('request', fn_url('set_card'), {
-          type: 'POST',
+        $.ceAjax('request', fn_url('installment_product.set_card'), {
+          method: 'POST',
           data: {
             card: $cardNumber.val(),
             exp: $cardExp.val(),
@@ -130,8 +134,8 @@
       const isValid = Boolean($cardExp.val());
 
       if (isValid) {
-        $.ceAjax('request', fn_url('confirm_card'), {
-          type: 'POST',
+        $.ceAjax('request', fn_url('installment_product.confirm_card'), {
+          method: 'POST',
           data: {
             card_number: $cardNumber.val(),
             card_valid_date: $cardExp.val(),
