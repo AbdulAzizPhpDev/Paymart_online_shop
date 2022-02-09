@@ -9,7 +9,6 @@
         <img src="design/themes/responsive/media/images/addons/installment_image/back-arrow.png" alt="Arrow image">
     </div>
     <div class="container table-page" >
-
         <div class="container">
             <div class="section-one">
                 <div class="main">
@@ -107,10 +106,20 @@
                     </div>
                 </form>
                 <div class="form-button">
-                    <button class="form-button__item" type="submit" form="form1" value="Submit">Оформить рассрочку</button>
+                    <button id="myBtn" class="form-button__item" type="submit"  form="form1" value="Submit">Оформить рассрочку</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Some text in the Modal..</p>
+    </div>
+
+</div>
