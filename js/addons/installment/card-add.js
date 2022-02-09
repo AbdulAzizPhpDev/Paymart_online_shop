@@ -63,17 +63,13 @@
       const isValid = Boolean($cardNumber.val()) && $cardNumber.val().length >= 16 && Boolean($cardExp.val());
 
       if (isValid) {
-        $.ajax({
-          url: `${cardState.baseUrl}/buyer/send-sms-code-uz`,
+        $.ceAjax('request', fn_url('set_card'), {
           type: 'POST',
           data: {
             card: $cardNumber.val(),
             exp: $cardExp.val(),
           },
-          headers: {
-            Authorization: `Bearer ${cardState.api_token}`,
-          },
-          success: function (response) {
+          callback: function (response) {
             if (response) {
               if (response.status === 'success') {
                 $cardNumberContainer.addClass('d-none');
@@ -101,9 +97,6 @@
             } else {
               console.error('Result does not exist. %cmethod[/buyer/send-sms-code-uz]', 'color: white; padding: 2px 5px; border: 1px dashed green');
             }
-          },
-          error: function () {
-            cardMethods.renderErrors('Server Error');
           },
         });
 
@@ -137,18 +130,14 @@
       const isValid = Boolean($cardExp.val());
 
       if (isValid) {
-        $.ajax({
-          url: `${cardState.baseUrl}/buyer/check-sms-code-uz`,
+        $.ceAjax('request', fn_url('confirm_card'), {
           type: 'POST',
           data: {
             card_number: $cardNumber.val(),
             card_valid_date: $cardExp.val(),
             code: $cardConfirmCode.val(),
           },
-          headers: {
-            Authorization: `Bearer ${cardState.api_token}`,
-          },
-          success: function (response) {
+          callback: function (response) {
             const { data: result } = response;
 
             if (response) {
@@ -160,9 +149,6 @@
             } else {
               console.error('Result does not exist. %cmethod[/buyer/send-sms-code-uz]', 'color: white; padding: 2px 5px; border: 1px dashed green');
             }
-          },
-          error: function () {
-            cardMethods.renderErrors('Server Error');
           },
         });
       } else {
