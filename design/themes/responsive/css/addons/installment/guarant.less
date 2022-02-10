@@ -1,5 +1,6 @@
 @import "mixins";
 @import "variables";
+@import "custom";
 
 .guarant-page {
   display: flex;
@@ -57,6 +58,10 @@
         }
       }
     }
+  }
+
+  #add-guarant-btn {
+    .buttonAnimation();
   }
 
   .stepperStyle(@firstElementTop: 3px, @secondElementTop: 5px, @step: @main)
