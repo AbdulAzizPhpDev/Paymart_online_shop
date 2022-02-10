@@ -1,4 +1,3 @@
-import { fn_url } from '../../core/src/core/utils';
 
 (function (_, $) {
   const $lottie = $('.lottie-player');

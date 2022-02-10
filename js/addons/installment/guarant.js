@@ -42,60 +42,45 @@
     },
     confirm: function (event) {
       const isValid = guarantMethods.fieldsIsValid();
+      const $this = $(event.target);
 
       if (isValid) {
-        $.ceAjax('request', fn_url('set_guarantee'), {
-          method: 'POST',
+        $.ajax({
+          url: fn_url('installment_product.set_guarantee'),
+          type: 'POST',
           data: {
-            name: $firstPersonName.val(),
-            phone: $firstPersonPhone.val().replace(/[ -]/g, ''),
-            buyer_id: guarantState.user_id,
+            guarantees: [
+              {
+                name: $firstPersonName.val(),
+                phone: $firstPersonPhone.val().replace(/[ -]/g, ''),
+              },
+              {
+                name: $secondPersonName.val(),
+                phone: $secondPersonPhone.val().replace(/[ -]/g, ''),
+              },
+            ],
           },
-          callback: function (response) {
-            console.log(response);
-            /*const { data: result } = response;
+          beforeSend: function () {
+            $this.attr('disabled', 'disabled');
+          },
+          success: function (response) {
+            /*if (response) {
+              const { result } = response;
 
-            if (response) {
-              if (result.status === 'success') {
-                $.ajax({
-                  url: `${guarantState.baseUrl}/buyer/add-guarant`,
-                  type: 'POST',
-                  data: {
-                    name: $secondPersonName.val(),
-                    phone: $secondPersonPhone.val(),
-                    buyer_id: guarantState.user_id,
-                  },
-                  headers: {
-                    Authorization: `Bearer ${guarantState.api_token}`,
-                  },
-                  success: function (response) {
-                    const { data: result } = response;
-
-                    if (response) {
-                      if (result.status === 'success') {
-                        guarantMethods.makeRoute({ action: 'await' });
-                      } else {
-                        guarantMethods.renderErrors(result.response.message);
-                      }
-
-                    } else {
-                      console.error('Result does not exist. %cmethod[/buyer/send-sms-code-uz]', 'color: white; padding: 2px 5px; border: 1px dashed green');
-                    }
-                  },
-                  error: function (error) {
-                    guarantMethods.renderErrors('Server Error');
-                  },
-                });
+              if (result.data.status === 'success') {
+                window.location.reload();
               } else {
-                guarantMethods.renderErrors(result.response.message);
+                guarantMethods.renderErrors(result.data.response.message);
               }
-
             } else {
               console.error('Result does not exist. %cmethod[/buyer/send-sms-code-uz]', 'color: white; padding: 2px 5px; border: 1px dashed green');
             }*/
           },
           error: function (error) {
             guarantMethods.renderErrors('Server Error');
+          },
+          complete: function () {
+            $this.removeAttr('disabled');
           },
         });
       } else {
@@ -105,10 +90,10 @@
   };
 
   $addGuarantBtn.on('click', guarantMethods.confirm);
-  $firstPersonPhone.inputmask('998 [99 999-99-99]', {
-    placeholder: '** ***-**-**',
+  $firstPersonPhone.inputmask('[998 99 999-99-99]', {
+    placeholder: '998 ** ***-**-**',
   });
-  $secondPersonPhone.inputmask('998 [99 999-99-99]', {
-    placeholder: '** ***-**-**',
+  $secondPersonPhone.inputmask('[998 99 999-99-99]', {
+    placeholder: '998 ** ***-**-**',
   });
 })(Tygh, Tygh.$);
