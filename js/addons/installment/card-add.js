@@ -16,7 +16,7 @@
   const cardState = {
     baseUrl: 'https://dev.paymart.uz/api/v1',
     api_token: Cookies.get('api_token'),
-    buyerPhone: Cookies.get('buyer-phone'),
+    buyerPhone: Cookies.get('buyer-phone') || 998999000009,
     timer: 60,
     interval: null,
   };
@@ -43,6 +43,7 @@
     timerResendSms: function () {
       let { interval, timer } = cardState;
       interval = setInterval(() => {
+        $resendCardSms.removeClass('active');
         timer -= 1;
         $timerSlot.text(timer);
 
@@ -53,7 +54,11 @@
       }, 1000);
     },
     makePhoneNumberHidden: function () {
-      const phoneNumberArray = cardState.buyerPhone.split('');
+      const buyerPhone = typeof cardState.buyerPhone !== 'string'
+        ? String(cardState.buyerPhone)
+        : cardState.buyerPhone;
+
+      const phoneNumberArray = buyerPhone.split('');
       phoneNumberArray.splice(5, 5, '*', '*', '*', '*', '*');
 
       return phoneNumberArray.join('');
@@ -63,17 +68,13 @@
       const isValid = Boolean($cardNumber.val()) && $cardNumber.val().length >= 16 && Boolean($cardExp.val());
 
       if (isValid) {
-        $.ajax({
-          url: `${cardState.baseUrl}/buyer/send-sms-code-uz`,
-          type: 'POST',
+        $.ceAjax('request', fn_url('installment_product.set_card'), {
+          method: 'POST',
           data: {
             card: $cardNumber.val(),
             exp: $cardExp.val(),
           },
-          headers: {
-            Authorization: `Bearer ${cardState.api_token}`,
-          },
-          success: function (response) {
+          callback: function (response) {
             if (response) {
               if (response.status === 'success') {
                 $cardNumberContainer.addClass('d-none');
@@ -84,51 +85,25 @@
 
               } else {
                 if (response.hasOwnProperty('info')) {
-                  if (response.info === 'error_card_equal') {
+                  if (response.result.info === 'error_card_equal') {
                     cardMethods.renderErrors([
-                      response.info,
-                      response.card_data?.card_owner,
-                      response.card_data?.card_phone,
-                      response.card_data.total_debt,
+                      response.result.info,
+                      response.result.card_data?.card_owner,
+                      response.result.card_data?.card_phone,
+                      response.result.card_data.total_debt,
                     ]);
                   } else {
-                    cardMethods.renderErrors(response.info);
+                    cardMethods.renderErrors(response.result.info);
                   }
                 } else {
-                  cardMethods.renderErrors(response.status);
+                  cardMethods.renderErrors(response.result.status);
                 }
               }
             } else {
               console.error('Result does not exist. %cmethod[/buyer/send-sms-code-uz]', 'color: white; padding: 2px 5px; border: 1px dashed green');
             }
           },
-          error: function () {
-            cardMethods.renderErrors('Server Error');
-          },
         });
-
-        /*$.ceAjax('request', `${cardState.baseUrl}/buyer/send-sms-code-uz`, {
-          method: 'POST',
-          data: {
-            card: $cardNumber.val(),
-            exp: $cardExp.val(),
-            api_token: cardState.api_token,
-          },
-          callback: function callback(response) {
-            const { data: result } = response;
-
-            if (result) {
-              if (result.status === 'success') {
-                $cardNumberContainer.addClass('d-none');
-                $cardExpContainer.removeClass('d-none');
-              } else {
-                cardMethods.renderErrors(result.response.message);
-              }
-            } else {
-              console.error('Result does not exist. %cmethod[/buyer/send-sms-code-uz]', 'color: white; padding: 2px 5px; border: 1px dashed green');
-            }
-          },
-        });*/
       } else {
         cardMethods.renderErrors('Fields are valid');
       }
@@ -137,32 +112,26 @@
       const isValid = Boolean($cardExp.val());
 
       if (isValid) {
-        $.ajax({
-          url: `${cardState.baseUrl}/buyer/check-sms-code-uz`,
-          type: 'POST',
+        $.ceAjax('request', fn_url('installment_product.confirm_card'), {
+          method: 'POST',
           data: {
             card_number: $cardNumber.val(),
             card_valid_date: $cardExp.val(),
             code: $cardConfirmCode.val(),
           },
-          headers: {
-            Authorization: `Bearer ${cardState.api_token}`,
-          },
-          success: function (response) {
-            const { data: result } = response;
-
+          callback: function (response) {
             if (response) {
-              if (result.status === 'success') {
-                cardMethods.makeRoute({ action: 'type-passport' });
+              const { result } = response;
+
+              if (result.data.status === 'success') {
+                window.location.reload();
+                // cardMethods.makeRoute({ action: 'type-passport' });
               } else {
-                cardMethods.renderErrors(result.response.message);
+                cardMethods.renderErrors(result.data.response.message);
               }
             } else {
               console.error('Result does not exist. %cmethod[/buyer/send-sms-code-uz]', 'color: white; padding: 2px 5px; border: 1px dashed green');
             }
-          },
-          error: function () {
-            cardMethods.renderErrors('Server Error');
           },
         });
       } else {

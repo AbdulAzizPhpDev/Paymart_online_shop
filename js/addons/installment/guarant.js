@@ -44,19 +44,16 @@
       const isValid = guarantMethods.fieldsIsValid();
 
       if (isValid) {
-        $.ajax({
-          url: `${guarantState.baseUrl}/buyer/add-guarant`,
-          type: 'POST',
+        $.ceAjax('request', fn_url('set_guarantee'),{
+          method: 'POST',
           data: {
             name: $firstPersonName.val(),
             phone: $firstPersonPhone.val(),
             buyer_id: guarantState.user_id,
           },
-          headers: {
-            Authorization: `Bearer ${guarantState.api_token}`,
-          },
-          success: function (response) {
-            const { data: result } = response;
+          callback: function (response) {
+            console.log(response);
+            /*const { data: result } = response;
 
             if (response) {
               if (result.status === 'success') {
@@ -95,7 +92,7 @@
 
             } else {
               console.error('Result does not exist. %cmethod[/buyer/send-sms-code-uz]', 'color: white; padding: 2px 5px; border: 1px dashed green');
-            }
+            }*/
           },
           error: function (error) {
             guarantMethods.renderErrors('Server Error');
