@@ -61,9 +61,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         fn_print_die($_REQUEST);
     }
     if ($mode == 'set_passport_id') {
-
+        fn_print_die($_REQUEST);
     }
     if ($mode == 'set_guarantee') {
+
+        if ($auth['user_id']) {
+
+            $data['card_valid_date'] = fn_get_session_data('card_info')['exp'];
+
+            $data['card_number'] = fn_get_session_data('card_info')['card'];
+
+            $data['code'] = $_REQUEST['code'];
+
+            $user = db_get_row('select * from ?:users where user_id = ?s', $auth['user_id']);
+
+            $response = php_curl('/buyer/check-sms-code-uz', $data, 'POST', $user['api_key']);
+
+            Registry::get('ajax')->assign('result', $response);
+
+            exit();
+        }
+        Registry::get('ajax')->assign('result', showErrors('user_not_authorized'));
+        exit();
 
     }
     if ($mode == 'check_status') {

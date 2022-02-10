@@ -88,26 +88,24 @@
 
         $.ceAjax('request', fn_url('installment_product.set_passport'), {
           method: 'POST',
-          processData: false,
-          contentType: false,
           data: formData,
-          // callback: function (response) {
-          //   console.log(response);
-          //   /*const { data: result } = response;
-          //
-          //   if (response) {
-          //     if (result.status === 'success') {
-          //
-          //       passportMethods.makeRoute({ action: 'guarant' })
-          //
-          //     } else {
-          //       passportMethods.renderErrors(result.response.message);
-          //     }
-          //
-          //   } else {
-          //     console.error('Result does not exist. %cmethod[/buyer/send-sms-code-uz]', 'color: white; padding: 2px 5px; border: 1px dashed green');
-          //   }*/
-          // },
+          callback: function (response) {
+            console.log(response);
+            /*const { data: result } = response;
+
+            if (response) {
+              if (result.status === 'success') {
+
+                passportMethods.makeRoute({ action: 'guarant' })
+
+              } else {
+                passportMethods.renderErrors(result.response.message);
+              }
+
+            } else {
+              console.error('Result does not exist. %cmethod[/buyer/send-sms-code-uz]', 'color: white; padding: 2px 5px; border: 1px dashed green');
+            }*/
+          },
         });
       } else {
         passportMethods.renderErrors('Fields are valid');
