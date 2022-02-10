@@ -31,7 +31,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($auth['user_id']) {
             $user = db_get_row('select * from ?:users where user_id = ?s', $auth['user_id']);
             $response = php_curl('/buyer/send-sms-code-uz', $data, 'POST', $user['api_key']);
-            fn_print_die($response);
             Registry::get('ajax')->assign('result', $response);
             exit();
         }
