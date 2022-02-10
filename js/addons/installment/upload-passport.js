@@ -78,34 +78,42 @@
       if (isValid) {
         const formData = new FormData();
 
-        formData.append('api_token', passportState.api_token);
+        // formData.append('api_token', passportState.api_token);
 
         Object.entries(passportState.files).forEach(([name, file]) => {
           formData.append(name, file);
         });
 
         formData.append('step', '2');
+        formData.append('security_hash', _.security_hash);
+        formData.append('is_ajax', '1');
 
-        $.ceAjax('request', fn_url('installment_product.set_passport'), {
-          method: 'POST',
+        $.ajax({
+          url: fn_url('installment_product.set_passport'),
+          type: 'POST',
+          processData: false,
+          contentType: false,
           data: formData,
-          callback: function (response) {
+          success: function (response) {
             console.log(response);
-            /*const { data: result } = response;
-
-            if (response) {
-              if (result.status === 'success') {
-
-                passportMethods.makeRoute({ action: 'guarant' })
-
-              } else {
-                passportMethods.renderErrors(result.response.message);
-              }
-
-            } else {
-              console.error('Result does not exist. %cmethod[/buyer/send-sms-code-uz]', 'color: white; padding: 2px 5px; border: 1px dashed green');
-            }*/
           },
+          // callback: function (response) {
+          //   console.log(response);
+          //   /*const { data: result } = response;
+          //
+          //   if (response) {
+          //     if (result.status === 'success') {
+          //
+          //       passportMethods.makeRoute({ action: 'guarant' })
+          //
+          //     } else {
+          //       passportMethods.renderErrors(result.response.message);
+          //     }
+          //
+          //   } else {
+          //     console.error('Result does not exist. %cmethod[/buyer/send-sms-code-uz]', 'color: white; padding: 2px 5px; border: 1px dashed green');
+          //   }*/
+          // },
         });
       } else {
         passportMethods.renderErrors('Fields are valid');
