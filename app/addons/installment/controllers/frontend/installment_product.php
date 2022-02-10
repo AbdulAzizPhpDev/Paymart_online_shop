@@ -119,9 +119,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     'Authorization: Bearer ' . $user['api_key']
                 ),
             ));
-            $response = curl_exec($curl);
+            $response = json_decode(curl_exec($curl));
             curl_close($curl);
 
+            if ($response->status == "success") {
+                $user_info['i_step'] = $response->data->status;
+                db_query('UPDATE ?:users SET ?u WHERE p_user_id = ?i', $user_info, $response->data->id);
+
+            }
 
 //            $passport_with_address['passport_with_address'] = $_FILES['passport_with_address'];
 //            $passport_with_address['step'] = 2;
@@ -132,7 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 //            $passport_selfie['type'] = 2;
 //            $response = php_curl('/buyer/verify/modify', $passport_selfie, 'POST', $user['api_key']);
 
-            Registry::get('ajax')->assign('result', json_decode($response));
+            Registry::get('ajax')->assign('result', $response);
             exit();
         }
         Registry::get('ajax')->assign('result', showErrors('user_not_authorized'));
@@ -223,10 +228,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     'Authorization: Bearer ' . $user['api_key']
                 ),
             ));
-            $response = curl_exec($curl);
+            $response = json_decode(curl_exec($curl));
             curl_close($curl);
 
+            if ($response->status == "success") {
+                $user_info['i_step'] = $response->data->status;
+                db_query('UPDATE ?:users SET ?u WHERE p_user_id = ?i', $user_info, $response->data->id);
 
+            }
 //            $passport_with_address['passport_with_address'] = $_FILES['passport_with_address'];
 //            $passport_with_address['step'] = 2;
 //            $response = php_curl('/buyer/verify/modify', $passport_with_address, 'POST', $user['api_key']);
@@ -236,7 +245,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 //            $passport_selfie['type'] = 2;
 //            $response = php_curl('/buyer/verify/modify', $passport_selfie, 'POST', $user['api_key']);
 
-            Registry::get('ajax')->assign('result', json_decode($response));
+            Registry::get('ajax')->assign('result', $response);
             exit();
         }
         Registry::get('ajax')->assign('result', showErrors('user_not_authorized'));
@@ -347,6 +356,18 @@ if ($mode == 'upload-passport-id') {
         }
     }
 
+}
+
+if ($mode == "guarant") {
+    if (!$auth['user_id']) {
+        return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
+    } else {
+        list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
+        $user_step = checkInstallmentStep($auth['user_id']);
+        if ($mode_type !== $user_step) {
+            return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
+        }
+    }
 }
 
 
