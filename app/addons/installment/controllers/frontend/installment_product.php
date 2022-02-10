@@ -21,8 +21,8 @@ if (!defined('BOOTSTRAP')) {
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
     if ($mode == 'set_card') {
+
         $data = [
             "card" => $_REQUEST['card'],
             "exp" => $_REQUEST['exp'],
@@ -38,7 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         Registry::get('ajax')->assign('result', showErrors('user_not_authorized'));
         exit();
     }
-    if ($mode = "confirm_card") {
+    if ($mode == "confirm_card") {
+
         if ($auth['user_id']) {
             if (empty(fn_get_session_data('card_info'))) {
                 Registry::get('ajax')->assign('result', showErrors('card_info_not_set'));
@@ -57,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     if ($mode == 'set_passport') {
 
-        fn_print_die($_REQUEST);
+        fn_print_die($_FILES);
     }
     if ($mode == 'set_passport_id') {
 
