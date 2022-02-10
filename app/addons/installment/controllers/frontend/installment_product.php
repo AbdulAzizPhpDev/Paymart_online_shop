@@ -255,17 +255,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if ($auth['user_id']) {
 
-            $data['card_valid_date'] = fn_get_session_data('card_info')['exp'];
 
-            $data['card_number'] = fn_get_session_data('card_info')['card'];
 
-            $data['code'] = $_REQUEST['code'];
 
-            $user = db_get_row('select * from ?:users where user_id = ?s', $auth['user_id']);
-
-            $response = php_curl('/buyer/check-sms-code-uz', $data, 'POST', $user['api_key']);
-
-            Registry::get('ajax')->assign('result', $response);
+//            $data['card_valid_date'] = fn_get_session_data('card_info')['exp'];
+//
+//            $data['card_number'] = fn_get_session_data('card_info')['card'];
+//
+//            $data['code'] = $_REQUEST['code'];
+//
+//            $user = db_get_row('select * from ?:users where user_id = ?s', $auth['user_id']);
+//
+//            $response = php_curl('/buyer/check-sms-code-uz', $data, 'POST', $user['api_key']);
+//
+//            Registry::get('ajax')->assign('result', $response);
 
             exit();
         }
@@ -336,13 +339,13 @@ if ($mode == 'upload-passport') {
     if (!$auth['user_id']) {
         return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
     }
-//    else {
-//        list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
-//        $user_step = checkInstallmentStep($auth['user_id']);
-//        if ($mode_type !== $user_step) {
-//            return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
-//        }
-//    }
+    else {
+        list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
+        $user_step = checkInstallmentStep($auth['user_id']);
+        if ($mode_type !== $user_step) {
+            return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
+        }
+    }
 }
 
 if ($mode == 'upload-passport-id') {
