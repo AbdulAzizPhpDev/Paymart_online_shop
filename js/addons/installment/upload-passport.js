@@ -54,7 +54,6 @@
         console.error(`el: ${event.target.id} files empty`);
       }
     },
-
     updateFiles: function (name, file) {
       const preview = URL.createObjectURL(file);
       const $previewContainer = $('.' + name);
@@ -69,7 +68,6 @@
 
       passportState.files[name] = file;
     },
-
     upload: function () {
       const isValid = passportState.files.hasOwnProperty('passport_first_page')
         && passportState.files.hasOwnProperty('passport_with_address')
@@ -94,26 +92,28 @@
           processData: false,
           contentType: false,
           data: formData,
-          success: function (response) {
-            console.log(response);
+          beforeSend: function () {
+            $uploadBtn.attr('disabled', 'disabled');
           },
-          // callback: function (response) {
-          //   console.log(response);
-          //   /*const { data: result } = response;
-          //
-          //   if (response) {
-          //     if (result.status === 'success') {
-          //
-          //       passportMethods.makeRoute({ action: 'guarant' })
-          //
-          //     } else {
-          //       passportMethods.renderErrors(result.response.message);
-          //     }
-          //
-          //   } else {
-          //     console.error('Result does not exist. %cmethod[/buyer/send-sms-code-uz]', 'color: white; padding: 2px 5px; border: 1px dashed green');
-          //   }*/
-          // },
+          success: function (response) {
+            if (response) {
+              const { result } = response;
+
+              if (result.status === 'success') {
+                window.location.reload();
+              } else {
+                passportMethods.renderErrors(result.response.message);
+              }
+            } else {
+              console.error('Result does not exist. %cmethod[installment_product.set_passport]', 'color: white; padding: 2px 5px; border: 1px dashed green');
+            }
+          },
+          error: function (error) {
+            passportMethods.renderErrors('Server Error');
+          },
+          complete: function () {
+            $uploadBtn.removeAttr('disabled');
+          },
         });
       } else {
         passportMethods.renderErrors('Fields are valid');
