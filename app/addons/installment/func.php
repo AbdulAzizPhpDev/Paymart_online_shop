@@ -136,6 +136,22 @@ function php_curl($url = '', $data = [], $method = "GET", $token = null)
     return $response;
 }
 
+function showErrors($test, $data = []): array
+{
+    $error = [
+        'status' => "error",
+        'response' => [
+            "code" => "401",
+            "message" => __("$test"),
+            "errors" => ""
+        ],
+        'data' => $data
+
+    ];
+
+    return $error;
+}
+
 
 
 
