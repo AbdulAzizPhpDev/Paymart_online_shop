@@ -12,9 +12,6 @@
   };
 
   const awaitMethods = {
-    makeRoute({ controller = 'installment_product', action = 'index' }) {
-      return window.location.href = `http://market.paymart.uz/index.php?dispatch=${controller}.${action}`;
-    },
     renderErrors: function (errors) {
       if (typeof errors !== 'string') {
         errors.forEach(error => {
