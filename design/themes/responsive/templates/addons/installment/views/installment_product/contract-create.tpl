@@ -8,7 +8,7 @@
         <img src="design/themes/responsive/media/images/addons/installment_image/back-arrow.png" alt="Arrow image">
     </div>
     <div class="container table-page" >
-        <div class="">
+        <div>
             <div class="section-one">
                 <div class="main">
                     <div class="main-first">
@@ -83,12 +83,18 @@
             </div>
 
             <div class="section-three">
-                <label for="fname">Срок рассрочки</label>
-                <form style="margin-top:4px;">
 
-                    <div class="input-paying">
-                        <input type="text" id="fname" name="fname" placeholder="Введите срок">
-                    </div>
+                <form style="margin-top:4px;">
+                   <div class="d-flex flex-column">
+                       <label for="cars">Выберите срок:</label>
+                       <div class="input-paying">
+                           <select name="cars" id="cars">
+                               <option value="twelve">12 месяцев</option>
+                               <option value="nine">9 месяцев</option>
+                               <option value="six">6 месяцев</option>
+                           </select>
+                       </div>
+                   </div>
                     <div class="input-link">
                         <img src="design/themes/responsive/media/images/addons/installment_image/billing-ico.png" alt="Billing ico">
                         <div class="input-paying__text">
@@ -127,13 +133,13 @@
                     <p>Отправленный на номер <span class="sent-phone-number"></span></p>
 
                     <input type="tel" hidden
-                           class="ty-login__input buyer-card-code-installment" />
+                           class="ty-login__input confirm-contract" />
                 </div>
                 <div id="card-pin-wrapper"></div>
 
                 <p class="resend-sms-card">Отправить SMS еще раз (через <span class="card-resend-sms-timer">60</span> сек.)</p>
 
-                <button class="ty-btn ty-btn__secondary" type="button" id="installmentSendCardCodeBtn">
+                <button class="ty-btn ty-btn__secondary" type="button" id="modal-sent">
                     Продолжить
                 </button>
             </div>
@@ -149,7 +155,11 @@
         fields: 4,
         reset: false,
         complete: function (pin) {
-            $('.buyer-card-code-installment').attr('value', pin);
+            $('.confirm-contract').attr('value', pin);
         },
     });
+
+
+
+
 </script>
