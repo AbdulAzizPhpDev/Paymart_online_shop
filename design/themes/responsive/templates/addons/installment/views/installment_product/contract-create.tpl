@@ -7,7 +7,7 @@
     <div class="back-button">
         <img src="design/themes/responsive/media/images/addons/installment_image/back-arrow.png" alt="Arrow image">
     </div>
-    <div class="container table-page" >
+    <div class="container table-page">
         <div>
             <div class="section-one">
                 <div class="main">

@@ -335,14 +335,13 @@ if ($mode == "type-passport") {
 if ($mode == 'upload-passport') {
     if (!$auth['user_id']) {
         return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
+    } else {
+        list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
+        $user_step = checkInstallmentStep($auth['user_id']);
+        if ($mode_type !== $user_step) {
+            return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
+        }
     }
-//    else {
-//        list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
-//        $user_step = checkInstallmentStep($auth['user_id']);
-//        if ($mode_type !== $user_step) {
-//            return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
-//        }
-//    }
 }
 
 if ($mode == 'upload-passport-id') {
