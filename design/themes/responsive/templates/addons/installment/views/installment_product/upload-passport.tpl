@@ -56,4 +56,6 @@
     <div class="ty-login-form__wrong-credentials-container">
         <span class="ty-login-form__wrong-credentials-text ty-error-text error-passport-installment"></span>
     </div>
+
+    <div data-ca-overlay=".loader_container, .ty-ajax-loading-box" class="loader_container"></div>
 </div>

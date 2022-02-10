@@ -44,11 +44,11 @@
       const isValid = guarantMethods.fieldsIsValid();
 
       if (isValid) {
-        $.ceAjax('request', fn_url('set_guarantee'),{
+        $.ceAjax('request', fn_url('set_guarantee'), {
           method: 'POST',
           data: {
             name: $firstPersonName.val(),
-            phone: $firstPersonPhone.val(),
+            phone: $firstPersonPhone.val().replace(/[ -]/g, ''),
             buyer_id: guarantState.user_id,
           },
           callback: function (response) {
@@ -105,4 +105,10 @@
   };
 
   $addGuarantBtn.on('click', guarantMethods.confirm);
+  $firstPersonPhone.inputmask('998 [99 999-99-99]', {
+    placeholder: '** ***-**-**',
+  });
+  $secondPersonPhone.inputmask('998 [99 999-99-99]', {
+    placeholder: '** ***-**-**',
+  });
 })(Tygh, Tygh.$);
