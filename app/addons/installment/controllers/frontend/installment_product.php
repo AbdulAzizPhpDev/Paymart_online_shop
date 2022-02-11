@@ -344,14 +344,15 @@ if ($mode == 'upload-passport') {
 
     if (!$auth['user_id']) {
         return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
-    } else {
-        checkUserFromPaymart($auth['user_id']);
-        list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
-        $user_step = checkInstallmentStep($auth['user_id']);
-        if ($mode_type !== $user_step) {
-            return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
-        }
     }
+//    else {
+//        checkUserFromPaymart($auth['user_id']);
+//        list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
+//        $user_step = checkInstallmentStep($auth['user_id']);
+//        if ($mode_type !== $user_step) {
+//            return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
+//        }
+//    }
 
 
 }
@@ -359,14 +360,15 @@ if ($mode == 'upload-passport') {
 if ($mode == 'upload-passport-id') {
     if (!$auth['user_id']) {
         return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
-    } else {
-        checkUserFromPaymart($auth['user_id']);
-        list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
-        $user_step = checkInstallmentStep($auth['user_id']);
-        if ($mode_type !== $user_step) {
-            return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
-        }
     }
+//    else {
+//        checkUserFromPaymart($auth['user_id']);
+//        list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
+//        $user_step = checkInstallmentStep($auth['user_id']);
+//        if ($mode_type !== $user_step) {
+//            return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
+//        }
+//    }
 
 }
 
