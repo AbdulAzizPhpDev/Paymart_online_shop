@@ -5,7 +5,7 @@
 
 <div class="main-page">
     <div class="back-button">
-        <img src="design/themes/responsive/media/images/addons/installment_image/back-arrow.png" alt="Arrow image">
+        <img src="design/themes/responsive/media/images/addons/installment/back-arrow.png" alt="Arrow image">
     </div>
     <div class="container table-page">
         <div>
@@ -14,7 +14,7 @@
                     <div class="main-first">
                         <div class="main-profile">
                             <img class="main-profile__img"
-                                 src="design/themes/responsive/media/images/addons/installment_image/profile.png"
+                                 src="design/themes/responsive/media/images/addons/installment/profile.png"
                                  alt="Profile image">
                             <div class="main-profile__text">
                                 <span class="main-profile__text-item">{$user['firstname']}  {$user['lastname']}</span>
@@ -22,7 +22,7 @@
                             </div>
                         </div>
                         <div class="text-items__second">
-                            <img src="design/themes/responsive/media/images/addons/installment_image/billing-ico.png"
+                            <img src="design/themes/responsive/media/images/addons/installment/billing-ico.png"
                                  alt="Billing ico">
                             <div class="text-items__second-items">
                                 <div class="first-item">Доступная рассрочка:</div>
@@ -101,7 +101,7 @@
                         </div>
                     </div>
                     <div class="input-link">
-                        <img src="design/themes/responsive/media/images/addons/installment_image/billing-ico.png"
+                        <img src="design/themes/responsive/media/images/addons/installment/billing-ico.png"
                              alt="Billing ico">
                         <div class="input-paying__text">
                             <div class="input-paying__text-title">Ежемесячный платеж:</div>
@@ -109,7 +109,7 @@
                         </div>
                     </div>
                     <div class="input-link">
-                        <img src="design/themes/responsive/media/images/addons/installment_image/billing-ico.png"
+                        <img src="design/themes/responsive/media/images/addons/installment/billing-ico.png"
                              alt="Billing ico">
                         <div class="input-paying__text">
                             <div class="input-paying__text-title">Ежемесячный платеж:</div>
@@ -142,7 +142,7 @@
     <!-- Modal content -->
     <div class="modal-content">
         <span class="close">
-            <img src="design/themes/responsive/media/images/addons/installment_image/Thin.png" alt="Close img">
+            <img src="design/themes/responsive/media/images/addons/installment/Thin.png" alt="Close img">
         </span>
         <div class="card-add__page">
             <div class="card-confirm">
