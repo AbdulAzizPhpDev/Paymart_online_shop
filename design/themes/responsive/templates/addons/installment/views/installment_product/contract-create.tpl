@@ -109,6 +109,16 @@
                             <div class="input-paying__text-p">120 000 сум</div>
                         </div>
                     </div>
+                        <div>
+                            <label for="cars">Выберите срок:</label>
+                            <div class="input-paying">
+                                <select name="cars" id="cars">
+                                    <option value="twelve">12 месяцев</option>
+                                    <option value="nine">9 месяцев</option>
+                                    <option value="six">6 месяцев</option>
+                                </select>
+                            </div>
+                        </div>
                 </form>
                 <div class="form-button">
                     <button id="myBtn" class="form-button__item" type="submit"  form="form1" value="Submit">Оформить рассрочку</button>
