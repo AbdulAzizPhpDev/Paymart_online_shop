@@ -275,9 +275,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
 
     }
-    if ($mode == 'check_status') {
-
-    }
+//    if ($mode == 'check_status') {
+//
+//    }
 
 
 }
@@ -286,8 +286,12 @@ if ($mode == 'get_qty') {
     $qty = $_REQUEST['qty'];
     $product_id = $_REQUEST['product_id'];
 
-    fn_set_session_data('product_id', $product_id, 7);
-    fn_set_session_data('product_qty', $qty, 7);
+    Tygh::$app['session']['product_info'] = array(
+        'product_id' => $product_id,
+        'product_qty' => $qty
+    );
+//    fn_set_session_data('product_id', $product_id, 7);
+//    fn_set_session_data('product_id', $qty, 7);
 
     Registry::get('ajax')->assign('result', [
         'status' => 'success',
@@ -337,6 +341,7 @@ if ($mode == "type-passport") {
 }
 
 if ($mode == 'upload-passport') {
+
     if (!$auth['user_id']) {
         return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
     } else {
@@ -347,6 +352,7 @@ if ($mode == 'upload-passport') {
             return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
         }
     }
+
 
 }
 
@@ -391,6 +397,77 @@ if ($mode == "await") {
             return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
         }
     }
+}
+
+if ($mode == "contract-create") {
+
+//    fn_print_die(fn_get_session_data('product_id'));
+
+    if (!$auth['user_id']) {
+        return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
+    } else {
+        $product_id = Tygh::$app['session']['product_info']['product_id'];
+        $product_quantity = Tygh::$app['session']['product_info']['product_qty'];
+
+        $datas = db_get_row('SELECT * FROM ?:products as product INNER JOIN ?:companies as company ON product.company_id = company.company_id WHERE product.product_id = ?i ', $product_id);
+        $datas['product_descriptions'] = db_get_row('SELECT * FROM ?:product_descriptions WHERE product_id = ?i', $datas['product_id']);
+        $user = db_get_row('SELECT * FROM ?:users WHERE user_id = ?i', $auth['user_id']);
+
+        checkUserFromPaymart($auth['user_id']);
+        list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
+        $user_step = checkInstallmentStep($auth['user_id']);
+
+        if ($mode_type !== $user_step) {
+            return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
+        }
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://dev.paymart.uz/api/v1/order/calculate',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => '{
+    "type": "credit",
+    "period":12,
+    "products": {
+        "' . $datas["p_c_id"] . '": [
+            {
+                "price": ' . $datas['list_price'] . ',
+                "amount": ' . $product_quantity . ',
+                "name": "' . $datas['product_descriptions']['product'] . '"
+            }
+        ]
+    },
+    "partner_id": ' . $datas["p_c_id"] . ',
+    "user_id": ' . $auth['user_id'] . '
+}',
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: Bearer ' . $datas['p_c_token'],
+                'Content-Type: application/json'
+            ),
+        ));
+
+        $response = json_decode(curl_exec($curl));
+
+        curl_close($curl);
+        $data = $datas["p_c_id"];
+        $items = $response->data->orders->$data->price;
+        Tygh::$app['view']->assign('total', $items->total);
+        Tygh::$app['view']->assign('origin', $items->origin);
+        Tygh::$app['view']->assign('month', $items->month);
+        Tygh::$app['view']->assign('deposit', $items->deposit);
+        Tygh::$app['view']->assign('product_info', $datas);
+        Tygh::$app['view']->assign('product_quantity', $product_quantity);
+        Tygh::$app['view']->assign('user', $user);
+
+//        fn_print_die($response->status, $response->data->orders->$data->price);
+    }
+
 }
 
 
