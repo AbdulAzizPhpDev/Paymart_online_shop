@@ -12,6 +12,8 @@ const otpState = {
 };
 
 
+
+
 // Get the modal
 var modal = document.getElementById("myModal");
 
@@ -27,20 +29,20 @@ let urlLast = otpState.baseUrl + '/buyers/credit/add'
 
 // When the user clicks on the button, open the modal
 btn.onclick = function () {
-    modal.style.display = "block";
-    inputDate = document.querySelector('#cars').value;
-    otpState.expDate = inputDate
-    console.log('input-date', inputDate);
     $.ajax({
-        type: "post",
+        type: "POST",
         url: urlLast,
-        data: {
-            code: value,
+        data:{
+
         },
         success: function (response) {
             $("#otp").removeClass("myspinner");
             console.log(response)
-            console.log('url', this.url)
+            console.log('url', this.url);
+            modal.style.display = "block";
+            inputDate = document.querySelector('#cars').value;
+            otpState.expDate = inputDate;
+            console.log('input-date', inputDate);
             // $( "#otp" ).removeClass( "myspinner" );
             // $("#otp").attr("disabled", false);
             // if (response.status === 'success') {
