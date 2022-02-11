@@ -52,15 +52,17 @@
     },
     sendSMS: function (event) {
       installmentState.userPhoneNumber = $buyerPhone.val();
+      console.log($buyerPhone.val().replace(/[ +-]/g, ''));
 
-      $.ceAjax('request', fn_url('profiles.send_sms'), {
+      /*$.ceAjax('request', fn_url('profiles.send_sms'), {
         method: 'POST',
         data: {
-          phone: $buyerPhone.val().replace('+', '') || null,
+          phone: $buyerPhone.val().replace(/[ +-]/, '') || null,
         },
         callback: function callback(response) {
-          const { result } = response;
           if (response) {
+            const { result } = response;
+
             if (result.status === 'success') {
               $confirmation.removeClass('d-none');
               methods.timerResendSms();
@@ -73,7 +75,7 @@
             console.error('Result does not exist. %cmethod[fn_url=profiles.send_sms]', 'color: white; padding: 2px 5px; border: 1px dashed green');
           }
         },
-      });
+      });*/
     },
     confirmCode: function (event) {
       $.ceAjax('request', fn_url('profiles.confirm'), {
@@ -84,9 +86,9 @@
           redirect_url: $('input[name="redirect_url"]').val(),
         },
         callback: function callback(response) {
-          const { result } = response;
-
           if (response) {
+            const { result } = response;
+
             if (result.status === 'success') {
               Cookies.set('api_token', result.data.api_token, { expires: 2 });
               Cookies.set('buyer-phone', $buyerPhone.val());
@@ -97,35 +99,7 @@
                 Cookies.set('user_id', result.data.user_id);
               }
 
-              switch (result.data.user_status) {
-                case 0:
-                  methods.makeRoute({ action: 'index' });
-                  break;
-                case 1:
-                  methods.makeRoute({ action: 'card-add' });
-                  break;
-                case 2:
-                case 6:
-                  methods.makeRoute({ action: 'await' });
-                  break;
-                case 4:
-                  methods.makeRoute({ action: 'contract-create' });
-                  break;
-                case 5:
-                case 10:
-                case 11:
-                  methods.makeRoute({ action: 'type-passport' });
-                  break;
-                case 12:
-                  methods.makeRoute({ action: 'guarant' });
-                  break;
-                case 8:
-                  methods.makeRoute({ action: 'refusal' });
-                  break;
-                default:
-                  methods.makeRoute({ action: 'index' });
-                  break;
-              }
+              window.location.reload();
             } else {
               methods.renderErrors(result.response.message);
             }
@@ -149,7 +123,12 @@
       }
     },
     makePhoneNumberHidden: function () {
-      const phoneNumberArray = installmentState.userPhoneNumber.split('');
+      const buyerPhone = typeof installmentState.buyerPhone !== 'string'
+        ? String(installmentState.buyerPhone)
+        : installmentState.buyerPhone;
+
+      const phoneNumberArray = buyerPhone.split('');
+
       phoneNumberArray.splice(5, 5, '*', '*', '*', '*', '*');
 
       return phoneNumberArray.join('');
@@ -163,6 +142,11 @@
   $resendSms.on('click', methods.sendSMS);
 
   $userPhoneSmsSent.text(methods.makePhoneNumberHidden);
+
+  $buyerPhone.inputmask('998 [99 999-99-99]', {
+    placeholder: '998 ** ***-**-**',
+  });
+
 })(Tygh, Tygh.$);
 /*
 $(document).on('click', '#installmentSendSMSBtn', function () {
