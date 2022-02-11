@@ -12,6 +12,7 @@
   const $sentPhoneNumber = $('.sent-phone-number');
   const $timerSlot = $('.card-resend-sms-timer');
   const $resendCardSms = $('.resend-sms-card');
+  const $sendBtn = $('#installmentSendSMSCardBtn');
 
   const cardState = {
     baseUrl: 'https://dev.paymart.uz/api/v1',
@@ -63,16 +64,31 @@
 
       return phoneNumberArray.join('');
     },
+    fieldsValidation: function () {
+      const cardNumberUnmasked = $cardNumber.inputmask('unmaskedvalue');
+      const cardExpUnmasked = $cardExp.inputmask('unmaskedvalue');
+
+      return cardNumberUnmasked.length >= 16 && cardExpUnmasked.length >= 4;
+    },
+    onChangeInput: function (event) {
+      if (!cardMethods.fieldsValidation()) {
+        $sendBtn.attr('disabled', 'disabled');
+      } else {
+        $sendBtn.removeAttr('disabled');
+      }
+    },
     sendSMS: function () {
       $errorContainer.text('');
-      const isValid = Boolean($cardNumber.val()) && $cardNumber.val().length >= 16 && Boolean($cardExp.val());
+      const isValid = cardMethods.fieldsValidation();
+      const cardNumberUnmasked = $cardNumber.inputmask('unmaskedvalue');
+      const cardExpUnmasked = $cardExp.inputmask('unmaskedvalue');
 
       if (isValid) {
         $.ceAjax('request', fn_url('installment_product.set_card'), {
           method: 'POST',
           data: {
-            card: $cardNumber.val(),
-            exp: $cardExp.val(),
+            card: cardNumberUnmasked,
+            exp: cardExpUnmasked,
           },
           callback: function (response) {
             if (response) {
@@ -111,12 +127,15 @@
     confirmCode: function (event) {
       const isValid = Boolean($cardExp.val());
 
+      const cardNumberUnmasked = $cardNumber.inputmask('unmaskedvalue');
+      const cardExpUnmasked = $cardExp.inputmask('unmaskedvalue');
+
       if (isValid) {
         $.ceAjax('request', fn_url('installment_product.confirm_card'), {
           method: 'POST',
           data: {
-            card_number: $cardNumber.val(),
-            card_valid_date: $cardExp.val(),
+            card_number: cardNumberUnmasked,
+            card_valid_date: cardExpUnmasked,
             code: $cardConfirmCode.val(),
           },
           callback: function (response) {
@@ -146,4 +165,11 @@
   $sentPhoneNumber.text(cardMethods.makePhoneNumberHidden);
 
   $resendCardSms.on('click', cardMethods.sendSMS);
+
+  $cardNumber.on('input', cardMethods.onChangeInput);
+  $cardExp.on('input', cardMethods.onChangeInput);
+
+  $cardNumber.inputmask('9999 9999 9999 9999', { placeholder: '*' });
+  $cardExp.inputmask('99/99', { placeholder: '*' });
+
 })(Tygh, Tygh.$);

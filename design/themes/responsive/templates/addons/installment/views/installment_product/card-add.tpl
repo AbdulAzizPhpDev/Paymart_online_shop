@@ -9,7 +9,7 @@
             <label for="buyer-phone" class="ty-login__filed-label ty-control-group__label cm-required cm-trim ">
                 Номер карты
             </label>
-            <input type="tel" placeholder="0000 0000 0000 0000" maxlength="16"
+            <input type="tel" placeholder="0000 0000 0000 0000"
                    class="ty-login__input buyer-card-installment" required />
         </div>
 
@@ -17,7 +17,7 @@
             <label for="buyer-phone" class="ty-login__filed-label ty-control-group__label cm-required cm-trim ">
                 Срок карты
             </label>
-            <input type="tel" placeholder="00/00" maxlength="4"
+            <input type="tel" placeholder="00/00"
                    class="ty-login__input buyer-card-exp-installment" required />
         </div>
 
@@ -29,7 +29,7 @@
             </a>
         </div>
 
-        <button class="ty-btn ty-btn__secondary" type="button" id="installmentSendSMSCardBtn">
+        <button disabled class="ty-btn ty-btn__secondary" type="button" id="installmentSendSMSCardBtn">
             Продолжить
         </button>
     </div>
