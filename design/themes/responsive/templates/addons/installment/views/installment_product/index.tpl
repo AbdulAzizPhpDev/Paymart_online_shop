@@ -14,8 +14,7 @@
                 <label for="buyer-phone" class="ty-login__filed-label ty-control-group__label cm-required cm-trim ">
                     Номер телефона
                 </label>
-                <input type="tel" placeholder="Phone Number" maxlength="12"
-                       class="ty-login__input buyer-phone-installment" value="998" />
+                <input type="tel" value="998" class="ty-login__input buyer-phone-installment" />
             </div>
 
             <div class="oferta-container">

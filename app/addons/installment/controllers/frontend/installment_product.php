@@ -315,7 +315,7 @@ if ($mode == 'index') {
 }
 
 if ($mode == "card-add") {
-    if (!$auth['user_id']) {
+    /*if (!$auth['user_id']) {
         return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
     } else {
         checkUserFromPaymart($auth['user_id']);
@@ -324,7 +324,7 @@ if ($mode == "card-add") {
         if ($mode_type !== $user_step) {
             return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
         }
-    }
+    }*/
 }
 
 if ($mode == "type-passport") {
