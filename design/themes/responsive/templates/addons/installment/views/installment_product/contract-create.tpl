@@ -89,43 +89,70 @@
 
             <div class="section-three">
 
-                <form style="margin-top:4px;">
-                    <div class="d-flex flex-column">
-                        <label for="cars">Выберите срок:</label>
-                        <div class="input-paying">
-                            <select name="cars" id="cars">
-                                <option value="twelve">12 месяцев</option>
-                                <option value="nine">9 месяцев</option>
-                                <option value="six">6 месяцев</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="input-link">
-                        <img src="design/themes/responsive/media/images/addons/installment/billing-ico.png"
-                             alt="Billing ico">
-                        <div class="input-paying__text">
-                            <div class="input-paying__text-title">Ежемесячный платеж:</div>
-                            <div class="input-paying__text-p">{$month} сум</div>
-                        </div>
-                    </div>
-                    <div class="input-link">
-                        <img src="design/themes/responsive/media/images/addons/installment/billing-ico.png"
-                             alt="Billing ico">
-                        <div class="input-paying__text">
-                            <div class="input-paying__text-title">Ежемесячный платеж:</div>
-                            <div class="input-paying__text-p">{$total} сум</div>
-                        </div>
-                    </div>
-                        <div>
+                <form class="d-flex" style="margin-top:4px;">
+                    <div class="main-form">
+                        <div class="d-flex flex-column">
                             <label for="cars">Выберите срок:</label>
                             <div class="input-paying">
-                                <select name="cars" id="cars">
-                                    <option value="twelve">12 месяцев</option>
-                                    <option value="nine">9 месяцев</option>
-                                    <option value="six">6 месяцев</option>
+                                <select name="selectName" id="selectedId">
+                                    <option value="12">12 месяцев</option>
+                                    <option value="9">9 месяцев</option>
+                                    <option value="6">6 месяцев</option>
+                                    <option value="3">3 месяцев</option>
                                 </select>
                             </div>
                         </div>
+                        <div class="input-link">
+                            <img src="design/themes/responsive/media/images/addons/installment/billing-ico.png"
+                                 alt="Billing ico">
+                            <div class="input-paying__text">
+                                <div class="input-paying__text-title">Ежемесячный платеж:</div>
+                                <div class="input-paying__text-p">{$month} сум</div>
+                            </div>
+                        </div>
+                        <div class="input-link">
+                            <img src="design/themes/responsive/media/images/addons/installment/billing-ico.png"
+                                 alt="Billing ico">
+                            <div class="input-paying__text">
+                                <div class="input-paying__text-title">Ежемесячный платеж:</div>
+                                <div class="input-paying__text-p">{$total} сум</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="main-form__another justify-content-center">
+                        <div class="main-form__another-item">
+                            <label for="inputAddress">Страна</label>
+                            <input class="repeat-input" type="text" id="inputAddress" disabled value="Узбекистан">
+                        </div>
+                        <div class="main-form__another-item">
+                               <label for="formAddress">Город</label>
+                               <div class="input-paying__unique">
+                                   <select name="formAddress" id="formAddress">
+                                       <option value="uzb">Ташкент</option>
+                                       <option value="ru">Ангрен</option>
+                                       <option value="kz">Олмалык</option>
+                                   </select>
+                               </div>
+                        </div>
+                        <div class="main-form__another-item">
+                               <label for="formAddress">Район</label>
+                               <div class="input-paying__unique">
+                                   <select name="formAddress" id="formAddress">
+                                       <option value="uzb">Ташкент</option>
+                                       <option value="ru">Россия</option>
+                                       <option value="kz">Казахстан</option>
+                                   </select>
+                               </div>
+                        </div>
+                    </div>
+                    <div class="main-form__last">
+                       <div class="main-form__last-item">
+                           <label for="story">Адрес</label>
+                           <textarea id="story" name="story"
+                                     rows="5" cols="33">Введите район
+                           </textarea>
+                       </div>
+                    </div>
                 </form>
                 <div class="form-button">
                     <button id="myBtn" class="form-button__item" type="submit" form="form1" value="Submit">Оформить

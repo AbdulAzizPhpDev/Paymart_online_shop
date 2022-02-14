@@ -150,54 +150,119 @@ p h1 h2 h3 h4 h5{
       border-radius: 8px;
       border: none;
       width: 320px;
+      height: 56px;
+      padding: 8px 8px 8px 16px;
+    }
+    select:focus{
+      border-color: @main;
     }
   }
+
   form {
-    display: flex;
-    justify-content: space-between;
-    label{
-      padding-bottom: 4px;
-      display:block;
-    }
-    .input-paying{
-
-    }
-    .input-link {
+    .main-form {
       display: flex;
-      margin-right: 20px;
-      margin-left: 20px;
-      img {
-        width: 40px;
-        height: 40px;
+      justify-content: space-between;
+      align-items: center;
+      label {
+        padding-bottom: 4px;
+        display: block;
       }
+      .input-paying {
 
-      .input-paying__text {
+      }
+      .input-link {
+        display: flex;
+        margin-right: 20px;
+        margin-left: 20px;
+
+        img {
+          width: 40px;
+          height: 40px;
+        }
+
+        .input-paying__text {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          margin: 0 0 0 4px;
+
+
+          label {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+          }
+
+          &-title {
+            font-weight: bold;
+            white-space: nowrap;
+          }
+
+          &-p {
+            display: block;
+            align-items: center;
+            justify-content: center;
+          }
+        }
+
+      }
+    }
+    .main-form__another {
+      display: flex;
+      justify-content: space-between;
+      &-item{
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        margin: 0 0 0 4px;
-
-
+        margin: 16px 16px 16px 0;
+        .repeat-input{
+          background-color: #F6F6F6;
+          border-radius: 8px;
+          border: none;
+          width: 320px;
+          height: 56px;
+          padding: 8px 8px 8px 16px;
+        }
+        .repeat-input:focus{
+          border-color: @main;
+        }
         label {
-          margin-bottom: 10px;
-          padding-bottom: 10px;
-        }
-
-        &-title {
-          font-weight: bold;
-          white-space: nowrap;
-        }
-
-        &-p {
-          display: block;
-          align-items: center;
-          justify-content: center;
+          padding-bottom: 4px;
         }
       }
-
+      .input-paying__unique {
+        select {
+          background-color: #F6F6F6;
+          border-radius: 8px;
+          border: none;
+          width: 320px;
+          height: 56px;
+          padding: 8px 8px 8px 16px;
+        }
+        select:focus{
+          border-color: #FF7643 !important;
+        }
+      }
     }
-
+    .main-form__last{
+      label{
+        padding-bottom: 4px;
+      }
+      &-item{
+        display: flex;
+        flex-direction: column;
+        textarea {
+            color: black;
+            opacity: 0.3;
+            border: none;
+            background-color: #f6f6f6;
+            border-radius: 8px;
+        }
+        textarea:focus{
+          border-color: @main !important;
+        }
+      }
+    }
   }
+
   .form-button{
     display: flex;
     justify-content: center;
@@ -213,8 +278,8 @@ p h1 h2 h3 h4 h5{
   }
 }
 
-//modal
 
+//modal
 
 /* The Modal (background) */
 .modal {
