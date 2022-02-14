@@ -481,6 +481,45 @@ if ($mode == "contract-create") {
 
 if ($mode == 'profile-contracts') {
 
+//    if (!$auth['user_id']) {
+//        return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
+//    } else {
+
+
+    $curl = curl_init();
+
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://dev.paymart.uz/api/v1/buyer/contracts',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'GET',
+        CURLOPT_HTTPHEADER => array(
+            'Authorization: Bearer a9e4576965a08909937fe6223c934b19'
+        ),
+    ));
+
+    $response = curl_exec($curl);
+
+    curl_close($curl);
+
+
+//    $statuses = array(
+//            0 => 'not-active',
+//            1 => 'active',
+//            2 => 'moderation',
+//            3 => 'expired',
+//            4 => 'expired above 60 days',
+//            5 => 'cancel',
+//            9 => 'completed'
+//        );
+
+        Tygh::$app['view']->assign('contracts', json_decode($response));
+//    }
+
 }
 
 
