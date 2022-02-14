@@ -11,11 +11,20 @@
   h1 {
     .font(@fs: 40px, @fw: 900, @lh: 40px);
     margin-bottom: 12px;
+    text-align: center;
+
+    @media (max-width: @mobile) {
+      .font(@fs: 24px, @fw: 900, @lh: 28px);
+    }
   }
 
   span {
     .font(@fw: normal);
     margin-bottom: 32px;
+
+    @media (max-width: @mobile) {
+      .font(@fs: 14px, @fw: 400, @lh: 20px);
+    }
   }
 
   .guarants {
@@ -28,6 +37,15 @@
       border-radius: 12px;
       margin-right: 16px;
       padding: 12px;
+
+      @media (max-width: @tablet) {
+        width: 100%;
+        margin-right: 0;
+
+        &:first-child {
+          margin-bottom: 16px;
+        }
+      }
 
       &:last-child {
         margin-right: 0;
@@ -43,6 +61,10 @@
         width: 296px;
         padding: 16px;
         border: none;
+
+        @media (max-width: @tablet) {
+          width: 100%;
+        }
 
         &:hover {
           box-shadow: unset;
@@ -61,6 +83,13 @@
   }
 
   #add-guarant-btn {
+    @media (max-width: @tablet) {
+      width: 502px;
+    }
+
+    @media (max-width: @mobile) {
+      width: 100%;
+    }
     .buttonAnimation();
   }
 

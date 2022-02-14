@@ -302,7 +302,7 @@ if ($mode == 'get_qty') {
 
 if ($mode == 'index') {
 
-    if ($auth['user_id']) {
+    /*if ($auth['user_id']) {
         checkUserFromPaymart($auth['user_id']);
         list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
         $user_step = checkInstallmentStep($auth['user_id']);
@@ -310,7 +310,7 @@ if ($mode == 'index') {
             return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . checkInstallmentStep($auth['user_id']));
         }
 
-    }
+    }*/
 
 }
 
@@ -375,7 +375,7 @@ if ($mode == 'upload-passport-id') {
 if ($mode == "guarant") {
 
 
-    if (!$auth['user_id']) {
+    /*if (!$auth['user_id']) {
         return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
     } else {
         checkUserFromPaymart($auth['user_id']);
@@ -384,7 +384,7 @@ if ($mode == "guarant") {
         if ($mode_type !== $user_step) {
             return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
         }
-    }
+    }*/
 }
 
 if ($mode == "await") {
@@ -471,6 +471,10 @@ if ($mode == "contract-create") {
 
 //        fn_print_die($response->status, $response->data->orders->$data->price);
     }
+
+}
+
+if ($mode == 'profile-contracts') {
 
 }
 
