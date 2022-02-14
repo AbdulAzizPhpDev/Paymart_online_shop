@@ -2,14 +2,7 @@
     console.log('contract create page init');
 })(Tygh, Tygh.$);
 
-const otpState = {
-    baseUrl: 'https://dev.paymart.uz/api/v1',
-    api_token: Cookies.get('api_token'),
-    buyerPhone: Cookies.get('buyer-phone'),
-    timer: 60,
-    interval: null,
-    expDate: null,
-};
+
 
 
 
@@ -23,24 +16,70 @@ var myBtn = document.getElementById("myBtn");
 // Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
 
-let inputDate = null;
 let value = $('.confirm-contract').val();
+let e = document.getElementById("selectedId");
+
+var first = e.options[e.selectedIndex].value;
+
+
+console.log('first', first)
+const otpState = {
+    baseUrl: 'https://dev.paymart.uz/api/v1',
+    setContract: 'checkout.shipping_estimation',
+    api_token: Cookies.get('api_token'),
+    buyerPhone: Cookies.get('buyer-phone'),
+    timer: 60,
+    interval: null,
+    expDate: null,
+    selectedFirst: first,
+};
+
+
 let urlLast = otpState.baseUrl + '/buyers/credit/add'
 let calculate = otpState.baseUrl + '/order/calculate'
-var e = document.getElementById("selectedId");
-var strUser = e.options.value;
+let price = document.getElementById('price').value
+let quantity = document.getElementById('quantity').value
+let name_product = document.getElementById('name_product').value
+let seller_token = document.getElementById('seller_token').value
+let seller_id = document.getElementById('seller_id').value
+let user_id = document.getElementById('user_id').value
+// setUrl = fn_url('installment_product.set_contracts');
+
+
 
 $(document).ready(function() {
     $("#selectedId").change(function(){
-        var strUser = e.options[e.selectedIndex].value;
-        $.ajax({
+        var selectedOption = e.options[e.selectedIndex].value;
+        otpState.selectedFirst = selectedOption;
+        console.log('plrice', price, quantity, name_product, selectedOption)
+        let formattedProducts = {};
+        formattedProducts[seller_id] = [
+            {
+                price: price,
+                amount: quantity,
+                name: name_product,
+            }
+        ];
+
+        $.ajax( {
             type: 'POST',
             url: calculate,
+            headers:{
+                Authorization: 'Bearer '+ seller_token
+            },
             data: {
                 type: 'credit',
-                period: strUser,
+                period: selectedOption,
+                products: formattedProducts,
+                partner_id:seller_id,
+                user_id: user_id,
             },
-            just:  console.log('calculate', calculate, strUser),
+            success:function (response) {
+                console.log(response.data.price.total)
+                $(".input-paying__text-p").html(response.data.price.total + ' сум')
+                $(".input-paying__text-a").html(response.data.price.month + ' сум')
+                $(".orange").html(response.data.price.total + ' сум')
+            }
         });
     });
 
@@ -50,82 +89,24 @@ $(document).ready(function() {
 // When the user clicks on the button, open the modal
 myBtn.onclick = function () {
 
-    console.log('strUser', strUser)
+    let city = $('#formAddress').val();
+    let region = $('#formAddress2').val();
+    // let txt = document.getElementsByTagName("textarea");
+    let txt = $("#story").val();
+
+    console.log('address', txt)
     $.ajax({
         type: "POST",
-        url: urlLast,
+        url: setUrl,
         data:{
-
+            limit: otpState.selectedFirst,
+            city: city,
+            region: region,
+            textarea: txt,
         },
         success: function (response) {
-            $("#otp").removeClass("myspinner");
-            console.log(response)
-            console.log('url', this.url);
-            modal.style.display = "block";
-            inputDate = document.querySelector('#cars').value;
-            otpState.expDate = inputDate;
-            console.log('input-date', inputDate);
-            // $( "#otp" ).removeClass( "myspinner" );
-            // $("#otp").attr("disabled", false);
-            // if (response.status === 'success') {
-            //     const userStatus = response.data.user_status;
-            //     const userId = response.data.user_id;
-            //     console.log('userId', userId)
-            //     // state.user_id = userId
-            //     const token = response.data.api_token;
-            //     Cookies.set('token', token);
-            //     Cookies.set('userId', userId);
-            //     console.log('userstatus', userStatus)
-            //
-            //     if (userStatus == 1) {
-            //         console.log('status 1')
-            //         window.location.href = this.otpState.baseUrl + "card&phone=" + this.otpState.buyerPhone;
-            //         // $("#card-form").css("display", "block");
-            //         // $(".main-otp").css("display", "none");
-            //
-            //     }
-            //     if (userStatus == 2) {
-            //         console.log('status 2')
-            //         window.location.href = baseUrls + "waiting-clock";
-            //         // $("#card-form").css("display", "block");
-            //         // $(".main-otp").css("display", "none");
-            //
-            //     }
-            //     if (userStatus == 4) {
-            //         console.log('status 4')
-            //         window.location.href = baseUrls + "product-status";
-            //         // $(".second-popup").css("display", "block");
-            //         // $(".main-otp").css("display", "none");
-            //
-            //     }
-            //     if (userStatus == 5) {
-            //         console.log('status 5');
-            //
-            //         // $(".main-otp").css("display", "none");
-            //         // $("#card-form").css("display", "none");
-            //         // // $(".second-popup__last").css("display", "block");
-            //         // $(".main__input").css("display", "block");
-            //         window.location.href = baseUrl + "passport-firstpage";
-            //
-            //     }
-            //     if (userStatus == 10) {
-            //         console.log('status 10');
-            //         window.location.href = baseUrl + "passport-selfie";
-            //
-            //     }
-            // } else {
-            //     let wrongCode = response.response.message[0]?.text;
-            //     $(".isWrong").css("display", "block");
-            //     $('.isWrong').text(wrongCode);
-            //     $(".sendMessageCodeText").css("display", "none");
-            //
-            // }
-            // console.log('wrong', wrong);
-
-            // $(".second-popup__last").css("display", "block");
 
         },
-
         error: function (response, error) {
             $("#otp").removeClass("myspinner");
             // var errorMessage = response.data.message + ': '

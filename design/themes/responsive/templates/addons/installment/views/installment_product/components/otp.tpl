@@ -69,7 +69,6 @@
 
 
 
-        console.log('statetsp', phone)
         let value = $("#digit-1").val();
         value += $("#digit-2").val();
         value += $("#digit-3").val();
@@ -90,7 +89,6 @@
             data: {
                 phone,
                 code: value,
-
             },
             success: function (response) {
                 $("#otp").removeClass("myspinner");
