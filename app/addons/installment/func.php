@@ -124,9 +124,7 @@ function php_curl($url = '', $data = [], $method = "GET", $token = null)
             array_push($curl_options[CURLOPT_HTTPHEADER], ('Content-Type: application/json'));
         } else {
             $curl_options[CURLOPT_HTTPHEADER] = array('Content-Type: application/json');
-
         }
-
     }
     $curl_options[CURLOPT_URL] = PAYMART_URL . $url;
     $curl = curl_init();

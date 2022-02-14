@@ -12,11 +12,13 @@ const otpState = {
 };
 
 
+
+
 // Get the modal
 var modal = document.getElementById("myModal");
 
 // Get the button that opens the modal
-var btn = document.getElementById("myBtn");
+var myBtn = document.getElementById("myBtn");
 
 // Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
@@ -24,23 +26,45 @@ var span = document.getElementsByClassName("close")[0];
 let inputDate = null;
 let value = $('.confirm-contract').val();
 let urlLast = otpState.baseUrl + '/buyers/credit/add'
+let calculate = otpState.baseUrl + '/order/calculate'
+var e = document.getElementById("selectedId");
+var strUser = e.options.value;
+
+$(document).ready(function() {
+    $("#selectedId").change(function(){
+        var strUser = e.options[e.selectedIndex].value;
+        $.ajax({
+            type: 'POST',
+            url: calculate,
+            data: {
+                type: 'credit',
+                period: strUser,
+            },
+            just:  console.log('calculate', calculate, strUser),
+        });
+    });
+
+});
+
 
 // When the user clicks on the button, open the modal
-btn.onclick = function () {
-    modal.style.display = "block";
-    inputDate = document.querySelector('#cars').value;
-    otpState.expDate = inputDate
-    console.log('input-date', inputDate);
+myBtn.onclick = function () {
+
+    console.log('strUser', strUser)
     $.ajax({
-        type: "post",
+        type: "POST",
         url: urlLast,
-        data: {
-            code: value,
+        data:{
+
         },
         success: function (response) {
             $("#otp").removeClass("myspinner");
             console.log(response)
-            console.log('url', this.url)
+            console.log('url', this.url);
+            modal.style.display = "block";
+            inputDate = document.querySelector('#cars').value;
+            otpState.expDate = inputDate;
+            console.log('input-date', inputDate);
             // $( "#otp" ).removeClass( "myspinner" );
             // $("#otp").attr("disabled", false);
             // if (response.status === 'success') {
