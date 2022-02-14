@@ -474,6 +474,22 @@ if ($mode == "contract-create") {
 
 if ($mode == 'profile-contracts') {
 
+//    if (!$auth['user_id']) {
+//        return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
+//    } else {
+        $statuses = array(
+            0 => 'not-active',
+            1 => 'active',
+            2 => 'moderation',
+            3 => 'expired',
+            4 => 'expired',
+            5 => 'cancel',
+            9 => 'completed'
+        );
+
+        Tygh::$app['view']->assign('contract_statuses', $statuses);
+//    }
+
 }
 
 

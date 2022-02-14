@@ -2,5 +2,125 @@
 @import "variables";
 @import "custom";
 
+.contractStatusStyle(@bg-color: @success-light, @color: @success) {
+  background-color: @bg-color;
+  padding: 8px 12px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  .font(@fs: 12px, @lh: 14px, @color: @color)
+}
+
 .profile-contracts-page {
+  margin-top: 80px;
+
+  h1, h3, p {
+    margin: 0;
+    padding: 0;
+  }
+
+  h1 {
+    .font(@fs: 24px, @fw: 700, @lh: 29px, @color: @black);
+    margin-bottom: 8px;
+  }
+
+  .search-container {
+    position: relative;
+    width: 80%;
+    margin-bottom: 24px;
+
+    img {
+      position: absolute;
+      top: 16px;
+      right: 0;
+    }
+  }
+
+  .contracts {
+    display: flex;
+    flex-wrap: wrap;
+
+    .contract-card {
+      width: 23%;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+      border-radius: 8px;
+      border: 1px solid #E0E0E0;
+      padding: 12px;
+      margin-right: 16px;
+      margin-bottom: 16px;
+
+      @media (max-width: @notebook) {
+        width: 31%;
+      }
+
+      @media (max-width: @tablet) {
+        width: 100%;
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+
+        .info {
+          width: 60%;
+
+          h3 {
+            .font(@fs: 16px, @fw: 700, @lh: 20px)
+          }
+
+          span {
+            .font(@fs: 14px)
+          }
+        }
+
+        .status-container {
+          text-align: right;
+          width: 40%;
+
+          .status-card {
+            &.status-1 {
+              .contractStatusStyle();
+            }
+
+            &.status-2 {
+              .contractStatusStyle(@bg-color: rgba(255, 164, 29, 0.15), @color: #FFA41D)
+            }
+
+            &.status-3 {
+              .contractStatusStyle(@bg-color: rgba(248, 67, 67, 0.15), @color: @fail)
+            }
+
+            &.status-4, &.status-5, &.status-0 {
+              .contractStatusStyle(@bg-color: rgba(112, 112, 112, 0.15), @color: rgba(112, 112, 112, 1))
+            }
+
+            &.status-9 {
+              .contractStatusStyle(@bg-color: @success-light, @color: @success)
+            }
+          }
+        }
+      }
+
+      p {
+        &.contract-date {
+          margin-top: 25px;
+        }
+      }
+
+      span {
+        &.sum {
+          .font(@fs: 20px, @lh: 25px, @fw: 900, @color: @main);
+          margin-right: 6px;
+        }
+
+        &.currency {
+          .font(@lh: 19px, @fw: 600, @color: @black);
+          opacity: .3;
+        }
+      }
+
+      .progress {
+      }
+    }
+  }
 }
