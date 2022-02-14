@@ -11,16 +11,12 @@
     but_meta="ut2-btn__options ty-btn__primary ty-btn__big"}*}
 {else}
 
-    {$getContent.content nofilter}
+
     {include file="buttons/button.tpl"
-    but_id="login_block{$block.snapping_id}"
+
     but_text=__("installment")
-    but_href="auth.login_form"
-    but_role="button"
-    but_name=""
-    but_target=""
-    but_target_id = "login_block_installment"
-    but_meta="ut2-btn__options ty-btn__primary ty-btn__big cm-dialog-opener cm-dialog-auto-size"}
+    but_href="installment_product.index"
+    but_meta="ut2-btn__options ty-btn__primary"}
 
     {*    <a href="{if $runtime.controller == "auth" && $runtime.mode == "login_form"}*}
     {*{$config.current_url|fn_url}*}
