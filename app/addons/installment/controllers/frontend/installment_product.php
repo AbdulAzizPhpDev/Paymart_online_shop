@@ -275,11 +275,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
 
     }
-//    if ($mode == 'check_status') {
-//
-//    }
+
+    if ($mode == 'set_contracts') {
 
 
+
+        $data = $_REQUEST;
+       fn_print_die($data);
+
+
+    }
 }
 
 if ($mode == 'get_qty') {
@@ -315,7 +320,7 @@ if ($mode == 'index') {
 }
 
 if ($mode == "card-add") {
-    /*if (!$auth['user_id']) {
+    if (!$auth['user_id']) {
         return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
     } else {
         checkUserFromPaymart($auth['user_id']);
@@ -324,7 +329,7 @@ if ($mode == "card-add") {
         if ($mode_type !== $user_step) {
             return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
         }
-    }*/
+    }
 }
 
 if ($mode == "type-passport") {
@@ -471,6 +476,10 @@ if ($mode == "contract-create") {
 
 //        fn_print_die($response->status, $response->data->orders->$data->price);
     }
+
+}
+
+if ($mode == 'profile-contracts') {
 
 }
 

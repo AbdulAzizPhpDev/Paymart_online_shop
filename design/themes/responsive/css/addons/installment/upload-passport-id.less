@@ -1,7 +1,8 @@
 @import "mixins";
 @import "variables";
+@import "custom";
 
-.upload-passport-page {
+.upload-passport-id-page {
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -10,20 +11,38 @@
   h1 {
     .font(@fs: 40px, @fw: 900, @lh: 40px);
     margin-bottom: 12px;
+    text-align: center;
+
+    @media (max-width: @mobile) {
+      .font(@fs: 24px, @fw: 900, @lh: 28px);
+    }
   }
 
   span.subtitle {
     .font(@fw: normal);
     margin-bottom: 32px;
+
+    @media (max-width: @mobile) {
+      .font(@fs: 14px, @fw: 400, @lh: 20px);
+    }
   }
 
   .upload-photos {
     display: flex;
     justify-content: space-around;
 
+    @media (max-width: @tablet) {
+      flex-wrap: wrap;
+    }
+
     .file-input {
       text-align: center;
       margin-right: 16px;
+
+      @media (max-width: @tablet) {
+        margin-right: 0;
+        margin-bottom: 48px;
+      }
 
       &:last-child {
         margin-right: 0;
@@ -38,6 +57,11 @@
         border-radius: 12px;
         margin-bottom: 16px;
         .centering();
+
+        @media (max-width: @mobile) {
+          width: 165px;
+          height: 165px;
+        }
       }
 
       label {
@@ -60,5 +84,7 @@
 
   #upload-passport-photos-btn {
     margin-top: 32px;
+
+    .buttonAnimation();
   }
 }

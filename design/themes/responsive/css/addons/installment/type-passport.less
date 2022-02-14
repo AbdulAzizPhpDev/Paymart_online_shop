@@ -10,11 +10,20 @@
   h1 {
     .font(@fs: 40px, @fw: 900, @lh: 40px);
     margin-bottom: 12px;
+    text-align: center;
+
+    @media (max-width: @tablet) {
+      .font(@fs: 24px, @fw: 900, @lh: 28px);
+    }
   }
 
   span {
     .font(@fw: normal);
     margin-bottom: 32px;
+
+    @media (max-width: @mobile) {
+      .font(@fs: 14px, @fw: 400, @lh: 20px);
+    }
   }
 
 
@@ -29,6 +38,17 @@
       .centering();
       flex-direction: column;
       cursor: pointer;
+
+      @media (max-width: @mobile) {
+        width: 165px;
+        height: 165px;
+      }
+
+      img {
+        @media (max-width: @mobile) {
+          width: 66px;
+        }
+      }
 
       p {
         .font(@fs: 16.5px, @fw: 600, @lh: 30px, @ls: .33px, @color: #333333);

@@ -52,12 +52,12 @@
     },
     sendSMS: function (event) {
       installmentState.userPhoneNumber = $buyerPhone.val();
-      console.log($buyerPhone.val().replace(/[ +-]/g, ''));
+      // console.log($buyerPhone.val().replace(/[ +-]/g, ''));
 
-      /*$.ceAjax('request', fn_url('profiles.send_sms'), {
+      $.ceAjax('request', fn_url('profiles.send_sms'), {
         method: 'POST',
         data: {
-          phone: $buyerPhone.val().replace(/[ +-]/, '') || null,
+          phone: $buyerPhone.val().replace(/[ +-]/g, '') || null,
         },
         callback: function callback(response) {
           if (response) {
@@ -75,13 +75,13 @@
             console.error('Result does not exist. %cmethod[fn_url=profiles.send_sms]', 'color: white; padding: 2px 5px; border: 1px dashed green');
           }
         },
-      });*/
+      });
     },
     confirmCode: function (event) {
       $.ceAjax('request', fn_url('profiles.confirm'), {
         method: 'POST',
         data: {
-          phone: $buyerPhone.val().replace('+', ''),
+          phone: $buyerPhone.val().replace(/[ +-]/g, ''),
           code: $buyerSmsCode.val(),
           redirect_url: $('input[name="redirect_url"]').val(),
         },

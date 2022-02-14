@@ -1,6 +1,6 @@
 {script src="js/addons/installment/upload-passport-id.js"}
 
-<div class="upload-passport-page">
+<div class="upload-passport-id-page">
     <h1>Фото ID карты</h1>
     <span class="subtitle">Пример фотографии передней части</span>
 

@@ -6,3 +6,4 @@
 {style src="addons/installment/guarant.less"}
 {style src="addons/installment/await.less"}
 {style src="addons/installment/contract-create.less"}
+{style src="addons/installment/profile-contracts.less"}
