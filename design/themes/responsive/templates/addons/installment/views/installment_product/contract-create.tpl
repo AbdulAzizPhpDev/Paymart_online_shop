@@ -66,12 +66,13 @@
                             {$product_info['product_descriptions']['product']}
                         </td>
                         <td>{$product_quantity}</td>
-                        <td>{$product_quantity * $product_info['list_price'] }</td>
+                       
+                        <td>{$product_quantity * $product_info['product_price']['price'] }</td>
                     </tr>
                     <tr>
                         <td class="orange">{$total}</td>
                         <td>{$product_quantity}</td>
-                        <td class="orange">{$product_quantity * $product_info['list_price'] }</td>
+                        <td class="orange">{$product_quantity * $product_info['product_price']['price'] }</td>
                     </tr>
                 </table>
 
@@ -116,16 +117,16 @@
                             <div class="input-paying__text-p">{$total} сум</div>
                         </div>
                     </div>
-                        <div>
-                            <label for="cars">Выберите срок:</label>
-                            <div class="input-paying">
-                                <select name="cars" id="cars">
-                                    <option value="twelve">12 месяцев</option>
-                                    <option value="nine">9 месяцев</option>
-                                    <option value="six">6 месяцев</option>
-                                </select>
-                            </div>
+                    <div>
+                        <label for="cars">Выберите срок:</label>
+                        <div class="input-paying">
+                            <select name="cars" id="cars">
+                                <option value="twelve">12 месяцев</option>
+                                <option value="nine">9 месяцев</option>
+                                <option value="six">6 месяцев</option>
+                            </select>
                         </div>
+                    </div>
                 </form>
                 <div class="form-button">
                     <button id="myBtn" class="form-button__item" type="submit" form="form1" value="Submit">Оформить

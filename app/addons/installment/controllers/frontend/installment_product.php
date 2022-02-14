@@ -413,7 +413,9 @@ if ($mode == "contract-create") {
 
         $datas = db_get_row('SELECT * FROM ?:products as product INNER JOIN ?:companies as company ON product.company_id = company.company_id WHERE product.product_id = ?i ', $product_id);
         $datas['product_descriptions'] = db_get_row('SELECT * FROM ?:product_descriptions WHERE product_id = ?i', $datas['product_id']);
+        $datas['product_price'] = db_get_row('SELECT * FROM ?:product_prices WHERE product_id = ?i', $datas['product_id']);
         $user = db_get_row('SELECT * FROM ?:users WHERE user_id = ?i', $auth['user_id']);
+
 
         checkUserFromPaymart($auth['user_id']);
         list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
@@ -439,7 +441,7 @@ if ($mode == "contract-create") {
     "products": {
         "' . $datas["p_c_id"] . '": [
             {
-                "price": ' . $datas['list_price'] . ',
+                "price": ' . $datas['product_price']['price'] . ',
                 "amount": ' . $product_quantity . ',
                 "name": "' . $datas['product_descriptions']['product'] . '"
             }
