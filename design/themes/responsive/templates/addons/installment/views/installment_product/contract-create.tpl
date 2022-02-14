@@ -5,7 +5,7 @@
 
 <div class="main-page">
     <div class="back-button">
-        <img src="design/themes/responsive/media/images/addons/installment_image/back-arrow.png" alt="Arrow image">
+        <img src="design/themes/responsive/media/images/addons/installment/back-arrow.png" alt="Arrow image">
     </div>
     <div class="container table-page">
         <div>
@@ -14,7 +14,7 @@
                     <div class="main-first">
                         <div class="main-profile">
                             <img class="main-profile__img"
-                                 src="design/themes/responsive/media/images/addons/installment_image/profile.png"
+                                 src="design/themes/responsive/media/images/addons/installment/profile.png"
                                  alt="Profile image">
                             <div class="main-profile__text">
                                 <span class="main-profile__text-item">{$user['firstname']}  {$user['lastname']}</span>
@@ -22,7 +22,7 @@
                             </div>
                         </div>
                         <div class="text-items__second">
-                            <img src="design/themes/responsive/media/images/addons/installment_image/billing-ico.png"
+                            <img src="design/themes/responsive/media/images/addons/installment/billing-ico.png"
                                  alt="Billing ico">
                             <div class="text-items__second-items">
                                 <div class="first-item">Доступная рассрочка:</div>
@@ -90,42 +90,107 @@
 
             <div class="section-three">
 
-                <form style="margin-top:4px;">
-                    <div class="d-flex flex-column">
-                        <label for="cars">Выберите срок:</label>
-                        <div class="input-paying">
-                            <select name="cars" id="cars">
-                                <option value="twelve">12 месяцев</option>
-                                <option value="nine">9 месяцев</option>
-                                <option value="six">6 месяцев</option>
-                            </select>
+{*<<<<<<< HEAD*}
+{*                <form style="margin-top:4px;">*}
+{*                    <div class="d-flex flex-column">*}
+{*                        <label for="cars">Выберите срок:</label>*}
+{*                        <div class="input-paying">*}
+{*                            <select name="cars" id="cars">*}
+{*                                <option value="twelve">12 месяцев</option>*}
+{*                                <option value="nine">9 месяцев</option>*}
+{*                                <option value="six">6 месяцев</option>*}
+{*                            </select>*}
+{*                        </div>*}
+{*                    </div>*}
+{*                    <div class="input-link">*}
+{*                        <img src="design/themes/responsive/media/images/addons/installment_image/billing-ico.png"*}
+{*                             alt="Billing ico">*}
+{*                        <div class="input-paying__text">*}
+{*                            <div class="input-paying__text-title">Ежемесячный платеж:</div>*}
+{*                            <div class="input-paying__text-p">{$month} сум</div>*}
+{*                        </div>*}
+{*                    </div>*}
+{*                    <div class="input-link">*}
+{*                        <img src="design/themes/responsive/media/images/addons/installment_image/billing-ico.png"*}
+{*                             alt="Billing ico">*}
+{*                        <div class="input-paying__text">*}
+{*                            <div class="input-paying__text-title">Ежемесячный платеж:</div>*}
+{*                            <div class="input-paying__text-p">{$total} сум</div>*}
+{*                        </div>*}
+{*                    </div>*}
+{*                    <div>*}
+{*                        <label for="cars">Выберите срок:</label>*}
+{*                        <div class="input-paying">*}
+{*                            <select name="cars" id="cars">*}
+{*                                <option value="twelve">12 месяцев</option>*}
+{*                                <option value="nine">9 месяцев</option>*}
+{*                                <option value="six">6 месяцев</option>*}
+{*                            </select>*}
+{*                        </div>*}
+{*=======*}
+                <form class="d-flex" style="margin-top:4px;">
+                    <div class="main-form">
+                        <div class="d-flex flex-column">
+                            <label for="cars">Выберите срок:</label>
+                            <div class="input-paying">
+                                <select name="selectName" id="selectedId">
+                                    <option value="12">12 месяцев</option>
+                                    <option value="9">9 месяцев</option>
+                                    <option value="6">6 месяцев</option>
+                                    <option value="3">3 месяцев</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="input-link">
+                            <img src="design/themes/responsive/media/images/addons/installment/billing-ico.png"
+                                 alt="Billing ico">
+                            <div class="input-paying__text">
+                                <div class="input-paying__text-title">Ежемесячный платеж:</div>
+                                <div class="input-paying__text-p">{$month} сум</div>
+                            </div>
+                        </div>
+                        <div class="input-link">
+                            <img src="design/themes/responsive/media/images/addons/installment/billing-ico.png"
+                                 alt="Billing ico">
+                            <div class="input-paying__text">
+                                <div class="input-paying__text-title">Ежемесячный платеж:</div>
+                                <div class="input-paying__text-p">{$total} сум</div>
+                            </div>
                         </div>
                     </div>
-                    <div class="input-link">
-                        <img src="design/themes/responsive/media/images/addons/installment_image/billing-ico.png"
-                             alt="Billing ico">
-                        <div class="input-paying__text">
-                            <div class="input-paying__text-title">Ежемесячный платеж:</div>
-                            <div class="input-paying__text-p">{$month} сум</div>
+                    <div class="main-form__another justify-content-center">
+                        <div class="main-form__another-item">
+                            <label for="inputAddress">Страна</label>
+                            <input class="repeat-input" type="text" id="inputAddress" disabled value="Узбекистан">
+                        </div>
+                        <div class="main-form__another-item">
+                               <label for="formAddress">Город</label>
+                               <div class="input-paying__unique">
+                                   <select name="formAddress" id="formAddress">
+                                       <option value="uzb">Ташкент</option>
+                                       <option value="ru">Ангрен</option>
+                                       <option value="kz">Олмалык</option>
+                                   </select>
+                               </div>
+                        </div>
+                        <div class="main-form__another-item">
+                               <label for="formAddress">Район</label>
+                               <div class="input-paying__unique">
+                                   <select name="formAddress" id="formAddress">
+                                       <option value="uzb">Ташкент</option>
+                                       <option value="ru">Россия</option>
+                                       <option value="kz">Казахстан</option>
+                                   </select>
+                               </div>
                         </div>
                     </div>
-                    <div class="input-link">
-                        <img src="design/themes/responsive/media/images/addons/installment_image/billing-ico.png"
-                             alt="Billing ico">
-                        <div class="input-paying__text">
-                            <div class="input-paying__text-title">Ежемесячный платеж:</div>
-                            <div class="input-paying__text-p">{$total} сум</div>
-                        </div>
-                    </div>
-                    <div>
-                        <label for="cars">Выберите срок:</label>
-                        <div class="input-paying">
-                            <select name="cars" id="cars">
-                                <option value="twelve">12 месяцев</option>
-                                <option value="nine">9 месяцев</option>
-                                <option value="six">6 месяцев</option>
-                            </select>
-                        </div>
+                    <div class="main-form__last">
+                       <div class="main-form__last-item">
+                           <label for="story">Адрес</label>
+                           <textarea id="story" name="story"
+                                     rows="5" cols="33">Введите район
+                           </textarea>
+                       </div>
                     </div>
                 </form>
                 <div class="form-button">
@@ -143,7 +208,7 @@
     <!-- Modal content -->
     <div class="modal-content">
         <span class="close">
-            <img src="design/themes/responsive/media/images/addons/installment_image/Thin.png" alt="Close img">
+            <img src="design/themes/responsive/media/images/addons/installment/Thin.png" alt="Close img">
         </span>
         <div class="card-add__page">
             <div class="card-confirm">
