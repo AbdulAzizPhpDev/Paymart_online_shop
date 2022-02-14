@@ -25,7 +25,7 @@ var first = e.options[e.selectedIndex].value;
 console.log('first', first)
 const otpState = {
     baseUrl: 'https://dev.paymart.uz/api/v1',
-    setContract: 'checkout.shipping_estimation',
+    setContract: 'installment_product.set_contracts',
     api_token: Cookies.get('api_token'),
     buyerPhone: Cookies.get('buyer-phone'),
     timer: 60,
@@ -94,33 +94,39 @@ myBtn.onclick = function () {
     // let txt = document.getElementsByTagName("textarea");
     let txt = $("#story").val();
 
-    console.log('address', txt)
-    $.ajax({
-        type: "POST",
-        url: setUrl,
-        data:{
+    // console.log('address', txt)
+    // $.ceAjax('request', 'installment_product.set_contracts', {
+    //     result_ids: otpState.setContract,
+    //     method: 'post',
+    //     full_render: true,
+    //     data: {
+    //
+    //     }
+    // });
+
+
+
+    $.ceAjax('request', fn_url('installment_product.set_contracts'), {
+        method: 'POST',
+        data: {
             limit: otpState.selectedFirst,
             city: city,
             region: region,
             textarea: txt,
         },
-        success: function (response) {
-
+        callback: function callback(response) {
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
         },
-        error: function (response, error) {
-            $("#otp").removeClass("myspinner");
-            // var errorMessage = response.data.message + ': '
-            // alert('Error - ' + errorMessage);
-        }
-    })
-}
+    });
+
+};
 
 
 
-// When the user clicks on <span> (x), close the modal
-span.onclick = function () {
-    modal.style.display = "none";
-}
+
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function (event) {
