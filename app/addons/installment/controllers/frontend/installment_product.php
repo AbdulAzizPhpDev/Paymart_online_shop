@@ -279,9 +279,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($mode == 'set_contracts') {
 
 
-
         $data = $_REQUEST;
-       fn_print_die($data);
+        fn_print_die($data);
 
 
     }
@@ -507,6 +506,7 @@ if ($mode == 'profile-contracts') {
     curl_close($curl);
 
 
+
 //    $statuses = array(
 //            0 => 'not-active',
 //            1 => 'active',
@@ -517,7 +517,7 @@ if ($mode == 'profile-contracts') {
 //            9 => 'completed'
 //        );
 
-        Tygh::$app['view']->assign('contracts', json_decode($response));
+    Tygh::$app['view']->assign('contracts', json_decode($response));
 //    }
 
 }
