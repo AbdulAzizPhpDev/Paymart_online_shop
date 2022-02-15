@@ -41,6 +41,7 @@
     flex-wrap: wrap;
 
     .contract-card {
+      position: relative;
       width: 23%;
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
       border-radius: 8px;
@@ -120,6 +121,23 @@
       }
 
       .progress {
+        position: absolute;
+        bottom: 0;
+        height: 6px;
+        border-bottom-right-radius: 8px;
+        border-bottom-left-radius: 8px;
+
+        &.active {
+          left: 0;
+          z-index: 2;
+          background-color: @main;
+        }
+        &.inactive {
+          right: 0;
+          width: 100%;
+          z-index: 1;
+          background-color: #E0E0E0;
+        }
       }
     }
   }
