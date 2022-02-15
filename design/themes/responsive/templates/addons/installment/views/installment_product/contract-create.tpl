@@ -66,12 +66,13 @@
                             {$product_info['product_descriptions']['product']}
                         </td>
                         <td>{$product_quantity}</td>
-                        <td>{$product_quantity * $product_info['list_price'] }</td>
+                       
+                        <td>{$product_quantity * $product_info['product_price']['price'] }</td>
                     </tr>
                     <tr>
                         <td class="orange">{$total}</td>
                         <td>{$product_quantity}</td>
-                        <td class="orange">{$product_quantity * $product_info['list_price'] }</td>
+                        <td class="orange">{$product_quantity * $product_info['product_price']['price'] }</td>
                     </tr>
                 </table>
 
@@ -89,6 +90,44 @@
 
             <div class="section-three">
 
+{*<<<<<<< HEAD*}
+{*                <form style="margin-top:4px;">*}
+{*                    <div class="d-flex flex-column">*}
+{*                        <label for="cars">Выберите срок:</label>*}
+{*                        <div class="input-paying">*}
+{*                            <select name="cars" id="cars">*}
+{*                                <option value="twelve">12 месяцев</option>*}
+{*                                <option value="nine">9 месяцев</option>*}
+{*                                <option value="six">6 месяцев</option>*}
+{*                            </select>*}
+{*                        </div>*}
+{*                    </div>*}
+{*                    <div class="input-link">*}
+{*                        <img src="design/themes/responsive/media/images/addons/installment_image/billing-ico.png"*}
+{*                             alt="Billing ico">*}
+{*                        <div class="input-paying__text">*}
+{*                            <div class="input-paying__text-title">Ежемесячный платеж:</div>*}
+{*                            <div class="input-paying__text-p">{$month} сум</div>*}
+{*                        </div>*}
+{*                    </div>*}
+{*                    <div class="input-link">*}
+{*                        <img src="design/themes/responsive/media/images/addons/installment_image/billing-ico.png"*}
+{*                             alt="Billing ico">*}
+{*                        <div class="input-paying__text">*}
+{*                            <div class="input-paying__text-title">Ежемесячный платеж:</div>*}
+{*                            <div class="input-paying__text-p">{$total} сум</div>*}
+{*                        </div>*}
+{*                    </div>*}
+{*                    <div>*}
+{*                        <label for="cars">Выберите срок:</label>*}
+{*                        <div class="input-paying">*}
+{*                            <select name="cars" id="cars">*}
+{*                                <option value="twelve">12 месяцев</option>*}
+{*                                <option value="nine">9 месяцев</option>*}
+{*                                <option value="six">6 месяцев</option>*}
+{*                            </select>*}
+{*                        </div>*}
+{*=======*}
                 <form class="d-flex" style="margin-top:4px;">
                     <div class="main-form">
                         <div class="d-flex flex-column">

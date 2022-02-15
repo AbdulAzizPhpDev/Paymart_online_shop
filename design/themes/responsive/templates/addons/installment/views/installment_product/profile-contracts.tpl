@@ -8,23 +8,25 @@
     </div>
 
     <div class="contracts">
-        {foreach from=$contract_statuses key=number item=text}
-            <div class="contract-card">
-                <div class="header">
-                    <div class="info">
-                        <h3>Стиральная машина</h3>
+        {if !empty($contracts)}
+            {foreach from=$contracts->contracts key=index item=contract}
+                <div class="contract-card">
+                    <div class="header">
+                        <div class="info">
+                            <h3>Стиральная машина</h3>
+                        </div>
+                        <div class="status-container">
+                            <span class="status-card status-{$contract->status}">status {$contract->status}</span>
+                        </div>
                     </div>
-                    <div class="status-container">
-                        <span class="status-card status-{$number}">{$text}</span>
-                    </div>
-                </div>
-                <p>Договор #12/12</p>
+                    <p>Договор {$contract->id}</p>
 
-                <p class="contract-date">Следующая выплата: 15.04.2020</p>
-                <span class="sum">500 000.00</span><span class="currency">Cум</span>
-                <div class="progress active" data-percentage="{$number}0"></div>
-                <div class="progress inactive"></div>
-            </div>
-        {/foreach}
+                    <p class="contract-date">Следующая выплата: {$contract->next_pay}</p>
+                    <span class="sum">{$contract->monthly_payment}</span><span class="currency">Cум</span>
+                    <div class="progress active" data-percentage="{$index}0"></div>
+                    <div class="progress inactive"></div>
+                </div>
+            {/foreach}
+        {/if}
     </div>
 </div>

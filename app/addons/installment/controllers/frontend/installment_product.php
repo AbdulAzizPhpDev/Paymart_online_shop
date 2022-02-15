@@ -275,11 +275,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
 
     }
-//    if ($mode == 'check_status') {
-//
-//    }
+
+    if ($mode == 'set_contracts') {
 
 
+
+        $data = $_REQUEST;
+       fn_print_die($data);
+
+
+    }
 }
 
 if ($mode == 'get_qty') {
@@ -302,7 +307,7 @@ if ($mode == 'get_qty') {
 
 if ($mode == 'index') {
 
-    /*if ($auth['user_id']) {
+    if ($auth['user_id']) {
         checkUserFromPaymart($auth['user_id']);
         list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
         $user_step = checkInstallmentStep($auth['user_id']);
@@ -310,12 +315,12 @@ if ($mode == 'index') {
             return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . checkInstallmentStep($auth['user_id']));
         }
 
-    }*/
+    }
 
 }
 
 if ($mode == "card-add") {
-    /*if (!$auth['user_id']) {
+    if (!$auth['user_id']) {
         return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
     } else {
         checkUserFromPaymart($auth['user_id']);
@@ -324,7 +329,7 @@ if ($mode == "card-add") {
         if ($mode_type !== $user_step) {
             return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
         }
-    }*/
+    }
 }
 
 if ($mode == "type-passport") {
@@ -375,7 +380,7 @@ if ($mode == 'upload-passport-id') {
 if ($mode == "guarant") {
 
 
-    /*if (!$auth['user_id']) {
+    if (!$auth['user_id']) {
         return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
     } else {
         checkUserFromPaymart($auth['user_id']);
@@ -384,7 +389,7 @@ if ($mode == "guarant") {
         if ($mode_type !== $user_step) {
             return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
         }
-    }*/
+    }
 }
 
 if ($mode == "await") {
@@ -413,7 +418,9 @@ if ($mode == "contract-create") {
 
         $datas = db_get_row('SELECT * FROM ?:products as product INNER JOIN ?:companies as company ON product.company_id = company.company_id WHERE product.product_id = ?i ', $product_id);
         $datas['product_descriptions'] = db_get_row('SELECT * FROM ?:product_descriptions WHERE product_id = ?i', $datas['product_id']);
+        $datas['product_price'] = db_get_row('SELECT * FROM ?:product_prices WHERE product_id = ?i', $datas['product_id']);
         $user = db_get_row('SELECT * FROM ?:users WHERE user_id = ?i', $auth['user_id']);
+
 
         checkUserFromPaymart($auth['user_id']);
         list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
@@ -439,7 +446,7 @@ if ($mode == "contract-create") {
     "products": {
         "' . $datas["p_c_id"] . '": [
             {
-                "price": ' . $datas['list_price'] . ',
+                "price": ' . $datas['product_price']['price'] . ',
                 "amount": ' . $product_quantity . ',
                 "name": "' . $datas['product_descriptions']['product'] . '"
             }
@@ -477,17 +484,40 @@ if ($mode == 'profile-contracts') {
 //    if (!$auth['user_id']) {
 //        return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
 //    } else {
-        $statuses = array(
-            0 => 'not-active',
-            1 => 'active',
-            2 => 'moderation',
-            3 => 'expired',
-            4 => 'expired',
-            5 => 'cancel',
-            9 => 'completed'
-        );
 
-        Tygh::$app['view']->assign('contract_statuses', $statuses);
+
+    $curl = curl_init();
+
+    curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://dev.paymart.uz/api/v1/buyer/contracts',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'GET',
+        CURLOPT_HTTPHEADER => array(
+            'Authorization: Bearer a9e4576965a08909937fe6223c934b19'
+        ),
+    ));
+
+    $response = curl_exec($curl);
+
+    curl_close($curl);
+
+
+//    $statuses = array(
+//            0 => 'not-active',
+//            1 => 'active',
+//            2 => 'moderation',
+//            3 => 'expired',
+//            4 => 'expired above 60 days',
+//            5 => 'cancel',
+//            9 => 'completed'
+//        );
+
+        Tygh::$app['view']->assign('contracts', json_decode($response));
 //    }
 
 }
