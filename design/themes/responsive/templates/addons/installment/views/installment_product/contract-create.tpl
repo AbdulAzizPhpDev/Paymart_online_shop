@@ -206,8 +206,7 @@
                        <div class="main-form__last-item">
                            <label for="story">Адрес</label>
                            <textarea id="story" name="story"
-                                     rows="5" cols="33">
-                           </textarea>
+                                     rows="5" cols="33"></textarea>
                        </div>
                     </div>
                 </form>
