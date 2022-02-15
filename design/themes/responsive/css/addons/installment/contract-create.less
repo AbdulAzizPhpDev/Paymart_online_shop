@@ -251,13 +251,9 @@ p h1 h2 h3 h4 h5{
         flex-direction: column;
         textarea {
             color: black;
-            opacity: 0.3;
             border: none;
             background-color: #f6f6f6;
             border-radius: 8px;
-        }
-        textarea:focus{
-          border-color: @main !important;
         }
       }
     }
@@ -278,7 +274,47 @@ p h1 h2 h3 h4 h5{
   }
 }
 
+input[type="text"]:hover{
+  border-color: #FF7643 !important;
+}
 
+#formAddress {
+  appearance: none;       /* Remove default arrow */
+  background: url("../media/images/addons/installment/arrow.png") no-repeat 287px 26px !important;
+  background-color: #f6f6f6 !important;
+}
+#formAddress2 {
+  appearance: none;       /* Remove default arrow */
+  background: url("../media/images/addons/installment/arrow.png") no-repeat 287px 26px !important;
+  background-color: #f6f6f6 !important;
+}
+#formAddress:focus{
+  border: 1px solid #FF7643 !important;
+}
+
+#formAddress:focus{
+  border: 1px solid #FF7643 !important;
+}
+
+#selectedId{
+  appearance: none;       /* Remove default arrow */
+  background: url("../media/images/addons/installment/arrow.png") no-repeat 287px 26px !important;
+  background-color: #f6f6f6 !important;
+}
+#formAddress2:focus{
+  border: 1px solid #FF7643 !important;
+}
+#selectedId:focus{
+  border: 1px solid #FF7643 !important;
+ /* Add custom arrow */
+}
+.repeat-input:focus{
+  border: 1px solid #FF7643 !important;
+}
+
+textarea:focus{
+  border: 1px solid #FF7643 !important;
+}
 //modal
 
 /* The Modal (background) */
