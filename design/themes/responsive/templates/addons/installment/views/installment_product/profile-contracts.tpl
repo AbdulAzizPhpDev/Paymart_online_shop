@@ -23,6 +23,8 @@
 
                     <p class="contract-date">Следующая выплата: {$contract->next_pay}</p>
                     <span class="sum">{$contract->monthly_payment}</span><span class="currency">Cум</span>
+                    <div class="progress active" data-percentage="{$index}0"></div>
+                    <div class="progress inactive"></div>
                 </div>
             {/foreach}
         {/if}
