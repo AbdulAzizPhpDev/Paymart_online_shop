@@ -16,13 +16,12 @@ var myBtn = document.getElementById("myBtn");
 // Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
 
-let value = $('.confirm-contract').val();
+// let value = $('.confirm-contract').val();
 let e = document.getElementById("selectedId");
 
-var first = e.options[e.selectedIndex].value;
+var selectedMonth = e.options[e.selectedIndex].value;
 
 
-console.log('first', first)
 const otpState = {
     baseUrl: 'https://dev.paymart.uz/api/v1',
     setContract: 'installment_product.set_contracts',
@@ -31,7 +30,7 @@ const otpState = {
     timer: 60,
     interval: null,
     expDate: null,
-    selectedFirst: first,
+    selectedFirst: selectedMonth,
 };
 
 
@@ -112,19 +111,25 @@ myBtn.onclick = function () {
             region: region,
             textarea: txt,
         },
-        callback: function callback(response) {
-            // When the user clicks on <span> (x), close the modal
-            span.onclick = function () {
-                modal.style.display = "none";
-            }
+        callback: function (response) {
+
+               // When the user clicks on <span> (x), close the modal
+                modal.style.display = "block";
+                // When the user clicks on <span> (x), close the modal
+                span.onclick = function() {
+                    modal.style.display = "none";
+                }
+                // When the user clicks anywhere outside of the modal, close it
+                window.onclick = function(event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+
         },
     });
 
 };
-
-
-
-
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function (event) {
@@ -145,11 +150,9 @@ Cookies.set('buyer-phone', 998917779799)
 //
 
 $('#modal-sent').click(function () {
-    console.log('exp', otpState.expDate)
+    let otpInputVal = $(".ty-login__input").val()
     $(".resend-sms-card").css("display", "block");
-
     var counter = setInterval(timer, 1000); //1000 will  run it every 1 second
-
     function timer() {
         otpState.timer = otpState.timer - 1;
         if (otpState.time <= 0) {
@@ -160,24 +163,20 @@ $('#modal-sent').click(function () {
         document.querySelector(".card-resend-sms-timer").innerHTML = otpState.timer + " secs";
         //Do code for showing the number of seconds here
     }
-
 //  modal click
-    $("#modal-sent").addClass("myspinner");
-    setTimeout(function () {
-        $("#modal-sent").removeClass("myspinner");
-    }, 3000);
-    //
-
-    console.log('value', value)
-    console.log('urlLast', urlLast)
+//     $("#modal-sent").addClass("myspinner");
+//     setTimeout(function () {
+//         $("#modal-sent").removeClass("myspinner");
+//     }, 3000);
+//     // console.log('value', value)
     $.ajax({
         type: "post",
         url: urlLast,
         data: {
-            code: value,
+            code: otpInputVal,
         },
         success: function (response) {
-            $("#otp").removeClass("myspinner");
+            // $("#otp").removeClass("myspinner");
             console.log(response)
             console.log('url', this.url)
             // $( "#otp" ).removeClass( "myspinner" );
