@@ -271,6 +271,9 @@ p h1 h2 h3 h4 h5{
       border-radius: 8px;
       padding: 18px 80px;
     }
+    &__item:hover{
+      background-color: @dark-gray;
+    }
   }
 }
 
@@ -412,6 +415,10 @@ textarea:focus{
     width: 57%;
     margin: 24px 12% 0 12%;
     background-color: @main;
+
+    &:disabled {
+      background-color: @dark-gray;
+    }
   }
 
   .stepperStyle();
