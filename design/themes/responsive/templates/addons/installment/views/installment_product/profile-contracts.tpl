@@ -22,6 +22,8 @@
 
                 <p class="contract-date">Следующая выплата: 15.04.2020</p>
                 <span class="sum">500 000.00</span><span class="currency">Cум</span>
+                <div class="progress active" data-percentage="{$number}0"></div>
+                <div class="progress inactive"></div>
             </div>
         {/foreach}
     </div>
