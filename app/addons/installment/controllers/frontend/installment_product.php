@@ -279,9 +279,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($mode == 'set_contracts') {
 
 
-
         $data = $_REQUEST;
-       fn_print_die($data);
+        fn_print_die($data);
 
 
     }
@@ -441,20 +440,20 @@ if ($mode == "contract-create") {
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => '{
-    "type": "credit",
-    "period":12,
-    "products": {
-        "' . $datas["p_c_id"] . '": [
-            {
-                "price": ' . $datas['product_price']['price'] . ',
-                "amount": ' . $product_quantity . ',
-                "name": "' . $datas['product_descriptions']['product'] . '"
-            }
-        ]
-    },
-    "partner_id": ' . $datas["p_c_id"] . ',
-    "user_id": ' . $auth['user_id'] . '
-}',
+                "type": "credit",
+                "period":12,
+                "products": {
+                    "' . $datas["p_c_id"] . '": [
+                        {
+                            "price": ' . $datas['product_price']['price'] . ',
+                            "amount": ' . $product_quantity . ',
+                            "name": "' . $datas['product_descriptions']['product'] . '"
+                        }
+                    ]
+                },
+                "partner_id": ' . $datas["p_c_id"] . ',
+                "user_id": ' . $auth['user_id'] . '
+            }',
             CURLOPT_HTTPHEADER => array(
                 'Authorization: Bearer ' . $datas['p_c_token'],
                 'Content-Type: application/json'
@@ -517,7 +516,24 @@ if ($mode == 'profile-contracts') {
 //            9 => 'completed'
 //        );
 
-        Tygh::$app['view']->assign('contracts', json_decode($response));
+    $result = json_decode($response);
+    $payed_list = [];
+    $payed_list_group_by_contract_id = [];
+
+    foreach ($result->contracts as $contract) {
+        foreach ($contract->schedule_list as $list) {
+            if ($list->status == 1) {
+                $payed_list[$list->contract_id][] = $list;
+            }
+        };
+    }
+
+    foreach ($payed_list as $item => $value) {
+        $payed_list_group_by_contract_id[$item] = count($value);
+    };
+
+    Tygh::$app['view']->assign('contracts', $result);
+    Tygh::$app['view']->assign('group_by', $payed_list_group_by_contract_id);
 //    }
 
 }
