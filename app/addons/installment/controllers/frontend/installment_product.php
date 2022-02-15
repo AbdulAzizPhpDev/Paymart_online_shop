@@ -278,11 +278,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($mode == 'set_contracts') {
 
+        $product_info = db_get_row('SELECT *,product_description.product as product_name FROM ?:products as product 
+        INNER JOIN ?:companies as company ON product.company_id = company.company_id 
+        INNER JOIN ?:product_prices as product_price ON product.product_id = product_price.product_id 
+        INNER JOIN ?:product_descriptions as product_description ON product.product_id = product_description.product_id 
+        WHERE product.product_id = ?i ', Tygh::$app['session']['product_info']['product_id']);
 
-        $data = $_REQUEST;
-        fn_print_die($data);
+        $user = db_get_row('select * from ?:users where user_id=?i', $auth['user_id']);
+
+        $data = [
+            'products' => [
+                [
+                    "name" => $product_info['product_name'],
+                    "amount" => (int)Tygh::$app['session']['product_info']['product_qty'],
+                    "price" => (int)$product_info['price']
+                ]
+            ],
+            "limit" => $_REQUEST['limit'],
+            "buyer_phone" => $user['phone']
+        ];
 
 
+        $response = php_curl('/buyers/credit/add', $data, 'POST', $product_info['p_c_token']);
+        Registry::get('ajax')->assign('result', $response);
     }
 }
 
@@ -497,7 +515,7 @@ if ($mode == 'profile-contracts') {
         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
         CURLOPT_CUSTOMREQUEST => 'GET',
         CURLOPT_HTTPHEADER => array(
-            'Authorization: Bearer a9e4576965a08909937fe6223c934b19'
+            'Authorization: Bearer 7dbe6bed62c8535daf18ae5b42b30ea1'
         ),
     ));
 
@@ -515,6 +533,7 @@ if ($mode == 'profile-contracts') {
 //            5 => 'cancel',
 //            9 => 'completed'
 //        );
+
 
     $result = json_decode($response);
     $payed_list = [];
@@ -534,6 +553,7 @@ if ($mode == 'profile-contracts') {
 
     Tygh::$app['view']->assign('contracts', $result);
     Tygh::$app['view']->assign('group_by', $payed_list_group_by_contract_id);
+
 //    }
 
 }

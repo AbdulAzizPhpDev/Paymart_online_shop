@@ -2,14 +2,7 @@
     console.log('contract create page init');
 })(Tygh, Tygh.$);
 
-const otpState = {
-    baseUrl: 'https://dev.paymart.uz/api/v1',
-    api_token: Cookies.get('api_token'),
-    buyerPhone: Cookies.get('buyer-phone'),
-    timer: 60,
-    interval: null,
-    expDate: null,
-};
+
 
 
 
@@ -23,24 +16,69 @@ var myBtn = document.getElementById("myBtn");
 // Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
 
-let inputDate = null;
-let value = $('.confirm-contract').val();
+// let value = $('.confirm-contract').val();
+let e = document.getElementById("selectedId");
+
+var selectedMonth = e.options[e.selectedIndex].value;
+
+
+const otpState = {
+    baseUrl: 'https://dev.paymart.uz/api/v1',
+    setContract: 'installment_product.set_contracts',
+    api_token: Cookies.get('api_token'),
+    buyerPhone: Cookies.get('buyer-phone'),
+    timer: 60,
+    interval: null,
+    expDate: null,
+    selectedFirst: selectedMonth,
+};
+
+
 let urlLast = otpState.baseUrl + '/buyers/credit/add'
 let calculate = otpState.baseUrl + '/order/calculate'
-var e = document.getElementById("selectedId");
-var strUser = e.options.value;
+let price = document.getElementById('price').value
+let quantity = document.getElementById('quantity').value
+let name_product = document.getElementById('name_product').value
+let seller_token = document.getElementById('seller_token').value
+let seller_id = document.getElementById('seller_id').value
+let user_id = document.getElementById('user_id').value
+// setUrl = fn_url('installment_product.set_contracts');
+
+
 
 $(document).ready(function() {
     $("#selectedId").change(function(){
-        var strUser = e.options[e.selectedIndex].value;
-        $.ajax({
+        var selectedOption = e.options[e.selectedIndex].value;
+        otpState.selectedFirst = selectedOption;
+        console.log('plrice', price, quantity, name_product, selectedOption)
+        let formattedProducts = {};
+        formattedProducts[seller_id] = [
+            {
+                price: price,
+                amount: quantity,
+                name: name_product,
+            }
+        ];
+
+        $.ajax( {
             type: 'POST',
             url: calculate,
+            headers:{
+                Authorization: 'Bearer '+ seller_token
+            },
             data: {
                 type: 'credit',
-                period: strUser,
+                period: selectedOption,
+                products: formattedProducts,
+                partner_id:seller_id,
+                user_id: user_id,
             },
-            just:  console.log('calculate', calculate, strUser),
+            success:function (response) {
+                console.log(response.data.price.total)
+                $(".input-paying__text-p").html(response.data.price.total + ' сум')
+                $(".input-paying__text-a").html(response.data.price.month + ' сум')
+                $(".orange").html(response.data.price.total + ' сум')
+            }
         });
     });
 
@@ -50,96 +88,48 @@ $(document).ready(function() {
 // When the user clicks on the button, open the modal
 myBtn.onclick = function () {
 
-    console.log('strUser', strUser)
-    $.ajax({
-        type: "POST",
-        url: urlLast,
-        data:{
+    let city = $('#formAddress').val();
+    let region = $('#formAddress2').val();
+    // let txt = document.getElementsByTagName("textarea");
+    let txt = $("#story").val();
+
+    // console.log('address', txt)
+    // $.ceAjax('request', 'installment_product.set_contracts', {
+    //     result_ids: otpState.setContract,
+    //     method: 'post',
+    //     full_render: true,
+    //     data: {
+    //
+    //     }
+    // });
+
+    $.ceAjax('request', fn_url('installment_product.set_contracts'), {
+        method: 'POST',
+        data: {
+            limit: otpState.selectedFirst,
+            city: city,
+            region: region,
+            textarea: txt,
+        },
+        callback: function (response) {
+
+               // When the user clicks on <span> (x), close the modal
+                modal.style.display = "block";
+                // When the user clicks on <span> (x), close the modal
+                span.onclick = function() {
+                    modal.style.display = "none";
+                }
+                // When the user clicks anywhere outside of the modal, close it
+                window.onclick = function(event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
 
         },
-        success: function (response) {
-            $("#otp").removeClass("myspinner");
-            console.log(response)
-            console.log('url', this.url);
-            modal.style.display = "block";
-            inputDate = document.querySelector('#cars').value;
-            otpState.expDate = inputDate;
-            console.log('input-date', inputDate);
-            // $( "#otp" ).removeClass( "myspinner" );
-            // $("#otp").attr("disabled", false);
-            // if (response.status === 'success') {
-            //     const userStatus = response.data.user_status;
-            //     const userId = response.data.user_id;
-            //     console.log('userId', userId)
-            //     // state.user_id = userId
-            //     const token = response.data.api_token;
-            //     Cookies.set('token', token);
-            //     Cookies.set('userId', userId);
-            //     console.log('userstatus', userStatus)
-            //
-            //     if (userStatus == 1) {
-            //         console.log('status 1')
-            //         window.location.href = this.otpState.baseUrl + "card&phone=" + this.otpState.buyerPhone;
-            //         // $("#card-form").css("display", "block");
-            //         // $(".main-otp").css("display", "none");
-            //
-            //     }
-            //     if (userStatus == 2) {
-            //         console.log('status 2')
-            //         window.location.href = baseUrls + "waiting-clock";
-            //         // $("#card-form").css("display", "block");
-            //         // $(".main-otp").css("display", "none");
-            //
-            //     }
-            //     if (userStatus == 4) {
-            //         console.log('status 4')
-            //         window.location.href = baseUrls + "product-status";
-            //         // $(".second-popup").css("display", "block");
-            //         // $(".main-otp").css("display", "none");
-            //
-            //     }
-            //     if (userStatus == 5) {
-            //         console.log('status 5');
-            //
-            //         // $(".main-otp").css("display", "none");
-            //         // $("#card-form").css("display", "none");
-            //         // // $(".second-popup__last").css("display", "block");
-            //         // $(".main__input").css("display", "block");
-            //         window.location.href = baseUrl + "passport-firstpage";
-            //
-            //     }
-            //     if (userStatus == 10) {
-            //         console.log('status 10');
-            //         window.location.href = baseUrl + "passport-selfie";
-            //
-            //     }
-            // } else {
-            //     let wrongCode = response.response.message[0]?.text;
-            //     $(".isWrong").css("display", "block");
-            //     $('.isWrong').text(wrongCode);
-            //     $(".sendMessageCodeText").css("display", "none");
-            //
-            // }
-            // console.log('wrong', wrong);
+    });
 
-            // $(".second-popup__last").css("display", "block");
-
-        },
-
-        error: function (response, error) {
-            $("#otp").removeClass("myspinner");
-            // var errorMessage = response.data.message + ': '
-            // alert('Error - ' + errorMessage);
-        }
-    })
-}
-
-
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function () {
-    modal.style.display = "none";
-}
+};
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function (event) {
@@ -160,11 +150,9 @@ Cookies.set('buyer-phone', 998917779799)
 //
 
 $('#modal-sent').click(function () {
-    console.log('exp', otpState.expDate)
+    let otpInputVal = $(".ty-login__input").val()
     $(".resend-sms-card").css("display", "block");
-
     var counter = setInterval(timer, 1000); //1000 will  run it every 1 second
-
     function timer() {
         otpState.timer = otpState.timer - 1;
         if (otpState.time <= 0) {
@@ -175,24 +163,20 @@ $('#modal-sent').click(function () {
         document.querySelector(".card-resend-sms-timer").innerHTML = otpState.timer + " secs";
         //Do code for showing the number of seconds here
     }
-
 //  modal click
-    $("#modal-sent").addClass("myspinner");
-    setTimeout(function () {
-        $("#modal-sent").removeClass("myspinner");
-    }, 3000);
-    //
-
-    console.log('value', value)
-    console.log('urlLast', urlLast)
+//     $("#modal-sent").addClass("myspinner");
+//     setTimeout(function () {
+//         $("#modal-sent").removeClass("myspinner");
+//     }, 3000);
+//     // console.log('value', value)
     $.ajax({
         type: "post",
         url: urlLast,
         data: {
-            code: value,
+            code: otpInputVal,
         },
         success: function (response) {
-            $("#otp").removeClass("myspinner");
+            // $("#otp").removeClass("myspinner");
             console.log(response)
             console.log('url', this.url)
             // $( "#otp" ).removeClass( "myspinner" );

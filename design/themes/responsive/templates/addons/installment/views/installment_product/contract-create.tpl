@@ -62,12 +62,13 @@
                         <td class="bolded">Сумма НДС</td>
                     </tr>
                     <tr>
+{*                        {fn_print_die($product_info)}*}
                         <td>
                             {$product_info['product_descriptions']['product']}
                         </td>
                         <td>{$product_quantity}</td>
-                       
-                        <td>{$product_quantity * $product_info['product_price']['price'] }</td>
+
+                        <td class="">{$product_quantity * $product_info['product_price']['price'] }</td>
                     </tr>
                     <tr>
                         <td class="orange">{$total}</td>
@@ -76,6 +77,12 @@
                     </tr>
                 </table>
 
+                <input type="hidden" value="{$product_info['product_price']['price']}" id="price">
+                <input type="hidden" value="{$product_quantity}" id="quantity">
+                <input type="hidden" value="{$product_info['product_descriptions']['product']}" id="name_product">
+                <input type="hidden" value="{$product_info['p_c_token']}" id="seller_token">
+                <input type="hidden" value="{$product_info['p_c_id']}" id="seller_id">
+                <input type="hidden" value="{$user['p_user_id']}" id="user_id">
 
                 <h2 class="second-title">
                     Расчет стоимости
@@ -146,14 +153,14 @@
                                  alt="Billing ico">
                             <div class="input-paying__text">
                                 <div class="input-paying__text-title">Ежемесячный платеж:</div>
-                                <div class="input-paying__text-p">{$month} сум</div>
+                                <div class="input-paying__text-a">{$month} сум</div>
                             </div>
                         </div>
                         <div class="input-link">
                             <img src="design/themes/responsive/media/images/addons/installment/billing-ico.png"
                                  alt="Billing ico">
                             <div class="input-paying__text">
-                                <div class="input-paying__text-title">Ежемесячный платеж:</div>
+                                <div class="input-paying__text-title">Итого с учетом расрочки:</div>
                                 <div class="input-paying__text-p">{$total} сум</div>
                             </div>
                         </div>
@@ -164,12 +171,23 @@
                             <input class="repeat-input" type="text" id="inputAddress" disabled value="Узбекистан">
                         </div>
                         <div class="main-form__another-item">
-                               <label for="formAddress">Город</label>
+                               <label for="formAddress2">Город</label>
                                <div class="input-paying__unique">
-                                   <select name="formAddress" id="formAddress">
+                                   <select name="formAddress2" id="formAddress2">
                                        <option value="uzb">Ташкент</option>
-                                       <option value="ru">Ангрен</option>
-                                       <option value="kz">Олмалык</option>
+                                       <option value="uzb">Ургенч</option>
+                                       <option value="uzb">Фергана</option>
+                                       <option value="ru">Нурафшон</option>
+                                       <option value="ru">Гулистан</option>
+                                       <option value="ru">Термез</option>
+                                       <option value="ru">Самарканд</option>
+                                       <option value="ru">Наманган</option>
+                                       <option value="ru">Навои</option>
+                                       <option value="ru">Карши</option>
+                                       <option value="ru">Джизак</option>
+                                       <option value="ru">Бухара</option>
+                                       <option value="ru">Андижан</option>
+                                       <option value="kz">Нукус</option>
                                    </select>
                                </div>
                         </div>
@@ -188,8 +206,7 @@
                        <div class="main-form__last-item">
                            <label for="story">Адрес</label>
                            <textarea id="story" name="story"
-                                     rows="5" cols="33">Введите район
-                           </textarea>
+                                     rows="5" cols="33"></textarea>
                        </div>
                     </div>
                 </form>
@@ -225,7 +242,7 @@
                 <p class="resend-sms-card">Отправить SMS еще раз (через <span class="card-resend-sms-timer">60</span>
                     сек.)</p>
 
-                <button class="ty-btn ty-btn__secondary" type="button" id="modal-sent">
+                <button disabled class="ty-btn ty-btn__secondary" type="button" id="modal-sent">
                     Продолжить
                 </button>
             </div>
@@ -233,6 +250,13 @@
     </div>
 </div>
 
+{*the second modal*}
+
+<div id="mySecondModal" class="secondModal">
+    <div class="modal-content">
+
+    </div>
+</div>
 
 <script>
     $('#card-pin-wrapper').pinlogin({
@@ -242,6 +266,7 @@
         reset: false,
         complete: function (pin) {
             $('.confirm-contract').attr('value', pin);
+            $('#modal-sent').removeAttr('disabled');
         },
     });
 
