@@ -278,9 +278,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($mode == 'set_contracts') {
 
+//        fn_print_die();
 
         $data = $_REQUEST;
         fn_print_die($data);
+
 
 
     }
@@ -504,7 +506,6 @@ if ($mode == 'profile-contracts') {
     $response = curl_exec($curl);
 
     curl_close($curl);
-
 
 
 //    $statuses = array(

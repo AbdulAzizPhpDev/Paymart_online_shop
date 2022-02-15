@@ -67,7 +67,7 @@
                             {$product_info['product_descriptions']['product']}
                         </td>
                         <td>{$product_quantity}</td>
-                       
+
                         <td class="">{$product_quantity * $product_info['product_price']['price'] }</td>
                     </tr>
                     <tr>
