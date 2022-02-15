@@ -94,12 +94,6 @@ myBtn.onclick = function () {
     // let txt = document.getElementsByTagName("textarea");
     let txt = $("#story").val();
 
-
-    var inputField = document.getElementById('repeat-input');
-
-    inputField.addEventListener('mouseover', function() {
-        inputField.focus();
-    });
     // console.log('address', txt)
     // $.ceAjax('request', 'installment_product.set_contracts', {
     //     result_ids: otpState.setContract,
@@ -109,8 +103,6 @@ myBtn.onclick = function () {
     //
     //     }
     // });
-
-
 
     $.ceAjax('request', fn_url('installment_product.set_contracts'), {
         method: 'POST',
