@@ -310,6 +310,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
     }
 
+    if ($mode == "set_confirm_contract") {
+        $user = db_get_row('select * from ?:users where user_id=?i', $auth['user_id']);
+        $data = [
+            "contract_id" => $_REQUEST['contract_id'],
+            "code" => $_REQUEST['code'],
+            "phone" => $user['phone']
+        ];
+
+        $response = php_curl('/buyers/credit/add', $data, 'POST', $user['api_key']);
+        Registry::get('ajax')->assign('result', $response);
+        exit();
+    }
+
 
 }
 
