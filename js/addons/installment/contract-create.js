@@ -31,6 +31,7 @@ const otpState = {
     interval: null,
     expDate: null,
     selectedFirst: selectedMonth,
+    contractId: null,
 };
 
 
@@ -112,19 +113,21 @@ myBtn.onclick = function () {
             textarea: txt,
         },
         callback: function (response) {
-
+            console.log('success')
+            let contract_id = response.result.paymart_client.contract_id;
+            otpState.contractId = contract_id
                // When the user clicks on <span> (x), close the modal
                 modal.style.display = "block";
                 // When the user clicks on <span> (x), close the modal
-                span.onclick = function() {
-                    modal.style.display = "none";
-                }
-                // When the user clicks anywhere outside of the modal, close it
-                window.onclick = function(event) {
-                    if (event.target == modal) {
-                        modal.style.display = "none";
-                    }
-                }
+                // span.onclick = function() {
+                //     modal.style.display = "none";
+                // }
+                // // When the user clicks anywhere outside of the modal, close it
+                // window.onclick = function(event) {
+                //     if (event.target == modal) {
+                //         modal.style.display = "none";
+                //     }
+                // }
 
         },
     });
@@ -169,16 +172,16 @@ $('#modal-sent').click(function () {
 //         $("#modal-sent").removeClass("myspinner");
 //     }, 3000);
 //     // console.log('value', value)
-    $.ajax({
-        type: "post",
-        url: urlLast,
+    $.ceAjax('request', fn_url('installment_product.set_confirm_contract'), {
+        method: "post",
         data: {
             code: otpInputVal,
+            contract_id: otpState.contractId,
         },
-        success: function (response) {
+        callback: function (response) {
             // $("#otp").removeClass("myspinner");
+            console.log('code', otpInputVal, otpState.contractId)
             console.log(response)
-            console.log('url', this.url)
             // $( "#otp" ).removeClass( "myspinner" );
             // $("#otp").attr("disabled", false);
             // if (response.status === 'success') {
@@ -246,6 +249,7 @@ $('#modal-sent').click(function () {
             // alert('Error - ' + errorMessage);
         }
     })
+
 })
 
 

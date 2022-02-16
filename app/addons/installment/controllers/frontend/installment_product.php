@@ -484,6 +484,39 @@ if ($mode == "contract-create") {
         if ($mode_type !== $user_step) {
             return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
         }
+//        $curl = curl_init();
+//
+//        curl_setopt_array($curl, array(
+//            CURLOPT_URL => 'https://dev.paymart.uz/api/v1/order/calculate',
+//            CURLOPT_RETURNTRANSFER => true,
+//            CURLOPT_ENCODING => '',
+//            CURLOPT_MAXREDIRS => 10,
+//            CURLOPT_TIMEOUT => 0,
+//            CURLOPT_FOLLOWLOCATION => true,
+//            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+//            CURLOPT_CUSTOMREQUEST => 'POST',
+//            CURLOPT_POSTFIELDS => '{
+//                "type": "credit",
+//                "period":12,
+//                "products": {
+//                    "' . $datas["p_c_id"] . '": [
+//                        {
+//                            "price": ' . $datas['product_price']['price'] . ',
+//                            "amount": ' . $product_quantity . ',
+//                            "name": "' . $datas['product_descriptions']['product'] . '"
+//                        }
+//                    ]
+//                },
+//                "partner_id": ' . $datas["p_c_id"] . ',
+//                "user_id": ' . $user['p_user_id'] . '
+//            }',
+//            CURLOPT_HTTPHEADER => array(
+//                'Authorization: Bearer ' . $datas['p_c_token'],
+//                'Content-Type: application/json'
+//            ),
+//        ));
+
+
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -496,31 +529,33 @@ if ($mode == "contract-create") {
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_POSTFIELDS => '{
-                "type": "credit",
-                "period":12,
-                "products": {
-                    "' . $datas["p_c_id"] . '": [
-                        {
-                            "price": ' . $datas['product_price']['price'] . ',
-                            "amount": ' . $product_quantity . ',
-                            "name": "' . $datas['product_descriptions']['product'] . '"
-                        }
-                    ]
-                },
-                "partner_id": ' . $datas["p_c_id"] . ',
-                "user_id": ' . $user['p_user_id'] . '
-            }',
+    "type": "credit",
+    "period":12,
+    "products": {
+        "215030": [
+            {
+                "price": 30,
+                "amount": 1,
+                "name": "test11"
+            }
+        ]
+    },
+    "partner_id": 215030,
+    "user_id": 371618
+}
+',
             CURLOPT_HTTPHEADER => array(
-                'Authorization: Bearer ' . $datas['p_c_token'],
+                'Authorization: Bearer 5233c73b2a68016fbcfc51ccfd35c6ed',
                 'Content-Type: application/json'
             ),
         ));
 
+
         $response = json_decode(curl_exec($curl));
 
         curl_close($curl);
-        $data = $datas["p_c_id"];
-        $items = $response->data->orders->$data->price;
+        $id = (int)$datas["p_c_id"];
+        $items = $response->data->orders->$id->price;
         Tygh::$app['view']->assign('total', $items->total);
         Tygh::$app['view']->assign('origin', $items->origin);
         Tygh::$app['view']->assign('month', $items->month);
