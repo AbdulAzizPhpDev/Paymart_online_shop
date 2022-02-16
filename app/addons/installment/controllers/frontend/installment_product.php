@@ -592,7 +592,7 @@ if ($mode == 'profile-contracts') {
                 if ($list->status == 1) {
                     $payed_list[$list->contract_id][] = $list;
                 }
-            };
+            }
         }
 
         foreach ($payed_list as $item => $value) {
