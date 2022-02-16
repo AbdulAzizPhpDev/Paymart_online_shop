@@ -311,7 +311,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
 
-
 }
 
 if ($mode == 'get_qty') {
@@ -491,7 +490,7 @@ if ($mode == "contract-create") {
                     ]
                 },
                 "partner_id": ' . $datas["p_c_id"] . ',
-                "user_id": ' . $auth['user_id'] . '
+                "user_id": ' . $user['p_user_id'] . '
             }',
             CURLOPT_HTTPHEADER => array(
                 'Authorization: Bearer ' . $datas['p_c_token'],
