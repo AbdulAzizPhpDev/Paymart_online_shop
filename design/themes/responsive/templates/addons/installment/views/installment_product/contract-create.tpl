@@ -4,9 +4,15 @@
 
 
 <div class="main-page">
-    <div class="back-button">
-        <img src="design/themes/responsive/media/images/addons/installment/back-arrow.png" alt="Arrow image">
-    </div>
+    {if isset($redirect_url)}
+    <a href="{$redirect_url|fn_url}" class="back-button">
+        <img src="/design/themes/responsive/media/images/addons/installment/back-arrow.png" alt="Arrow image">
+    </a>
+    {else}
+    <a href="/" class="back-button">
+        <img src="/design/themes/responsive/media/images/addons/installment/back-arrow.png" alt="Arrow image">
+    </a>
+    {/if}
     <div class="container table-page">
         <div>
             <div class="section-one">
@@ -14,7 +20,7 @@
                     <div class="main-first">
                         <div class="main-profile">
                             <img class="main-profile__img"
-                                 src="design/themes/responsive/media/images/addons/installment/profile.png"
+                                 src="/design/themes/responsive/media/images/addons/installment/profile.png"
                                  alt="Profile image">
                             <div class="main-profile__text">
                                 <span class="main-profile__text-item">{$user['firstname']}  {$user['lastname']}</span>
@@ -22,7 +28,7 @@
                             </div>
                         </div>
                         <div class="text-items__second">
-                            <img src="design/themes/responsive/media/images/addons/installment/billing-ico.png"
+                            <img src="/design/themes/responsive/media/images/addons/installment/billing-ico.png"
                                  alt="Billing ico">
                             <div class="text-items__second-items">
                                 <div class="first-item">Доступная рассрочка:</div>
@@ -31,9 +37,9 @@
                         </div>
                     </div>
                     <div class="status">
-                <span class="status-item">
-                    Не верефицирован
-                </span>
+                        {*                <span class="status-item">*}
+                        {*                    Не верефицирован*}
+                        {*                </span>*}
                     </div>
                 </div>
                 {*        <div class="main">*}
@@ -62,7 +68,7 @@
                         <td class="bolded">Сумма НДС</td>
                     </tr>
                     <tr>
-{*                        {fn_print_die($product_info)}*}
+                        {*                        {fn_print_die($product_info)}*}
                         <td>
                             {$product_info['product_descriptions']['product']}
                         </td>
@@ -71,7 +77,8 @@
                         <td class="">{$product_quantity * $product_info['product_price']['price'] }</td>
                     </tr>
                     <tr>
-                        <td class="orange">{$total}</td>
+                        <td class="orange">Итого</td>
+                        {*                        {$total}*}
                         <td>{$product_quantity}</td>
                         <td class="orange">{$product_quantity * $product_info['product_price']['price'] }</td>
                     </tr>
@@ -97,44 +104,44 @@
 
             <div class="section-three">
 
-{*<<<<<<< HEAD*}
-{*                <form style="margin-top:4px;">*}
-{*                    <div class="d-flex flex-column">*}
-{*                        <label for="cars">Выберите срок:</label>*}
-{*                        <div class="input-paying">*}
-{*                            <select name="cars" id="cars">*}
-{*                                <option value="twelve">12 месяцев</option>*}
-{*                                <option value="nine">9 месяцев</option>*}
-{*                                <option value="six">6 месяцев</option>*}
-{*                            </select>*}
-{*                        </div>*}
-{*                    </div>*}
-{*                    <div class="input-link">*}
-{*                        <img src="design/themes/responsive/media/images/addons/installment_image/billing-ico.png"*}
-{*                             alt="Billing ico">*}
-{*                        <div class="input-paying__text">*}
-{*                            <div class="input-paying__text-title">Ежемесячный платеж:</div>*}
-{*                            <div class="input-paying__text-p">{$month} сум</div>*}
-{*                        </div>*}
-{*                    </div>*}
-{*                    <div class="input-link">*}
-{*                        <img src="design/themes/responsive/media/images/addons/installment_image/billing-ico.png"*}
-{*                             alt="Billing ico">*}
-{*                        <div class="input-paying__text">*}
-{*                            <div class="input-paying__text-title">Ежемесячный платеж:</div>*}
-{*                            <div class="input-paying__text-p">{$total} сум</div>*}
-{*                        </div>*}
-{*                    </div>*}
-{*                    <div>*}
-{*                        <label for="cars">Выберите срок:</label>*}
-{*                        <div class="input-paying">*}
-{*                            <select name="cars" id="cars">*}
-{*                                <option value="twelve">12 месяцев</option>*}
-{*                                <option value="nine">9 месяцев</option>*}
-{*                                <option value="six">6 месяцев</option>*}
-{*                            </select>*}
-{*                        </div>*}
-{*=======*}
+                {*<<<<<<< HEAD*}
+                {*                <form style="margin-top:4px;">*}
+                {*                    <div class="d-flex flex-column">*}
+                {*                        <label for="cars">Выберите срок:</label>*}
+                {*                        <div class="input-paying">*}
+                {*                            <select name="cars" id="cars">*}
+                {*                                <option value="twelve">12 месяцев</option>*}
+                {*                                <option value="nine">9 месяцев</option>*}
+                {*                                <option value="six">6 месяцев</option>*}
+                {*                            </select>*}
+                {*                        </div>*}
+                {*                    </div>*}
+                {*                    <div class="input-link">*}
+                {*                        <img src="design/themes/responsive/media/images/addons/installment_image/billing-ico.png"*}
+                {*                             alt="Billing ico">*}
+                {*                        <div class="input-paying__text">*}
+                {*                            <div class="input-paying__text-title">Ежемесячный платеж:</div>*}
+                {*                            <div class="input-paying__text-p">{$month} сум</div>*}
+                {*                        </div>*}
+                {*                    </div>*}
+                {*                    <div class="input-link">*}
+                {*                        <img src="design/themes/responsive/media/images/addons/installment_image/billing-ico.png"*}
+                {*                             alt="Billing ico">*}
+                {*                        <div class="input-paying__text">*}
+                {*                            <div class="input-paying__text-title">Ежемесячный платеж:</div>*}
+                {*                            <div class="input-paying__text-p">{$total} сум</div>*}
+                {*                        </div>*}
+                {*                    </div>*}
+                {*                    <div>*}
+                {*                        <label for="cars">Выберите срок:</label>*}
+                {*                        <div class="input-paying">*}
+                {*                            <select name="cars" id="cars">*}
+                {*                                <option value="twelve">12 месяцев</option>*}
+                {*                                <option value="nine">9 месяцев</option>*}
+                {*                                <option value="six">6 месяцев</option>*}
+                {*                            </select>*}
+                {*                        </div>*}
+                {*=======*}
                 <form class="d-flex" style="margin-top:4px;">
                     <div class="main-form">
                         <div class="d-flex flex-column">
@@ -149,7 +156,7 @@
                             </div>
                         </div>
                         <div class="input-link">
-                            <img src="design/themes/responsive/media/images/addons/installment/billing-ico.png"
+                            <img src="/design/themes/responsive/media/images/addons/installment/billing-ico.png"
                                  alt="Billing ico">
                             <div class="input-paying__text">
                                 <div class="input-paying__text-title">Ежемесячный платеж:</div>
@@ -157,7 +164,7 @@
                             </div>
                         </div>
                         <div class="input-link">
-                            <img src="design/themes/responsive/media/images/addons/installment/billing-ico.png"
+                            <img src="/design/themes/responsive/media/images/addons/installment/billing-ico.png"
                                  alt="Billing ico">
                             <div class="input-paying__text">
                                 <div class="input-paying__text-title">Итого с учетом расрочки:</div>
@@ -171,43 +178,43 @@
                             <input class="repeat-input" type="text" id="inputAddress" disabled value="Узбекистан">
                         </div>
                         <div class="main-form__another-item">
-                               <label for="formAddress2">Город</label>
-                               <div class="input-paying__unique">
-                                   <select name="formAddress2" id="formAddress2">
-                                       <option value="uzb">Ташкент</option>
-                                       <option value="uzb">Ургенч</option>
-                                       <option value="uzb">Фергана</option>
-                                       <option value="ru">Нурафшон</option>
-                                       <option value="ru">Гулистан</option>
-                                       <option value="ru">Термез</option>
-                                       <option value="ru">Самарканд</option>
-                                       <option value="ru">Наманган</option>
-                                       <option value="ru">Навои</option>
-                                       <option value="ru">Карши</option>
-                                       <option value="ru">Джизак</option>
-                                       <option value="ru">Бухара</option>
-                                       <option value="ru">Андижан</option>
-                                       <option value="kz">Нукус</option>
-                                   </select>
-                               </div>
+                            <label for="formAddress2">Город</label>
+                            <div class="input-paying__unique">
+                                <select name="formAddress2" id="formAddress2">
+                                    <option value="uzb">Ташкент</option>
+                                    <option value="uzb">Ургенч</option>
+                                    <option value="uzb">Фергана</option>
+                                    <option value="ru">Нурафшон</option>
+                                    <option value="ru">Гулистан</option>
+                                    <option value="ru">Термез</option>
+                                    <option value="ru">Самарканд</option>
+                                    <option value="ru">Наманган</option>
+                                    <option value="ru">Навои</option>
+                                    <option value="ru">Карши</option>
+                                    <option value="ru">Джизак</option>
+                                    <option value="ru">Бухара</option>
+                                    <option value="ru">Андижан</option>
+                                    <option value="kz">Нукус</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="main-form__another-item">
-                               <label for="formAddress">Район</label>
-                               <div class="input-paying__unique">
-                                   <select name="formAddress" id="formAddress">
-                                       <option value="uzb">Ташкент</option>
-                                       <option value="ru">Россия</option>
-                                       <option value="kz">Казахстан</option>
-                                   </select>
-                               </div>
+                            <label for="formAddress">Район</label>
+                            <div class="input-paying__unique">
+                                <select name="formAddress" id="formAddress">
+                                    <option value="uzb">Ташкент</option>
+                                    <option value="ru">Россия</option>
+                                    <option value="kz">Казахстан</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div class="main-form__last">
-                       <div class="main-form__last-item">
-                           <label for="story">Адрес</label>
-                           <textarea id="story" name="story"
-                                     rows="5" cols="33"></textarea>
-                       </div>
+                        <div class="main-form__last-item">
+                            <label for="story">Адрес</label>
+                            <textarea id="story" name="story"
+                                      rows="5" cols="33"></textarea>
+                        </div>
                     </div>
                 </form>
                 <div class="form-button">
@@ -225,7 +232,7 @@
     <!-- Modal content -->
     <div class="modal-content">
         <span class="close">
-            <img src="design/themes/responsive/media/images/addons/installment/Thin.png" alt="Close img">
+            <img src="/design/themes/responsive/media/images/addons/installment/Thin.png" alt="Close img">
         </span>
         <div class="card-add__page">
             <div class="card-confirm">
@@ -242,7 +249,7 @@
                 <p class="resend-sms-card">Отправить SMS еще раз (через <span class="card-resend-sms-timer">60</span>
                     сек.)</p>
 
-                   <button disabled class="ty-btn ty-btn__secondary" type="button" id="modal-sent">
+                <button disabled class="ty-btn ty-btn__secondary" type="button" id="modal-sent">
                     Продолжить
                 </button>
             </div>
