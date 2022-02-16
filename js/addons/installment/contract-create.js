@@ -115,9 +115,9 @@ myBtn.onclick = function () {
         callback: function (response) {
             console.log('success')
             let contract_id = response.result.paymart_client.contract_id;
-            otpState.contractId = contract_id
+            otpState.contractId = contract_id;
                // When the user clicks on <span> (x), close the modal
-                modal.style.display = "block";
+            modal.style.display = "block";
                 // When the user clicks on <span> (x), close the modal
                 // span.onclick = function() {
                 //     modal.style.display = "none";
@@ -180,8 +180,9 @@ $('#modal-sent').click(function () {
         },
         callback: function (response) {
             // $("#otp").removeClass("myspinner");
-            console.log('code', otpInputVal, otpState.contractId)
-            console.log(response)
+            console.log(response);
+            // if (response.result.data){}
+
             // $( "#otp" ).removeClass( "myspinner" );
             // $("#otp").attr("disabled", false);
             // if (response.status === 'success') {
