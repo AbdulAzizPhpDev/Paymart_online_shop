@@ -5,15 +5,15 @@
     <span>Выберите что у вас </span>
 
     <div class="passports">
-        <div class="passport">
+        <a href="{'installment_product.upload-passport'|fn_url}" class="passport">
             <img src="/design/themes/responsive/media/images/passport/first-page.png" width="84" alt="">
             <p>Паспорта</p>
-        </div>
-        <div class="id-card passport">
+        </a>
+        <a href="{'installment_product.upload-passport'|fn_url}" class="id-card passport">
             <img src="/design/themes/responsive/media/images/passport/id-first-page.png" width="90" alt="">
             <img src="/design/themes/responsive/media/images/passport/id-second-page.png" width="90" alt="">
             <p>ID карта</p>
-        </div>
+        </a>
     </div>
 
     <ul class="stepper">
