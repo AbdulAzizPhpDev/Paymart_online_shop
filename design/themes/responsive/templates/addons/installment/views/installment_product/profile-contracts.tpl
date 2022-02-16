@@ -13,14 +13,15 @@
                    target="_blank" class="contract-card">
                     <div class="header">
                         <div class="info">
-                            <h3>Стиральная машина</h3>
+                            <h3>Договор № {$contract->contract_id}</h3>
                         </div>
                         <div class="status-container">
                             <span class="status-card status-{$contract->status}">status {$contract->status}</span>
                         </div>
                     </div>
-                    <p class="contract-number" data-contract-id="{$contract->contract_id}">Договор
-                        № {$contract->contract_id}</p>
+                    <p class="contract-number" data-contract-id="{$contract->contract_id}">
+                        Остаток: {$contract->remainder}
+                    </p>
 
                     <p class="contract-date">Следующая выплата: {$contract->next_pay}</p>
                     <span class="sum">{$contract->monthly_payment}</span><span class="currency">Cум</span>
