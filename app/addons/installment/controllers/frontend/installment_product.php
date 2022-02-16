@@ -318,15 +318,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             "code" => $_REQUEST['code'],
             "phone" => $user['phone']
         ];
-<<<<<<< HEAD
-=======
-
->>>>>>> d44b2d28f3488dc5a05f5f4861619e40e3eea6c4
         $response = php_curl('/buyers/check-user-sms', $data, 'POST', $user['api_key']);
         Registry::get('ajax')->assign('result', $response);
         exit();
     }
-
 
 }
 
@@ -606,10 +601,8 @@ if ($mode == 'profile-contracts') {
 
         Tygh::$app['view']->assign('contracts', $result);
         Tygh::$app['view']->assign('group_by', $payed_list_group_by_contract_id);
-
+        Tygh::$app['view']->assign('user_api_token', $user['api_key']);
     }
-
-
 }
 
 
