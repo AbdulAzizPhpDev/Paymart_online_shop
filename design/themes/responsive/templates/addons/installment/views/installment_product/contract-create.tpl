@@ -242,7 +242,7 @@
                 <p class="resend-sms-card">Отправить SMS еще раз (через <span class="card-resend-sms-timer">60</span>
                     сек.)</p>
 
-                <button disabled class="ty-btn ty-btn__secondary" type="button" id="modal-sent">
+                   <button disabled class="ty-btn ty-btn__secondary" type="button" id="modal-sent">
                     Продолжить
                 </button>
             </div>
@@ -253,7 +253,8 @@
 {*the second modal*}
 
 <div id="mySecondModal" class="secondModal">
-    <div class="modal-content">
+    <div class="modal-content__second">
+        <span class="close2">&times;</span>
 
     </div>
 </div>
