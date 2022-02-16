@@ -319,7 +319,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             "phone" => $user['phone']
         ];
 
-        $response = php_curl('/buyers/credit/add', $data, 'POST', $user['api_key']);
+        $response = php_curl('/buyers/check-user-sms', $data, 'POST', $user['api_key']);
         Registry::get('ajax')->assign('result', $response);
         exit();
     }
