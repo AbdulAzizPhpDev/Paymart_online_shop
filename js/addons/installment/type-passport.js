@@ -1,5 +1,5 @@
 (function (_, $) {
-  const $passport = $('.passport');
+  /*const $passport = $('.passport');
   const $idCard = $('.id-card');
 
   const typePassportMethods = {
@@ -14,5 +14,5 @@
 
   $idCard.on('click', function () {
     typePassportMethods.makeRoute({ action: 'upload-passport-id' });
-  });
+  });*/
 })(Tygh, Tygh.$);

@@ -44,12 +44,21 @@
     .contract-card {
       position: relative;
       width: 23%;
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
       border-radius: 8px;
       border: 1px solid #E0E0E0;
       padding: 12px;
       margin-right: 16px;
       margin-bottom: 16px;
+      -webkit-transition: box-shadow .4s;
+      -moz-transition: box-shadow .4s;
+      -ms-transition: box-shadow .4s;
+      -o-transition: box-shadow .4s;
+      transition: box-shadow .4s;
+
+      &:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+        cursor: pointer;
+      }
 
       @media (max-width: @notebook) {
         width: 31%;

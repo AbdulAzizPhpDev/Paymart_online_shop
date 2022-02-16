@@ -10,7 +10,7 @@
     <div class="contracts">
         {if !empty($contracts)}
             {foreach from=$contracts->contracts key=index item=contract}
-                <div class="contract-card">
+                <a href="https://paymart.uz/ru/contract/{$contract->contract_id}" target="_blank" class="contract-card">
                     <div class="header">
                         <div class="info">
                             <h3>Стиральная машина</h3>
@@ -19,15 +19,18 @@
                             <span class="status-card status-{$contract->status}">status {$contract->status}</span>
                         </div>
                     </div>
-                    <p class="contract-number" data-contract-id="{$contract->contract_id}">Договор № {$contract->contract_id}</p>
+                    <p class="contract-number" data-contract-id="{$contract->contract_id}">Договор
+                        № {$contract->contract_id}</p>
 
                     <p class="contract-date">Следующая выплата: {$contract->next_pay}</p>
                     <span class="sum">{$contract->monthly_payment}</span><span class="currency">Cум</span>
 
                     <div class="progress active" data-percentage="{$group_by[$contract->contract_id]}"></div>
                     <div class="progress inactive"></div>
-                </div>
+                </a>
             {/foreach}
+        {else}
+            <h3>Пусто</h3>
         {/if}
     </div>
 </div>
