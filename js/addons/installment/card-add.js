@@ -100,6 +100,7 @@
                 $cardPin.removeClass('d-none');
 
               } else {
+                __()
                 if (response.hasOwnProperty('info')) {
                   if (response.result.info === 'error_card_equal') {
                     cardMethods.renderErrors([
