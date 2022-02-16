@@ -31,9 +31,9 @@
                         </div>
                     </div>
                     <div class="status">
-                <span class="status-item">
-                    Не верефицирован
-                </span>
+{*                <span class="status-item">*}
+{*                    Не верефицирован*}
+{*                </span>*}
                     </div>
                 </div>
                 {*        <div class="main">*}
@@ -71,7 +71,8 @@
                         <td class="">{$product_quantity * $product_info['product_price']['price'] }</td>
                     </tr>
                     <tr>
-                        <td class="orange">{$total}</td>
+                        <td class="orange">Итого</td>
+{*                        {$total}*}
                         <td>{$product_quantity}</td>
                         <td class="orange">{$product_quantity * $product_info['product_price']['price'] }</td>
                     </tr>
