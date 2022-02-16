@@ -64,7 +64,7 @@
             $this.attr('disabled', 'disabled');
           },
           success: function (response) {
-            /*if (response) {
+            if (response) {
               const { result } = response;
 
               if (result.data.status === 'success') {
@@ -74,7 +74,7 @@
               }
             } else {
               console.error('Result does not exist. %cmethod[/buyer/send-sms-code-uz]', 'color: white; padding: 2px 5px; border: 1px dashed green');
-            }*/
+            }
           },
           error: function (error) {
             guarantMethods.renderErrors('Server Error');
