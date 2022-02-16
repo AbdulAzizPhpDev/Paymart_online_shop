@@ -318,6 +318,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             "code" => $_REQUEST['code'],
             "phone" => $user['phone']
         ];
+<<<<<<< HEAD
+=======
+
+>>>>>>> d44b2d28f3488dc5a05f5f4861619e40e3eea6c4
         $response = php_curl('/buyers/check-user-sms', $data, 'POST', $user['api_key']);
         Registry::get('ajax')->assign('result', $response);
         exit();
