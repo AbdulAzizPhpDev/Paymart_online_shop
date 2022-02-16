@@ -318,8 +318,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             "code" => $_REQUEST['code'],
             "phone" => $user['phone']
         ];
-fn_print_die($product_info);
-        $response = php_curl('/buyers/credit/add', $data, 'POST', $user['api_key']);
+        $response = php_curl('/buyers/check-user-sms', $data, 'POST', $user['api_key']);
         Registry::get('ajax')->assign('result', $response);
         exit();
     }

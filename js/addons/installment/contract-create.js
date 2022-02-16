@@ -113,9 +113,9 @@ myBtn.onclick = function () {
             textarea: txt,
         },
         callback: function (response) {
-            console.log('success')
-            let contract_id = response.result.paymart_client.contract_id;
-            otpState.contractId = contract_id;
+            console.log('success', response)
+            // let contract_id = response.result.paymart_client.contract_id;
+            otpState.contractId = response.result.paymart_client.contract_id;
                // When the user clicks on <span> (x), close the modal
             modal.style.display = "block";
                 // When the user clicks on <span> (x), close the modal
@@ -173,7 +173,7 @@ $('#modal-sent').click(function () {
 //     }, 3000);
 //     // console.log('value', value)
     $.ceAjax('request', fn_url('installment_product.set_confirm_contract'), {
-        method: "post",
+        method: "POST",
         data: {
             code: otpInputVal,
             contract_id: otpState.contractId,
@@ -181,6 +181,10 @@ $('#modal-sent').click(function () {
         callback: function (response) {
             // $("#otp").removeClass("myspinner");
             console.log(response);
+            window.location.href = fn_url('installment_product.profile-contracts');
+            // modal.style.display = "none";
+
+
             // if (response.result.data){}
 
             // $( "#otp" ).removeClass( "myspinner" );
@@ -244,11 +248,11 @@ $('#modal-sent').click(function () {
 
         },
 
-        error: function (response, error) {
-            $("#otp").removeClass("myspinner");
-            // var errorMessage = response.data.message + ': '
-            // alert('Error - ' + errorMessage);
-        }
+        // error: function (response, error) {
+        //     $("#otp").removeClass("myspinner");
+        //     // var errorMessage = response.data.message + ': '
+        //     // alert('Error - ' + errorMessage);
+        // }
     })
 
 })
