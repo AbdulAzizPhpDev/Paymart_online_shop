@@ -309,6 +309,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         Registry::get('ajax')->assign('result', $response);
         exit();
     }
+
+
+
 }
 
 if ($mode == 'get_qty') {
@@ -327,7 +330,6 @@ if ($mode == 'get_qty') {
         'redirect_to' => 'installment_product.index'
     ]);
 }
-
 
 if ($mode == 'index') {
 
@@ -534,32 +536,28 @@ if ($mode == 'profile-contracts') {
 //            9 => 'completed'
 //        );
 
-<<<<<<< HEAD
 
-    $result = json_decode($response);
-    $payed_list = [];
-    $payed_list_group_by_contract_id = [];
+        $result = $response;
+        $payed_list = [];
+        $payed_list_group_by_contract_id = [];
 
-    foreach ($result->contracts as $contract) {
-        foreach ($contract->schedule_list as $list) {
-            if ($list->status == 1) {
-                $payed_list[$list->contract_id][] = $list;
-            }
+        foreach ($result->contracts as $contract) {
+            foreach ($contract->schedule_list as $list) {
+                if ($list->status == 1) {
+                    $payed_list[$list->contract_id][] = $list;
+                }
+            };
+        }
+
+        foreach ($payed_list as $item => $value) {
+            $payed_list_group_by_contract_id[$item] = count($value);
         };
+
+        Tygh::$app['view']->assign('contracts', $result);
+        Tygh::$app['view']->assign('group_by', $payed_list_group_by_contract_id);
+
     }
 
-    foreach ($payed_list as $item => $value) {
-        $payed_list_group_by_contract_id[$item] = count($value);
-    };
-
-    Tygh::$app['view']->assign('contracts', $result);
-    Tygh::$app['view']->assign('group_by', $payed_list_group_by_contract_id);
-
-//    }
-=======
-        Tygh::$app['view']->assign('contracts', json_decode($response));
-    }
->>>>>>> 01a89392e6cd0e94aaa3aa2090f78fdefb1d7ac8
 
 }
 
