@@ -100,7 +100,7 @@
               const { result } = response;
 
               if (result.status === 'success') {
-                window.location.reload();
+                window.location.href = fn_url('installment_product.guarant');
               } else {
                 passportMethods.renderErrors(result.response.message);
               }
