@@ -1,16 +1,16 @@
 {script src="js/addons/installment/profile-contracts.js"}
 
 <div class="profile-contracts-page">
-    <h1>Договора</h1>
-    <div class="search-container">
-        <input type="search" placeholder="Search" class="form-control search-contracts">
-        <img class="search-icon" src="/design/themes/responsive/media/icons/search.svg" alt="search">
-    </div>
-
-    <div class="contracts">
-        {if !empty($contracts)}
+    {if !empty($contracts->contracts)}
+        <h1>Договора</h1>
+        <div class="search-container">
+            <input type="search" placeholder="Search" class="form-control search-contracts">
+            <img class="search-icon" src="/design/themes/responsive/media/icons/search.svg" alt="search">
+        </div>
+        <div class="contracts">
             {foreach from=$contracts->contracts key=index item=contract}
-                <a href="https://paymart.uz/ru/contract/{$contract->contract_id}" target="_blank" class="contract-card">
+                <a href="https://paymart.uz/ru/contract/{$contract->contract_id}?api_token={$user_api_token}"
+                   target="_blank" class="contract-card">
                     <div class="header">
                         <div class="info">
                             <h3>Стиральная машина</h3>
@@ -29,8 +29,8 @@
                     <div class="progress inactive"></div>
                 </a>
             {/foreach}
-        {else}
-            <h3>Пусто</h3>
-        {/if}
-    </div>
+        </div>
+    {else}
+        <h1 class="text-center">Пусто</h1>
+    {/if}
 </div>
