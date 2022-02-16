@@ -89,11 +89,21 @@ $(document).ready(function() {
 // When the user clicks on the button, open the modal
 myBtn.onclick = function () {
 
+
+        var val = document.querySelector('textarea').value;
+
+        if (/^\s*$/g.test(val) || val.indexOf('\n') != -1) {
+            $('textarea').css('border','1px solid red').focus()
+            return
+        }
+
     let city = $('#formAddress').val();
     let region = $('#formAddress2').val();
     // let txt = document.getElementsByTagName("textarea");
     let txt = $("#story").val();
-
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
     // console.log('address', txt)
     // $.ceAjax('request', 'installment_product.set_contracts', {
     //     result_ids: otpState.setContract,

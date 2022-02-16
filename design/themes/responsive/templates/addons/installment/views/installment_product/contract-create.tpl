@@ -20,7 +20,8 @@
                     <div class="main-first">
                         <div class="main-profile">
                             <img class="main-profile__img"
-                                 src="/design/themes/responsive/media/images/addons/installment/profile.png"
+{*                                 src="/design/themes/responsive/media/images/addons/installment/profile.png"*}
+                                 src="/design/themes/responsive/media/images/user.png"
                                  alt="Profile image">
                             <div class="main-profile__text">
                                 <span class="main-profile__text-item">{$user['firstname']}  {$user['lastname']}</span>
@@ -167,7 +168,7 @@
                             <img src="/design/themes/responsive/media/images/addons/installment/billing-ico.png"
                                  alt="Billing ico">
                             <div class="input-paying__text">
-                                <div class="input-paying__text-title">Итого с учетом расрочки:</div>
+                                <div class="input-paying__text-title">Итого с учетом наценки:</div>
                                 <div class="input-paying__text-p">{$total} сум</div>
                             </div>
                         </div>
@@ -218,7 +219,7 @@
                     </div>
                 </form>
                 <div class="form-button">
-                    <button id="myBtn" class="form-button__item" type="submit" form="form1" value="Submit">Оформить
+                    <button id="myBtn" class="form-button__item" type="submit" form="form1">Оформить
                         рассрочку
                     </button>
                 </div>
