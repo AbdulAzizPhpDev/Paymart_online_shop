@@ -311,12 +311,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if ($mode == "set_confirm_contract") {
-        $product_info = db_get_row('SELECT *,product_description.product as product_name FROM ?:products as product 
-        INNER JOIN ?:companies as company ON product.company_id = company.company_id 
-        INNER JOIN ?:product_prices as product_price ON product.product_id = product_price.product_id 
-        INNER JOIN ?:product_descriptions as product_description ON product.product_id = product_description.product_id 
-        WHERE product.product_id = ?i ', Tygh::$app['session']['product_info']['product_id']);
-        $user = db_get_row('select * from ?:users where user_id=?i', $product_info['p_c_token']);
+
+        $user = db_get_row('select * from ?:users where user_id=?i', $auth['user_id']);
         $data = [
             "contract_id" => $_REQUEST['contract_id'],
             "code" => $_REQUEST['code'],
