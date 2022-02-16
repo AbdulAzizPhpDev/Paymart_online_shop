@@ -450,7 +450,6 @@ if ($mode == "contract-create") {
         $datas['product_descriptions'] = db_get_row('SELECT * FROM ?:product_descriptions WHERE product_id = ?i', $datas['product_id']);
         $datas['product_price'] = db_get_row('SELECT * FROM ?:product_prices WHERE product_id = ?i', $datas['product_id']);
         $user = db_get_row('SELECT * FROM ?:users WHERE user_id = ?i', $auth['user_id']);
-
         if (empty($user['firstname']) && empty($user['lastname'])) {
             $response = php_curl('/buyer/detail', [], 'GET', $user['api_key']);
             if ($response->status == "success") {
@@ -501,8 +500,10 @@ if ($mode == "contract-create") {
 
         $response = json_decode(curl_exec($curl));
 
+
         curl_close($curl);
         $data = $datas["p_c_id"];
+        fn_print_die($response);
         $items = $response->data->orders->$data->price;
         Tygh::$app['view']->assign('total', $items->total);
         Tygh::$app['view']->assign('origin', $items->origin);
