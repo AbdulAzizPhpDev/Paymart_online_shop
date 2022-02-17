@@ -144,11 +144,11 @@
             if (response) {
               const { result } = response;
 
-              if (result.data.status === 'success') {
+              if (result.status === 'success') {
                 window.location.reload();
                 // cardMethods.makeRoute({ action: 'type-passport' });
               } else {
-                cardMethods.renderErrors(result.data.response.message);
+                cardMethods.renderErrors(result.response.message);
               }
             } else {
               console.error('Result does not exist. %cmethod[/buyer/send-sms-code-uz]', 'color: white; padding: 2px 5px; border: 1px dashed green');
