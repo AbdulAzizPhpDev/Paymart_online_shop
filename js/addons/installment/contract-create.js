@@ -78,7 +78,7 @@ $(document).ready(function() {
                 console.log(response.data.price.total)
                 $(".input-paying__text-p").html(response.data.price.total + ' сум')
                 $(".input-paying__text-a").html(response.data.price.month + ' сум')
-                $(".orange").html(response.data.price.total + ' сум')
+                // $(".orange").html(response.data.price.total + ' сум')
             }
         });
     });
