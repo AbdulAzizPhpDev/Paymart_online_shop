@@ -602,6 +602,7 @@ if ($mode == 'profile-contracts') {
         Tygh::$app['view']->assign('contracts', $result);
         Tygh::$app['view']->assign('group_by', $payed_list_group_by_contract_id);
         Tygh::$app['view']->assign('user_api_token', $user['api_key']);
+        Tygh::$app['view']->assign('user_phone', $user['phone']);
     }
 }
 

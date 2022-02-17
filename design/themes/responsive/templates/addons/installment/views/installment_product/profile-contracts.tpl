@@ -9,7 +9,7 @@
         </div>
         <div class="contracts">
             {foreach from=$contracts->contracts key=index item=contract}
-                <a href="https://front.paymart.uz/ru/contract/{$contract->contract_id}?api_token={$user_api_token}"
+                <a href="http://localhost:3001/uz/market/contract/{$contract->contract_id}?api_token={$user_api_token}&user_phone={$user_phone}"
                    target="_blank" class="contract-card">
                     <div class="header">
                         <div class="info">
