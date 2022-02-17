@@ -16,7 +16,7 @@
                             <h3>Договор № {$contract->contract_id}</h3>
                         </div>
                         <div class="status-container">
-                            <span class="status-card status-{$contract->status}">status {$contract->status}</span>
+                            <span class="status-card status_{$contract->status}">status {__($contract->status)}</span>
                         </div>
                     </div>
                     <p class="contract-number" data-contract-id="{$contract->contract_id}">

@@ -93,23 +93,23 @@
           width: 40%;
 
           .status-card {
-            &.status-1 {
+            &.status_active {
               .contractStatusStyle();
             }
 
-            &.status-2 {
+            &.status_moderation {
               .contractStatusStyle(@bg-color: rgba(255, 164, 29, 0.15), @color: #FFA41D)
             }
 
-            &.status-3 {
+            &.status_expired {
               .contractStatusStyle(@bg-color: rgba(248, 67, 67, 0.15), @color: @fail)
             }
 
-            &.status-4, &.status-5, &.status-0 {
+            &.status_expired_above_60_days, &.status_cancel, &.status_not_active {
               .contractStatusStyle(@bg-color: rgba(112, 112, 112, 0.15), @color: rgba(112, 112, 112, 1))
             }
 
-            &.status-9 {
+            &.status_completed {
               .contractStatusStyle(@bg-color: @success-light, @color: @success)
             }
           }
@@ -146,6 +146,7 @@
           z-index: 2;
           background-color: @main;
         }
+
         &.inactive {
           right: 0;
           width: 100%;
