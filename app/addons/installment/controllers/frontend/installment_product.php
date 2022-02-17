@@ -14,6 +14,7 @@
 
 use Tygh\Registry;
 use Tygh\Tools\Url;
+use Tygh\Enum\Addons\Installment\InstallmentVar;
 
 if (!defined('BOOTSTRAP')) {
     die('Access denied');
@@ -478,77 +479,26 @@ if ($mode == "contract-create") {
         if ($mode_type !== $user_step) {
             return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
         }
-        $curl = curl_init();
-
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://dev.paymart.uz/api/v1/order/calculate',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => '{
-                "type": "credit",
-                "period":12,
-                "products": {
-                    "' . $datas["p_c_id"] . '": [
-                        {
-                            "price": ' . $datas['product_price']['price'] . ',
-                            "amount": ' . $product_quantity . ',
-                            "name": "' . $datas['product_descriptions']['product'] . '"
-                        }
+        $data = [
+            "type" => "credit",
+            "period" => 12,
+            "products" => [
+                $datas["p_c_id"] => [
+                    [
+                        "price" => $datas['product_price']['price'],
+                        "amount" => $product_quantity,
+                        "name" => $datas['product_descriptions']['product']
                     ]
-                },
-                "partner_id": ' . $datas["p_c_id"] . ',
-                "user_id": ' . $user['p_user_id'] . '
-            }',
-            CURLOPT_HTTPHEADER => array(
-                'Authorization: Bearer ' . $datas['p_c_token'],
-                'Content-Type: application/json'
-            ),
-        ));
+                ]
+            ],
+            "partner_id" => $datas["p_c_id"],
+            "user_id" => $user['p_user_id']
 
+        ];
+        $response = php_curl('/order/calculate', $data, 'POST', $datas['p_c_token']);
 
-//        $curl = curl_init();
-//
-//        curl_setopt_array($curl, array(
-//            CURLOPT_URL => 'https://dev.paymart.uz/api/v1/order/calculate',
-//            CURLOPT_RETURNTRANSFER => true,
-//            CURLOPT_ENCODING => '',
-//            CURLOPT_MAXREDIRS => 10,
-//            CURLOPT_TIMEOUT => 0,
-//            CURLOPT_FOLLOWLOCATION => true,
-//            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-//            CURLOPT_CUSTOMREQUEST => 'POST',
-//            CURLOPT_POSTFIELDS => '{
-//    "type": "credit",
-//    "period":12,
-//    "products": {
-//        "215030": [
-//            {
-//                "price": 30,
-//                "amount": 1,
-//                "name": "test11"
-//            }
-//        ]
-//    },
-//    "partner_id": 215030,
-//    "user_id": 371618
-//}
-//',
-//            CURLOPT_HTTPHEADER => array(
-//                'Authorization: Bearer 5233c73b2a68016fbcfc51ccfd35c6ed',
-//                'Content-Type: application/json'
-//            ),
-//        ));
-
-
-        $response = json_decode(curl_exec($curl));
-
-        curl_close($curl);
         $id = (int)$datas["p_c_id"];
+
         $items = $response->data->orders->$id->price;
         Tygh::$app['view']->assign('total', $items->total);
         Tygh::$app['view']->assign('origin', $items->origin);
@@ -558,7 +508,6 @@ if ($mode == "contract-create") {
         Tygh::$app['view']->assign('product_quantity', $product_quantity);
         Tygh::$app['view']->assign('user', $user);
 
-//        fn_print_die($response->status, $response->data->orders->$data->price);
     }
 
 }
@@ -572,22 +521,12 @@ if ($mode == 'profile-contracts') {
         $user = db_get_row('SELECT * FROM ?:users WHERE user_id = ?i', $auth['user_id']);
         $response = php_curl('/buyer/contracts', [], 'GET', $user['api_key']);
 
-//    $statuses = array(
-//            0 => 'not-active',
-//            1 => 'active',
-//            2 => 'moderation',
-//            3 => 'expired',
-//            4 => 'expired above 60 days',
-//            5 => 'cancel',
-//            9 => 'completed'
-//        );
-
-
         $result = $response;
         $payed_list = [];
         $payed_list_group_by_contract_id = [];
 
-        foreach ($result->contracts as $contract) {
+        foreach ($result->contracts as $key => $contract) {
+            $result->contracts[$key]->status = InstallmentVar::Status[$contract->status];
             foreach ($contract->schedule_list as $list) {
                 if ($list->status == 1) {
                     $payed_list[$list->contract_id][] = $list;
