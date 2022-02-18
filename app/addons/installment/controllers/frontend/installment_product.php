@@ -472,13 +472,13 @@ if ($mode == "contract-create") {
                 $user = db_get_row('SELECT * FROM ?:users WHERE user_id = ?i', $auth['user_id']);
             }
         }
-        checkUserFromPaymart($auth['user_id']);
-        list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
-        $user_step = checkInstallmentStep($auth['user_id']);
+//        checkUserFromPaymart($auth['user_id']);
+//        list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
+//        $user_step = checkInstallmentStep($auth['user_id']);
 
-        if ($mode_type !== $user_step) {
-            return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
-        }
+//        if ($mode_type !== $user_step) {
+//            return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
+//        }
         $data = [
             "type" => "credit",
             "period" => 12,
@@ -507,6 +507,10 @@ if ($mode == "contract-create") {
         Tygh::$app['view']->assign('product_info', $datas);
         Tygh::$app['view']->assign('product_quantity', $product_quantity);
         Tygh::$app['view']->assign('user', $user);
+        if ((int)$user['i_limit'] < (int)$datas['product_price']['price']) {
+            fn_set_notification('W', __('warning'), "Senga emas bu maxsulotni olish, qashshoq! &#128513 ", 'S');
+        }
+
 
     }
 
