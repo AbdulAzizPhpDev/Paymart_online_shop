@@ -33,6 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($auth['user_id']) {
             $user = db_get_row('select * from ?:users where user_id = ?s', $auth['user_id']);
             $response = php_curl('/buyer/send-sms-code-uz', $data, 'POST', $user['api_key']);
+
             Registry::get('ajax')->assign('result', $response);
             exit();
         }
@@ -151,7 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $curl = curl_init();
             curl_setopt_array($curl, array(
-                CURLOPT_URL => 'https://dev.paymart.uz/api/v1/buyer/verify/modify',
+                CURLOPT_URL => 'https://test.paymart.uz/api/v1/buyer/verify/modify',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -472,13 +473,13 @@ if ($mode == "contract-create") {
                 $user = db_get_row('SELECT * FROM ?:users WHERE user_id = ?i', $auth['user_id']);
             }
         }
-//        checkUserFromPaymart($auth['user_id']);
-//        list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
-//        $user_step = checkInstallmentStep($auth['user_id']);
+        checkUserFromPaymart($auth['user_id']);
+        list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
+        $user_step = checkInstallmentStep($auth['user_id']);
 
-//        if ($mode_type !== $user_step) {
-//            return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
-//        }
+        if ($mode_type !== $user_step) {
+            return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
+        }
         $data = [
             "type" => "credit",
             "period" => 12,

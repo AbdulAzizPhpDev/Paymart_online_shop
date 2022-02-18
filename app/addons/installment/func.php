@@ -21,6 +21,7 @@ if (!defined('BOOTSTRAP')) {
     die('Access denied');
 }
 
+
 function checkInstallmentStep($user_id)
 {
     $user = db_get_row('select * from ?:users where user_id = ?s', $user_id);
@@ -33,15 +34,17 @@ function checkUserFromPaymart($user_id)
 
     if (!empty($user['api_key'])) {
         $response = php_curl('/buyer/check_status', [], 'POST', $user['api_key']);
+
         if ($response->data->status != $user['i_step']) {
             $user_info = [
                 'i_step' => $response->data->status
             ];
-
-            if ($response->data->status == 4) {
-                $user_info['i_limit'] = $response->data->available_balance;
-            }
             db_query('UPDATE ?:users SET ?u WHERE user_id = ?i', $user_info, $user['user_id']);
+        } else {
+            if ($response->data->status == 4) {
+                $user_info = ['i_limit' => $response->data->available_balance];
+                db_query('UPDATE ?:users SET ?u WHERE user_id = ?i', $user_info, $user['user_id']);
+            }
         }
         return true;
     }
