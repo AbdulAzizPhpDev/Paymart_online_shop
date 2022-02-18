@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ];
         $curl = curl_init();
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://dev.paymart.uz/api/v1/login/send-sms-code',
+            CURLOPT_URL => 'https://test.paymart.uz/api/v1/login/send-sms-code',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -164,7 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ];
         $curl = curl_init();
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://dev.paymart.uz/api/v1/login/auth',
+            CURLOPT_URL => 'https://test.paymart.uz/api/v1/login/auth',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,

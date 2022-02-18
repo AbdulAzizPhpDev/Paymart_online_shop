@@ -92,7 +92,9 @@
           },
           callback: function (response) {
             if (response) {
-              if (response.status === 'success') {
+              const { result } = response;
+
+              if (result.status === 'success') {
                 $cardNumberContainer.addClass('d-none');
                 cardMethods.timerResendSms();
 
@@ -100,19 +102,19 @@
                 $cardPin.removeClass('d-none');
 
               } else {
-                if (response.hasOwnProperty('info')) {
-                  if (response.result.info === 'error_card_equal') {
+                if (result.hasOwnProperty('info')) {
+                  if (result.result.info === 'error_card_equal') {
                     cardMethods.renderErrors([
-                      response.result.info,
-                      response.result.card_data?.card_owner,
-                      response.result.card_data?.card_phone,
-                      response.result.card_data.total_debt,
+                      result.result.info,
+                      result.result.card_data?.card_owner,
+                      result.result.card_data?.card_phone,
+                      result.result.card_data.total_debt,
                     ]);
                   } else {
-                    cardMethods.renderErrors(response.result.info);
+                    cardMethods.renderErrors(result.result.info);
                   }
                 } else {
-                  cardMethods.renderErrors(response.result.status);
+                  cardMethods.renderErrors(result.result.status);
                 }
               }
             } else {
