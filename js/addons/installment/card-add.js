@@ -103,18 +103,18 @@
 
               } else {
                 if (result.hasOwnProperty('info')) {
-                  if (result.result.info === 'error_card_equal') {
+                  if (result.info === 'error_card_equal') {
                     cardMethods.renderErrors([
-                      result.result.info,
-                      result.result.card_data?.card_owner,
-                      result.result.card_data?.card_phone,
-                      result.result.card_data.total_debt,
+                      result.info,
+                      result.card_data?.card_owner,
+                      result.card_data?.card_phone,
+                      result.card_data.total_debt,
                     ]);
                   } else {
-                    cardMethods.renderErrors(result.result.info);
+                    cardMethods.renderErrors(result.info);
                   }
                 } else {
-                  cardMethods.renderErrors(result.result.status);
+                  cardMethods.renderErrors(result.status);
                 }
               }
             } else {
