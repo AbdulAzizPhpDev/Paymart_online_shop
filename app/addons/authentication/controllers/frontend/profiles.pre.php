@@ -50,26 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $data = [
             'phone' => $_REQUEST['phone']
         ];
-        $curl = curl_init();
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://test.paymart.uz/api/v1/login/send-sms-code',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => json_encode($data),
-            CURLOPT_HTTPHEADER => array(
-                'Content-Type: application/json'
-            ),
-        ));
-        $response = curl_exec($curl);
-
-        $response_data = json_decode($response);
-        curl_close($curl);
-
+        php_curl('/login/send-sms-code', $data, 'POST', null);
         $data = db_get_field('SELECT user_id FROM ?:users WHERE phone = ?i', $_REQUEST['phone']);
         if (empty($data)) {
             $user = create_user($_REQUEST['phone']);
@@ -198,7 +179,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             Registry::get('ajax')->assign('result', $response);
             exit();
         }
-            Registry::get('ajax')->assign('result', $response);
+        Registry::get('ajax')->assign('result', $response);
         exit();
 
 
