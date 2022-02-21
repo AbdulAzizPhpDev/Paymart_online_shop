@@ -146,7 +146,7 @@
 
   $userPhoneSmsSent.text(methods.makePhoneNumberHidden);
 
-  $buyerPhone.inputmask('998 [99 999-99-99]', { placeholder: '*' });
+  $buyerPhone.inputmask('[999 99 999-99-99]', { placeholder: '*' });
 
 })(Tygh, Tygh.$);
 /*
