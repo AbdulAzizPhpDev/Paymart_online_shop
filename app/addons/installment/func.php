@@ -80,13 +80,13 @@ function php_curl($url = '', $data = [], $method = "GET", $token = null)
     return $response;
 }
 
-function showErrors($test, $data = []): array
+function showErrors($text, $data = []): array
 {
     $error = [
         'status' => "error",
         'response' => [
             "code" => "401",
-            "message" => __("$test"),
+            "message" => __("$text"),
             "errors" => ""
         ],
         'data' => $data

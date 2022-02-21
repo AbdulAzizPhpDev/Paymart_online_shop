@@ -138,7 +138,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            
+
                                 {foreach $usergroups as $usergroup}
                                     {if $user_data.usergroups[$usergroup.usergroup_id]}
                                         {$ug_status = $user_data.usergroups[$usergroup.usergroup_id].status}

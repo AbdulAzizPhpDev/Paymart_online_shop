@@ -70,28 +70,29 @@ function createEmail()
     );
 }
 
-function create_user($phone, $first_name = '', $last_name = '')
+function create_user($phone = null, $first_name = '', $last_name = '', $password = 123456789, $user_type = 'C', $company_id = 0, $email = null)
 {
+    if (!$email) {
 
-    list($email) = createEmail();
+        list($email) = createEmail();
+    }
 
     $user_data['firstname'] = $first_name;
     $user_data['lastname'] = $last_name;
     $user_data['phone'] = $phone;
     $user_data['email'] = $email;
-    $user_data['password'] = fn_password_hash(123456789);;
-    $user_data['company_id'] = 1;
+    $user_data['password'] = fn_password_hash($password);;
+    $user_data['company_id'] = $company_id;
     $user_data['lang_code'] = CART_LANGUAGE;
     $user_data['timestamp'] = TIME;
-    $user_data['user_type'] = "C";
+    $user_data['user_type'] = $user_type;
     $user_data['status'] = "A";
     $user_data['password_change_timestamp'] = 1;
+
     $user_id = db_query("INSERT INTO ?:users ?e", $user_data);
     $u_data = fn_get_user_info($user_id, false);
-
     $data['user_login'] = 'user_' . $user_id;
     db_query('UPDATE ?:users SET ?u WHERE user_id = ?i', $data, $user_id);
-
     return $user_id;
 }
 
@@ -112,18 +113,6 @@ function fn_authentication_get_profile_fields_post($location, $_auth, $lang_code
     foreach ($profile_fields['C'] as $key => $data) {
         $profile_fields['C'][$key]['required'] = "Y";
     }
-}
-
-function fn_authentication_test_hook($var1, $var2)
-{
-
-
-    $data = "var1_test";
-    $data2 = "var2_test";
-
-    fn_set_hook('test_hook', $data, $data2);
-
-    return array($data2);
 }
 
 
