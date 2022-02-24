@@ -32,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $response = php_curl('/login/auth', $data, 'POST', null);
 
                     if ($response->status == "success") {
+
                         $check = db_get_row('select * from ?:companies where p_c_id=?i ', $_REQUEST['id']);
 
                         if (!$check) {
@@ -52,17 +53,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             $com = db_query('INSERT INTO ?:companies ?e', $data);
                             $user_data = db_get_row('select * from ?:users where p_user_id=?i ', $response->data->user_id);
 
-                            if (empty($user_data)) {
-                                $user_detail = php_curl('/buyer/detail', [], 'POST', $response->data->api_token);
+                            $user_detail = php_curl('/buyer/detail', [], 'POST', $response->data->api_token);
 
-                                $user_id = create_user(999999999, $user_detail->data->name, $user_detail->data->surname, $_REQUEST['password'], 'V', $com, $email);
+                            $user_id = create_user(999999999, $user_detail->data->name, $user_detail->data->surname, $_REQUEST['password'], 'V', $com, $email);
 
-                                $data_u = [
-                                    'api_key' => $response->data->api_token,
-                                    'p_user_id' => $response->data->user_id
-                                ];
-                                db_query('UPDATE ?:users SET ?u WHERE user_id = ?i', $data_u, $user_id);
-                            }
+                            $data_u = [
+                                'api_key' => $response->data->api_token,
+                                'p_user_id' => $response->data->user_id
+                            ];
+                            db_query('UPDATE ?:users SET ?u WHERE user_id = ?i', $data_u, $user_id);
+
 
                             Tygh::$app['session']->regenerateID();
                             fn_login_user($user_id, true);
@@ -76,10 +76,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             exit();
 
 
-                        }
-                        else {
+                        } else {
+                            $user_data = db_get_row('select * from ?:users where p_user_id=?i ', $response->data->user_id);
+                            $ekey = fn_generate_ekey($user_data['user_id'], 'U', SECONDS_IN_DAY);
+                            $vendor_id = $check['company_id'];
+                            $url = "http://market.paymart.uz/vendor.php?dispatch=auth.ekey_login&ekey=$ekey&company_id=$vendor_id";
 
                             Registry::get('ajax')->assign('result', $response);
+                            Registry::get('ajax')->assign('url', $url);
                             exit();
                         }
 
