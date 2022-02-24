@@ -57,10 +57,7 @@
             password: vendor_password,
           },
           callback: function (response) {
-            console.log(response);
-            if (response) {
-              // window.location.href = response.result.url;
-
+            if (response.result) {
               const { result } = response;
 
               if (result.result.status === 'success') {
@@ -69,7 +66,7 @@
                 }
               }
 
-              if (result.status === 'error') {
+              if (result.result.status === 'error') {
                 if (result.result.response.errors.hasOwnProperty('partner_id')) {
                   vendorAuthMethods.renderErrors(result.result.response.errors.partner_id);
                 } else {
@@ -77,7 +74,7 @@
                 }
               }
             } else {
-              console.error('Result does not exist. %cmethod[vendor_login.login]', 'color: white; padding: 2px 5px; border: 1px dashed green');
+              document.write(response.text);
             }
           },
         });
