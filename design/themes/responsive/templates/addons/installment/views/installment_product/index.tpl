@@ -74,6 +74,7 @@ $('#pinwrapper').pinlogin({
   reset: false,
   complete: function (pin) {
     $('.buyer-sms-code-installment').attr('value', pin);
+    $('#installmentConfirmCodeBtn').click();
   },
 });
 </script>

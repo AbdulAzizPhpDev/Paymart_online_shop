@@ -62,7 +62,7 @@
 
               if (result.status === 'success') {
                 alert('logged in');
-                window.location.href = 'http://market.paymart.uz/vendor.php';
+                window.location.href = 'http://market.paymart.uz/vendor.php';h
 
               } else {
                 if (result.response.errors.hasOwnProperty('partner_id')) {

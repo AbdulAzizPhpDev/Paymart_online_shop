@@ -71,6 +71,7 @@ $('#card-pin-wrapper').pinlogin({
   reset: false,
   complete: function (pin) {
     $('.buyer-card-code-installment').attr('value', pin);
+    $('#installmentSendCardCodeBtn').click();
   },
 });
 </script>
