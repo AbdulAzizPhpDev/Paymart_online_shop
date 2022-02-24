@@ -71,8 +71,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                             $url = "http://market.paymart.uz/vendor.php?dispatch=auth.ekey_login&ekey=$ekey&company_id=$com";
 
-                            Registry::get('ajax')->assign('result', $response);
-                            Registry::get('ajax')->assign('url', $url);
+                            $res =[
+                                'result'=>$response,
+                                'url'=>$url
+                            ];
+                            Registry::get('ajax')->assign('result', $res);
                             exit();
 
 
@@ -81,9 +84,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             $ekey = fn_generate_ekey($user_data['user_id'], 'U', SECONDS_IN_DAY);
                             $vendor_id = $check['company_id'];
                             $url = "http://market.paymart.uz/vendor.php?dispatch=auth.ekey_login&ekey=$ekey&company_id=$vendor_id";
+                           $res =[
+                               'result'=>$response,
+                               'url'=>$url
+                           ];
+                            Registry::get('ajax')->assign('result', $res);
 
-                            Registry::get('ajax')->assign('result', $response);
-                            Registry::get('ajax')->assign('url', $url);
                             exit();
                         }
 
