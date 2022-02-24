@@ -64,9 +64,12 @@
               const { result } = response;
 
               if (result.result.status === 'success') {
-                window.location.href = result.url;
+                if (result.url) {
+                  window.location.href = result.url;
+                }
+              }
 
-              } else {
+              if (result.status === 'error') {
                 if (result.result.response.errors.hasOwnProperty('partner_id')) {
                   vendorAuthMethods.renderErrors(result.result.response.errors.partner_id);
                 } else {
