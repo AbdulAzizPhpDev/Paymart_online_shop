@@ -160,6 +160,20 @@
 
 		                {if $capture_options_vs_qty}{/capture}{/if}
 
+                        <div class="installment-periods ty-control-group">
+                            <input type="radio" name="period" value="3" id="3" class="ty-product-options__radio">
+                            <label class="ty-product-options__radio--label" for="3">3 месяц</label>
+
+                            <input class="ty-product-options__radio" value="6" type="radio" name="period" id="6">
+                            <label class="ty-product-options__radio--label" for="6">6 месяц</label>
+
+                            <input class="ty-product-options__radio" value="9" type="radio" name="period" id="9">
+                            <label class="ty-product-options__radio--label" for="9">9 месяц</label>
+
+                            <input class="ty-product-options__radio" value="12" type="radio" name="period" id="12" checked>
+                            <label class="ty-product-options__radio--label" for="12">12 месяц</label>
+                        </div>
+
 		                <div class="ut2-pb__advanced-option clearfix">
 
 		                    {if $capture_options_vs_qty}{capture name="product_options"}{$smarty.capture.product_options nofilter}{/if}

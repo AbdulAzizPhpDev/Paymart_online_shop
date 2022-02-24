@@ -30,9 +30,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         'password' => $_REQUEST['password'],
                         'role' => 'partner'];
                     $response = php_curl('/login/auth', $data, 'POST', null);
-//                    fn_print_die($response);
 
                     if ($response->status == "success") {
+
                         $check = db_get_row('select * from ?:companies where p_c_id=?i ', $_REQUEST['id']);
 
                         if (!$check) {
@@ -71,9 +71,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                             $url = "http://market.paymart.uz/vendor.php?dispatch=auth.ekey_login&ekey=$ekey&company_id=$com";
 
-                            $res = [
-                                'result' => $response,
-                                'url' => $url
+                            $res =[
+                                'result'=>$response,
+                                'url'=>$url
                             ];
                             Registry::get('ajax')->assign('result', $res);
                             exit();
@@ -81,14 +81,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                         } else {
                             $user_data = db_get_row('select * from ?:users where p_user_id=?i ', $response->data->user_id);
-                            fn_print_die($response->data->user_id);
                             $ekey = fn_generate_ekey($user_data['user_id'], 'U', SECONDS_IN_DAY);
                             $vendor_id = $check['company_id'];
                             $url = "http://market.paymart.uz/vendor.php?dispatch=auth.ekey_login&ekey=$ekey&company_id=$vendor_id";
-                            $res = [
-                                'result' => $response,
-                                'url' => $url
-                            ];
+                           $res =[
+                               'result'=>$response,
+                               'url'=>$url
+                           ];
                             Registry::get('ajax')->assign('result', $res);
 
                             exit();

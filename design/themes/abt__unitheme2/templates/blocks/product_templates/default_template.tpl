@@ -161,7 +161,10 @@
 
 		                {assign var="product_edp" value="product_edp_`$obj_id`"}
 		                {$smarty.capture.$product_edp nofilter}
-
+						<button>3</button>
+						<button>6</button>
+						<button>9</button>
+						<button>12</button>
 		                {if $capture_options_vs_qty}{capture name="product_options"}{$smarty.capture.product_options nofilter}{/if}
 		                <div class="ut2-qty__wrap {if $min_qty && $product.min_qty}min-qty{/if} ut2-pb__field-group">
 		                    {assign var="qty" value="qty_`$obj_id`"}
