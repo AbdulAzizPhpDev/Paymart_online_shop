@@ -70,13 +70,13 @@ function createEmail()
     );
 }
 
-function create_user($phone = null, $first_name = '', $last_name = '', $password = 123456789, $user_type = 'C', $company_id = 0, $email = null)
+function create_user($phone = 0, $first_name = '', $last_name = '', $password = 123456789, $user_type = 'C', $company_id = 0, $email = null)
 {
     if (!$email) {
-
         list($email) = createEmail();
     }
-
+//    $u_data = fn_get_user_info(30, false);
+//    fn_print_die($u_data);
     $user_data['firstname'] = $first_name;
     $user_data['lastname'] = $last_name;
     $user_data['phone'] = $phone;
@@ -89,8 +89,7 @@ function create_user($phone = null, $first_name = '', $last_name = '', $password
     $user_data['status'] = "A";
     $user_data['password_change_timestamp'] = 1;
 
-    $user_id = db_query("INSERT INTO ?:users ?e", $user_data);
-    $u_data = fn_get_user_info($user_id, false);
+    $user_id = db_query('INSERT INTO ?:users ?e', $user_data);
     $data['user_login'] = 'user_' . $user_id;
     db_query('UPDATE ?:users SET ?u WHERE user_id = ?i', $data, $user_id);
     return $user_id;
