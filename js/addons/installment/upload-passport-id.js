@@ -100,10 +100,9 @@
           contentType: false,
           data: formData,
           success: function (response) {
-            console.log(response);
-            /*const { data: result } = response;
-
             if (response) {
+              const { result } = response;
+
               if (result.status === 'success') {
 
                 passportMethods.makeRoute({ action: 'guarant' });
@@ -114,7 +113,7 @@
 
             } else {
               console.error('Result does not exist. %cmethod[/buyer/send-sms-code-uz]', 'color: white; padding: 2px 5px; border: 1px dashed green');
-            }*/
+            }
           },
         });
       } else {

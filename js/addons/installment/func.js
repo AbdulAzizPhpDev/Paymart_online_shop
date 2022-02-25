@@ -21,7 +21,7 @@
     userStatus: 0,
     errors: [],
     error: null,
-    userPhoneNumber: Cookies.get('buyer-phone') || '+998 ********',
+    userPhoneNumber: '+998 ********',
     hasAgree: false,
   };
 
@@ -51,13 +51,13 @@
       }, 1000);
     },
     sendSMS: function (event) {
-      installmentState.userPhoneNumber = $buyerPhone.val();
-      // console.log($buyerPhone.val().replace(/[ +-]/g, ''));
+      const buyerPhoneUnmasked = $buyerPhone.inputmask('unmaskedvalue');
+      installmentState.userPhoneNumber = buyerPhoneUnmasked;
 
       $.ceAjax('request', fn_url('profiles.send_sms'), {
         method: 'POST',
         data: {
-          phone: $buyerPhone.val().replace(/[ +-]/g, '') || null,
+          phone: buyerPhoneUnmasked,
         },
         callback: function callback(response) {
           if (response) {
@@ -78,20 +78,22 @@
       });
     },
     confirmCode: function (event) {
+      const buyerPhoneUnmasked = $buyerPhone.inputmask('unmaskedvalue');
+
       $.ceAjax('request', fn_url('profiles.confirm'), {
         method: 'POST',
         data: {
-          phone: $buyerPhone.val().replace(/[ +-]/g, ''),
+          phone: buyerPhoneUnmasked,
           code: $buyerSmsCode.val(),
           redirect_url: $('input[name="redirect_url"]').val(),
         },
-        callback: function callback(response) {
+        callback: function (response) {
           if (response) {
             const { result } = response;
 
             if (result.status === 'success') {
               Cookies.set('api_token', result.data.api_token, { expires: 2 });
-              Cookies.set('buyer-phone', $buyerPhone.val());
+              Cookies.set('buyer-phone', buyerPhoneUnmasked);
 
               if (result.data.id) {
                 Cookies.set('user_id', result.data.id);
@@ -112,6 +114,7 @@
     changePhone: function () {
       $confirmation.addClass('d-none');
       $sendingSms.removeClass('d-none');
+      clearInterval(installmentState.interval);
     },
     agreement: function (e) {
       const hasChecked = e.target.checked;
@@ -123,9 +126,9 @@
       }
     },
     makePhoneNumberHidden: function () {
-      const buyerPhone = typeof installmentState.buyerPhone !== 'string'
-        ? String(installmentState.buyerPhone)
-        : installmentState.buyerPhone;
+      const buyerPhone = typeof installmentState.userPhoneNumber !== 'string'
+        ? String(installmentState.userPhoneNumber)
+        : installmentState.userPhoneNumber;
 
       const phoneNumberArray = buyerPhone.split('');
 
@@ -143,9 +146,7 @@
 
   $userPhoneSmsSent.text(methods.makePhoneNumberHidden);
 
-  $buyerPhone.inputmask('998 [99 999-99-99]', {
-    placeholder: '998 ** ***-**-**',
-  });
+  $buyerPhone.inputmask('[999 99 999-99-99]', { placeholder: '*' });
 
 })(Tygh, Tygh.$);
 /*

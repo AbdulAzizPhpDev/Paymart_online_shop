@@ -5,13 +5,13 @@
 
 <div class="main-page">
     {if isset($redirect_url)}
-    <a href="{$redirect_url|fn_url}" class="back-button">
-        <img src="/design/themes/responsive/media/images/addons/installment/back-arrow.png" alt="Arrow image">
-    </a>
+        <a href="{$redirect_url|fn_url}" class="back-button">
+            <img src="/design/themes/responsive/media/images/addons/installment/back-arrow.png" alt="Arrow image">
+        </a>
     {else}
-    <a href="/" class="back-button">
-        <img src="/design/themes/responsive/media/images/addons/installment/back-arrow.png" alt="Arrow image">
-    </a>
+        <a href="/" class="back-button">
+            <img src="/design/themes/responsive/media/images/addons/installment/back-arrow.png" alt="Arrow image">
+        </a>
     {/if}
     <div class="container table-page">
         <div>
@@ -20,7 +20,7 @@
                     <div class="main-first">
                         <div class="main-profile">
                             <img class="main-profile__img"
-{*                                 src="/design/themes/responsive/media/images/addons/installment/profile.png"*}
+                                    {*                                 src="/design/themes/responsive/media/images/addons/installment/profile.png"*}
                                  src="/design/themes/responsive/media/images/user.png"
                                  alt="Profile image">
                             <div class="main-profile__text">
@@ -33,7 +33,7 @@
                                  alt="Billing ico">
                             <div class="text-items__second-items">
                                 <div class="first-item">Доступная рассрочка:</div>
-                                <div class="second-item">3 000 000 сум</div>
+                                <div class="second-item">{$user['i_limit']} сум</div>
                             </div>
                         </div>
                     </div>

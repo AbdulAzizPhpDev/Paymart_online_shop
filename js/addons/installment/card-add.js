@@ -92,7 +92,9 @@
           },
           callback: function (response) {
             if (response) {
-              if (response.status === 'success') {
+              const { result } = response;
+
+              if (result.status === 'success') {
                 $cardNumberContainer.addClass('d-none');
                 cardMethods.timerResendSms();
 
@@ -100,19 +102,19 @@
                 $cardPin.removeClass('d-none');
 
               } else {
-                if (response.hasOwnProperty('info')) {
-                  if (response.result.info === 'error_card_equal') {
+                if (result.hasOwnProperty('info')) {
+                  if (result.info === 'error_card_equal') {
                     cardMethods.renderErrors([
-                      response.result.info,
-                      response.result.card_data?.card_owner,
-                      response.result.card_data?.card_phone,
-                      response.result.card_data.total_debt,
+                      result.info,
+                      result.card_data?.card_owner,
+                      result.card_data?.card_phone,
+                      result.card_data.total_debt,
                     ]);
                   } else {
-                    cardMethods.renderErrors(response.result.info);
+                    cardMethods.renderErrors(result.info);
                   }
                 } else {
-                  cardMethods.renderErrors(response.result.status);
+                  cardMethods.renderErrors(result.status);
                 }
               }
             } else {
@@ -142,11 +144,11 @@
             if (response) {
               const { result } = response;
 
-              if (result.data.status === 'success') {
+              if (result.status === 'success') {
                 window.location.reload();
                 // cardMethods.makeRoute({ action: 'type-passport' });
               } else {
-                cardMethods.renderErrors(result.data.response.message);
+                cardMethods.renderErrors(result.response.message);
               }
             } else {
               console.error('Result does not exist. %cmethod[/buyer/send-sms-code-uz]', 'color: white; padding: 2px 5px; border: 1px dashed green');

@@ -221,15 +221,19 @@
         <item for="install" editions="ULTIMATE,MULTIVENDOR">
             ALTER TABLE `?:users` ADD COLUMN IF NOT EXISTS i_step INT NULL DEFAULT 0;
         </item>
+        <item for="install" editions="ULTIMATE,MULTIVENDOR">
+            ALTER TABLE `?:users` ADD COLUMN IF NOT EXISTS i_limit INT NULL DEFAULT 0;
+        </item>
         <!-- If the parameter "for" equals "uninstall", the query is executed during the add-on uninstallation -->
         <!--        <item for="uninstall">DROP TABLE IF EXISTS `?:addon_test_123456789`</item>-->
         <item for="uninstall">ALTER TABLE `?:users` DROP COLUMN IF EXISTS i_step;</item>
+        <item for="uninstall">ALTER TABLE `?:users` DROP COLUMN IF EXISTS i_limit;</item>
     </queries>
+
     <!-- User-defined functions called on certain events:
             before_install - before the add-on installation
             install - after the installation of the add-on, its templates, settings and language variables but before its activation and cache clearing
-            uninstall - before uninstallation
-            -->
+            uninstall - before uninstallation        -->
 
 </addon>
 

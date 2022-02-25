@@ -28,13 +28,14 @@ class InstallmentVar
         12 => 'guarant',
         8 => 'refusal',
     ];
+    const Status = array(
+        0 => 'not_active',
+        1 => 'active',
+        2 => 'moderation',
+        3 => 'expired',
+        4 => 'expired_above_60_days',
+        5 => 'cancel',
+        9 => 'completed'
+    );
 
-//    public static function getAll()
-//    {
-//        return array(
-//            self::SEMICOLON => ';',
-//            self::COMMA     => ',',
-//            self::TAB       => "\t",
-//        );
-//    }
 }

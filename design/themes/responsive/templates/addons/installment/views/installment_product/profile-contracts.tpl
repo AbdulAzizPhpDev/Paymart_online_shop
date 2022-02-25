@@ -9,14 +9,16 @@
         </div>
         <div class="contracts">
             {foreach from=$contracts->contracts key=index item=contract}
-                <a href="https://front.paymart.uz/ru/contract/{$contract->contract_id}?api_token={$user_api_token}"
+                <a href="https://front.paymart.uz/uz/market/contract/{$contract->contract_id}?api_token={$user_api_token}&user_phone={$user_phone}"
                    target="_blank" class="contract-card">
                     <div class="header">
                         <div class="info">
                             <h3>Договор № {$contract->contract_id}</h3>
                         </div>
                         <div class="status-container">
-                            <span class="status-card status-{$contract->status}">status {$contract->status}</span>
+
+                            <span class="status-card status_{$contract->status}">{__($contract->status)}</span>
+
                         </div>
                     </div>
                     <p class="contract-number" data-contract-id="{$contract->contract_id}">

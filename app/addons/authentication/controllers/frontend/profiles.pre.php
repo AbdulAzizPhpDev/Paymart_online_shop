@@ -29,47 +29,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($mode == 'send_sms') {
 
         $pattern = "/^998\d{9}$/";
-
+        $data = [
+            'phone' => $_REQUEST['phone']
+        ];
         if (!preg_match($pattern, $_REQUEST['phone'])) {
-            $error = [
-                'status' => "error",
-                'response' => [
-                    "code" => "404",
-                    "message" => __('wrong_format_number'),
-                    "errors" => ""
-                ],
-                'data' => [
-                    'phone' => $_REQUEST['phone']
-                ]
-            ];
-
+            $error = showErrors('wrong_format_number', $data);
             Registry::get('ajax')->assign('result', $error);
             exit();
         }
 
-        $data = [
-            'phone' => $_REQUEST['phone']
-        ];
-        $curl = curl_init();
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://dev.paymart.uz/api/v1/login/send-sms-code',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => json_encode($data),
-            CURLOPT_HTTPHEADER => array(
-                'Content-Type: application/json'
-            ),
-        ));
-        $response = curl_exec($curl);
-
-        $response_data = json_decode($response);
-        curl_close($curl);
-
+        $response_data = php_curl('/login/send-sms-code', $data, 'POST', null);
         $data = db_get_field('SELECT user_id FROM ?:users WHERE phone = ?i', $_REQUEST['phone']);
         if (empty($data)) {
             $user = create_user($_REQUEST['phone']);
@@ -87,18 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ];
             fn_set_session_data('user_info', $user_info);
         }
-        $error = [
-            'status' => "success",
-            'response' => [
-                "code" => "202",
-                "message" => __('massage_send'),
-                "errors" => ""
-            ],
-            'data' => [
-                'phone' => $_REQUEST['phone']
-            ]
-        ];
-
+        $error = showErrors('massage_send', $data);
         Registry::get('ajax')->assign('result', $error);
         exit();
     }
@@ -108,52 +66,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $pattern = "/^998\d{9}$/";
 
-        if (!preg_match($pattern, $_REQUEST['phone'])) {
-            $error = [
-                'status' => "error",
-                'response' => [
-                    "code" => "404",
-                    "message" => __('wrong_format_number'),
-                    "errors" => ""
-                ],
-                'data' => [
-                    'phone' => $_REQUEST['phone']
-                ]
-            ];
+        $data = [
+            'phone' => $_REQUEST['phone']
+        ];
 
+        if (!preg_match($pattern, $_REQUEST['phone'])) {
+            $error = showErrors('wrong_format_number', $data);
             Registry::get('ajax')->assign('result', $error);
             exit();
         }
         if (fn_get_session_data('user_info')['phone'] !== $_REQUEST['phone']) {
-            $error = [
-                'status' => "error",
-                'response' => [
-                    "code" => "404",
-                    "message" => __('wrong_phone_number'),
-                    "errors" => ""
-                ],
-                'data' => [
-                    'phone' => $_REQUEST['phone']
-                ]
-            ];
-
+            $error = showErrors('wrong_format_number', $data);
             Registry::get('ajax')->assign('result', $error);
             exit();
         }
 
         if (!preg_match($pattern, $_REQUEST['phone'])) {
-            $error = [
-                'status' => "error",
-                'response' => [
-                    "code" => "404",
-                    "message" => __('wrong_format_number'),
-                    "errors" => ""
-                ],
-                'data' => [
-                    'phone' => $_REQUEST['phone']
-                ]
-            ];
-
+            $error = showErrors('wrong_format_number', $data);
             Registry::get('ajax')->assign('result', $error);
             exit();
         }
@@ -162,25 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             "phone" => $_REQUEST['phone'],
             "code" => $_REQUEST['code'],
         ];
-        $curl = curl_init();
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://dev.paymart.uz/api/v1/login/auth',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => json_encode($data),
-            CURLOPT_HTTPHEADER => array(
-                'Content-Type: application/json'
-            ),
-        ));
-        $response = curl_exec($curl);
-        curl_close($curl);
-
-        $response = json_decode($response);
+        $response = php_curl('/login/auth', $data, 'POST', null);
 
         if ($response->status == "success") {
             $user_info['api_key'] = $response->data->access_token;
@@ -198,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             Registry::get('ajax')->assign('result', $response);
             exit();
         }
-            Registry::get('ajax')->assign('result', $response);
+        Registry::get('ajax')->assign('result', $response);
         exit();
 
 
