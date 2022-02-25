@@ -20,6 +20,7 @@ const self = new Vue({
         },
         callback: function callback(response) {
           const { result } = response;
+          console.log(response)
           if (result) {
             if (result.status === 'success') {
               self.isSMSSent = true;

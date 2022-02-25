@@ -330,10 +330,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 if ($mode == 'get_qty') {
     $qty = $_REQUEST['qty'];
     $product_id = $_REQUEST['product_id'];
+    $period = $_REQUEST['period'];
 
     Tygh::$app['session']['product_info'] = array(
         'product_id' => $product_id,
-        'product_qty' => $qty
+        'product_qty' => $qty,
+        'period' => $period
     );
 //    fn_set_session_data('product_id', $product_id, 7);
 //    fn_set_session_data('product_id', $qty, 7);
@@ -458,6 +460,7 @@ if ($mode == "contract-create") {
         }
         $product_id = Tygh::$app['session']['product_info']['product_id'];
         $product_quantity = Tygh::$app['session']['product_info']['product_qty'];
+        $period = Tygh::$app['session']['product_info']['period'];
 
         $datas = db_get_row('SELECT * FROM ?:products as product INNER JOIN ?:companies as company ON product.company_id = company.company_id WHERE product.product_id = ?i ', $product_id);
         $datas['product_descriptions'] = db_get_row('SELECT * FROM ?:product_descriptions WHERE product_id = ?i', $datas['product_id']);
@@ -482,7 +485,7 @@ if ($mode == "contract-create") {
         }
         $data = [
             "type" => "credit",
-            "period" => 12,
+            "period" => $period,
             "products" => [
                 $datas["p_c_id"] => [
                     [
