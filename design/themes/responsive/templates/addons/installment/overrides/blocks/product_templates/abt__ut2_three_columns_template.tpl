@@ -1,8 +1,16 @@
 {script src="js/tygh/exceptions.js"}
+{script src="js/addons/installment/product-detail.js"}
 
 {$is_add_to_cart_mv=true}
 
 {if "MULTIVENDOR"|fn_allowed_for && ($product.master_product_id || !$product.company_id)}{$is_add_to_cart_mv=false}{/if}
+
+<input class="product-id-for-calculate" type="hidden" value="{$product.product_id}">
+<input class="product-name-for-calculate" type="hidden" value="{$product.product}">
+<input class="company-id-for-calculate-price" type="hidden" value="{$product.company_id}">
+<input class="product-price-for-calculate-price" type="hidden" value="{$product.price}">
+
+{*<div style="color:#ff7643;"><span style="font-size: 45px; font-weight: bold">12</span><span style="font-size: 20px;">месяцев</span></div>*}
 
 <div class="ut2-pb ty-product-block ut2-three-columns ty-product-detail{if $settings.abt__ut2.products.view.show_sticky_add_to_cart[$settings.abt__device] == 'Y' && !in_array($product.zero_price_action, ["P","A"]) && $product.price > 0 && $product.amount > 0 && $is_add_to_cart_mv} sticky_add_to_cart{/if}">
 	{* {hook name="products:main_info_title"} *}

@@ -1,10 +1,18 @@
 {script src="js/tygh/exceptions.js"}
+{script src="js/addons/installment/product-detail.js"}
 
 {*assign var="product_details_big_thumbnail_width" value=900*}
 {*assign var="product_details_big_thumbnail_height" value=600*}
 
 {$is_add_to_cart_mv=true}
 {if "MULTIVENDOR"|fn_allowed_for && ($product.master_product_id || !$product.company_id)}{$is_add_to_cart_mv=false}{/if}
+
+<input class="product-id-for-calculate" type="hidden" value="{$product.product_id}">
+<input class="product-name-for-calculate" type="hidden" value="{$product.product}">
+<input class="company-id-for-calculate-price" type="hidden" value="{$product.company_id}">
+<input class="product-price-for-calculate-price" type="hidden" value="{$product.price}">
+
+{*<p style="color:#ff7643; font-size: 35px;"><span style="font-size: 40px;">12</span> месяцев</p>*}
 
 <div class="ut2-pb ty-product-block ty-product-detail ut2-big-image{if $settings.abt__ut2.products.view.show_sticky_add_to_cart[$settings.abt__device] == 'Y' && !in_array($product.zero_price_action, ["P","A"]) && $product.price > 0 && $product.amount > 0 && $is_add_to_cart_mv} sticky_add_to_cart{/if}">
 
