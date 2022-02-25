@@ -1,4 +1,5 @@
 {hook name="auth:login_form"}
+
 <div class="modal signin-modal">
 
     <form action="{""|fn_url}" method="post" name="main_login_form" class="signin-modal__form cm-skip-check-items cm-check-changes">
