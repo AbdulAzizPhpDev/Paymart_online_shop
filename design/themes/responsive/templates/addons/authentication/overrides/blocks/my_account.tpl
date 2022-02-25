@@ -100,6 +100,8 @@
                 {if $settings.General.enable_edp == "YesNo::YES"|enum}
                     <li class="ty-account-info__item ty-dropdown-box__item"><a class="ty-account-info__a underlined" href="{"orders.downloads"|fn_url}" rel="nofollow">{__("downloads")}</a></li>
                 {/if}
+                <li class="ty-account-info__item ty-dropdown-box__item"><a class="ty-account-info__a underlined" href="{"installment_product.profile-contracts"|fn_url}" rel="nofollow">{__("installment_contracts")}</a></li>
+
             {elseif $user_data.firstname || $user_data.lastname}
                 <li class="ty-account-info__item  ty-dropdown-box__item ty-account-info__name">{$user_data.firstname} {$user_data.lastname}</li>
             {elseif $user_data.email}
