@@ -19,7 +19,7 @@
 </div>
 
 <script>
-    let urlFile = 'https://dev.paymart.uz/api/v1/buyer/verify/modify';
+    let urlFile = 'https://test.paymart.uz/api/v1/buyer/verify/modify';
     $('#sender3').on('click', function () {
         console.log(state);
         $("#sender3").addClass("myspinner");

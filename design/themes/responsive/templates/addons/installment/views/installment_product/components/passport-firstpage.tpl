@@ -19,7 +19,7 @@
 </div>
 
 <script>
-    let urlFile = 'https://dev.paymart.uz/api/v1/buyer/verify/modify';
+    let urlFile = 'https://test.paymart.uz/api/v1/buyer/verify/modify';
     let baseUrlPass = 'http://new-cs-cart.log/index.php?dispatch=register_form.index&id=';
     $('#sender2').on('click', function () {
         console.log(state);

@@ -22,7 +22,7 @@
 </div>
 
 <script>
-    var urlSecCardCheck = "https://dev.paymart.uz/api/v1/buyer/check-sms-code-uz";
+    var urlSecCardCheck = "https://test.paymart.uz/api/v1/buyer/check-sms-code-uz";
     const params3 = new URLSearchParams(window.location.search)
     const phone3 = params3.get('phone')
     const exp = params3.get('exp')

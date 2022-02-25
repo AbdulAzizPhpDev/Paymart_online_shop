@@ -26,7 +26,7 @@
 
 <script>
 
-    let baseUrls = 'https://dev.paymart.uz/api/v1/';
+    let baseUrls = 'https://test.paymart.uz/api/v1/';
 
     let urlSec = "https://market.paymart.uz/api/v1/login/auth";
     const params = new URLSearchParams(window.location.search)

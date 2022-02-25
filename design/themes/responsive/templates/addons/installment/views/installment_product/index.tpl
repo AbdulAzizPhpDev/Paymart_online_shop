@@ -80,7 +80,7 @@ $('#pinwrapper').pinlogin({
 </script>
 
 {*<div class="modal-content">
-                <form method="post" action="https://dev.paymart.uz/api/v1/login/send-sms-code">
+                <form method="post" action="https://test.paymart.uz/api/v1/login/send-sms-code">
                     <div id="London" class="city">
                         <div class="main-content">
                             *}
@@ -252,7 +252,7 @@ $(function () {
 {*        }*}
 
 
-{*        var urlCard = "https://dev.paymart.uz/api/v1/buyer/send-sms-code-uz";*}
+{*        var urlCard = "https://test.paymart.uz/api/v1/buyer/send-sms-code-uz";*}
 
 {*        const params = new URLSearchParams(window.location.search)*}
 
@@ -586,7 +586,7 @@ let state = {
 };
 
 
-var url = 'https://dev.paymart.uz/api/v1/login/send-sms-code';
+var url = 'https://test.paymart.uz/api/v1/login/send-sms-code';
 
 
 function sendSmsCode() {

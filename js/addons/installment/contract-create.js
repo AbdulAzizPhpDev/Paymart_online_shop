@@ -23,7 +23,7 @@ var selectedMonth = e.options[e.selectedIndex].value;
 
 
 const otpState = {
-    baseUrl: 'https://dev.paymart.uz/api/v1',
+    baseUrl: 'https://test.paymart.uz/api/v1',
     setContract: 'installment_product.set_contracts',
     api_token: Cookies.get('api_token'),
     buyerPhone: Cookies.get('buyer-phone'),

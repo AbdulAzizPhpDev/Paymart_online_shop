@@ -34,7 +34,7 @@
 </div>
 
 <script>
-    let urlGuarant = 'https://dev.paymart.uz/api/v1/buyer/add-guarant';
+    let urlGuarant = 'https://test.paymart.uz/api/v1/buyer/add-guarant';
 
     $('#trust-page__button').click(function () {
         state.firstName = $(".main-first__input").val();

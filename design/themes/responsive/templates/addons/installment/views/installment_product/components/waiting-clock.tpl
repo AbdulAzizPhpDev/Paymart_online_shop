@@ -27,7 +27,7 @@
 <script>
 
     let urlFileClock = 'https://market.paymart.uz/api/v1/buyer/check_status'
-    // let urls = 'https://dev.paymart.uz/api/v1/buyer/check_status'
+    // let urls = 'https://test.paymart.uz/api/v1/buyer/check_status'
     let baseUrls = 'http://market.paymart.uz/index.php?dispatch=register_form.index&id=';
 
     $('#clocked').on('click', function () {

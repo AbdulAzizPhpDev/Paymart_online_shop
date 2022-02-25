@@ -21,7 +21,7 @@
 
 <script>
 
-    let urlFile = 'https://dev.paymart.uz/api/v1/buyer/verify/modify';
+    let urlFile = 'https://test.paymart.uz/api/v1/buyer/verify/modify';
 
     $('#sender').on('click', function () {
         console.log(state);
