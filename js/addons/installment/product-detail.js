@@ -31,22 +31,22 @@
       const { product } = productDetailState;
 
       const period = productDetailMethods.getInstallmentPeriod();
-      console.log(period);
-      // $.ceAjax('request', fn_url('installment_product.get_qty'), {
-      //   method: 'GET',
-      //   data: {
-      //     qty,
-      //     product_id: product.id,
-      //     period,
-      //   },
-      //   callback: function (response) {
-      //     if (response.result) {
-      //       window.location.href = fn_url(response.result.redirect_to);
-      //     } else {
-      //       document.write(response);
-      //     }
-      //   },
-      // });
+
+      $.ceAjax('request', fn_url('installment_product.get_qty'), {
+        method: 'GET',
+        data: {
+          qty,
+          product_id: product.id,
+          period,
+        },
+        callback: function (response) {
+          if (response.result) {
+            window.location.href = fn_url(response.result.redirect_to);
+          } else {
+            document.write(response);
+          }
+        },
+      });
     },
 
     getProductPrice: function () {
@@ -75,7 +75,7 @@
         },
       });
     },
-    calculate(price = 1000, month = 3) {
+    calculate: function (price = 1000, month = 3) {
       const formattedPrice = Number(price);
       const formattedMonth = Number(month);
       let result;
@@ -97,31 +97,33 @@
 
       return Math.round(result);
     },
-    perMonth(price = 1000, month = 3) {
+    perMonth: function (price = 1000, month = 3) {
       return Math.round(productDetailMethods.calculate(price, month) / month);
     },
-    productInstallmentPrice: function (price = 0) {
+    showProductInstallmentPrice: function (price = 0) {
       const { product } = productDetailState;
       const { perMonth } = productDetailMethods;
+      let priceLabel;
 
       if (price !== 0) {
-        return $installmentProductPriceContainer.text(price);
+        priceLabel = `Рассрочка ${price} UZS мес.`;
+        return $installmentProductPriceContainer.text(priceLabel);
       }
 
-      price = perMonth(product.price, 12);
+      price = `Рассрочка ${perMonth(product.price, 12)} UZS мес.`;
 
       $installmentProductPriceContainer.text(price);
     },
     onPeriodPicked: function (event) {
-      const { perMonth, productInstallmentPrice } = productDetailMethods;
+      const { perMonth, showProductInstallmentPrice } = productDetailMethods;
       const { product } = productDetailState;
       const pricePerMonth = perMonth(product.price, event.target.value);
 
-      productInstallmentPrice(pricePerMonth);
+      showProductInstallmentPrice(pricePerMonth);
     },
   };
 
-  productDetailMethods.productInstallmentPrice();
+  productDetailMethods.showProductInstallmentPrice();
 
   $installmentButton.on('click', productDetailMethods.setSessionProductQtyAndPeriod);
 
