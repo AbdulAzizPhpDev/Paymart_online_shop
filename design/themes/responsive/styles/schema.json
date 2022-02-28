@@ -136,7 +136,8 @@
             "'Times New Roman',Times,serif": "Times New Roman",
             "'Trebuchet MS',Helvetica,sans-serif": "Trebuchet MS",
             "Verdana,Geneva,sans-serif": "Verdana",
-            "'Gill Sans',Geneva,sans-serif": "Gill Sans"
+            "'Gill Sans',Geneva,sans-serif": "Gill Sans",
+            "'Gilroy'": "Gilroy"
         },
         "fields": {
             "body_font": {
