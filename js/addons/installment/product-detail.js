@@ -1,8 +1,6 @@
 (function (_, $) {
 
   const $installmentButton = $('.set_qty');
-  const $installmentProductPriceContainer = $('.installment-product-monthly-payment');
-  const $radios = $('.installment-periods input[type="radio"]');
 
   const productDetailState = {
     PAYMART_API_BASE_URL: 'https://test.paymart.uz/api/v1/',
@@ -103,6 +101,8 @@
     showProductInstallmentPrice: function (price = 0) {
       const { product } = productDetailState;
       const { perMonth } = productDetailMethods;
+      const $installmentProductPriceContainer = $('.installment-product-monthly-payment');
+
       let priceLabel;
 
       if (price !== 0) {
@@ -121,14 +121,23 @@
 
       showProductInstallmentPrice(pricePerMonth);
     },
+    radioHandler: function () {
+      const $radios = $('.installment-periods input[type="radio"]');
+
+      $.each($radios, function (index, radio) {
+        $(radio).on('change', productDetailMethods.onPeriodPicked);
+      });
+    },
   };
 
   productDetailMethods.showProductInstallmentPrice();
+  productDetailMethods.radioHandler();
 
   $installmentButton.on('click', productDetailMethods.setSessionProductQtyAndPeriod);
 
-  $.each($radios, function (index, radio) {
-    $(radio).on('change', productDetailMethods.onPeriodPicked);
+  $.ceEvent('on', 'ce.ajaxdone', function (response_data) {
+    productDetailMethods.showProductInstallmentPrice();
+    productDetailMethods.radioHandler();
   });
 
 })(Tygh, Tygh.$);
