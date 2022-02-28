@@ -59,12 +59,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
     }
     if ($mode == 'set_passport') {
+        $url = PAYMART_URL . '/buyer/verify/modify';
         if ($auth['user_id']) {
             $user = db_get_row('select * from ?:users where user_id = ?s', $auth['user_id']);
-
             $curl = curl_init();
             curl_setopt_array($curl, array(
-                CURLOPT_URL => 'https://dev.paymart.uz/api/v1/buyer/verify/modify',
+                CURLOPT_URL => $url,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $curl = curl_init();
             curl_setopt_array($curl, array(
-                CURLOPT_URL => 'https://dev.paymart.uz/api/v1/buyer/verify/modify',
+                CURLOPT_URL => $url,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $curl = curl_init();
             curl_setopt_array($curl, array(
-                CURLOPT_URL => 'https://dev.paymart.uz/api/v1/buyer/verify/modify',
+                CURLOPT_URL => $url,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -130,15 +130,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             }
 
-//            $passport_with_address['passport_with_address'] = $_FILES['passport_with_address'];
-//            $passport_with_address['step'] = 2;
-//            $response = php_curl('/buyer/verify/modify', $passport_with_address, 'POST', $user['api_key']);
-//
-//            $passport_selfie['passport_selfie'] = $_FILES['passport_selfie'];
-//            $passport_selfie['step'] = 2;
-//            $passport_selfie['type'] = 2;
-//            $response = php_curl('/buyer/verify/modify', $passport_selfie, 'POST', $user['api_key']);
-
             Registry::get('ajax')->assign('result', $response);
             exit();
         }
@@ -146,13 +137,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
     }
     if ($mode == 'set_passport_id') {
-
+        $url = PAYMART_URL . '/buyer/verify/modify';
         if ($auth['user_id']) {
             $user = db_get_row('select * from ?:users where user_id = ?s', $auth['user_id']);
 
             $curl = curl_init();
             curl_setopt_array($curl, array(
-                CURLOPT_URL => 'https://test.paymart.uz/api/v1/buyer/verify/modify',
+                CURLOPT_URL => $url,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -173,7 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $curl = curl_init();
             curl_setopt_array($curl, array(
-                CURLOPT_URL => 'https://dev.paymart.uz/api/v1/buyer/verify/modify',
+                CURLOPT_URL => $url,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -194,7 +185,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $curl = curl_init();
             curl_setopt_array($curl, array(
-                CURLOPT_URL => 'https://dev.paymart.uz/api/v1/buyer/verify/modify',
+                CURLOPT_URL => $url,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -214,7 +205,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $curl = curl_init();
             curl_setopt_array($curl, array(
-                CURLOPT_URL => 'https://dev.paymart.uz/api/v1/buyer/verify/modify',
+                CURLOPT_URL => $url,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -264,6 +255,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     'buyer_id' => $user['p_user_id']
                 ];
                 $response = php_curl('/buyer/add-guarant', $data, 'POST', $user['api_key']);
+
             }
             if ($response->status == "success") {
                 $itme['i_step'] = 2;
@@ -275,12 +267,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         Registry::get('ajax')->assign('result', showErrors('user_not_authorized'));
         exit();
-
     }
-
     if ($mode == 'set_contracts') {
-        if (!$auth['user_id']) {
 
+        if (!$auth['user_id']) {
             Registry::get('ajax')->assign('result', showErrors('user_not_authorized'));
             exit();
         }
@@ -305,7 +295,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             "buyer_phone" => $user['phone']
         ];
 
-
         $response = php_curl('/buyers/credit/add', $data, 'POST', $product_info['p_c_token']);
 
         Registry::get('ajax')->assign('result', $response);
@@ -315,12 +304,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($mode == "set_confirm_contract") {
 
         $user = db_get_row('select * from ?:users where user_id=?i', $auth['user_id']);
+
         $data = [
             "contract_id" => $_REQUEST['contract_id'],
             "code" => $_REQUEST['code'],
             "phone" => $user['phone']
         ];
+
         $response = php_curl('/buyers/check-user-sms', $data, 'POST', $user['api_key']);
+//        fn_print_die($response);
+        if ($response->status == 1 || $response->status == "success") {
+
+            $product_id = Tygh::$app['session']['product_info']['product_id'];
+            $product_quantity = Tygh::$app['session']['product_info']['product_id'];
+            unset(Tygh::$app['session']['product_info']);
+            $data = [
+                'amount' => $product_quantity
+            ];
+
+            db_query('UPDATE ?:products SET ?u WHERE product_id = ?i', $data, $product_id);
+        }
         Registry::get('ajax')->assign('result', $response);
         exit();
     }
@@ -407,14 +410,6 @@ if ($mode == 'upload-passport-id') {
     if (!$auth['user_id']) {
         return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
     }
-//    else {
-//        checkUserFromPaymart($auth['user_id']);
-//        list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
-//        $user_step = checkInstallmentStep($auth['user_id']);
-//        if ($mode_type !== $user_step) {
-//            return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
-//        }
-//    }
 
 }
 
@@ -512,14 +507,10 @@ if ($mode == "contract-create") {
         Tygh::$app['view']->assign('product_quantity', $product_quantity);
         Tygh::$app['view']->assign('user', $user);
         if ((int)$user['i_limit'] < (int)$datas['product_price']['price']) {
-            fn_set_notification('W', __('warning'), "Senga emas bu maxsulotni olish, qashshoq! &#128513 ", 'S');
+            fn_set_notification('W', __('warning'), " maxsulotni olish mumkin emas, qashshoq! &#128513 ", 'S');
         }
-
-
     }
-
 }
-
 if ($mode == 'profile-contracts') {
 
     if (!$auth['user_id']) {
