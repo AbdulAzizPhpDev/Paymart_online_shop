@@ -25,8 +25,6 @@ if ($mode == 'logout') {
 
     fn_user_logout($auth);
 
-//    fn_print_die("kldfjkldsjfkl");
-
     return array(CONTROLLER_STATUS_OK, fn_url('/'));
 }
 
