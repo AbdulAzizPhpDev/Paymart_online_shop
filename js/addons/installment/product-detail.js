@@ -26,7 +26,7 @@
 
       return period;
     },
-    setSessionProductQtyAndPeriod: function (event) {
+      setSessionProductQtyAndPeriod: function (event) {
       const qty = $('.cm-amount').val();
       const { product } = productDetailState;
 
