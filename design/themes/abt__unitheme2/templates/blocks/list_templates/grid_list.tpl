@@ -116,7 +116,7 @@
         {/if}
     {/if}
 
-	{$th = $t1|default:0 + $t2|default:0 + $t3|default:0 + $t4|default:0 + $t5|default:0 + $t6|default:0 + $t7|default:0 + $t8|default:0 + $t9|default:0 + $t10|default:0 + $t11|default:0 + $t12|default:0 + $pd}
+	{$th = $t1|default:0 + $t2|default:0 + $t3|default:0 + $t4|default:0 + $t5|default:0 + $t6|default:0 + $t7|default:0 + $t8|default:0 + $t9|default:0 + $t10|default:0 + $t11|default:0 + $t12|default:0 + $pd + 25}
     {capture name="abt__ut2_gl_item_height"}{if $settings.abt__ut2.product_list.$tmpl.grid_item_height[$settings.abt__device]}{$settings.abt__ut2.product_list.$tmpl.grid_item_height[$settings.abt__device]}{else}{$th}{/if}{/capture}
 
 	{* Price block height *}

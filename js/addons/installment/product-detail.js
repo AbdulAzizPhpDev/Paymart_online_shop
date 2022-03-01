@@ -48,7 +48,6 @@
         },
       });
     },
-
     getProductPrice: function () {
       const { company_id, product, installment_period, PAYMART_API_BASE_URL } = productDetailState;
 
