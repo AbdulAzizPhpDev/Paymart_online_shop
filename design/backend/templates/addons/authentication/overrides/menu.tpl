@@ -286,7 +286,7 @@
                                 {/if}
                                 {hook name="menu:profile_menu_extra_item"}
                                 {/hook}
-                                    <li><a href="{fn_url("logout.logout")}">{__("sign_out")}</a></li>
+                                    <li><a href="{fn_url("auth.logout")}">{__("sign_out")}</a></li>
                                 {if !$runtime.company_id}
                                     <li class="divider"></li>
                                     <li>

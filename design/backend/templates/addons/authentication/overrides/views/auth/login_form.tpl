@@ -1,3 +1,4 @@
+
 {*{hook name="auth:login_form"}*}
 <div class="row-fluid business">
     <div class="span6">1</div>

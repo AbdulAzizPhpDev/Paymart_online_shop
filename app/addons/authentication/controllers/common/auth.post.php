@@ -22,9 +22,9 @@ if (!defined('BOOTSTRAP')) {
 }
 
 if ($mode == 'logout') {
-    fn_print_die($_REQUEST);
+
     fn_user_logout($auth);
 
-    return array(CONTROLLER_STATUS_OK, fn_url('/'));
+    return array(CONTROLLER_STATUS_OK, 'http://market.paymart.uz/index.php?dispatch=vendor_login.login_form');
 }
 
