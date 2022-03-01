@@ -175,6 +175,21 @@
                 {assign var="product_edp" value="product_edp_`$obj_id`"}
                 {$smarty.capture.$product_edp nofilter}
                 <h1 style="color: #ff0e0e">test1111</h1>
+
+                <div class="installment-periods ty-control-group">
+                    <input type="radio" name="period" value="3" id="3" class="ty-product-options__radio">
+                    <label class="ty-product-options__radio--label" for="3">3 месяц</label>
+
+                    <input class="ty-product-options__radio" value="6" type="radio" name="period" id="6">
+                    <label class="ty-product-options__radio--label" for="6">6 месяц</label>
+
+                    <input class="ty-product-options__radio" value="9" type="radio" name="period" id="9">
+                    <label class="ty-product-options__radio--label" for="9">9 месяц</label>
+
+                    <input class="ty-product-options__radio" value="12" type="radio" name="period" id="12" checked>
+                    <label class="ty-product-options__radio--label" for="12">12 месяц</label>
+                </div>
+
                 {if $capture_options_vs_qty}{capture name="product_options"}{$smarty.capture.product_options nofilter}{/if}
                 <div class="ut2-qty__wrap {if $min_qty && $product.min_qty}min-qty{/if} ut2-pb__field-group">
                     {assign var="qty" value="qty_`$obj_id`"}

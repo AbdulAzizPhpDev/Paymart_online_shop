@@ -11,7 +11,7 @@
 
   const guarantState = {
     api_token: Cookies.get('api_token'),
-    baseUrl: 'https://dev.paymart.uz/api/v1',
+    baseUrl: 'https://test.paymart.uz/api/v1',
     user_id: Cookies.get('user_id') || 23455,
   };
 
@@ -64,7 +64,7 @@
             $this.attr('disabled', 'disabled');
           },
           success: function (response) {
-            if (response) {
+            if (response.result) {
               const { result } = response;
 
               if (result.status === 'success') {

@@ -63,7 +63,7 @@
     }
 
 
-    var urlCard = "https://dev.paymart.uz/api/v1/buyer/send-sms-code-uz";
+    var urlCard = "https://test.paymart.uz/api/v1/buyer/send-sms-code-uz";
 
     const params = new URLSearchParams(window.location.search)
 

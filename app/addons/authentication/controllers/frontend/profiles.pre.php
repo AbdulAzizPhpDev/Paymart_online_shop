@@ -39,6 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         $response_data = php_curl('/login/send-sms-code', $data, 'POST', null);
+
         $data = db_get_field('SELECT user_id FROM ?:users WHERE phone = ?i', $_REQUEST['phone']);
         if (empty($data)) {
             $user = create_user($_REQUEST['phone']);
@@ -48,6 +49,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'hash' => $response_data->hash
             ];
             fn_set_session_data('user_info', $user_info);
+            $error = showErrors('massage_send', $data,'success');
+            Registry::get('ajax')->assign('result', $error);
+            exit();
         } else {
             $user_info = [
                 'phone' => $_REQUEST['phone'],
@@ -55,6 +59,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'hash' => $response_data->hash
             ];
             fn_set_session_data('user_info', $user_info);
+            $error = showErrors('massage_send', $data,'success');
+            Registry::get('ajax')->assign('result', $error);
+            exit();
         }
         $error = showErrors('massage_send', $data);
         Registry::get('ajax')->assign('result', $error);
