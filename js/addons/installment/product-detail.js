@@ -16,6 +16,8 @@
 
   const productDetailMethods = {
     getInstallmentPeriod: function (period = 12) {
+      const $radios = $('.installment-periods input[type="radio"]');
+
       $.each($radios, function (index, element) {
         if ($(element).is(':checked')) {
           period = $(this).val();
@@ -46,7 +48,6 @@
         },
       });
     },
-
     getProductPrice: function () {
       const { company_id, product, installment_period, PAYMART_API_BASE_URL } = productDetailState;
 
