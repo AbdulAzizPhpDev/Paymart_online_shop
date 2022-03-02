@@ -137,10 +137,15 @@
 
   $.ceEvent('on', 'ce.ajaxdone', function (response_data) {
     let { product } = productDetailState;
+    const { showProductInstallmentPrice, perMonth, getInstallmentPeriod, radioHandler } = productDetailMethods;
     const updatedPrice = $(`#sec_discounted_price_${product.id}`).text().replace(/[\u00a0]/g, '');
 
     if (updatedPrice) {
       product.price = Number(updatedPrice);
+      const period = getInstallmentPeriod();
+      const text = perMonth(updatedPrice, period)
+
+      return showProductInstallmentPrice(text);
     } else {
       product.id = $('.product-id-for-calculate').val();
       product.name = $('.product-name-for-calculate').val();
@@ -148,8 +153,8 @@
       product.qty = $('.cm-amount').val();
     }
 
-    productDetailMethods.showProductInstallmentPrice();
-    productDetailMethods.radioHandler();
+    showProductInstallmentPrice();
+    radioHandler();
   });
 
   // $.ceEvent('on', 'ce.product_option_changed_post', function () {

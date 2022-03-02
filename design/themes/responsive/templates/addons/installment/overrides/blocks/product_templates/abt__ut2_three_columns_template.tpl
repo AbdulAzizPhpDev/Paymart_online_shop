@@ -131,6 +131,22 @@
                                         </div>
                                     {/if}
 
+                                    <div class="installment-product-monthly-payment" style="margin-top: 8px;"></div>
+
+                                    <div class="installment-periods ty-control-group" style="margin-top: 16px;">
+                                        <input type="radio" name="period" value="3" id="3" class="ty-product-options__radio">
+                                        <label class="ty-product-options__radio--label" for="3">3 месяц</label>
+
+                                        <input class="ty-product-options__radio" value="6" type="radio" name="period" id="6">
+                                        <label class="ty-product-options__radio--label" for="6">6 месяц</label>
+
+                                        <input class="ty-product-options__radio" value="9" type="radio" name="period" id="9">
+                                        <label class="ty-product-options__radio--label" for="9">9 месяц</label>
+
+                                        <input class="ty-product-options__radio" value="12" type="radio" name="period" id="12" checked>
+                                        <label class="ty-product-options__radio--label" for="12">12 месяц</label>
+                                    </div>
+
                                     {if $smarty.capture.$old_price|trim || $smarty.capture.$clean_price|trim || $smarty.capture.$list_discount|trim}
                                     {$smarty.capture.$clean_price nofilter}
                                     {$smarty.capture.$list_discount nofilter}
@@ -255,6 +271,7 @@
 		                {if $capture_buttons}{capture name="buttons"}{/if}
     		                <div class="ut2-pb__button ty-product-block__button">
 
+                            {if $settings.abt__device != "mobile"}
                                 <div class="installment-periods ty-control-group">
                                     <input type="radio" name="period" value="3" id="3" class="ty-product-options__radio">
                                     <label class="ty-product-options__radio--label" for="3">3 месяц</label>
@@ -268,6 +285,7 @@
                                     <input class="ty-product-options__radio" value="12" type="radio" name="period" id="12" checked>
                                     <label class="ty-product-options__radio--label" for="12">12 месяц</label>
                                 </div>
+                            {/if}
 
         		                {if $capture_options_vs_qty}{capture name="product_options"}{$smarty.capture.product_options nofilter}{/if}
         		                    {if $settings.abt__ut2.products.view.show_qty[$settings.abt__device] == 'Y'}
