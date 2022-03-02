@@ -6,10 +6,8 @@
         https://prodapi.shipox.com/api/v1/customer/authenticate
     </update_server>
     <priority>4500</priority>
-
     <position>0</position>
     <status>active</status>
-
     <default_language>en</default_language>
 
 </addon>

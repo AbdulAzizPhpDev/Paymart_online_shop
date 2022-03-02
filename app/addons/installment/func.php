@@ -72,7 +72,12 @@ function php_curl($url = '', $data = [], $method = "GET", $token = null)
             $curl_options[CURLOPT_HTTPHEADER] = array('Content-Type: application/json');
         }
     }
-    $curl_options[CURLOPT_URL] = PAYMART_URL . $url;
+    if (filter_var($url, FILTER_VALIDATE_URL)) {
+        $curl_options[CURLOPT_URL] = $url;
+    } else {
+        $curl_options[CURLOPT_URL] = PAYMART_URL . $url;
+    }
+
     $curl = curl_init();
     curl_setopt_array($curl, $curl_options);
     $response = json_decode(curl_exec($curl));

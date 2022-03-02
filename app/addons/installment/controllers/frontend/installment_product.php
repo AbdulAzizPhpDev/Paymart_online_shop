@@ -312,9 +312,88 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ];
 
         $response = php_curl('/buyers/check-user-sms', $data, 'POST', $user['api_key']);
-        if ($response->status == 1 || $response->status == "success") {
+
+        if ($response->result->status == 1 || $response->result->status == "success") {
 
             $product_id = Tygh::$app['session']['product_info']['product_id'];
+
+            $product = db_get_row('select * from ?:products where product_id = ?i', $product_id);
+
+            $response_fargo = php_curl('https://prodapi.shipox.com/api/v2/customer/order', $data, 'POST', $token);
+
+            $sender_data = [
+                "address_type" => "residential",
+                "name" => "testA",
+                "apartment" => "221",
+                "building" => "B",
+                "street" => "Ttz",
+                "city" => [
+                    "id" => 228171787
+                ],
+                "country" => [
+                    "id" => 234
+                ],
+                "phone" => "+998909123004"
+            ];
+            $data = '{
+                
+    "sender_data": {
+       
+    },
+    
+    "recipient_data": {
+        "address_type": "residential",
+        "name": "testB",
+        "apartment": "221",
+        "building": "B",
+        "street": "Chopon ota",
+        
+        "city": {
+          "id": 228171787
+        },
+        
+        "country": {
+          "id": 234
+        },
+        
+        "neighborhood": {
+            "id":234827631
+        },
+        
+        "phone": "+998909123005",
+        "landmark": "Cafe chigatoy"
+    },
+    
+       "dimensions": {
+        "weight": 12,
+        "width": 32,
+        "length": 45,
+        "height": 1,
+        "unit": "METRIC",
+        "domestic": true
+  },
+  
+  "package_type": {
+    "courier_type": "DOOR_DOOR"
+  },
+  
+  "charge_items": [
+    {
+    
+      "paid": false,
+      "charge": 0,
+      "charge_type": "cod",
+      "payer":"sender"
+
+    }
+  ],
+  
+  "recipient_not_available": "do_not_deliver",
+  "payment_type": "credit_balance",
+  "payer":"sender"
+    
+}';
+
             $product_quantity = Tygh::$app['session']['product_info']['product_id'];
             unset(Tygh::$app['session']['product_info']);
 
@@ -534,11 +613,9 @@ if ($mode == 'profile-contracts') {
                 }
             }
         }
-
         foreach ($payed_list as $item => $value) {
             $payed_list_group_by_contract_id[$item] = count($value);
         };
-
         Tygh::$app['view']->assign('contracts', $result);
         Tygh::$app['view']->assign('group_by', $payed_list_group_by_contract_id);
         Tygh::$app['view']->assign('user_api_token', $user['api_key']);
