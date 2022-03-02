@@ -84,18 +84,25 @@ $(document).ready(function() {
 
 // When the user clicks on the button, open the modal
 myBtn.onclick = function () {
-        var val = document.querySelector('textarea').value;
-        if (/^\s*$/g.test(val) || val.indexOf('\n') != -1) {
-            $('textarea').css('border','1px solid red').focus()
-            return
-        }
+    var val = document.querySelector('#story2').value;
+    if (/^\s*$/g.test(val) || val.indexOf('\n') != -1) {
+        $('#story2').css('border', '1px solid red').focus();
+        return;
+    }
+    var val2 = document.querySelector('#story3').value;
+    if (/^\s*$/g.test(val2) || val2.indexOf('\n') != -1) {
+        $('#story3').css('border', '1px solid red').focus();
+        return;
+    }
     let city = $('#formAddress').val();
     let region = $('#formAddress2').val();
     // let txt = document.getElementsByTagName("textarea");
-    let txt = $("#story").val();
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
+    let apartment = $('#story').val();
+    let building = $('#story2').val();
+    let street = $('#story3').val();
+    span.onclick = function () {
+        modal.style.display = 'none';
+    };
     // console.log('address', txt)
     // $.ceAjax('request', 'installment_product.set_contracts', {
     //     result_ids: otpState.setContract,
@@ -112,7 +119,9 @@ myBtn.onclick = function () {
             limit: otpState.selectedFirst,
             city: city,
             region: region,
-            textarea: txt,
+            apartment: apartment,
+            building: building,
+            street: street,
         },
         callback: function (response) {
             console.log('success', response)

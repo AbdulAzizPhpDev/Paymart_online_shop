@@ -243,17 +243,27 @@ p h1 h2 h3 h4 h5{
       }
     }
     .main-form__last{
-      label{
+      label {
         padding-bottom: 4px;
       }
-      &-item{
+
+      &-item {
+        display: flex;
+        margin-top: 10px;
+        //justify-content: space-around;
+      }
+
+      .last-item__style {
         display: flex;
         flex-direction: column;
-        textarea {
-            color: black;
-            border: none;
-            background-color: #f6f6f6;
-            border-radius: 8px;
+        width: 32%;
+        margin-right: 16px;
+
+        input {
+          background-color: #f6f6f6;
+          border-radius: 8px;
+          border: none;
+          padding: 27px 14px;
         }
       }
     }
@@ -423,6 +433,7 @@ textarea:focus{
 
   .stepperStyle();
 }
+
 
 /* The Modal (background) */
 //#mySecondModal {

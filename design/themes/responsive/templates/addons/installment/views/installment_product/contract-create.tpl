@@ -213,9 +213,18 @@
                     </div>
                     <div class="main-form__last">
                         <div class="main-form__last-item">
-                            <label for="story">Адрес</label>
-                            <textarea id="story" name="story"
-                                      rows="5" cols="33"></textarea>
+                            <div class="last-item__style">
+                                <label for="story">Квартира </label>
+                                <input id="story" type="text">
+                            </div>
+                            <div class="last-item__style">
+                                <label for="story2">Дом </label>
+                                <input id="story2" type="text">
+                            </div>
+                            <div class="last-item__style">
+                                <label for="story3">Улица</label>
+                                <input id="story3" type="text">
+                            </div>
                         </div>
                     </div>
                 </form>
