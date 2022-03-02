@@ -26,6 +26,7 @@
                             <div class="main-profile__text">
                                 <span class="main-profile__text-item">{$user['firstname']}  {$user['lastname']}</span>
                                 <span class="main-profile__text-second">Тел: {$user['phone']}</span>
+                                <input id="phone_input" type="hidden" value="{$user['phone']}">
                             </div>
                         </div>
                         <div class="text-items__second">
@@ -240,16 +241,16 @@
                 <h1>Введите SMS код </h1>
 
                 <div class="ty-control-group">
-                    <p>Отправленный на номер <span class="sent-phone-number"></span></p>
+                    {*                    <p>Отправленный на номер <span class="">{$user['phone']}</span></p>*}
 
                     <input type="tel" hidden
-                           class="ty-login__input confirm-contract"/>
+                           class="ty-login__input confirm-contract" />
                 </div>
                 <div id="card-pin-wrapper"></div>
 
                 <p class="resend-sms-card">Отправить SMS еще раз (через <span class="card-resend-sms-timer">60</span>
                     сек.)</p>
-
+                <span class="modal-error"></span>
                 <button disabled class="ty-btn ty-btn__secondary" type="button" id="modal-sent">
                     Продолжить
                 </button>
@@ -260,21 +261,37 @@
 
 {*the second modal*}
 
-<div id="mySecondModal" class="secondModal">
-    <div class="modal-content__second">
-        <span class="close2">&times;</span>
+<div id="myModal1" class="modal1" style="display: none;">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close">
+            <img src="/design/themes/responsive/media/images/addons/installment/Thin.png" alt="Close img">
+        </span>
+        <div class="card-add__page">
+            <div class="card-confirm">
+
+            </div>
+        </div>
     </div>
 </div>
+{*<div id="mySecondModal" class="secondModal">*}
+{*    <div class="modal-content__second">*}
+{*        <span class="close2">&times;</span>*}
+
+{*    </div>*}
+{*</div>*}
 
 <script>
-    $('#card-pin-wrapper').pinlogin({
-        placeholder: '*',
-        hideinput: false,
-        fields: 4,
-        reset: false,
-        complete: function (pin) {
-            $('.confirm-contract').attr('value', pin);
-            $('#modal-sent').removeAttr('disabled');
-        },
-    });
+$('#card-pin-wrapper').pinlogin({
+  placeholder: '*',
+  hideinput: false,
+  fields: 4,
+  reset: false,
+  complete: function (pin) {
+    $('.confirm-contract').attr('value', pin);
+    $('#modal-sent').removeAttr('disabled');
+  },
+});
+
+
 </script>

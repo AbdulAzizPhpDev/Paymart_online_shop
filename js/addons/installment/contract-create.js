@@ -3,21 +3,18 @@
 })(Tygh, Tygh.$);
 
 
-
-
-
-
 // Get the modal
-var modal = document.getElementById("myModal");
+var modal = document.getElementById('myModal');
+var modal1 = document.getElementById('myModal1');
 
 // Get the button that opens the modal
-var myBtn = document.getElementById("myBtn");
+var myBtn = document.getElementById('myBtn');
 
 // Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
+var span = document.getElementsByClassName('close')[0];
 
 // let value = $('.confirm-contract').val();
-let e = document.getElementById("selectedId");
+let e = document.getElementById('selectedId');
 
 var selectedMonth = e.options[e.selectedIndex].value;
 
@@ -142,24 +139,24 @@ myBtn.onclick = function () {
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function (event) {
     if (event.target == modal) {
-        modal.style.display = "none";
+        modal.style.display = 'none';
     }
-}
-Cookies.set('buyer-phone', 998917779799)
+};
+// Cookies.set('buyer-phone', 998917779799)
 
-let number2 = otpState.buyerPhone.slice(0, 6) + '*****' + otpState.buyerPhone.slice(10, 15);
-let vue = document.querySelector(".sent-phone-number").innerHTML = number2.replace(/[()]/g, '');
-console.log('vue', vue)
+// let number2 = otpState.buyerPhone.slice(0, 6) + '*****' + otpState.buyerPhone.slice(10, 15);
+// let vue = document.querySelector(".sent-phone-number").innerHTML = number2.replace(/[()]/g, '');
+// console.log('vue', vue)
 
-$(".resend-sms-card").css("display", "none");
+$('.resend-sms-card').css('display', 'none');
 
-Cookies.set('buyer-phone', 998917779799)
+// Cookies.set('buyer-phone', 998917779799)
 
 //
 
 $('#modal-sent').click(function () {
-    let otpInputVal = $(".ty-login__input").val()
-    $(".resend-sms-card").css("display", "block");
+    let otpInputVal = $('.ty-login__input').val();
+    $('.resend-sms-card').css('display', 'block');
     var counter = setInterval(timer, 1000); //1000 will  run it every 1 second
     function timer() {
         otpState.timer = otpState.timer - 1;
@@ -168,7 +165,7 @@ $('#modal-sent').click(function () {
             //counter ended, do something here
             return;
         }
-        document.querySelector(".card-resend-sms-timer").innerHTML = otpState.timer + " secs";
+        document.querySelector('.card-resend-sms-timer').innerHTML = otpState.timer + ' secs';
         //Do code for showing the number of seconds here
     }
 //  modal click
@@ -185,8 +182,17 @@ $('#modal-sent').click(function () {
         },
         callback: function (response) {
             // $("#otp").removeClass("myspinner");
-            console.log(response);
-            window.location.href = fn_url('installment_product.profile-contracts');
+            let spanError = $('.modal-error');
+            console.log('status', response);
+            if (response.result.result.status === 0) {
+                spanError.text('tasdiqlash kodi xato! Iltimos, to\'g\'ri kiriting.').css('color', 'red');
+
+            } else if (response.result.result.status === 1) {
+                // window.location.href =
+                window.location.href = fn_url('installment_product.profile-contracts');
+
+            }
+
             // modal.style.display = "none";
 
 

@@ -1,6 +1,7 @@
 {if $auth.user_id}
     {* authorized user *}
-    <button product-id="{$product.product_id}" type="button" class="ut2-btn__options ty-btn ty-btn__primary ty-btn__big set_qty">
+    <button product-id="{$product.product_id}" type="button"
+            class="ut2-btn__options ty-btn ty-btn__primary ty-btn__big set_qty">
         {__("installment")}
     </button>
     {*{include file="buttons/button.tpl"
