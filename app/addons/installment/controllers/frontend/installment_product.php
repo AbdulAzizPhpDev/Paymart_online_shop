@@ -312,58 +312,62 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ];
 
         $response = php_curl('/buyers/check-user-sms', $data, 'POST', $user['api_key']);
-
+//
         if ($response->result->status == 1 || $response->result->status == "success") {
 
             $product_id = Tygh::$app['session']['product_info']['product_id'];
 
             $product = db_get_row('select * from ?:products where product_id = ?i', $product_id);
 
-            $response_fargo = php_curl('https://prodapi.shipox.com/api/v2/customer/order', $data, 'POST', $token);
 
-            $sender_data = [
-                "address_type" => "residential",
-                "name" => "testA",
-                "apartment" => "221",
-                "building" => "B",
-                "street" => "Ttz",
-                "city" => [
-                    "id" => 228171787
-                ],
-                "country" => [
-                    "id" => 234
-                ],
-                "phone" => "+998909123004"
-            ];
-            $data = '{
-                
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => 'https://prodapi.shipox.com/api/v2/customer/order',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS => '{
     "sender_data": {
-       
-    },
-    
-    "recipient_data": {
         "address_type": "residential",
-        "name": "testB",
-        "apartment": "221",
-        "building": "B",
-        "street": "Chopon ota",
-        
+        "name": "testA",
+        "email": "",
+        "apartment": null,
+        "building": null,
+        "street": null,
         "city": {
           "id": 228171787
         },
-        
         "country": {
           "id": 234
         },
-        
+        "neighborhood": {
+            "id":234827628
+        },
+        "phone": "9999999999"
+    },
+    "recipient_data": {
+        "address_type": "residential",
+        "name": "' + $user['firstname'] + '",
+        "apartment": "' + $_REQUEST['apartment'] + '",
+        "building": "' + $_REQUEST['building'] + '",
+        "street": "' + $_REQUEST['street'] + '",
+        "city": {
+          "id": 228171787
+        },
+        "country": {
+          "id": 234
+        },
         "neighborhood": {
             "id":234827631
         },
-        
-        "phone": "+998909123005",
+        "phone": "' + $user['phone'] + '",
         "landmark": "Cafe chigatoy"
     },
-    
        "dimensions": {
         "weight": 12,
         "width": 32,
@@ -372,27 +376,53 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         "unit": "METRIC",
         "domestic": true
   },
-  
   "package_type": {
     "courier_type": "DOOR_DOOR"
   },
-  
   "charge_items": [
     {
-    
       "paid": false,
-      "charge": 0,
+      "charge": 100,
       "charge_type": "cod",
       "payer":"sender"
 
     }
   ],
-  
   "recipient_not_available": "do_not_deliver",
   "payment_type": "credit_balance",
   "payer":"sender"
-    
-}';
+  
+}',
+                CURLOPT_HTTPHEADER => array(
+                    'Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsb2dpc3RpY3NAcGF5bWFydC51eiIsInVzZXJJZCI6MTE3NjU2MDQ5OCwiZXhwIjoxNjQ2MzExODI0fQ.KeyWhL0bST7Ttt94aPhUC7kv_MiNulffuPB8-LOzC5R2POpP4U6BGKC7ydX_X-QHUlD1iCVp7zE_4jlFuKSzVQ',
+                    'Content-Type: application/json'
+                ),
+            ));
+
+            curl_exec($curl);
+
+            curl_close($curl);
+
+
+//            $response_fargo = php_curl('https://prodapi.shipox.com/api/v2/customer/order', $data, 'POST', $token);
+
+            $sender_data = [
+                "address_type" => "residential",
+                "name" => "testA",
+                "apartment" => $_REQUEST['apartment'],
+                "building" => $_REQUEST['building'],
+                "street" => $_REQUEST['street'],
+                "city" => [
+                    "id" => 228171787
+                ],
+                "country" => [
+                    "id" => 234
+                ],
+                "phone" => $user['phone']
+            ];
+
+//            fn_print_die($sender_data);
+
 
             $product_quantity = Tygh::$app['session']['product_info']['product_id'];
             unset(Tygh::$app['session']['product_info']);
