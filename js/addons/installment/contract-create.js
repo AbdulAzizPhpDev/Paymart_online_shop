@@ -92,7 +92,9 @@ myBtn.onclick = function () {
     let city = $('#formAddress').val();
     let region = $('#formAddress2').val();
     // let txt = document.getElementsByTagName("textarea");
-    let txt = $("#story").val();
+    let apartment = $("#story").val();
+    let building = $("#story2").val();
+    let street = $("#story3").val();
     span.onclick = function() {
         modal.style.display = "none";
     }
@@ -112,7 +114,9 @@ myBtn.onclick = function () {
             limit: otpState.selectedFirst,
             city: city,
             region: region,
-            textarea: txt,
+            apartment: apartment,
+            building: building,
+            street: street,
         },
         callback: function (response) {
             console.log('success', response)
