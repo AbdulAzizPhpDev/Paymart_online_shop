@@ -214,15 +214,15 @@
                     <div class="main-form__last">
                         <div class="main-form__last-item">
                             <div class="last-item__style">
-                                <label for="story">Apartment </label>
+                                <label for="story">Квартира </label>
                                 <input id="story" type="text">
                             </div>
                             <div class="last-item__style">
-                                <label for="story2">Building </label>
+                                <label for="story2">Дом </label>
                                 <input id="story2" type="text">
                             </div>
                             <div class="last-item__style">
-                                <label for="story3">Street </label>
+                                <label for="story3">Улица</label>
                                 <input id="story3" type="text">
                             </div>
                         </div>
