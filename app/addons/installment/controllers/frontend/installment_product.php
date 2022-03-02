@@ -312,12 +312,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ];
 
         $response = php_curl('/buyers/check-user-sms', $data, 'POST', $user['api_key']);
-//        fn_print_die($response);
         if ($response->status == 1 || $response->status == "success") {
 
             $product_id = Tygh::$app['session']['product_info']['product_id'];
             $product_quantity = Tygh::$app['session']['product_info']['product_id'];
             unset(Tygh::$app['session']['product_info']);
+
+            fn_print_die(Tygh::$app['session']['product_info']);
+
             $data = [
                 'amount' => $product_quantity
             ];
