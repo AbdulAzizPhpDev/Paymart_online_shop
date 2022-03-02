@@ -26,7 +26,7 @@
 
       return period;
     },
-      setSessionProductQtyAndPeriod: function (event) {
+    setSessionProductQtyAndPeriod: function (event) {
       const qty = $('.cm-amount').val();
       const { product } = productDetailState;
 
@@ -110,7 +110,6 @@
         priceLabel = `Рассрочка ${price} UZS мес.`;
         return $installmentProductPriceContainer.text(priceLabel);
       }
-
       price = `Рассрочка ${perMonth(product.price, 12)} UZS мес.`;
 
       $installmentProductPriceContainer.text(price);
@@ -137,8 +136,24 @@
   $installmentButton.on('click', productDetailMethods.setSessionProductQtyAndPeriod);
 
   $.ceEvent('on', 'ce.ajaxdone', function (response_data) {
+    let { product } = productDetailState;
+    const updatedPrice = $(`#sec_discounted_price_${product.id}`).text().replace(/[\u00a0]/g, '');
+
+    if (updatedPrice) {
+      product.price = Number(updatedPrice);
+    } else {
+      product.id = $('.product-id-for-calculate').val();
+      product.name = $('.product-name-for-calculate').val();
+      product.price = $('.product-price-for-calculate-price').val();
+      product.qty = $('.cm-amount').val();
+    }
+
     productDetailMethods.showProductInstallmentPrice();
     productDetailMethods.radioHandler();
   });
+
+  // $.ceEvent('on', 'ce.product_option_changed_post', function () {
+  //   console.log('option changed');
+  // });
 
 })(Tygh, Tygh.$);
