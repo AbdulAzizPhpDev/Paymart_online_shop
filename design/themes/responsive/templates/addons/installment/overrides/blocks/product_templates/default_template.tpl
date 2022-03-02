@@ -1,4 +1,5 @@
 {script src="js/tygh/exceptions.js"}
+{script src="js/addons/installment/product-detail.js"}
 
 {$is_add_to_cart_mv=true}
 {if "MULTIVENDOR"|fn_allowed_for && ($product.master_product_id || !$product.company_id)}{$is_add_to_cart_mv=false}{/if}
