@@ -229,6 +229,27 @@
                     </div>
                 </form>
                 <div class="form-button">
+                    <span>
+                        {if $notifier }
+                            <!-- The Modal -->
+                            <div id="myModal5" class="modal5">
+                                   <a href="{$redirect_url|fn_url}">
+                                <!-- Modal content -->
+                                      <div class="modal-content5">
+    {*                                    <span class="close5">&times;</span>*}
+                                        <div class="modal-content5__item">
+                                            <p> Mablag' yetarli emas, call centerga murojaat qiling.</p>
+                                            <span>+998 71 209 2500</span>
+                                        </div>&nbsp; &nbsp;
+                                               <div>
+                                                    <img src="/design/themes/responsive/media/images/addons/installment/back-arrow.png"
+                                                         alt="Arrow image">
+                                               </div>
+                                      </div>
+                                   </a>
+                                </div>
+                        {/if}
+                    </span>
                     <button id="myBtn" class="form-button__item" type="submit" form="form1">Оформить
                         рассрочку
                     </button>

@@ -618,7 +618,12 @@ if ($mode == "contract-create") {
         Tygh::$app['view']->assign('product_quantity', $product_quantity);
         Tygh::$app['view']->assign('user', $user);
         if ((int)$user['i_limit'] < (int)$datas['product_price']['price']) {
-            fn_set_notification('W', __('warning'), " maxsulotni olish mumkin emas, qashshoq! &#128513 ", 'S');
+            Tygh::$app['view']->assign('notifier', true);
+
+
+        }else{
+            Tygh::$app['view']->assign('notifier', false);
+
         }
     }
 }
