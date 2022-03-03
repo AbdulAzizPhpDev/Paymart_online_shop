@@ -21,17 +21,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     "partner_id" => $_REQUEST['id'],
                     "role" => "partner"
                 ];
-                $response = php_curl('/login/validate-form', $data, 'POST', null);
+                $check_user_res = php_curl('/login/validate-form', $data, 'POST', null);
 
-                if ($response->status == "success") {
+                if ($check_user_res->status == "success") {
+
                     $data = [
                         'api_format' => 'object',
                         'partner_id' => $_REQUEST['id'],
                         'password' => $_REQUEST['password'],
-                        'role' => 'partner'];
-                    $response = php_curl('/login/auth', $data, 'POST', null);
+                        'role' => 'partner'
+                    ];
 
-                    if ($response->status == "success") {
+                    $check_pass_res = php_curl('/login/check-password', $data, 'POST', null);
+
+                    if ($check_pass_res->status == "success") {
 
                         $check = db_get_row('select * from ?:companies where p_c_id=?i ', $_REQUEST['id']);
 
@@ -40,71 +43,79 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             $data = [
                                 "lang_code" => "ru",
                                 "status" => "A",
-                                "company" => "test",
+                                "company" => $check_user_res->company_name,
                                 "email" => $email,
                                 "redirect_customer" => "Y",
                                 "pre_moderation" => "N",
                                 "pre_moderation_edit" => "N",
                                 "pre_moderation_edit_vendors" => "N",
                                 "plan_id" => 3,
-                                "p_c_token" => $response->data->api_token,
+                                "p_c_token" => $check_user_res->user_token,
                                 "p_c_id" => $_REQUEST['id'],
                             ];
-                            $com = db_query('INSERT INTO ?:companies ?e', $data);
-                            $user_data = db_get_row('select * from ?:users where p_user_id=?i ', $response->data->user_id);
-
-                            $user_detail = php_curl('/buyer/detail', [], 'POST', $response->data->api_token);
-
-                            $user_id = create_user(999999999, $user_detail->data->name, $user_detail->data->surname, $_REQUEST['password'], 'V', $com, $email);
-
-                            $data_u = [
-                                'api_key' => $response->data->api_token,
-                                'p_user_id' => $response->data->user_id
+                            $company_id = db_query('INSERT INTO ?:companies ?e', $data);
+                            $data_des = [
+                                "company_id" => $company_id,
+                                "lang_code" => "ru",
+                                "company_description"=>$check_user_res->company_description
                             ];
-                            db_query('UPDATE ?:users SET ?u WHERE user_id = ?i', $data_u, $user_id);
+                            db_query('INSERT INTO ?:company_descriptions ?e', $data_des);
+                            //$user_data = db_get_row('select * from ?:users where p_user_id=?i ', $check_user_res->data->user_id);
 
+                            $user_detail = php_curl('/buyer/detail', [], 'GET', $check_user_res->user_token);
+                            if ($user_detail->status == "success") {
+                                $user_id = create_user(999999999, $user_detail->data->name, $user_detail->data->surname, $_REQUEST['password'], 'V', $company_id, $email);
+                                $data_u = [
+                                    'api_key' => $check_user_res->user_token,
+                                    'p_user_id' => $user_detail->data->id
+                                ];
+                                db_query('UPDATE ?:users SET ?u WHERE user_id = ?i', $data_u, $user_id);
+                            }
 
                             Tygh::$app['session']->regenerateID();
                             fn_login_user($user_id, true);
 
                             $ekey = fn_generate_ekey($user_id, 'U', SECONDS_IN_DAY);
 
-                            $url = "http://market.paymart.uz/vendor.php?dispatch=auth.ekey_login&ekey=$ekey&company_id=$com";
+                            $url = "http://market.paymart.uz/vendor.php?dispatch=auth.ekey_login&ekey=$ekey&company_id=$company_id";
 
-                            $res =[
-                                'result'=>$response,
-                                'url'=>$url
+                            $res = [
+                                'result' => $check_pass_res,
+                                'url' => $url
                             ];
+
                             Registry::get('ajax')->assign('result', $res);
                             exit();
 
-
                         } else {
-                            $user_data = db_get_row('select * from ?:users where p_user_id=?i ', $response->data->user_id);
+                            $data_u = [
+                                'company' => $check_user_res->company_name
+                            ];
+                            db_query('UPDATE ?:companies SET ?u WHERE company_id = ?i', $data_u, $check['company_id']);
+                            $user_data = db_get_row('select * from ?:users where user_type="V" and company_id=?i ', $check['company_id']);
+                            if (empty($user_data)) {
+                                $error = showErrors('vendor_id_empty');
+                                Registry::get('ajax')->assign('result', $error);
+                                exit();
+                            }
                             $ekey = fn_generate_ekey($user_data['user_id'], 'U', SECONDS_IN_DAY);
                             $vendor_id = $check['company_id'];
                             $url = "http://market.paymart.uz/vendor.php?dispatch=auth.ekey_login&ekey=$ekey&company_id=$vendor_id";
-                           $res =[
-                               'result'=>$response,
-                               'url'=>$url
-                           ];
+                            $res = [
+                                'result' => $check_pass_res,
+                                'url' => $url
+                            ];
                             Registry::get('ajax')->assign('result', $res);
 
                             exit();
                         }
-
                     }
-
-                    Registry::get('ajax')->assign('result', $response);
+                    Registry::get('ajax')->assign('result', $check_pass_res);
                     exit();
                 }
-                Registry::get('ajax')->assign('result', $response);
+                Registry::get('ajax')->assign('result', $check_user_res);
                 exit();
-
             }
-
-//            db_query('UPDATE ?:users SET ?u WHERE user_id = ?i', $user_info, (int)fn_get_session_data('user_info')['id']);
-
         }
         $error = showErrors('vendor_id_empty');
         Registry::get('ajax')->assign('result', $error);
