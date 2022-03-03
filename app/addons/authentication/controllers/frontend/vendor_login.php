@@ -21,17 +21,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     "partner_id" => $_REQUEST['id'],
                     "role" => "partner"
                 ];
-                $response = php_curl('/login/validate-form', $data, 'POST', null);
+                $check_user_res = php_curl('/login/validate-form', $data, 'POST', null);
 
-                if ($response->status == "success") {
+                if ($check_user_res->status == "success") {
+
                     $data = [
                         'api_format' => 'object',
                         'partner_id' => $_REQUEST['id'],
                         'password' => $_REQUEST['password'],
-                        'role' => 'partner'];
-                    $response = php_curl('/login/auth', $data, 'POST', null);
+                        'role' => 'partner'
+                    ];
 
-                    if ($response->status == "success") {
+                    $check_pass_res = php_curl('/login/check-password', $data, 'POST', null);
+
+                    if ($check_pass_res->status == "success") {
 
                         $check = db_get_row('select * from ?:companies where p_c_id=?i ', $_REQUEST['id']);
 
@@ -40,17 +43,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             $data = [
                                 "lang_code" => "ru",
                                 "status" => "A",
-                                "company" => "test",
+                                "company" => $check_user_res->company_name,
                                 "email" => $email,
                                 "redirect_customer" => "Y",
                                 "pre_moderation" => "N",
                                 "pre_moderation_edit" => "N",
                                 "pre_moderation_edit_vendors" => "N",
                                 "plan_id" => 3,
-                                "p_c_token" => $response->data->api_token,
+                                "p_c_token" => $check_user_res->user_token,
                                 "p_c_id" => $_REQUEST['id'],
                             ];
-                            $com = db_query('INSERT INTO ?:companies ?e', $data);
+                            $company_id = db_query('INSERT INTO ?:companies ?e', $data);
                             $user_data = db_get_row('select * from ?:users where p_user_id=?i ', $response->data->user_id);
 
                             $user_detail = php_curl('/buyer/detail', [], 'POST', $response->data->api_token);
@@ -71,9 +74,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                             $url = "http://market.paymart.uz/vendor.php?dispatch=auth.ekey_login&ekey=$ekey&company_id=$com";
 
-                            $res =[
-                                'result'=>$response,
-                                'url'=>$url
+                            $res = [
+                                'result' => $response,
+                                'url' => $url
                             ];
                             Registry::get('ajax')->assign('result', $res);
                             exit();
@@ -84,10 +87,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             $ekey = fn_generate_ekey($user_data['user_id'], 'U', SECONDS_IN_DAY);
                             $vendor_id = $check['company_id'];
                             $url = "http://market.paymart.uz/vendor.php?dispatch=auth.ekey_login&ekey=$ekey&company_id=$vendor_id";
-                           $res =[
-                               'result'=>$response,
-                               'url'=>$url
-                           ];
+                            $res = [
+                                'result' => $response,
+                                'url' => $url
+                            ];
                             Registry::get('ajax')->assign('result', $res);
 
                             exit();
@@ -95,10 +98,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                     }
 
-                    Registry::get('ajax')->assign('result', $response);
+                    Registry::get('ajax')->assign('result', $check_pass_res);
                     exit();
                 }
-                Registry::get('ajax')->assign('result', $response);
+                Registry::get('ajax')->assign('result', $check_user_res);
                 exit();
 
             }
