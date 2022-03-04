@@ -174,7 +174,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="main-form__another justify-content-center">
+                    <div class="main-form__another">
                         <div class="main-form__another-item">
                             <label for="inputAddress">Страна</label>
                             <input class="repeat-input" type="text" id="inputAddress" disabled value="Узбекистан">
@@ -200,14 +200,18 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="main-form__another-item">
-                            <label for="formAddress">Район</label>
-                            <div class="input-paying__unique">
-                                <select name="formAddress" id="formAddress">
-                                    <option value="uzb">Ташкент</option>
-                                    <option value="ru">Россия</option>
-                                    <option value="kz">Казахстан</option>
-                                </select>
+                        <div class="main-form__last-input">
+                            {*                            <label for="formAddress">Район</label>*}
+                            {*                            <div class="input-paying__unique">*}
+                            {*                                <select name="formAddress" id="formAddress">*}
+                            {*                                    <option value="uzb">Ташкент</option>*}
+                            {*                                    <option value="ru">Россия</option>*}
+                            {*                                    <option value="kz">Казахстан</option>*}
+                            {*                                </select>*}
+                            {*                            </div>*}
+                            <div class="last-item__style">
+                                <label for="story6">Район</label>
+                                <input id="story6" type="text">
                             </div>
                         </div>
                     </div>

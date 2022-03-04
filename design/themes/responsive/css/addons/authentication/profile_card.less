@@ -162,7 +162,7 @@ h1, h2, h3, h4, h5, p, ul, li, div {
     &-card {
       border: 1px solid @main;
       border-radius: 50%;
-      padding: 1px 3px;
+      padding: 0 4px;
     }
   }
 }
@@ -175,9 +175,9 @@ h1, h2, h3, h4, h5, p, ul, li, div {
   justify-content: space-between;
 
   &__main {
-    position: absolute;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     //justify-content: space-between;
     //align-items: start;
     background: url("../media/images/addons/authentication/image/black-card.png") 20% 40% no-repeat;
@@ -186,7 +186,7 @@ h1, h2, h3, h4, h5, p, ul, li, div {
     //width: 320px;
     border-radius: 8px;
     padding: 16px;
-    height: 200px;
+    height: 171px;
     width: 300px;
 
     &-top {
@@ -219,6 +219,174 @@ h1, h2, h3, h4, h5, p, ul, li, div {
   }
 
   &__second {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+  }
+}
+
+.cards-main {
+  display: flex;
+  justify-content: space-between;
+}
+
+.profile-main {
+  box-sizing: border-box;
+}
+
+.orange-unique {
+  position: relative;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    //justify-content: space-between;
+    //align-items: start;
+    background: url("../media/images/addons/authentication/image/orange-card.png") 20% 40% no-repeat;
+    background-size: cover;
+    //height: 200px;
+    //width: 320px;
+    border-radius: 8px;
+    padding: 16px;
+    height: 171px;
+    width: 300px;
+
+    &-top {
+      display: flex;
+      justify-content: space-between;
+    }
+
+
+    .orange-unique__main-item {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    p {
+      color: #fff;
+      font-weight: 500;
+      font-size: 16px;
+    }
+
+    h1 {
+      color: #fff;
+      font-weight: bold;
+      font-size: 24px;
+    }
+
+    //padding: 4px;
+    //margin: 24px 0 24px 24px;
+    //z-index: 999;
+  }
+
+  &__second {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+  }
+}
+
+.modalCard {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content__card {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fefefe;
+  margin: 12% auto; /* 15% from the top and centered */
+  padding: 70px;
+  border-radius: 8px;
+  border: 1px solid #888;
+  width: 24%; /* Could be more or less, depending on screen size */
+
+  img {
+    position: absolute;
+    right: 4%;
+    top: 7%;
+  }
+}
+
+/* The Close Button */
+.closeBtn {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  top: 24px;
+  right: 23px;
+  //position: relative;
+
+
+}
+
+.closeBtn:hover,
+.closeBtn:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.unique-btn__modal-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: @main;
+  border: none;
+  padding: 15px 124px;
+  border-radius: 12px;
+  color: #fff;
+  margin-top: 30px;
+
+}
+
+.card-add__page-profile {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-confirm__profile {
+  display: flex;
+  flex-direction: column;
+}
+
+
+#firstPut, #secondPut {
+  background-color: #F6F6F6;
+  border: none;
+  margin-top: 4px;
+  margin-bottom: 10px;
+}
+
+
+.products-cards__profile {
+  .products-cards {
     display: flex;
     justify-content: space-between;
   }

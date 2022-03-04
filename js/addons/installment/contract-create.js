@@ -99,17 +99,19 @@ myBtn.onclick = function () {
     let apartment = $('#story').val();
     let building = $('#story2').val();
     let street = $('#story3').val();
+    let district = $('#story6').val();
     span.onclick = function () {
         modal.style.display = 'none';
     };
 
-
+    console.log();
     $.ceAjax('request', fn_url('installment_product.set_contracts'), {
         method: 'POST',
         data: {
             limit: otpState.selectedFirst,
             city: city,
             region: region,
+            district: district,
             apartment: apartment,
             building: building,
             street: street,

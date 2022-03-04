@@ -1,7 +1,7 @@
 {script src="js/addons/authentication/profile_card.js"}
 
 
-<div class="container">
+<div class="container profile-main">
     <h1 class="profile-title">Профиль</h1>
     <div class="profile">
         <div class="profile-image">
@@ -84,27 +84,38 @@
     <div class="next-section">
         <h1 class="profile-title">Мои карты</h1>
         <div class="plus">
-            Добавить карту <span class="plus-card">+</span>
+            <a href="#" style="text-decoration: none;"> Добавить карту <span class="plus-card">+</span></a>
         </div>
     </div>
-    <div class="profile-card">
-        <div class="profile-card__main">
-            <div class="profile-card__main-top">
-                <div class="profile-card__main-item">
-                    <p>Зарплатная карта</p>
-                    <h1>3 534 030.12 сум</h1>
+    <div class="products-cards__profile">
+    </div>
+    <div id="myModalCard" class="modalCard">
+        <!-- Modal content -->
+        <div class="modal-content__card">
+        <span class="closeBtn">
+            <img src="/design/themes/responsive/media/images/addons/installment/Thin.png" alt="Close img">
+        </span>
+            <div class="card-add__page-profile">
+                <div class="card-confirm">
+                    <div class="card-confirm__profile">
+                        <label for="firstPut">Номер карты</label>
+                        <input type="number" name="" id="firstPut">
+                    </div>
+                    <div class="card-confirm__profile">
+                        <label for="SecondPut">Срок карты</label>
+                        <input type="number" name="" id="secondPut">
+                    </div>
+                    <div class="">
+                        <span class="modal-error__profile"></span>
+                        <button disabled class="unique-btn__modal-item" type="button" id="modal-sent">
+                            Продолжить
+                        </button>
+                    </div>
                 </div>
-                <img src="/design/themes/responsive/media/images/addons/authentication/image/Union.png"
-                     alt="Ico">
-            </div>
-            <div class="profile-card__second">
-                <p style="color: #fff !important;">8600 **** **** 3322</p>
-                <p>12/04</p>
             </div>
         </div>
-
+        <br><br><br><br><br>
+        <br><br><br><br><br>
+        <br><br><br><br><br>
     </div>
-    <br><br><br><br><br>
-    <br><br><br><br><br>
-    <br><br><br><br><br>
 </div>
