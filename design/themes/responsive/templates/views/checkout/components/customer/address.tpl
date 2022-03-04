@@ -41,25 +41,7 @@
                 </select>
             </div>
             <div class="span8">
-                <select
-                        class="cm-country cm-location-shipping"
-                        style="width: 100%"
-                        name="user_data[district]"
-                >
-                    <option value="" selected>Район</option>
-                    <option value="almazar">Алмазарский район</option>
-                    <option value="bektemir">Бектемирский район</option>
-                    <option value="mirabad">Мирабадский район</option>
-                    <option value="mirzo-ulugbek">Мирзо-Улугбекский район</option>
-                    <option value="sergeli">Сергелийский район</option>
-                    <option value="chilanzar">Чиланзарский район</option>
-                    <option value="shaykhantakhur">Шайхантаурский район</option>
-                    <option value="yunusabad">Юнусабадский район</option>
-                    <option value="yakkasaray">Яккасарайский район</option>
-                    <option value="chilanzar">Чиланзарский район</option>
-                    <option value="yashnaabad">Яшнабадский район</option>
-                    <option value="tashkent">Tashkent city</option>
-                </select>
+                <input name="user_data[region]" type="text" style="width: 100%" placeholder="Район">
             </div>
         </div>
         <div class="row-fluid" style="padding: 8px 4px 0 4px">

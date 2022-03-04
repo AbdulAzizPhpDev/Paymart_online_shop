@@ -60,14 +60,14 @@
         },
       ];
 
-      $.ceAjax('request', PAYMART_API_BASE_URL + '/order/calculate', {
+      $.ceAjax('request', PAYMART_API_BASE_URL + '/order/marketplace-calculate', {
         method: 'POST',
         data: {
           type: 'credit',
           period: installment_period,
           products: formattedProducts,
           partner_id: company_id,
-          user_id: '',
+          // user_id: '',
         },
         callback: function (response) {
           console.log(response);
