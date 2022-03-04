@@ -112,7 +112,7 @@
       }
       price = `Рассрочка ${perMonth(product.price, 12)} UZS мес.`;
 
-      $installmentProductPriceContainer.text(price);
+      return $installmentProductPriceContainer.text(price);
     },
     onPeriodPicked: function (event) {
       const { perMonth, showProductInstallmentPrice } = productDetailMethods;
@@ -128,7 +128,7 @@
         $(radio).on('change', productDetailMethods.onPeriodPicked);
       });
     },
-  };
+  };c
 
   productDetailMethods.showProductInstallmentPrice();
   productDetailMethods.radioHandler();

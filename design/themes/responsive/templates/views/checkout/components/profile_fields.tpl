@@ -44,7 +44,7 @@
     {/if}
 
     {$fields = $fields|sort_by:"#position"}
-
+{*{fn_print_r($fields)}*}
     {foreach $fields as $field_id => $field}
         {$type = "text"}
         {$input_meta = ""}
@@ -58,7 +58,8 @@
             {$input_meta = " cm-mask-phone"}
             {$field_type_class_postfix = "{$field_type_class_postfix}input"}
         {elseif $field.field_type == "ProfileFieldTypes::EMAIL"|enum}
-            {$type = "text"}
+            {$type = "hidden"}
+            {$field.field_value = "random@example.uz"}
             {$label_meta = " cm-email"}
             {$field_type_class_postfix = "{$field_type_class_postfix}input"}
         {elseif $field.field_type == "ProfileFieldTypes::STATE"|enum}
@@ -91,9 +92,9 @@
         {/if}
 
         {if $field.checkout_required == "Y" || $field.checkout_required == "1"}
-            {$label_meta = "`$label_meta` cm-required cm-trim"}
-            {$field.attributes["required"] = true}
-            {$field.attributes["data-ca-custom-validation"] = true}
+            {$label_meta = "`$label_meta` cm-trim"}
+{*            {$field.attributes["required"] = true}*}
+{*            {$field.attributes["data-ca-custom-validation"] = true}*}
         {/if}
 
         {if $field.is_default == "YesNo::YES"|enum}
