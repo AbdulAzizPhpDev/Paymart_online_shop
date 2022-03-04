@@ -303,6 +303,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($mode == "set_confirm_contract") {
 
+
         $user = db_get_row('select * from ?:users where user_id=?i', $auth['user_id']);
 
         $data = [
@@ -312,58 +313,126 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ];
 
         $response = php_curl('/buyers/check-user-sms', $data, 'POST', $user['api_key']);
-
+//
         if ($response->result->status == 1 || $response->result->status == "success") {
 
             $product_id = Tygh::$app['session']['product_info']['product_id'];
 
-            $product = db_get_row('select * from ?:products where product_id = ?i', $product_id);
+            $product_info = db_get_row('SELECT *,product_description.product as product_name FROM ?:products as product 
+        INNER JOIN ?:companies as company ON product.company_id = company.company_id 
+        INNER JOIN ?:product_prices as product_price ON product.product_id = product_price.product_id 
+        INNER JOIN ?:product_descriptions as product_description ON product.product_id = product_description.product_id 
+        WHERE product.product_id = ?i ', $product_id);
 
-            $response_fargo = php_curl('https://prodapi.shipox.com/api/v2/customer/order', $data, 'POST', $token);
 
-            $sender_data = [
-                "address_type" => "residential",
-                "name" => "testA",
-                "apartment" => "221",
-                "building" => "B",
-                "street" => "Ttz",
-                "city" => [
-                    "id" => 228171787
-                ],
-                "country" => [
-                    "id" => 234
-                ],
-                "phone" => "+998909123004"
-            ];
-            $data = '{
-                
+//        fn_print_die('{
+//    "sender_data": {
+//        "address_type": "residential",
+//        "name": "testA",
+//        "email": "' . $product_info["email"] . '",
+//        "apartment": null,
+//        "building": null,
+//        "street": ' . $product_info["address"] . ',
+//        "city": {
+//          "id": 228171787
+//        },
+//        "country": {
+//          "id": 234
+//        },
+//        "neighborhood": {
+//            "id":234827628
+//        },
+//        "phone": "' . $product_info["phone"] . '"
+//    },
+//    "recipient_data": {
+//        "address_type": "residential",
+//        "name": "' . $user["firstname"] . '",
+//        "apartment": "' . $_REQUEST["apartment"] . '",
+//        "building": "' . $_REQUEST["building"] . '",
+//        "street": "' . $_REQUEST["street"] . '",
+//        "city": {
+//          "id": 228171787
+//        },
+//        "country": {
+//          "id": 234
+//        },
+//        "neighborhood": {
+//            "id":234827631
+//        },
+//        "phone": "' . $user['phone'] . '"
+//    },
+//       "dimensions": {
+//        "weight": 12,
+//        "width": 32,
+//        "length": 45,
+//        "height": 1,
+//        "unit": "METRIC",
+//        "domestic": true
+//  },
+//  "package_type": {
+//    "courier_type": "DOOR_DOOR"
+//  },
+//  "charge_items": [
+//    {
+//      "paid": false,
+//      "charge": 100,
+//      "charge_type": "cod",
+//      "payer":"sender"
+//
+//    }
+//  ],
+//  "recipient_not_available": "do_not_deliver",
+//  "payment_type": "credit_balance",
+//  "payer":"sender"
+//
+//}');
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => 'https://prodapi.shipox.com/api/v2/customer/order',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS => '{
     "sender_data": {
-       
-    },
-    
-    "recipient_data": {
         "address_type": "residential",
-        "name": "testB",
-        "apartment": "221",
-        "building": "B",
-        "street": "Chopon ota",
-        
+        "name": "' . $product_info["company"] . '",
+        "email": "' . $product_info["email"] . '",
+        "apartment": null,
+        "building": null,
+        "street": "' . $product_info["address"] . '",
         "city": {
           "id": 228171787
         },
-        
         "country": {
           "id": 234
         },
-        
+        "neighborhood": {
+            "id":234827628
+        },
+        "phone": "' . $product_info["phone"] . '"
+    },
+    "recipient_data": {
+        "address_type": "residential",
+        "name": "' . $user["firstname"] . '",
+        "apartment": "' . $_REQUEST["apartment"] . '",
+        "building": "' . $_REQUEST["building"] . '",
+        "street": "' . $_REQUEST["street"] . '",
+        "city": {
+          "id": 228171787
+        },
+        "country": {
+          "id": 234
+        },
         "neighborhood": {
             "id":234827631
         },
-        
-        "phone": "+998909123005",
-        "landmark": "Cafe chigatoy"
+        "phone": "' . $user['phone'] . '"
     },
-    
        "dimensions": {
         "weight": 12,
         "width": 32,
@@ -372,32 +441,56 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         "unit": "METRIC",
         "domestic": true
   },
-  
   "package_type": {
     "courier_type": "DOOR_DOOR"
   },
-  
   "charge_items": [
     {
-    
       "paid": false,
-      "charge": 0,
+      "charge": 100,
       "charge_type": "cod",
       "payer":"sender"
 
     }
   ],
-  
   "recipient_not_available": "do_not_deliver",
   "payment_type": "credit_balance",
   "payer":"sender"
-    
-}';
+  
+}',
+                CURLOPT_HTTPHEADER => array(
+                    'Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsb2dpc3RpY3NAcGF5bWFydC51eiIsInVzZXJJZCI6MTE3NjU2MDQ5OCwiZXhwIjoxNjQ2MzExODI0fQ.KeyWhL0bST7Ttt94aPhUC7kv_MiNulffuPB8-LOzC5R2POpP4U6BGKC7ydX_X-QHUlD1iCVp7zE_4jlFuKSzVQ',
+                    'Content-Type: application/json'
+                ),
+            ));
+
+            $fargo_response = json_decode(curl_exec($curl));
+//            fn_print_die($fargo_response);
+
+            curl_close($curl);
+
+
+//            $response_fargo = php_curl('https://prodapi.shipox.com/api/v2/customer/order', $data, 'POST', $token);
+
+//            $sender_data = [
+//                "address_type" => "residential",
+//                "name" => "testA",
+//                "apartment" => $_REQUEST['apartment'],
+//                "building" => $_REQUEST['building'],
+//                "street" => $_REQUEST['street'],
+//                "city" => [
+//                    "id" => 228171787
+//                ],
+//                "country" => [
+//                    "id" => 234
+//                ],
+//                "phone" => $user['phone']
+//            ];
+
 
             $product_quantity = Tygh::$app['session']['product_info']['product_id'];
             unset(Tygh::$app['session']['product_info']);
 
-            fn_print_die(Tygh::$app['session']['product_info']);
 
             $data = [
                 'amount' => $product_quantity
@@ -524,8 +617,6 @@ if ($mode == "await") {
 }
 
 if ($mode == "contract-create") {
-
-//    fn_print_die(fn_get_session_data('product_id'));
 
     if (!$auth['user_id']) {
         return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
