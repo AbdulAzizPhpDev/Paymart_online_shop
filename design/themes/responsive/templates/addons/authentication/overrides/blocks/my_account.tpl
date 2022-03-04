@@ -126,7 +126,7 @@
             {/hook}
         </ul>
 
-        {if $settings.Appearance.display_track_orders == 'Y'}
+        {*{if $settings.Appearance.display_track_orders == 'Y'}
             <div class="ty-account-info__orders updates-wrapper track-orders"
                  id="track_orders_block_{$block.snapping_id}">
                 <form action="{""|fn_url}" method="POST" class="cm-ajax cm-post cm-ajax-full-render"
@@ -148,7 +148,7 @@
                     </div>
                 </form>
                 <!--track_orders_block_{$block.snapping_id}--></div>
-        {/if}
+        {/if}*}
 
         <div class="ty-account-info__buttons buttons-container">
             {if $auth.user_id}
@@ -164,7 +164,7 @@
                    data-ca-target-id="login_block{$block.snapping_id}"
                    class="cm-dialog-opener cm-dialog-auto-size ty-btn ty-btn__secondary"
                    rel="nofollow">{__("sign_in")}</a>
-                <a href="{"profiles.add"|fn_url}" rel="nofollow" class="ty-btn ty-btn__primary">{__("register")}</a>
+{*                <a href="{"profiles.add"|fn_url}" rel="nofollow" class="ty-btn ty-btn__primary">{__("register")}</a>*}
                 <div id="login_block{$block.snapping_id}" class="hidden" title="{__("sign_in")}">
                     <div class="ty-login-popup">
                         {include file="views/auth/login_form.tpl" style="popup" id="popup`$block.snapping_id`"}
