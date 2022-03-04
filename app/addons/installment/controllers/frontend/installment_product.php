@@ -465,28 +465,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ));
 
             $fargo_response = json_decode(curl_exec($curl));
-//            fn_print_die($fargo_response);
 
             curl_close($curl);
-
-
-//            $response_fargo = php_curl('https://prodapi.shipox.com/api/v2/customer/order', $data, 'POST', $token);
-
-//            $sender_data = [
-//                "address_type" => "residential",
-//                "name" => "testA",
-//                "apartment" => $_REQUEST['apartment'],
-//                "building" => $_REQUEST['building'],
-//                "street" => $_REQUEST['street'],
-//                "city" => [
-//                    "id" => 228171787
-//                ],
-//                "country" => [
-//                    "id" => 234
-//                ],
-//                "phone" => $user['phone']
-//            ];
-
 
             $product_quantity = Tygh::$app['session']['product_info']['product_id'];
             unset(Tygh::$app['session']['product_info']);
