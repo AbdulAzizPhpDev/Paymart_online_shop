@@ -640,7 +640,7 @@ if ($mode == "contract-create") {
 
         $items = $response->data->orders->$id->price;
 
-        $city = db_get_row('select * from ?:fargo_countries where parent_city_id=?i', 0);;
+        $city = db_get_array('select * from ?:fargo_countries where parent_city_id=?i', 0);;
 
         Tygh::$app['view']->assign('city', $city);
         Tygh::$app['view']->assign('total', $items->total);
