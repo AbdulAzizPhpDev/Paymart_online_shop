@@ -10,7 +10,7 @@
             CREATE TABLE IF NOT EXISTS ?:fargo_countries (
             id int(11) unsigned NOT NULL AUTO_INCREMENT,
             country_id smallint unsigned NOT NULL,
-            city_id mediumint unsigned NOT NULL,
+            city_id int(11) unsigned NOT NULL,
             parent_city_id mediumint unsigned NOT NULL DEFAULT 0,
             country_name varchar(32) NOT NULL DEFAULT 'Uzbekistan',
             city_name varchar(32) NOT NULL,

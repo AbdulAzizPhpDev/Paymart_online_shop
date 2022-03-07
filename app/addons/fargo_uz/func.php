@@ -32,6 +32,7 @@ function fn_fargo_uz_install()
     ));
     $response = json_decode(curl_exec($curl));
     curl_close($curl);
+
     foreach ($response->data->list as $city) {
 
         $data = [
@@ -40,7 +41,6 @@ function fn_fargo_uz_install()
             'city_name' => $city->name
         ];
         db_query('INSERT INTO ?:fargo_countries ?e', $data);
-
     }
 
     $child_cities = [
@@ -91,15 +91,15 @@ function fn_fargo_uz_install()
 
     ];
 
-    foreach ($child_cities as $city) {
+    foreach ($child_cities as $city2) {
 
-        $data = [
+        $data1 = [
             'country_id' => 234,
-            'city_id' => $city['id'],
-            'city_name' => $city['city_name'],
+            'city_id' => $city2['id'],
+            'city_name' => $city2['city_name'],
             'parent_city_id' => 228171787
         ];
-        db_query('INSERT INTO ?:fargo_countries ?e', $data);
+        db_query('INSERT INTO ?:fargo_countries ?e', $data1);
 
     }
 
