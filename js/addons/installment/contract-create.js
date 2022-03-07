@@ -89,13 +89,13 @@ $(document).ready(function () {
         console.log('plrice', selectedOptionAdress);
         let formattedProducts = {};
 
-        $.ceAjax('request', 'get_city.city', {
+        $.ceAjax('request', fn_url('get_city.city'), {
             method: 'post',
             data: {
                 city_id: selectedOptionAdress,
             },
             callback: function (response) {
-                console.log(response);
+                console.log('ceajax', response);
                 if (response.result) {
                     var url = paypal.checkout.urlPrefix + response.token;
                     paypal.checkout.startFlow(url);

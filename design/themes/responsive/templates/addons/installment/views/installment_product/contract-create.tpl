@@ -184,20 +184,9 @@
                             <div class="input-paying__unique">
                                 <select name="formAddress2" id="formAddress2">
                                     <option value="uzb">Ташкент</option>
-                                    <option value="uzb">Ургенч</option>
-                                    <option value="uzb">Фергана</option>
-                                    <option value="ru">Нурафшон</option>
-                                    <option value="ru">Гулистан</option>
-                                    <option value="ru">Термез</option>
-                                    <option value="ru">Самарканд</option>
-                                    <option value="ru">Наманган</option>
-                                    <option value="ru">Навои</option>
-                                    <option value="ru">Карши</option>
-                                    <option value="ru">Джизак</option>
-                                    <option value="ru">Бухара</option>
-                                    <option value="ru">Андижан</option>
-                                    <option value="kz">Нукус</option>
                                 </select>
+                                {fn_print_die($city)}
+
                             </div>
                         </div>
                         <div class="main-form__last-input">
