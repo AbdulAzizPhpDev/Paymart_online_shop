@@ -15,6 +15,7 @@ var span = document.getElementsByClassName('close')[0];
 
 // let value = $('.confirm-contract').val();
 let e = document.getElementById('selectedId');
+let formAdress = document.getElementById('formAddress2');
 
 var selectedMonth = e.options[e.selectedIndex].value;
 
@@ -28,6 +29,7 @@ const otpState = {
     interval: null,
     expDate: null,
     selectedFirst: selectedMonth,
+    selectedFirstAdress: selectedMonth,
     contractId: null,
 };
 
@@ -70,11 +72,38 @@ $(document).ready(function () {
                 user_id: user_id,
             },
             success: function (response) {
-                console.log(response.data.price.total)
-                $(".input-paying__text-p").html(response.data.price.total + ' сум')
-                $(".input-paying__text-a").html(response.data.price.month + ' сум')
+                console.log(response.data.price.total);
+                $('.input-paying__text-p').html(response.data.price.total + ' сум');
+                $('.input-paying__text-a').html(response.data.price.month + ' сум');
                 // $(".orange").html(response.data.price.total + ' сум')
             }
+        });
+    });
+
+});
+
+$(document).ready(function () {
+    $('#formAddress2').change(function () {
+        var selectedOptionAdress = formAdress.options[formAdress.selectedIndex].value;
+        otpState.selectedFirstAdress = selectedOptionAdress;
+        console.log('plrice', selectedOptionAdress);
+        let formattedProducts = {};
+
+        $.ceAjax('request', 'get_city.city', {
+            method: 'post',
+            data: {
+                city_id: selectedOptionAdress,
+            },
+            callback: function (response) {
+                console.log(response);
+                if (response.result) {
+                    var url = paypal.checkout.urlPrefix + response.token;
+                    paypal.checkout.startFlow(url);
+                }
+                if (response.error) {
+                    paypal.checkout.closeFlow();
+                }
+            },
         });
     });
 
