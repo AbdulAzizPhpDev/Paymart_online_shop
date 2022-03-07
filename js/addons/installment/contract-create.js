@@ -97,11 +97,11 @@ $(document).ready(function () {
             callback: function (response) {
                 console.log('ceajax', response);
                 if (response.result) {
-                    var url = paypal.checkout.urlPrefix + response.token;
-                    paypal.checkout.startFlow(url);
+                    $('#formAddress3').val(response.result.city_name);
                 }
+
                 if (response.error) {
-                    paypal.checkout.closeFlow();
+                    console.log('onerror');
                 }
             },
         });

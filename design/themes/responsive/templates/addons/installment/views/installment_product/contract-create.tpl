@@ -203,9 +203,19 @@
                             {*                                    <option value="kz">Казахстан</option>*}
                             {*                                </select>*}
                             {*                            </div>*}
-                            <div class="last-item__style">
-                                <label for="story6">Район</label>
-                                <input id="story6" type="text">
+                            {*                            <div class="last-item__style">*}
+                            {*                                <label for="story6">Район</label>*}
+                            {*                                <select name="formAddress2" id="story6">*}
+                            {*                                    <option value="{$value['city_id']}">{$value['city_name']}</option>*}
+                            {*                                </select>*}
+                            {*                            </div>*}
+                            <div class="main-form__another-item">
+                                <label for="formAddress3">Район</label>
+                                <div class="input-paying__unique">
+                                    <select name="formAddress3" id="formAddress3">
+                                        <option></option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>

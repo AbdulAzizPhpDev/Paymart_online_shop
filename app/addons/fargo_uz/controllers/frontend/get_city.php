@@ -12,8 +12,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($mode == "city") {
 
-        if ($_REQUEST["city_id"] == 228171787) {
-            $data = db_get_row('select * from ?:fargo_countries where parent_city_id=?i', 228171787);
+        if ($_REQUEST["city_id"] == 16777215) {
+            $data = db_get_row('select * from ?:fargo_countries where parent_city_id=?i', 16777215);
             Registry::get('ajax')->assign('result', $data);
             exit();
         }
