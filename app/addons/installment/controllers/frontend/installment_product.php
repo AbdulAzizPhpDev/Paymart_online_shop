@@ -639,6 +639,10 @@ if ($mode == "contract-create") {
         $id = (int)$datas["p_c_id"];
 
         $items = $response->data->orders->$id->price;
+
+        $city = db_get_row('select * from ?:fargo_countries where parent_city_id=?i', 0);;
+
+        Tygh::$app['view']->assign('city', $city);
         Tygh::$app['view']->assign('total', $items->total);
         Tygh::$app['view']->assign('origin', $items->origin);
         Tygh::$app['view']->assign('month', $items->month);
@@ -681,9 +685,7 @@ if ($mode == 'profile-contracts') {
             $payed_list_group_by_contract_id[$item] = count($value);
         };
 
-        $city = db_get_row('select * from ?:fargo_countries where parent_city_id=?i', 0);;
 
-        Tygh::$app['view']->assign('city', $city);
         Tygh::$app['view']->assign('contracts', $result);
         Tygh::$app['view']->assign('group_by', $payed_list_group_by_contract_id);
         Tygh::$app['view']->assign('user_api_token', $user['api_key']);
