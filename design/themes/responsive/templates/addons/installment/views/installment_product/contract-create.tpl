@@ -212,9 +212,17 @@
                             <div class="main-form__another-item">
                                 <label for="formAddress3">Район</label>
                                 <div class="input-paying__unique">
-                                    <select name="formAddress3" id="formAddress3">
-                                        <option disabled="disabled" selected="selected"></option>
-                                    </select>
+                                    <div class="last-item__style" id="formAddress-div">
+                                        <select name="formAddress3" id="formAddress3" class="tashkent-regions d-none">
+                                            {*                                        <option disabled="disabled" selected="selected"></option>*}
+                                        </select>
+                                        <input type="text" placeholder="Region" class="not-tashkent-region">
+                                    </div>
+                                    {*                                    <div class="last-item__style" id="formAddress7" style="display: none">*}
+                                    {*                                    </div>*}
+                                    {*                                    <div class="last-item__style" id="formAddress4" style="display: none">*}
+                                    {*                                        <input type="text" placeholder="region">*}
+                                    {*                                    </div>*}
                                 </div>
                             </div>
                         </div>
