@@ -208,12 +208,15 @@ p h1 h2 h3 h4 h5{
     }
     .main-form__another {
       display: flex;
-      justify-content: space-between;
-      &-item{
+      //justify-content: space-between;
+      align-items: center;
+
+      &-item {
         display: flex;
         flex-direction: column;
         margin: 16px 16px 16px 0;
-        .repeat-input{
+
+        .repeat-input {
           background-color: #F6F6F6;
           border-radius: 8px;
           border: none;
@@ -221,9 +224,11 @@ p h1 h2 h3 h4 h5{
           height: 56px;
           padding: 8px 8px 8px 16px;
         }
-        .repeat-input:focus{
+
+        .repeat-input:focus {
           border-color: @main;
         }
+
         label {
           padding-bottom: 4px;
         }
@@ -300,7 +305,13 @@ input[type="text"]:hover{
   background-color: #f6f6f6 !important;
 }
 #formAddress2 {
-  appearance: none;       /* Remove default arrow */
+  appearance: none; /* Remove default arrow */
+  background: url("../media/images/addons/installment/arrow.png") no-repeat 287px 26px !important;
+  background-color: #f6f6f6 !important;
+}
+
+#formAddress3 {
+  appearance: none; /* Remove default arrow */
   background: url("../media/images/addons/installment/arrow.png") no-repeat 287px 26px !important;
   background-color: #f6f6f6 !important;
 }
@@ -521,4 +532,30 @@ textarea:focus{
   color: #000;
   text-decoration: none;
   cursor: pointer;
+}
+
+.main-form__last-input {
+
+  //margin-top: 45px;
+
+  .last-item__style {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .last-item__style input {
+    background-color: #f6f6f6;
+    border-radius: 8px;
+    border: none;
+    padding: 27px 14px;
+    width: 180%;
+  }
+}
+
+#story6 {
+  background-color: #f6f6f6;
+  border-radius: 8px;
+  border: none;
+  padding: 27px 138px;
+  width: 180%;
 }

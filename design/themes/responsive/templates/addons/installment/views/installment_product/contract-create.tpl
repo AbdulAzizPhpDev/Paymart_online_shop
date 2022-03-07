@@ -174,7 +174,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="main-form__another justify-content-center">
+                    <div class="main-form__another">
                         <div class="main-form__another-item">
                             <label for="inputAddress">Страна</label>
                             <input class="repeat-input" type="text" id="inputAddress" disabled value="Узбекистан">
@@ -183,31 +183,39 @@
                             <label for="formAddress2">Город</label>
                             <div class="input-paying__unique">
                                 <select name="formAddress2" id="formAddress2">
-                                    <option value="uzb">Ташкент</option>
-                                    <option value="uzb">Ургенч</option>
-                                    <option value="uzb">Фергана</option>
-                                    <option value="ru">Нурафшон</option>
-                                    <option value="ru">Гулистан</option>
-                                    <option value="ru">Термез</option>
-                                    <option value="ru">Самарканд</option>
-                                    <option value="ru">Наманган</option>
-                                    <option value="ru">Навои</option>
-                                    <option value="ru">Карши</option>
-                                    <option value="ru">Джизак</option>
-                                    <option value="ru">Бухара</option>
-                                    <option value="ru">Андижан</option>
-                                    <option value="kz">Нукус</option>
+                                    {foreach $city as $value}
+                                        <option value="{$value['city_id']}">{$value['city_name']}</option>
+                                    {/foreach}
                                 </select>
+
+{*                                {foreach $city as $value}*}
+{*                                    {$value . “<br>”}*}
+{*                                {/foreach}*}
+
                             </div>
                         </div>
-                        <div class="main-form__another-item">
-                            <label for="formAddress">Район</label>
-                            <div class="input-paying__unique">
-                                <select name="formAddress" id="formAddress">
-                                    <option value="uzb">Ташкент</option>
-                                    <option value="ru">Россия</option>
-                                    <option value="kz">Казахстан</option>
-                                </select>
+                        <div class="main-form__last-input">
+                            {*                            <label for="formAddress">Район</label>*}
+                            {*                            <div class="input-paying__unique">*}
+                            {*                                <select name="formAddress" id="formAddress">*}
+                            {*                                    <option value="uzb">Ташкент</option>*}
+                            {*                                    <option value="ru">Россия</option>*}
+                            {*                                    <option value="kz">Казахстан</option>*}
+                            {*                                </select>*}
+                            {*                            </div>*}
+                            {*                            <div class="last-item__style">*}
+                            {*                                <label for="story6">Район</label>*}
+                            {*                                <select name="formAddress2" id="story6">*}
+                            {*                                    <option value="{$value['city_id']}">{$value['city_name']}</option>*}
+                            {*                                </select>*}
+                            {*                            </div>*}
+                            <div class="main-form__another-item">
+                                <label for="formAddress3">Район</label>
+                                <div class="input-paying__unique">
+                                    <select name="formAddress3" id="formAddress3">
+                                        <option disabled="disabled" selected="selected"></option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
