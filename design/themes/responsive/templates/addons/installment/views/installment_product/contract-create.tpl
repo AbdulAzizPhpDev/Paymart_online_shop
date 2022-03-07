@@ -213,7 +213,7 @@
                                 <label for="formAddress3">Район</label>
                                 <div class="input-paying__unique">
                                     <select name="formAddress3" id="formAddress3">
-                                        <option></option>
+                                        <option disabled="disabled" selected="selected"></option>
                                     </select>
                                 </div>
                             </div>

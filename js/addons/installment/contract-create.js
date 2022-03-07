@@ -97,8 +97,10 @@ $(document).ready(function () {
             callback: function (response) {
                 console.log('ceajax', response);
                 if (response.result) {
-                    $('#formAddress3').val(response.result.city_name);
+                    // $('#formAddress3').val(response.result.city_name);
+                    var rel_ = $('#formAddress3').find(selectedOptionAdress);
                 }
+
 
                 if (response.error) {
                     console.log('onerror');
