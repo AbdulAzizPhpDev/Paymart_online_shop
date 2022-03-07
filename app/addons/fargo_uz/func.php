@@ -8,100 +8,117 @@ if (!defined('AREA')) {
 
 function fn_fargo_uz_install()
 {
-    $data = [
-        "username" => FARGO_USERNAME,
-        "password" => FARGO_PASSWORD
-    ];
+    $path = Registry::get('config.dir.root') . '/app/addons/fargo_uz/database/fargo_cities.csv';
+    $cities_file = fopen($path, 'r');
+    $max_line_size = 165536;
+    $delimiter = ',';
+    $import_schema = fgetcsv($cities_file, $max_line_size, $delimiter);
 
-    $url = FARGO_URL . "/customer/authenticate";
-    $fargo_auth_res = php_curl($url, $data, 'POST', '');
-    $curl = curl_init();
-    curl_setopt_array($curl, array(
-        CURLOPT_URL => 'https://prodapi.shipox.com/api/v2/customer/cities?country_id=234&page=0&size=200&search=',
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => '',
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 0,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => 'GET',
-        CURLOPT_HTTPHEADER => array(
-            'Authorization: Bearer ' . $fargo_auth_res->data->id_token,
-            'Content-Type: application/json'
-        ),
-    ));
-    $response = json_decode(curl_exec($curl));
-    curl_close($curl);
-
-    foreach ($response->data->list as $city) {
-
-        $data = [
-            'country_id' => 234,
-            'city_id' => $city->id,
-            'city_name' => $city->name
+    while (($data = fn_fgetcsv($cities_file, $max_line_size, $delimiter)) !== false) {
+        $data_city = [
+            'country_id' => trim($data[0]),
+            'city_id' => trim($data[2]),
+            'city_name' => trim($data[3]),
+            'parent_city_id' => trim($data[4])
         ];
-        db_query('INSERT INTO ?:fargo_countries ?e', $data);
+        db_query('INSERT INTO ?:fargo_countries ?e', $data_city);
     }
 
-    $child_cities = [
-        [
-            "id" => 234827628,
-            "city_name" => "Bektemir Tumani"
-        ],
-        [
-            "id" => 234827631,
-            "city_name" => "Chilanzar Tumani"
-        ],
-        [
-            "id" => 234827632,
-            "city_name" => "Mirobod Tumani"
-        ],
-        [
-            "id" => 234827633,
-            "city_name" => "Mirzo Ulugbek Tumani"
-        ],
-        [
-            "id" => 234827634,
-            "city_name" => "Olmazor Tumani"
-        ],
-        [
-            "id" => 234827641,
-            "city_name" => "Sirgali Tumani"
-        ],
-        [
-            "id" => 234827642,
-            "city_name" => "Yakkasaroy Tumani"
-        ],
-        [
-            "id" => 234827647,
-            "city_name" => "Yunusabad Tumani"
-        ],
-        [
-            "id" => 234827643,
-            "city_name" => "Uchtepa Tumani"
-        ],
-        [
-            "id" => 234827644,
-            "city_name" => "Shayxontohur Tumani"
-        ],
-        [
-            "id" => 234827645,
-            "city_name" => "Yashnobod Tumani"
-        ],
 
-    ];
-
-    foreach ($child_cities as $city2) {
-
-        $data1 = [
-            'country_id' => 234,
-            'city_id' => $city2['id'],
-            'city_name' => $city2['city_name'],
-            'parent_city_id' => 228171787
-        ];
-        db_query('INSERT INTO ?:fargo_countries ?e', $data1);
-
-    }
+//    $data = [
+//        "username" => FARGO_USERNAME,
+//        "password" => FARGO_PASSWORD
+//    ];
+//
+//    $url = FARGO_URL . "/customer/authenticate";
+//    $fargo_auth_res = php_curl($url, $data, 'POST', '');
+//    $curl = curl_init();
+//    curl_setopt_array($curl, array(
+//        CURLOPT_URL => 'https://prodapi.shipox.com/api/v2/customer/cities?country_id=234&page=0&size=200&search=',
+//        CURLOPT_RETURNTRANSFER => true,
+//        CURLOPT_ENCODING => '',
+//        CURLOPT_MAXREDIRS => 10,
+//        CURLOPT_TIMEOUT => 0,
+//        CURLOPT_FOLLOWLOCATION => true,
+//        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+//        CURLOPT_CUSTOMREQUEST => 'GET',
+//        CURLOPT_HTTPHEADER => array(
+//            'Authorization: Bearer ' . $fargo_auth_res->data->id_token,
+//            'Content-Type: application/json'
+//        ),
+//    ));
+//    $response = json_decode(curl_exec($curl));
+//    curl_close($curl);
+//
+//    foreach ($response->data->list as $city) {
+//
+//        $data = [
+//            'country_id' => 234,
+//            'city_id' => $city->id,
+//            'city_name' => $city->name
+//        ];
+//        db_query('INSERT INTO ?:fargo_countries ?e', $data);
+//    }
+//
+//    $child_cities = [
+//        [
+//            "id" => 234827628,
+//            "city_name" => "Bektemir Tumani"
+//        ],
+//        [
+//            "id" => 234827631,
+//            "city_name" => "Chilanzar Tumani"
+//        ],
+//        [
+//            "id" => 234827632,
+//            "city_name" => "Mirobod Tumani"
+//        ],
+//        [
+//            "id" => 234827633,
+//            "city_name" => "Mirzo Ulugbek Tumani"
+//        ],
+//        [
+//            "id" => 234827634,
+//            "city_name" => "Olmazor Tumani"
+//        ],
+//        [
+//            "id" => 234827641,
+//            "city_name" => "Sirgali Tumani"
+//        ],
+//        [
+//            "id" => 234827642,
+//            "city_name" => "Yakkasaroy Tumani"
+//        ],
+//        [
+//            "id" => 234827647,
+//            "city_name" => "Yunusabad Tumani"
+//        ],
+//        [
+//            "id" => 234827643,
+//            "city_name" => "Uchtepa Tumani"
+//        ],
+//        [
+//            "id" => 234827644,
+//            "city_name" => "Shayxontohur Tumani"
+//        ],
+//        [
+//            "id" => 234827645,
+//            "city_name" => "Yashnobod Tumani"
+//        ],
+//
+//    ];
+//
+//    foreach ($child_cities as $city2) {
+//
+//        $data1 = [
+//            'country_id' => 234,
+//            'city_id' => $city2['id'],
+//            'city_name' => $city2['city_name'],
+//            'parent_city_id' => 228171787
+//        ];
+//        db_query('INSERT INTO ?:fargo_countries ?e', $data1);
+//
+//    }
 
 
 }
