@@ -259,12 +259,12 @@
                     {assign var="base_currency" value=$currencies[$smarty.const.CART_PRIMARY_CURRENCY]}
                     <span class="ty-price-curency"><span class="ty-price-curency__title">{__("enter_your_price")}:</span>
                     <div class="ty-price-curency-input">
-                        <input 
+                        <input
                             type="text"
                             name="product_data[{$obj_id}][price]"
                             class="ty-price-curency__input cm-numeric"
-                            data-a-sign="{$base_currency.symbol nofilter}" 
-                            data-a-dec="{if $base_currency.decimal_separator}{$base_currency.decimal_separator nofilter}{else}.{/if}" 
+                            data-a-sign="{$base_currency.symbol nofilter}"
+                            data-a-dec="{if $base_currency.decimal_separator}{$base_currency.decimal_separator nofilter}{else}.{/if}"
                             data-a-sep="{if $base_currency.thousands_separator}{$base_currency.thousands_separator nofilter}{else},{/if}"
                             data-p-sign="{if $base_currency.after === "YesNo::YES"|enum}s{else}p{/if}"
                             data-m-dec="{$base_currency.decimals}"
@@ -464,7 +464,7 @@
                         || $product_amount < $product.min_qty
                     )
                     && $settings.General.inventory_tracking !== "YesNo::NO"|enum
-                    && $allow_negative_amount !== "YesNo::YES"|enum 
+                    && $allow_negative_amount !== "YesNo::YES"|enum
                     || $details_page || $product.variation_features_variants
                 }
                     <div class="ty-control-group product-list-field">
@@ -477,7 +477,7 @@
             {/if}
         {/if}
     <!--product_amount_update_{$obj_prefix}{$obj_id}--></div>
-   
+
     {if ($product.avail_since > $smarty.const.TIME) && $details_page}
         {include file="common/coming_soon_notice.tpl" avail_date=$product.avail_since add_to_cart=$product.out_of_stock_actions}
     {/if}

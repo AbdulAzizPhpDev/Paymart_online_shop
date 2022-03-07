@@ -74,7 +74,7 @@
 
                 {assign var="form_open" value="form_open_`$obj_id`"}
                 {assign var="product_detail_view_url" value="products.view?product_id=`$product.product_id`"}
-                
+
                 {$thumbnail_width = $settings.Thumbnails.product_quick_view_thumbnail_width}
                 {$thumbnail_height = $settings.Thumbnails.product_quick_view_thumbnail_height}
 

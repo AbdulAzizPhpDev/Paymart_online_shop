@@ -94,7 +94,7 @@
                             {else}
                                 <section class="ty-product-review-product-rating-overview-short">
                                     <div class="ty-product-review-reviews-stars ty-product-review-reviews-stars--large" data-ca-product-review-reviews-stars-full="0"></div>
-                                
+
                                     {include file="addons/product_reviews/views/product_reviews/components/product_rating_overview_short.tpl"
                                         average_rating=$product.average_rating
                                         total_product_reviews=$product.product_reviews_count
@@ -202,7 +202,7 @@
                     {$smarty.capture.$list_buttons nofilter}
                 </div>
                 {if $capture_buttons}{/capture}{/if}
-				
+
 				{if $settings.abt__device != "mobile"}
                     {hook name="products:discussion_rating_block"}
                         {if $addons.product_reviews.status == "ObjectStatuses::ACTIVE"|enum}
@@ -215,7 +215,7 @@
                             {else}
                                 <section class="ty-product-review-product-rating-overview-short">
                                     <div class="ty-product-review-reviews-stars ty-product-review-reviews-stars--large" data-ca-product-review-reviews-stars-full="0"></div>
-                                
+
                                     {include file="addons/product_reviews/views/product_reviews/components/product_rating_overview_short.tpl"
                                         average_rating=$product.average_rating
                                         total_product_reviews=$product.product_reviews_count
@@ -244,13 +244,13 @@
                         {/if}
                     {/hook}
                 {/if}
-                
+
                 {hook name="products:ab__motivation_block"}{/hook}
 
                 {if $settings.abt__ut2.products.custom_block_id|intval}
                     {render_block block_id=$settings.abt__ut2.products.custom_block_id|intval dispatch="products.view"  use_cache=false parse_js=false}
                 {/if}
-            
+
                 {* Remove if using hook in motivation block *}
 	            {hook name="products:geo_maps"}{/hook}
 
@@ -271,12 +271,12 @@
                         {include file="views/products/components/product_features_short_list.tpl" features=$product.header_features}
                     </div>
                 {/if}
-                
+
                 {hook name="products:product_detail_bottom"}{/hook}
-                
+
                 {assign var="form_close" value="form_close_`$obj_id`"}
                 {$smarty.capture.$form_close nofilter}
-                
+
                 {if $show_product_tabs}
 	                {include file="views/tabs/components/product_popup_tabs.tpl"}
 	                {$smarty.capture.popupsbox_content nofilter}
@@ -308,7 +308,7 @@
     {if $smarty.capture.hide_form_changed == "YesNo::YES"|enum}
         {assign var="hide_form" value=$smarty.capture.orig_val_hide_form}
     {/if}
-    
+
     {hook name="products:bottom_product_layer"}{/hook}
 
 </div>
