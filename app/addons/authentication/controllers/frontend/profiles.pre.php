@@ -32,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $data = [
             'phone' => $_REQUEST['phone']
         ];
+
         if (!preg_match($pattern, $_REQUEST['phone'])) {
             $error = showErrors('wrong_format_number', $data);
             Registry::get('ajax')->assign('result', $error);

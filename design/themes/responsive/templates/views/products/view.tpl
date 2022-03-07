@@ -9,7 +9,7 @@
 	You can find product templates in the following directory: responsive/templates/blocks/product_templates/
 	Below are the display parameters we send to the product template.
 *}
-{include 
+{include
 	file=$product.product_id|fn_get_product_details_view
 	product=$product
 	show_sku=true

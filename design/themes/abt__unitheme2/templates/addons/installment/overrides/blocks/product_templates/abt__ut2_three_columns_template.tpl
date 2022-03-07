@@ -1,8 +1,16 @@
 {script src="js/tygh/exceptions.js"}
+{script src="js/addons/installment/product-detail.js"}
 
 {$is_add_to_cart_mv=true}
 
 {if "MULTIVENDOR"|fn_allowed_for && ($product.master_product_id || !$product.company_id)}{$is_add_to_cart_mv=false}{/if}
+
+<input class="product-id-for-calculate" type="hidden" value="{$product.product_id}">
+<input class="product-name-for-calculate" type="hidden" value="{$product.product}">
+<input class="company-id-for-calculate-price" type="hidden" value="{$product.company_id}">
+<input class="product-price-for-calculate-price" type="hidden" value="{$product.price}">
+
+{*<div style="color:#ff7643;"><span style="font-size: 45px; font-weight: bold">12</span><span style="font-size: 20px;">месяцев</span></div>*}
 
 <div class="ut2-pb ty-product-block ut2-three-columns ty-product-detail{if $settings.abt__ut2.products.view.show_sticky_add_to_cart[$settings.abt__device] == 'Y' && !in_array($product.zero_price_action, ["P","A"]) && $product.price > 0 && $product.amount > 0 && $is_add_to_cart_mv} sticky_add_to_cart{/if}">
 	{* {hook name="products:main_info_title"} *}
@@ -56,16 +64,16 @@
                             {if $product.average_rating}
                                 {include file="addons/product_reviews/views/product_reviews/components/product_rating_overview_short.tpl"
                                     average_rating=$product.average_rating
-                                    total_product_reviews=$product.product_reviews_count
+                                    total_product_reviews=$product.product_reviews_rating_stats.total
                                     button=true
                                 }
                             {else}
                                 <section class="ty-product-review-product-rating-overview-short">
                                     <div class="ty-product-review-reviews-stars ty-product-review-reviews-stars--large" data-ca-product-review-reviews-stars-full="0"></div>
-
+                                
                                     {include file="addons/product_reviews/views/product_reviews/components/product_rating_overview_short.tpl"
                                         average_rating=$product.average_rating
-                                        total_product_reviews=$product.product_reviews_count
+                                        total_product_reviews=$product.product_reviews_rating_stats.total
                                         button=true
                                     }
                                 </section>
@@ -123,6 +131,22 @@
                                         </div>
                                     {/if}
 
+                                    <div class="installment-product-monthly-payment" style="margin-top: 8px;"></div>
+
+                                    <div class="installment-periods ty-control-group" style="margin-top: 16px;">
+                                        <input type="radio" name="period" value="3" id="3" class="ty-product-options__radio">
+                                        <label class="ty-product-options__radio--label" for="3">3 месяц</label>
+
+                                        <input class="ty-product-options__radio" value="6" type="radio" name="period" id="6">
+                                        <label class="ty-product-options__radio--label" for="6">6 месяц</label>
+
+                                        <input class="ty-product-options__radio" value="9" type="radio" name="period" id="9">
+                                        <label class="ty-product-options__radio--label" for="9">9 месяц</label>
+
+                                        <input class="ty-product-options__radio" value="12" type="radio" name="period" id="12" checked>
+                                        <label class="ty-product-options__radio--label" for="12">12 месяц</label>
+                                    </div>
+
                                     {if $smarty.capture.$old_price|trim || $smarty.capture.$clean_price|trim || $smarty.capture.$list_discount|trim}
                                     {$smarty.capture.$clean_price nofilter}
                                     {$smarty.capture.$list_discount nofilter}
@@ -159,6 +183,8 @@
     		                </div>
 
 		                {if $capture_options_vs_qty}{/capture}{/if}
+
+
 
 		                <div class="ut2-pb__advanced-option clearfix">
 
@@ -218,6 +244,7 @@
                                     {if $smarty.capture.$old_price|trim || $smarty.capture.$clean_price|trim || $smarty.capture.$list_discount|trim}
                                     {$smarty.capture.$clean_price nofilter}
                                     {$smarty.capture.$list_discount nofilter}
+                                    <div class="installment-product-monthly-payment" style="margin-top: 8px;"></div>
 
                                     {if $product.prices}
                                         <div class="ut2__qty-discounts">{include file="views/products/components/products_qty_discounts.tpl"}</div>
@@ -243,6 +270,22 @@
 
 		                {if $capture_buttons}{capture name="buttons"}{/if}
     		                <div class="ut2-pb__button ty-product-block__button">
+
+                            {if $settings.abt__device != "mobile"}
+                                <div class="installment-periods ty-control-group">
+                                    <input type="radio" name="period" value="3" id="3" class="ty-product-options__radio">
+                                    <label class="ty-product-options__radio--label" for="3">3 месяц</label>
+
+                                    <input class="ty-product-options__radio" value="6" type="radio" name="period" id="6">
+                                    <label class="ty-product-options__radio--label" for="6">6 месяц</label>
+
+                                    <input class="ty-product-options__radio" value="9" type="radio" name="period" id="9">
+                                    <label class="ty-product-options__radio--label" for="9">9 месяц</label>
+
+                                    <input class="ty-product-options__radio" value="12" type="radio" name="period" id="12" checked>
+                                    <label class="ty-product-options__radio--label" for="12">12 месяц</label>
+                                </div>
+                            {/if}
 
         		                {if $capture_options_vs_qty}{capture name="product_options"}{$smarty.capture.product_options nofilter}{/if}
         		                    {if $settings.abt__ut2.products.view.show_qty[$settings.abt__device] == 'Y'}
