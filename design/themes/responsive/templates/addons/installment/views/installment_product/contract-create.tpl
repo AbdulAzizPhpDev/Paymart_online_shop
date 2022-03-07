@@ -183,9 +183,14 @@
                             <label for="formAddress2">Город</label>
                             <div class="input-paying__unique">
                                 <select name="formAddress2" id="formAddress2">
-                                    <option value="uzb">Ташкент</option>
+                                    {foreach $city as $value}
+                                        <option value="{$value['city_id']}">{$value['city_name']}</option>
+                                    {/foreach}
                                 </select>
-                                {fn_print_die($city)}
+
+{*                                {foreach $city as $value}*}
+{*                                    {$value . “<br>”}*}
+{*                                {/foreach}*}
 
                             </div>
                         </div>
