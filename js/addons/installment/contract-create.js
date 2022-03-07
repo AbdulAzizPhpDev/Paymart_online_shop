@@ -86,8 +86,7 @@ $(document).ready(function () {
     $('#formAddress2').change(function () {
         var selectedOptionAdress = formAdress.options[formAdress.selectedIndex].value;
         otpState.selectedFirstAdress = selectedOptionAdress;
-        console.log('plrice', selectedOptionAdress);
-        let formattedProducts = {};
+        console.log('', selectedOptionAdress);
 
         $.ceAjax('request', fn_url('get_city.city'), {
             method: 'post',
@@ -95,15 +94,20 @@ $(document).ready(function () {
                 city_id: selectedOptionAdress,
             },
             callback: function (response) {
-                console.log('ceajax', response);
-                if (response.result) {
-                    // $('#formAddress3').val(response.result.city_name);
-                    var rel_ = $('#formAddress3').find(selectedOptionAdress);
-                }
+                const $select = $('.tashkent-regions');
+                const $input = $('.not-tashkent-region');
 
+                if (response.result == null) {
+                    $input.removeClass('d-none');
+                    $select.addClass('d-none');
+                } else {
+                    $select.removeClass('d-none');
+                    $input.addClass('d-none');
 
-                if (response.error) {
-                    console.log('onerror');
+                    response.result.forEach(number => {
+                        const option = `<option value="${number.city_id}">${number.city_name}</option>`;
+                        $select.append(option);
+                    });
                 }
             },
         });
@@ -114,6 +118,15 @@ $(document).ready(function () {
 
 // When the user clicks on the button, open the modal
 myBtn.onclick = function () {
+
+    var valNullInputt = document.querySelector('#nullInput');
+    if (valNullInputt) {
+        if (/^\s*$/g.test(valNullInputt.value) || valNullInputt.value.indexOf('\n') != -1) {
+            $('#nullInput').css('border', '1px solid red').focus();
+            return;
+        }
+    }
+
     var val = document.querySelector('#story2').value;
     if (/^\s*$/g.test(val) || val.indexOf('\n') != -1) {
         $('#story2').css('border', '1px solid red').focus();
@@ -124,6 +137,8 @@ myBtn.onclick = function () {
         $('#story3').css('border', '1px solid red').focus();
         return;
     }
+
+
     let city = $('#formAddress').val();
     let region = $('#formAddress2').val();
     // let txt = document.getElementsByTagName("textarea");
