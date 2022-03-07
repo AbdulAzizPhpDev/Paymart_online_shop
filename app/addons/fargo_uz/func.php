@@ -8,37 +8,16 @@ if (!defined('AREA')) {
 
 function fn_fargo_uz_install()
 {
-
     $data = [
         "username" => FARGO_USERNAME,
         "password" => FARGO_PASSWORD
     ];
 
+    $url = FARGO_URL . "/customer/authenticate";
+    $fargo_auth_res = php_curl($url, $data, 'POST', '');
     $curl = curl_init();
-
     curl_setopt_array($curl, array(
-        CURLOPT_URL => FARGO_URL . '/customer/authenticate',
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => '',
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 0,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => 'POST',
-        CURLOPT_POSTFIELDS => json_encode($data),
-        CURLOPT_HTTPHEADER => array(
-            'Content-Type: application/json'
-        ),
-    ));
-
-    json_decode(curl_exec($curl));
-    curl_close($curl);
-
-
-    $curl = curl_init();
-
-    curl_setopt_array($curl, array(
-        CURLOPT_URL => 'https://prodapi.shipox.com/api/v2/customer/cities?country_id=234&page=0&size=200',
+        CURLOPT_URL => 'https://prodapi.shipox.com/api/v2/customer/cities?country_id=234&page=0&size=200&search=',
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_ENCODING => '',
         CURLOPT_MAXREDIRS => 10,
@@ -46,24 +25,15 @@ function fn_fargo_uz_install()
         CURLOPT_FOLLOWLOCATION => true,
         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
         CURLOPT_CUSTOMREQUEST => 'GET',
-        CURLOPT_POSTFIELDS => '{
-    
-    "size":200
-}',
         CURLOPT_HTTPHEADER => array(
-            'Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsb2dpc3RpY3NAcGF5bWFydC51eiIsInVzZXJJZCI6MTE3NjU2MDQ5OCwiZXhwIjoxNjQ2NDc2OTA2fQ.9mkWjrbzHjGFuquV-oq-N3JJ4fm2HBWdRYbU5wqGZEdAHuRrE2doRodhx0lxHTrQteTNFn-0LUhVHXXl3KqLMg',
+            'Authorization: Bearer ' . $fargo_auth_res->data->id_token,
             'Content-Type: application/json'
         ),
     ));
-
     $response = json_decode(curl_exec($curl));
-
     curl_close($curl);
-
-
-
-
     foreach ($response->data->list as $city) {
+
         $data = [
             'country_id' => 234,
             'city_id' => $city->id,
@@ -72,6 +42,67 @@ function fn_fargo_uz_install()
         db_query('INSERT INTO ?:fargo_countries ?e', $data);
 
     }
+
+    $child_cities = [
+        [
+            "id" => 234827628,
+            "city_name" => "Bektemir Tumani"
+        ],
+        [
+            "id" => 234827631,
+            "city_name" => "Chilanzar Tumani"
+        ],
+        [
+            "id" => 234827632,
+            "city_name" => "Mirobod Tumani"
+        ],
+        [
+            "id" => 234827633,
+            "city_name" => "Mirzo Ulugbek Tumani"
+        ],
+        [
+            "id" => 234827634,
+            "city_name" => "Olmazor Tumani"
+        ],
+        [
+            "id" => 234827641,
+            "city_name" => "Sirgali Tumani"
+        ],
+        [
+            "id" => 234827642,
+            "city_name" => "Yakkasaroy Tumani"
+        ],
+        [
+            "id" => 234827647,
+            "city_name" => "Yunusabad Tumani"
+        ],
+        [
+            "id" => 234827643,
+            "city_name" => "Uchtepa Tumani"
+        ],
+        [
+            "id" => 234827644,
+            "city_name" => "Shayxontohur Tumani"
+        ],
+        [
+            "id" => 234827645,
+            "city_name" => "Yashnobod Tumani"
+        ],
+
+    ];
+
+    foreach ($child_cities as $city) {
+
+        $data = [
+            'country_id' => 234,
+            'city_id' => $city['id'],
+            'city_name' => $city['city_name'],
+            'parent_city_id' => 228171787
+        ];
+        db_query('INSERT INTO ?:fargo_countries ?e', $data);
+
+    }
+
 
 }
 

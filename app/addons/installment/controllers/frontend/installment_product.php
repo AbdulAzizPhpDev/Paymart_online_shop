@@ -1,16 +1,4 @@
 <?php
-/***************************************************************************
- *                                                                          *
- *   (c) 2004 Vladimir V. Kalynyak, Alexey V. Vinokurov, Ilya M. Shalnev    *
- *                                                                          *
- * This  is  commercial  software,  only  users  who have purchased a valid *
- * license  and  accept  to the terms of the  License Agreement can install *
- * and use this program.                                                    *
- *                                                                          *
- ****************************************************************************
- * PLEASE READ THE FULL TEXT  OF THE SOFTWARE  LICENSE   AGREEMENT  IN  THE *
- * "copyright.txt" FILE PROVIDED WITH THIS DISTRIBUTION PACKAGE.            *
- ****************************************************************************/
 
 use Tygh\Registry;
 use Tygh\Tools\Url;
@@ -662,7 +650,7 @@ if ($mode == "contract-create") {
             Tygh::$app['view']->assign('notifier', true);
 
 
-        }else{
+        } else {
             Tygh::$app['view']->assign('notifier', false);
 
         }
@@ -692,6 +680,10 @@ if ($mode == 'profile-contracts') {
         foreach ($payed_list as $item => $value) {
             $payed_list_group_by_contract_id[$item] = count($value);
         };
+
+        $city = db_get_row('select * from ?:fargo_countries where parent_city_id=?i', 0);;
+
+        Tygh::$app['view']->assign('city', $city);
         Tygh::$app['view']->assign('contracts', $result);
         Tygh::$app['view']->assign('group_by', $payed_list_group_by_contract_id);
         Tygh::$app['view']->assign('user_api_token', $user['api_key']);
