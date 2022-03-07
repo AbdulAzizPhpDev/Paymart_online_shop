@@ -1,262 +1,90 @@
-const self = new Vue({
-  delimiters: ['%%', '%%'],
-  el: '#auth-form',
-  data: {
-    isSMSSent: false,
-    hasError: false,
-    errors: null,
-    error: null,
-    buyerPhone: null,
-    buyerCode: null,
-    timer: 60,
-    interval: null,
-  },
-  methods: {
-    sendSMS(event) {
-      $.ceAjax('request', fn_url('profiles.send_sms'), {
-        method: 'POST',
-        data: {
-          phone: self.buyerPhone.replace('+', '') || null,
-        },
-        callback: function callback(response) {
-          const { result } = response;
-          console.log(response)
-          if (result) {
-            if (result.status === 'success') {
-              self.isSMSSent = true;
-              self.interval = setInterval(() => {
-                if (self.timer !== 0) {
-                  self.timer -= 1;
-                } else {
-                  clearInterval(self.interval);
-                }
-              }, 1000);
-
-            } else {
-              self.hasError = true;
-              if (typeof result.response.message !== 'string') {
-                self.errors = result.response.message;
-              } else {
-                self.error = result.response.message;
-              }
-            }
-          } else {
-            console.error('Result does not exist. %cmethod[fn_url=profiles.send_sms]', 'color: white; padding: 2px 5px; border: 1px dashed green');
-          }
-        },
-      });
-    },
-    resendSMS(event) {
-      if (self.timer === 0) {
-        self.sendSMS();
-        self.timer = 60;
-      } else {
-        event.preventDefault();
-      }
-    },
-    confirmCode: function (event) {
-      $.ceAjax('request', fn_url('profiles.confirm'), {
-        method: 'POST',
-        data: {
-          phone: self.buyerPhone.replace('+', ''),
-          code: self.buyerCode,
-          redirect_url: $('input[name="redirect_url"]').val(),
-        },
-        callback: function callback(response) {
-          const { result } = response;
-
-          if (response) {
-            if (result.status === 'success') {
-              window.location.reload();
-            } else {
-              self.hasError = true;
-              if (typeof result.response.message !== 'string') {
-                self.errors = result.response.message;
-              } else {
-                self.error = result.response.message;
-              }
-            }
-          } else {
-            console.error('Result does not exist. %cmethod[fn_url=profiles.confirm]', 'color: white; padding: 2px 5px; border: 1px dashed green');
-          }
-        },
-      });
-    },
-  },
-  created() {
-    console.log('created auth func.js');
-  },
-});
-
-
-const installmentAuth = new Vue({
-  delimiters: ['%%', '%%'],
-  el: '#login_block_installment',
-  data: {
-    isSMSSent: false,
-    hasError: false,
-    errors: null,
-    error: null,
-    buyerPhone: null,
-    buyerCode: null,
-    timer: 60,
-    interval: null,
-  },
-  methods: {
-    sendSMS(event) {
-      $.ceAjax('request', fn_url('profiles.send_sms'), {
-        method: 'POST',
-        data: {
-          phone: installmentAuth.buyerPhone.replace('+', '') || null,
-        },
-        callback: function callback(response) {
-          const { result } = response;
-          if (result) {
-            if (result.status === 'success') {
-              installmentAuth.isSMSSent = true;
-              installmentAuth.interval = setInterval(() => {
-                if (installmentAuth.timer !== 0) {
-                  installmentAuth.timer -= 1;
-                } else {
-                  clearInterval(installmentAuth.interval);
-                }
-              }, 1000);
-
-            } else {
-              installmentAuth.hasError = true;
-              if (typeof result.response.message !== 'string') {
-                installmentAuth.errors = result.response.message;
-              } else {
-                installmentAuth.error = result.response.message;
-              }
-            }
-          } else {
-            console.error('Result does not exist. %cmethod[fn_url=profiles.send_sms]', 'color: white; padding: 2px 5px; border: 1px dashed green');
-          }
-        },
-      });
-    },
-    resendSMS(event) {
-      if (installmentAuth.timer === 0) {
-        installmentAuth.sendSMS();
-        installmentAuth.timer = 60;
-      } else {
-        event.preventDefault();
-      }
-    },
-    confirmCode: function (event) {
-      $.ceAjax('request', fn_url('profiles.confirm'), {
-        method: 'POST',
-        data: {
-          phone: installmentAuth.buyerPhone.replace('+', ''),
-          code: installmentAuth.buyerCode,
-          redirect_url: $('input[name="redirect_url"]').val(),
-        },
-        callback: function callback(response) {
-          const { result } = response;
-
-          if (response) {
-            if (result.status === 'success') {
-              window.location.reload();
-            } else {
-              installmentAuth.hasError = true;
-              if (typeof result.response.message !== 'string') {
-                installmentAuth.errors = result.response.message;
-              } else {
-                installmentAuth.error = result.response.message;
-              }
-            }
-          } else {
-            console.error('Result does not exist. %cmethod[fn_url=profiles.confirm]', 'color: white; padding: 2px 5px; border: 1px dashed green');
-          }
-        },
-      });
-    },
-  },
-});
-
-/*(function (_, $) {
-  const $phone = $('#buyer-phone');
-  const $phoneContainer = $('.phone');
-  const $sendSMSBtn = $('#sendSMSBtn');
-
-  const $code = $('#buyer-phone-code');
-  const $codeContainer = $('.code');
-  const $confirmCodeBtn = $('#confirmCodeBtn');
-
+(function (_, $) {
+  const $form = $('#auth-form');
   const $errorContainer = $('.ty-error-text');
+  const $phoneContainer = $('.phone-container');
+  const $codeContainer = $('.code-container');
 
-  const authState = {};
+  const $buyerPhone = $('#buyer-phone');
+  const $code = $('#confirmation-code');
 
-  const methods = {
-    showErrors(errors) {
-      if (!Array.isArray(errors)) {
-        const p = document.createElement('p');
-        p.classList.add('ty-error-text');
-        p.textContent = text;
-        data.$errorContainer.append(p);
+  const authMethods = {
+    showErrors: function (error) {
+      if (!Array.isArray(error)) {
+        return $errorContainer.text(error);
+      }
+
+      error.forEach(({ text }) => {
+        $errorContainer.text(text);
+      });
+    },
+    submit: function (event) {
+      event.preventDefault();
+      const { sendSMS, confirmCode } = authMethods;
+
+      const action = event.target.action;
+
+      if (action === fn_url('profiles.send_sms')) {
+        sendSMS();
       } else {
-        errors.forEach(({ text }) => {
-          const p = document.createElement('p');
-          p.classList.add('ty-error-text');
-          p.textContent = text;
-          data.$errorContainer.append(p);
-        });
+        confirmCode();
       }
     },
-    sendSMS: function (event) {
+    sendSMS: function () {
       $.ceAjax('request', fn_url('profiles.send_sms'), {
         method: 'POST',
         data: {
-          phone: $phone.val(),
+          phone: $buyerPhone.inputmask('unmaskedvalue'),
         },
-        callback: function callback(response) {
-          const { result } = response;
+        callback: function (response) {
+          if (response.hasOwnProperty('result')) {
+            const { result } = response;
 
-          if (response) {
             if (result.status === 'success') {
-              $phoneContainer.css('display', 'none');
-              $sendSMSBtn.css('display', 'none');
-              $codeContainer.css('display', 'block');
-              $confirmCodeBtn.css('display', 'block');
+              $form.removeAttr('action');
+              $codeContainer.removeClass('d-none');
+              $phoneContainer.addClass('d-none');
             } else {
-              methods.showErrors(result.response.message);
+              authMethods.showErrors(result.response.message);
             }
+
           } else {
-            console.error('response does not exist!');
+            document.write(response.text)
           }
         },
       });
     },
-    confirmCode: function (event) {
+    confirmCode: function () {
       $.ceAjax('request', fn_url('profiles.confirm'), {
         method: 'POST',
         data: {
-          phone: $phone.val(),
+          phone: $buyerPhone.inputmask('unmaskedvalue'),
           code: $code.val(),
-          redirect_url: $('input[name="redirect_url"]').val(),
         },
-        callback: function callback(/!*response*!/) {
-          window.location.reload();
-          /!*const { result } = response;
+        callback: function (response) {
+          console.log(response);
+          if (response && response.hasOwnProperty('result')) {
+            const { result } = response;
 
-          if (response) {
             if (result.status === 'success') {
-              console.log('success');
+              window.location.reload();
             } else {
-              methods.showErrors(result.response.message);
+              authMethods.showErrors(result.response.message);
             }
           } else {
-            console.error('response does not exist!');
-          }*!/
+            document.write(response.text)
+          }
         },
       });
     },
   };
 
-  $(_.doc).on('click', '#sendSMSBtn', methods.sendSMS);
+  $form.on('submit', authMethods.submit);
 
-  $(_.doc).on('click', '#confirmCodeBtn', methods.confirmCode);
+  $buyerPhone.inputmask('[999 99 999-99-99]', { placeholder: '*' });
 
-})(Tygh, Tygh.$);*/
+  // $(_.doc).on('click', '#sendSMSBtn', methods.sendSMS);
+
+  // $(_.doc).on('click', '#confirmCodeBtn', methods.confirmCode);
+
+})(Tygh, Tygh.$);
 

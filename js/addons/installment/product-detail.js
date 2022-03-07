@@ -128,7 +128,7 @@
         $(radio).on('change', productDetailMethods.onPeriodPicked);
       });
     },
-  };c
+  };
 
   productDetailMethods.showProductInstallmentPrice();
   productDetailMethods.radioHandler();
