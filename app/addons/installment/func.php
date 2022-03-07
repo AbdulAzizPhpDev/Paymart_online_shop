@@ -51,31 +51,29 @@ function checkUserFromPaymart($user_id)
     return false;
 }
 
-function php_curl($url = '', $data = [], $method = "GET", $token = null)
+function php_curl($url = '', $data = [], $method = 'GET', $token = null)
 {
+
+    if (filter_var($url, FILTER_VALIDATE_URL)) {
+        $curl_options[CURLOPT_URL] = $url;
+    } else {
+        $curl_options[CURLOPT_URL] = PAYMART_URL . $url;
+    }
     $curl_options[CURLOPT_RETURNTRANSFER] = true;
     $curl_options[CURLOPT_ENCODING] = '';
     $curl_options[CURLOPT_MAXREDIRS] = 10;
     $curl_options[CURLOPT_TIMEOUT] = 0;
     $curl_options[CURLOPT_FOLLOWLOCATION] = true;
     $curl_options[CURLOPT_HTTP_VERSION] = CURL_HTTP_VERSION_1_1;
-
+    $curl_options[CURLOPT_CUSTOMREQUEST] = "$method";
+    $curl_options[CURLOPT_HTTPHEADER] = array('Content-Type: application/json');
     if (!empty($token)) {
-        $curl_options[CURLOPT_HTTPHEADER] = array('Authorization: Bearer ' . $token);
+
+        array_push($curl_options[CURLOPT_HTTPHEADER], ('Authorization: Bearer ' . $token));
     }
     if (!empty($data)) {
         $curl_options[CURLOPT_POSTFIELDS] = json_encode($data);
-        $curl_options[CURLOPT_CUSTOMREQUEST] = $method;
-        if (isset($curl_options[CURLOPT_HTTPHEADER])) {
-            array_push($curl_options[CURLOPT_HTTPHEADER], ('Content-Type: application/json'));
-        } else {
-            $curl_options[CURLOPT_HTTPHEADER] = array('Content-Type: application/json');
-        }
-    }
-    if (filter_var($url, FILTER_VALIDATE_URL)) {
-        $curl_options[CURLOPT_URL] = $url;
-    } else {
-        $curl_options[CURLOPT_URL] = PAYMART_URL . $url;
+
     }
 
     $curl = curl_init();

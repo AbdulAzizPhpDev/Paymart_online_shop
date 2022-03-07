@@ -90,43 +90,61 @@
 
         {assign var="return_current_url" value=$config.current_url|escape:url}
         <ul class="ty-account-info">
-            {hook name="profiles:my_account_menu"}
+{*            {hook name="profiles:my_account_menu"}*}
             {if $auth.user_id}
                 {if $user_info.firstname || $user_info.lastname}
                     <li class="ty-account-info__item  ty-account-info__name ty-dropdown-box__item">{$user_info.firstname} {$user_info.lastname}</li>
                 {else}
                     <li class="ty-account-info__item ty-dropdown-box__item ty-account-info__name">{$user_info.email}</li>
                 {/if}
-                <li class="ty-account-info__item ty-dropdown-box__item"><a class="ty-account-info__a underlined"
-                                                                           href="{"profiles.update"|fn_url}"
-                                                                           rel="nofollow">{__("profile_details")}</a>
-                </li>
+                {*<li class="ty-account-info__item ty-dropdown-box__item">
+                    <a class="ty-account-info__a underlined"
+                       href="{"profiles.update"|fn_url}"
+                       rel="nofollow"
+                    >
+                        {__("profile_details")}
+                    </a>
+                </li>*}
                 {if $settings.General.enable_edp == "YesNo::YES"|enum}
-                    <li class="ty-account-info__item ty-dropdown-box__item"><a class="ty-account-info__a underlined"
-                                                                               href="{"orders.downloads"|fn_url}"
-                                                                               rel="nofollow">{__("downloads")}</a></li>
+                    <li class="ty-account-info__item ty-dropdown-box__item">
+                        <a class="ty-account-info__a underlined"
+                           href="{"orders.downloads"|fn_url}"
+                           rel="nofollow">{__("downloads")}</a>
+                    </li>
                 {/if}
-                <li class="ty-account-info__item ty-dropdown-box__item"><a class="ty-account-info__a underlined" href="{"installment_product.profile-contracts"|fn_url}" rel="nofollow">{__("installment_contracts")}</a></li>
+                <li class="ty-account-info__item ty-dropdown-box__item">
+                    <a class="ty-account-info__a underlined" href="{"installment_product.profile-contracts"|fn_url}" rel="nofollow">
+                        {__("installment_contracts")}
+                    </a>
+                </li>
 
             {elseif $user_data.firstname || $user_data.lastname}
                 <li class="ty-account-info__item  ty-dropdown-box__item ty-account-info__name">{$user_data.firstname} {$user_data.lastname}</li>
             {elseif $user_data.email}
                 <li class="ty-account-info__item ty-dropdown-box__item ty-account-info__name">{$user_data.email}</li>
             {/if}
-                <li class="ty-account-info__item ty-dropdown-box__item"><a class="ty-account-info__a underlined"
-                                                                           href="{"orders.search"|fn_url}"
-                                                                           rel="nofollow">{__("orders")}</a></li>
+                <li class="ty-account-info__item ty-dropdown-box__item">
+                    <a class="ty-account-info__a underlined"
+                       href="{"orders.search"|fn_url}"
+                       rel="nofollow">{__("orders")}</a>
+                </li>
             {if $settings.General.enable_compare_products == 'Y'}
                 {assign var="compared_products" value=""|fn_get_comparison_products}
-                <li class="ty-account-info__item ty-dropdown-box__item"><a class="ty-account-info__a underlined"
-                                                                           href="{"product_features.compare"|fn_url}"
-                                                                           rel="nofollow">{__("view_comparison_list")}{if $compared_products} ({$compared_products|count}){/if}</a>
+                <li class="ty-account-info__item ty-dropdown-box__item">
+                    <a class="ty-account-info__a underlined"
+                       href="{"product_features.compare"|fn_url}"
+                       rel="nofollow">{__("view_comparison_list")}{if $compared_products} ({$compared_products|count}){/if}</a>
                 </li>
             {/if}
-            {/hook}
+            {if $addons.wishlist && $addons.wishlist.status == 'A'}
+                <li class="ty-account-info__item ty-dropdown-box__item">
+                    <a href="{"wishlist.view"|fn_url}">{__("wishlist")}</a>
+                </li>
+            {/if}
+{*            {/hook}*}
         </ul>
 
-        {if $settings.Appearance.display_track_orders == 'Y'}
+        {*{if $settings.Appearance.display_track_orders == 'Y'}
             <div class="ty-account-info__orders updates-wrapper track-orders"
                  id="track_orders_block_{$block.snapping_id}">
                 <form action="{""|fn_url}" method="POST" class="cm-ajax cm-post cm-ajax-full-render"
@@ -148,7 +166,7 @@
                     </div>
                 </form>
                 <!--track_orders_block_{$block.snapping_id}--></div>
-        {/if}
+        {/if}*}
 
         <div class="ty-account-info__buttons buttons-container">
             {if $auth.user_id}
@@ -164,7 +182,7 @@
                    data-ca-target-id="login_block{$block.snapping_id}"
                    class="cm-dialog-opener cm-dialog-auto-size ty-btn ty-btn__secondary"
                    rel="nofollow">{__("sign_in")}</a>
-                <a href="{"profiles.add"|fn_url}" rel="nofollow" class="ty-btn ty-btn__primary">{__("register")}</a>
+{*                <a href="{"profiles.add"|fn_url}" rel="nofollow" class="ty-btn ty-btn__primary">{__("register")}</a>*}
                 <div id="login_block{$block.snapping_id}" class="hidden" title="{__("sign_in")}">
                     <div class="ty-login-popup">
                         {include file="views/auth/login_form.tpl" style="popup" id="popup`$block.snapping_id`"}

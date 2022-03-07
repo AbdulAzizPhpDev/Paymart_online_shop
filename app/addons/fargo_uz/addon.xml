@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<addon scheme="3.0">
+    <id>fargo_uz</id>
+    <version>1.0.0</version>
+    <default_language>ru</default_language>
+    <priority>1</priority>
+    <status>active</status>
+    <queries>
+        <item for="install">
+            CREATE TABLE IF NOT EXISTS ?:fargo_countries (
+            id int(11) unsigned NOT NULL AUTO_INCREMENT,
+            country_id smallint unsigned NOT NULL,
+            city_id mediumint unsigned NOT NULL,
+            parent_city_id mediumint unsigned NOT NULL DEFAULT 0,
+            country_name varchar(32) NOT NULL DEFAULT 'Uzbekistan',
+            city_name varchar(32) NOT NULL,
+            PRIMARY KEY (id)
+            ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+        </item>
+        <item for="install">
+            CREATE TABLE IF NOT EXISTS ?:fargo_orders (
+            id int(11) unsigned NOT NULL AUTO_INCREMENT,
+            fargo_order_id int(11) unsigned NOT NULL,
+            paymart_contract_id int(11) unsigned NOT NULL,
+            fargo_contract_id text ,
+            PRIMARY KEY (id)
+            ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+        </item>
+        <item for="install">
+            CREATE TABLE IF NOT EXISTS ?:fargo_price_list (
+            city_id mediumint unsigned NOT NULL,
+            price int(11) DEFAULT 0
+            ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+        </item>
+        <item for="uninstall">DROP TABLE IF EXISTS `?:fargo_countries`</item>
+        <item for="uninstall">DROP TABLE IF EXISTS `?:fargo_orders`</item>
+        <item for="uninstall">DROP TABLE IF EXISTS `?:fargo_price_list`</item>
+    </queries>
+    <functions>
+        <item for="install">fn_fargo_uz_install</item>
+<!--        <item for="uninstall">fn_fargo_uz_install</item>-->
+    </functions>
+</addon>

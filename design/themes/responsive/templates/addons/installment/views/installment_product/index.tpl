@@ -8,11 +8,11 @@
         {* ------------------------------------------------------------------------------------- *}
         {* Sending SMS *}
         <div class="sending-sms">
-            <h1>Вход</h1>
+            <h1>{__('mobile_app.mobile_auth')}</h1>
 
             <div class="ty-control-group installment-phone-container">
                 <label for="buyer-phone" class="ty-login__filed-label ty-control-group__label cm-required cm-trim ">
-                    Номер телефона
+                    {__('rapidaphone')}
                 </label>
                 <input type="tel" class="ty-login__input buyer-phone-installment" />
             </div>
@@ -20,7 +20,7 @@
             <div class="oferta-container">
                 <a href="#">
                     <img src="/design/themes/responsive/media/icons/oferta.svg" alt="oferta">
-                    <span>Публичная оферта</span>
+                    <span>{__("authentication.oferta")}</span>
                 </a>
             </div>
 
@@ -50,11 +50,11 @@
             <p class="resend-sms-phone">Отправить SMS еще раз (через <span class="phone-timer">60</span> сек.)</p>
 
             <button class="ty-btn ty-btn__secondary" type="button" id="installmentConfirmCodeBtn">
-                Продолжить
+                {__("continue")}
             </button>
 
             <button class="ty-btn ty-btn__secondary" type="button" id="installmentChangePhoneBtn">
-                Изменить номер
+                {__("addons.installment.change_phone_number")}
             </button>
         </div>
 

@@ -60,14 +60,14 @@
         },
       ];
 
-      $.ceAjax('request', PAYMART_API_BASE_URL + '/order/calculate', {
+      $.ceAjax('request', PAYMART_API_BASE_URL + '/order/marketplace-calculate', {
         method: 'POST',
         data: {
           type: 'credit',
           period: installment_period,
           products: formattedProducts,
           partner_id: company_id,
-          user_id: '',
+          // user_id: '',
         },
         callback: function (response) {
           console.log(response);
@@ -112,7 +112,7 @@
       }
       price = `Рассрочка ${perMonth(product.price, 12)} UZS мес.`;
 
-      $installmentProductPriceContainer.text(price);
+      return $installmentProductPriceContainer.text(price);
     },
     onPeriodPicked: function (event) {
       const { perMonth, showProductInstallmentPrice } = productDetailMethods;
@@ -128,7 +128,7 @@
         $(radio).on('change', productDetailMethods.onPeriodPicked);
       });
     },
-  };
+  };c
 
   productDetailMethods.showProductInstallmentPrice();
   productDetailMethods.radioHandler();
