@@ -1,4 +1,5 @@
 (function (_, $) {
+    console.log('contract create page init');
 })(Tygh, Tygh.$);
 
 
@@ -186,6 +187,7 @@ $('#modal-sent').click(function () {
     let apartment = $('#story').val();
     let building = $('#story2').val();
     let street = $('#story3').val();
+    let otpInputVal = $('.ty-login__input').val();
     $('.resend-sms-card').css('display', 'block');
     var counter = setInterval(timer, 1000); //1000 will  run it every 1 second
     function timer() {
@@ -196,15 +198,15 @@ $('#modal-sent').click(function () {
             return;
         }
         document.querySelector('.card-resend-sms-timer').innerHTML = otpState.timer + ' secs';
-        //Do code for showing the number of seconds here
     }
 
+    console.log('otpState.cityModal', otpState.cityModal);
     $.ceAjax('request', fn_url('installment_product.set_confirm_contract'), {
         method: 'POST',
         data: {
             code: otpInputVal,
             contract_id: otpState.contractId,
-            city: otpState.cityModal,
+            city: $($select).val(),
             region: region,
             apartment: apartment,
             building: building,
@@ -225,5 +227,4 @@ $('#modal-sent').click(function () {
 })
 // Get the modal
 var modal5 = document.getElementById('myModal5');
-
 
