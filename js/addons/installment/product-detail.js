@@ -146,7 +146,11 @@
       const period = getInstallmentPeriod();
       const text = perMonth(updatedPrice, period)
 
-      return showProductInstallmentPrice(text);
+      if (!isNaN(text)) {
+        return showProductInstallmentPrice(text);
+      } else {
+        return showProductInstallmentPrice(Number(product.price));
+      }
     } else {
       product.id = $('.product-id-for-calculate').val();
       product.name = $('.product-name-for-calculate').val();
