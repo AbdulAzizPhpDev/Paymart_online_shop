@@ -11,6 +11,8 @@
 <input class="product-name-for-calculate" type="hidden" value="{$product.product}">
 <input class="company-id-for-calculate-price" type="hidden" value="{$product.company_id}">
 <input class="product-price-for-calculate-price" type="hidden" value="{$product.price}">
+<input class="vendor-token" type="hidden" value="76d66c5a5356104a8fc6784e007d9c33">
+
 
 {*<p style="color:#ff7643; font-size: 35px;"><span style="font-size: 40px;">12</span> месяцев</p>*}
 
