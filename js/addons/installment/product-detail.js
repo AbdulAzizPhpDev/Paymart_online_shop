@@ -139,18 +139,15 @@
     // console.log('ce ajax done event');
     let { product } = productDetailState;
     const { showProductInstallmentPrice, perMonth, getInstallmentPeriod, radioHandler } = productDetailMethods;
-    const updatedPrice = $(`#sec_discounted_price_${product.id}`).text().replace(/[\u00a0]/g, '') || product.price;
+    const updatedPrice = $(`#sec_discounted_price_${product.id}`).text().replace(/(&nbsp;)|( )/g, '');
 
+    console.log(updatedPrice);
     if (updatedPrice) {
       // product.price = Number(updatedPrice);
       const period = getInstallmentPeriod();
       const text = perMonth(updatedPrice, period)
 
-      if (!isNaN(text)) {
-        return showProductInstallmentPrice(text);
-      } else {
-        return showProductInstallmentPrice(Number(product.price));
-      }
+      return showProductInstallmentPrice(text);
     } else {
       product.id = $('.product-id-for-calculate').val();
       product.name = $('.product-name-for-calculate').val();
