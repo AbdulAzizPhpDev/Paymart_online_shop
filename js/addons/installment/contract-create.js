@@ -1,5 +1,4 @@
 (function (_, $) {
-    console.log('contract create page init');
 })(Tygh, Tygh.$);
 
 
@@ -35,6 +34,7 @@ const otpState = {
     selectedFirstAdress: selectedMonth,
     selectedFirstAdress3: null,
     contractId: null,
+    cityModal: null,
 };
 
 let urlLast = otpState.baseUrl + '/buyers/credit/add'
@@ -52,7 +52,6 @@ $(document).ready(function () {
     $("#selectedId").change(function () {
         var selectedOption = e.options[e.selectedIndex].value;
         otpState.selectedFirst = selectedOption;
-        console.log('change options', price, quantity, name_product, selectedOption);
         let formattedProducts = {};
         formattedProducts[seller_id] = [
             {
@@ -76,7 +75,6 @@ $(document).ready(function () {
                 user_id: user_id,
             },
             success: function (response) {
-                console.log(response.data.price.total);
                 $('.input-paying__text-p').html(response.data.price.total + ' сум');
                 $('.input-paying__text-a').html(response.data.price.month + ' сум');
                 // $(".orange").html(response.data.price.total + ' сум')
@@ -90,7 +88,6 @@ $(document).ready(function () {
     $('#formAddress2').change(function () {
         var selectedOptionAdress = formAdress.options[formAdress.selectedIndex].value;
         otpState.selectedFirstAdress = selectedOptionAdress;
-        console.log('selectedOptionAdress', selectedOptionAdress);
         $.ceAjax('request', fn_url('get_city.city'), {
             method: 'post',
             data: {
@@ -120,7 +117,6 @@ $(document).ready(function () {
     $($select).change(function () {
         var selectedOptionAdress3 = formAdress3.options[formAdress3.selectedIndex].value;
         otpState.selectedFirstAdress3 = selectedOptionAdress3;
-        console.log('selectedOptionAdress3', selectedOptionAdress3);
     });
 });
 
@@ -147,6 +143,7 @@ myBtn.onclick = function () {
     }
 
     let city = $('#formAddress2').val();
+    otpState.cityModal = city;
     let region = (otpState.selectedFirstAdress3 == null) ? ((!$input.hasClass('d-none')) ? $input.val() : $select.val()) : otpState.selectedFirstAdress3;
     let txt = document.getElementsByTagName('textarea');
     let apartment = $('#story').val();
@@ -157,8 +154,6 @@ myBtn.onclick = function () {
         modal.style.display = 'none';
     };
 
-    console.log('data', city, region, apartment, building, street);
-    console.log();
     $.ceAjax('request', fn_url('installment_product.set_contracts'), {
         method: 'POST',
         data: {
@@ -186,12 +181,11 @@ window.onclick = function (event) {
 $('.resend-sms-card').css('display', 'none');
 $('#modal-sent').click(function () {
 
-    let city = $('#formAddress').val();
+
     let region = $('#formAddress2').val();
     let apartment = $('#story').val();
     let building = $('#story2').val();
     let street = $('#story3').val();
-    let otpInputVal = $('.ty-login__input').val();
     $('.resend-sms-card').css('display', 'block');
     var counter = setInterval(timer, 1000); //1000 will  run it every 1 second
     function timer() {
@@ -205,13 +199,12 @@ $('#modal-sent').click(function () {
         //Do code for showing the number of seconds here
     }
 
-
     $.ceAjax('request', fn_url('installment_product.set_confirm_contract'), {
-        method: "POST",
+        method: 'POST',
         data: {
             code: otpInputVal,
             contract_id: otpState.contractId,
-            city: city,
+            city: otpState.cityModal,
             region: region,
             apartment: apartment,
             building: building,
@@ -230,22 +223,7 @@ $('#modal-sent').click(function () {
         },
     })
 })
-
-
 // Get the modal
 var modal5 = document.getElementById('myModal5');
 
-// var span5 = document.getElementsByClassName('close5')[0];
-//
-// // When the user clicks on <span> (x), close the modal
-// span5.onclick = function () {
-//     modal5.style.display = 'none';
-// };
-
-// When the user clicks anywhere outside of the modal, close it
-// window.onclick = function (event) {
-//     if (event.target == modal5) {
-//         modal.style.display = 'none';
-//     }
-// };
 
