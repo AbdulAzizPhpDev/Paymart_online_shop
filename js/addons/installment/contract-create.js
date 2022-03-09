@@ -181,8 +181,6 @@ window.onclick = function (event) {
 
 $('.resend-sms-card').css('display', 'none');
 $('#modal-sent').click(function () {
-
-
     let region = $('#formAddress2').val();
     let apartment = $('#story').val();
     let building = $('#story2').val();
@@ -206,7 +204,7 @@ $('#modal-sent').click(function () {
         data: {
             code: otpInputVal,
             contract_id: otpState.contractId,
-            city: $($select).val(),
+            city: !($select).hasClass('d-none') ? $($select).val() : $($input).val(),
             region: region,
             apartment: apartment,
             building: building,
