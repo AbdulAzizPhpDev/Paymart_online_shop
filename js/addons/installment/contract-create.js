@@ -15,9 +15,12 @@ var span = document.getElementsByClassName('close')[0];
 
 // let value = $('.confirm-contract').val();
 let e = document.getElementById('selectedId');
+let formAdress = document.getElementById('formAddress2');
 
 var selectedMonth = e.options[e.selectedIndex].value;
 
+const $select = $('.tashkent-regions');
+const $input = $('.not-tashkent-region');
 
 const otpState = {
     baseUrl: 'https://test.paymart.uz/api/v1',
@@ -28,6 +31,7 @@ const otpState = {
     interval: null,
     expDate: null,
     selectedFirst: selectedMonth,
+    selectedFirstAdress: selectedMonth,
     contractId: null,
 };
 
@@ -70,11 +74,43 @@ $(document).ready(function () {
                 user_id: user_id,
             },
             success: function (response) {
-                console.log(response.data.price.total)
-                $(".input-paying__text-p").html(response.data.price.total + ' сум')
-                $(".input-paying__text-a").html(response.data.price.month + ' сум')
+                console.log(response.data.price.total);
+                $('.input-paying__text-p').html(response.data.price.total + ' сум');
+                $('.input-paying__text-a').html(response.data.price.month + ' сум');
                 // $(".orange").html(response.data.price.total + ' сум')
             }
+        });
+    });
+
+});
+
+$(document).ready(function () {
+    $('#formAddress2').change(function () {
+        var selectedOptionAdress = formAdress.options[formAdress.selectedIndex].value;
+        otpState.selectedFirstAdress = selectedOptionAdress;
+        console.log('', selectedOptionAdress);
+
+        $.ceAjax('request', fn_url('get_city.city'), {
+            method: 'post',
+            data: {
+                city_id: selectedOptionAdress,
+            },
+            callback: function (response) {
+
+
+                if (response.result == null) {
+                    $input.removeClass('d-none');
+                    $select.addClass('d-none');
+                } else {
+                    $select.removeClass('d-none');
+                    $input.addClass('d-none');
+
+                    response.result.forEach(number => {
+                        const option = `<option value="${number.city_id}" selected>${number.city_name}</option>`;
+                        $select.append(option);
+                    });
+                }
+            },
         });
     });
 
@@ -83,6 +119,15 @@ $(document).ready(function () {
 
 // When the user clicks on the button, open the modal
 myBtn.onclick = function () {
+
+    var valNullInputt = document.querySelector('.not-tashkent-region');
+    if (valNullInputt) {
+        if (/^\s*$/g.test(valNullInputt.value) || valNullInputt.value.indexOf('\n') != -1) {
+            $('.not-tashkent-region').css('border', '1px solid red').focus();
+            return;
+        }
+    }
+
     var val = document.querySelector('#story2').value;
     if (/^\s*$/g.test(val) || val.indexOf('\n') != -1) {
         $('#story2').css('border', '1px solid red').focus();
@@ -93,34 +138,34 @@ myBtn.onclick = function () {
         $('#story3').css('border', '1px solid red').focus();
         return;
     }
-    let city = $('#formAddress').val();
-    let region = $('#formAddress2').val();
+
+    let city = $('#formAddress3').val();
+    let region = $input.val();
     // let txt = document.getElementsByTagName("textarea");
     let apartment = $('#story').val();
     let building = $('#story2').val();
     let street = $('#story3').val();
+    let district = $('#story6').val();
     span.onclick = function () {
         modal.style.display = 'none';
     };
 
-
+    console.log(city, region);
+    console.log();
     $.ceAjax('request', fn_url('installment_product.set_contracts'), {
         method: 'POST',
         data: {
             limit: otpState.selectedFirst,
             city: city,
             region: region,
+            district: district,
             apartment: apartment,
             building: building,
             street: street,
         },
         callback: function (response) {
-
             otpState.contractId = response.result.paymart_client.contract_id;
-
             modal.style.display = "block";
-
-
         },
     });
 
@@ -134,8 +179,6 @@ window.onclick = function (event) {
 };
 
 $('.resend-sms-card').css('display', 'none');
-
-
 $('#modal-sent').click(function () {
 
     let city = $('#formAddress').val();
@@ -179,12 +222,25 @@ $('#modal-sent').click(function () {
                 window.location.href = fn_url('installment_product.profile-contracts');
 
             }
-
         },
     })
-
 })
 
 
+// Get the modal
+var modal5 = document.getElementById('myModal5');
 
+// var span5 = document.getElementsByClassName('close5')[0];
+//
+// // When the user clicks on <span> (x), close the modal
+// span5.onclick = function () {
+//     modal5.style.display = 'none';
+// };
+
+// When the user clicks anywhere outside of the modal, close it
+// window.onclick = function (event) {
+//     if (event.target == modal5) {
+//         modal.style.display = 'none';
+//     }
+// };
 

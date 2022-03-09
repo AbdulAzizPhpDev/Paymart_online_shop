@@ -1,0 +1,183 @@
+country_id, country_name, city_id,  city_name,parent_city_id
+234,        Uzbekistan,   263947147, Amudaryo, 0
+234,        Uzbekistan,   503982910, Andijon, 0
+234,        Uzbekistan,   263947430, Angor, 0
+234,        Uzbekistan,   501056439, Angren, 0
+234,        Uzbekistan,   263947165, Aral Sea, 0
+234,        Uzbekistan,   263947112, Arnasoy, 0
+234,        Uzbekistan,   263947002, Asaka, 0
+234,        Uzbekistan,   263947005, Baliqchi, 0
+234,        Uzbekistan,   263947433, Bandixon, 0
+234,        Uzbekistan,   263947115, Baxmal, 0
+234,        Uzbekistan,   263947468, Bekobod, 0
+234,        Uzbekistan,   263947171, Beruniy, 0
+234,        Uzbekistan,   263947071, Beshariq, 0
+234,        Uzbekistan,   263947073, Bog'dod, 0
+234,        Uzbekistan,   263947253, Bog'ot, 0
+234,        Uzbekistan,   263947470, Bo'ka, 0
+234,        Uzbekistan,   263947472, Bo'stonliq, 0
+234,        Uzbekistan,   263947409, Boyovut, 0
+234,        Uzbekistan,   263947437, Boysun, 0
+234,        Uzbekistan,   263947007, Bo'zsuv, 0
+234,        Uzbekistan,   263947009, Buloqboshi, 0
+234,        Uzbekistan,   263947380, Bulung'ur, 0
+234,        Uzbekistan,   503990403, Butaqora, 0
+234,        Uzbekistan,   263947075, Buvayda, 0
+234,        Uzbekistan,   263947049, Buxoro, 0
+234,        Uzbekistan,   263947174, Chimboy, 0
+234,        Uzbekistan,   263947474, Chinoz, 0
+234,        Uzbekistan,   501067990, Chirchiq, 0
+234,        Uzbekistan,   263947214, Chiroqchi, 0
+234,        Uzbekistan,   263947331, Chortoq, 0
+234,        Uzbekistan,   263947333, Chust, 0
+234,        Uzbekistan,   503897289, Dang'ara, 0
+234,        Uzbekistan,   263947216, Dehqonobod, 0
+234,        Uzbekistan,   263947439, Denov, 0
+234,        Uzbekistan,   263947118, Do'stlik, 0
+234,        Uzbekistan,   263947177, Ellikqala, 0
+234,        Uzbekistan,   263947079, Farg'ona, 0
+234,        Uzbekistan,   263947120, Forish, 0
+234,        Uzbekistan,   263947081, Furqat, 0
+234,        Uzbekistan,   263947122, G'allaorol, 0
+234,        Uzbekistan,   263947051, G'ijduvon, 0
+234,        Uzbekistan,   263947411, Guliston, 0
+234,        Uzbekistan,   263947258, Gurlan, 0
+234,        Uzbekistan,   263947218, G'uzor, 0
+234,        Uzbekistan,   263947267, Hazorasp, 0
+234,        Uzbekistan,   263947383, Ishtixon, 0
+234,        Uzbekistan,   263947013, Izboskan, 0
+234,        Uzbekistan,   263947015, Jalolquduq, 0
+234,        Uzbekistan,   263947441, Jarqo'rg'on, 0
+234,        Uzbekistan,   263947124, Jizzax, 0
+234,        Uzbekistan,   263947385, Jomboy, 0
+234,        Uzbekistan,   263947053, Jondor, 0
+234,        Uzbekistan,   263947357, Karmana, 0
+234,        Uzbekistan,   263947220, Kasbi, 0
+234,        Uzbekistan,   263947387, Kattaqo'rg'on, 0
+234,        Uzbekistan,   263947188, Kegeyli, 0
+234,        Uzbekistan,   263947503, Keles, 0
+234,        Uzbekistan,   263947223, Kitob, 0
+234,        Uzbekistan,   263947055, Kogon, 0
+234,        Uzbekistan,   263947360, Konimex, 0
+234,        Uzbekistan,   263947225, Koson, 0
+234,        Uzbekistan,   263947336, Kosonsoy, 0
+234,        Uzbekistan,   263947028, Marhamat, 0
+234,        Uzbekistan,   263947338, Mingbuloq, 0
+234,        Uzbekistan,   263947127, Mirzacho'l, 0
+234,        Uzbekistan,   263947413, Mirzaobod, 0
+234,        Uzbekistan,   263947190, Mo'ynoq, 0
+234,        Uzbekistan,   263947227, Muborak, 0
+234,        Uzbekistan,   263947443, Muzrabot, 0
+234,        Uzbekistan,   263947340, Namangan, 0
+234,        Uzbekistan,   263947389, Narpay, 0
+234,        Uzbekistan,   501503052, Navbahor, 0
+234,        Uzbekistan,   501053511, Navoiy, 0
+234,        Uzbekistan,   263947229, Nishon, 0
+234,        Uzbekistan,   263947343, Norin, 0
+234,        Uzbekistan,   263947194, Nukus, 0
+234,        Uzbekistan,   263947391, Nurobod, 0
+234,        Uzbekistan,   263947364, Nurota, 0
+234,        Uzbekistan,   263947479, Ohangaron, 0
+234,        Uzbekistan,   263947057, Olot, 0
+234,        Uzbekistan,   263947086, Oltiariq, 0
+234,        Uzbekistan,   503983580, Oltinko'l, 0
+234,        Uzbekistan,   263947445, Oltinsoy, 0
+234,        Uzbekistan,   263947393, Oqdaryo, 0
+234,        Uzbekistan,   263947415, Oqoltin, 0
+234,        Uzbekistan,   263947483, Oqqo'rg'on, 0
+234,        Uzbekistan,   263947477, O'rtachirchiq, 0
+234,        Uzbekistan,   263947088, Oxunboboev, 0
+234,        Uzbekistan,   263947083, O'zbekiston, 0
+234,        Uzbekistan,   263947485, Parkent, 0
+234,        Uzbekistan,   263947395, Pastdarg'om, 0
+234,        Uzbekistan,   263947397, Paxtachi, 0
+234,        Uzbekistan,   263947129, Paxtakor, 0
+234,        Uzbekistan,   263947033, Paxtaobod, 0
+234,        Uzbekistan,   263947399, Payariq, 0
+234,        Uzbekistan,   263947059, Peshku, 0
+234,        Uzbekistan,   263947487, Piskent, 0
+234,        Uzbekistan,   263947345, Pop, 0
+234,        Uzbekistan,   263947231, Qamashi, 0
+234,        Uzbekistan,   263947197, Qanliko'l, 0
+234,        Uzbekistan,   263947233, Qarshi, 0
+234,        Uzbekistan,   263947489, Qibray, 0
+234,        Uzbekistan,   263947369, Qiziltepa, 0
+234,        Uzbekistan,   263947448, Qiziriq, 0
+234,        Uzbekistan,   263947200, Qo'ng'irot, 0
+234,        Uzbekistan,   503895913, Qo'qon, 0
+234,        Uzbekistan,   263947061, Qorako'l, 0
+234,        Uzbekistan,   263947202, Qorao'zak, 0
+234,        Uzbekistan,   263947038, Qo'rg'ontepa, 0
+234,        Uzbekistan,   263947063, Qorovulbozor, 0
+234,        Uzbekistan,   263947277, Qo'shko'pir, 0
+234,        Uzbekistan,   263947401, Qo'shrabot, 0
+234,        Uzbekistan,   263947456, Qumqo'rg'on, 0
+234,        Uzbekistan,   263947096, Quva, 0
+234,        Uzbekistan,   263947492, Quyichirchiq, 0
+234,        Uzbekistan,   263947098, Rishton, 0
+234,        Uzbekistan,   263947065, Romitan, 0
+234,        Uzbekistan,   263947403, Samarqand, 0
+234,        Uzbekistan,   263947458, Sariosiyo, 0
+234,        Uzbekistan,   263947417, Sayxunobod, 0
+234,        Uzbekistan,   263947235, Shahrisabz, 0
+234,        Uzbekistan,   263947043, Shahrixon, 0
+234,        Uzbekistan,   263947419, Sharof Rashidov, 0
+234,        Uzbekistan,   263947460, Sherobod, 0
+234,        Uzbekistan,   263947067, Shofirkon, 0
+234,        Uzbekistan,   263947462, Sho'rchi, 0
+234,        Uzbekistan,   263947287, Shovot, 0
+234,        Uzbekistan,   263947206, Shumanay, 0
+234,        Uzbekistan,   263947426, Sirdaryo, 0
+234,        Uzbekistan,   263947101, So’x, 0
+234,        Uzbekistan,   228171787, Tashkent, 0
+234,        Uzbekistan,   263947208, Taxtako'pir, 0
+234,        Uzbekistan,   263947464, Termiz, 0
+234,        Uzbekistan,   263947373, Tomdi, 0
+234,        Uzbekistan,   263947349, To'raqo'rg'on, 0
+234,        Uzbekistan,   263947210, To'rtko'l, 0
+234,        Uzbekistan,   263947103, Toshloq, 0
+234,        Uzbekistan,   263947405, Toyloq, 0
+234,        Uzbekistan,   263947108, Uchko'prik, 0
+234,        Uzbekistan,   263947351, Uchqo'rg'on, 0
+234,        Uzbekistan,   263947376, Uchquduq, 0
+234,        Uzbekistan,   263947045, Ulug'nor, 0
+234,        Uzbekistan,   263947299, Urganch, 0
+234,        Uzbekistan,   263947407, Urgut, 0
+234,        Uzbekistan,   263947248, Usmon Yusupov, 0
+234,        Uzbekistan,   263947353, Uychi, 0
+234,        Uzbekistan,   263947466, Uzun, 0
+234,        Uzbekistan,   263947069, Vobkent, 0
+234,        Uzbekistan,   263947378, Xatirchi, 0
+234,        Uzbekistan,   263947311, Xiva, 0
+234,        Uzbekistan,   263947047, Xo'jaobod, 0
+234,        Uzbekistan,   263947212, Xo'jayli, 0
+234,        Uzbekistan,   263947319, Xonqa, 0
+234,        Uzbekistan,   263947428, Xovos, 0
+234,        Uzbekistan,   263947250, Yakkabog', 0
+234,        Uzbekistan,   263947327, Yangiariq, 0
+234,        Uzbekistan,   263947329, Yangibozor, 0
+234,        Uzbekistan,   263947133, Yangiobod, 0
+234,        Uzbekistan,   263947355, Yangiqo'rg'on, 0
+234,        Uzbekistan,   263947505, Yangiyo'l, 0
+234,        Uzbekistan,   263947110, Yozyovon, 0
+234,        Uzbekistan,   263947507, Yuqorichirchiq, 0
+234,        Uzbekistan,   263947135, Zafarobod, 0
+234,        Uzbekistan,   263947509, Zangiota, 0
+234,        Uzbekistan,   501057523, Zarafshan, 0
+234,        Uzbekistan,   263947138, Zarbdor, 0
+234,        Uzbekistan,   263947144, Zomin, 0
+234,        Uzbekistan,   234827628, Bektemir District, 228171787
+234,        Uzbekistan,   234827631, Chilanzar District, 228171787
+234,        Uzbekistan,   234827632, Mirobod Tumani, 228171787
+234,        Uzbekistan,   234827633, Mirzo Ulugbek district, 228171787
+234,        Uzbekistan,   234827634, Olmazor district, 228171787
+234,        Uzbekistan,   234827641, Sirgali district, 228171787
+234,        Uzbekistan,   234827642, Yakkasaroy Tumani, 228171787
+234,        Uzbekistan,   234827647, Yunusabad district, 228171787
+234,        Uzbekistan,   234827643, Uchtepa tumani, 228171787
+234,        Uzbekistan,   234827644, Shayxontohur tuman, 228171787
+234,        Uzbekistan,   234827645, Yashnobod tuman, 228171787
+234,        Uzbekistan,   686630820, Samarkand Kattaqo`rg`on, 0
+234,        Uzbekistan,   686630533, Samarkand Ishtixon, 0
+234,        Uzbekistan,   686630094, Samarkand Bulungur, 0
+234,        Uzbekistan,   686631739, Samarkand Pastdarg`om, 0

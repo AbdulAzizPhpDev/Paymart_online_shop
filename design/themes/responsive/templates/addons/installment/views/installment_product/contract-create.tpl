@@ -39,22 +39,8 @@
                         </div>
                     </div>
                     <div class="status">
-                        {*                <span class="status-item">*}
-                        {*                    Не верефицирован*}
-                        {*                </span>*}
                     </div>
                 </div>
-                {*        <div class="main">*}
-                {*            <div class="text-items">*}
-                {*                <span class="text-items__span">998990778444</span>*}
-                {*                <p>Вы не верефецированны, оформив договор вы пройдете регистрацию чтоб сделка состоялась</p>*}
-                {*            </div>*}
-                {*            <div class="status">*}
-                {*            <span class="status-item">*}
-                {*                Не верефицирован*}
-                {*            </span>*}
-                {*            </div>*}
-                {*        </div>*}
             </div>
             <hr width="100%">
 
@@ -106,44 +92,6 @@
 
             <div class="section-three">
 
-                {*<<<<<<< HEAD*}
-                {*                <form style="margin-top:4px;">*}
-                {*                    <div class="d-flex flex-column">*}
-                {*                        <label for="cars">Выберите срок:</label>*}
-                {*                        <div class="input-paying">*}
-                {*                            <select name="cars" id="cars">*}
-                {*                                <option value="twelve">12 месяцев</option>*}
-                {*                                <option value="nine">9 месяцев</option>*}
-                {*                                <option value="six">6 месяцев</option>*}
-                {*                            </select>*}
-                {*                        </div>*}
-                {*                    </div>*}
-                {*                    <div class="input-link">*}
-                {*                        <img src="design/themes/responsive/media/images/addons/installment_image/billing-ico.png"*}
-                {*                             alt="Billing ico">*}
-                {*                        <div class="input-paying__text">*}
-                {*                            <div class="input-paying__text-title">Ежемесячный платеж:</div>*}
-                {*                            <div class="input-paying__text-p">{$month} сум</div>*}
-                {*                        </div>*}
-                {*                    </div>*}
-                {*                    <div class="input-link">*}
-                {*                        <img src="design/themes/responsive/media/images/addons/installment_image/billing-ico.png"*}
-                {*                             alt="Billing ico">*}
-                {*                        <div class="input-paying__text">*}
-                {*                            <div class="input-paying__text-title">Ежемесячный платеж:</div>*}
-                {*                            <div class="input-paying__text-p">{$total} сум</div>*}
-                {*                        </div>*}
-                {*                    </div>*}
-                {*                    <div>*}
-                {*                        <label for="cars">Выберите срок:</label>*}
-                {*                        <div class="input-paying">*}
-                {*                            <select name="cars" id="cars">*}
-                {*                                <option value="twelve">12 месяцев</option>*}
-                {*                                <option value="nine">9 месяцев</option>*}
-                {*                                <option value="six">6 месяцев</option>*}
-                {*                            </select>*}
-                {*                        </div>*}
-                {*=======*}
                 <form class="d-flex" style="margin-top:4px;">
                     <div class="main-form">
                         <div class="d-flex flex-column">
@@ -174,7 +122,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="main-form__another justify-content-center">
+                    <div class="main-form__another">
                         <div class="main-form__another-item">
                             <label for="inputAddress">Страна</label>
                             <input class="repeat-input" type="text" id="inputAddress" disabled value="Узбекистан">
@@ -183,31 +131,23 @@
                             <label for="formAddress2">Город</label>
                             <div class="input-paying__unique">
                                 <select name="formAddress2" id="formAddress2">
-                                    <option value="uzb">Ташкент</option>
-                                    <option value="uzb">Ургенч</option>
-                                    <option value="uzb">Фергана</option>
-                                    <option value="ru">Нурафшон</option>
-                                    <option value="ru">Гулистан</option>
-                                    <option value="ru">Термез</option>
-                                    <option value="ru">Самарканд</option>
-                                    <option value="ru">Наманган</option>
-                                    <option value="ru">Навои</option>
-                                    <option value="ru">Карши</option>
-                                    <option value="ru">Джизак</option>
-                                    <option value="ru">Бухара</option>
-                                    <option value="ru">Андижан</option>
-                                    <option value="kz">Нукус</option>
+                                    {foreach $city as $value}
+                                        <option selected value="{$value['city_id']}">{$value['city_name']}</option>
+                                    {/foreach}
                                 </select>
                             </div>
                         </div>
+                        <div class="main-form__last-input">
+
                         <div class="main-form__another-item">
-                            <label for="formAddress">Район</label>
-                            <div class="input-paying__unique">
-                                <select name="formAddress" id="formAddress">
-                                    <option value="uzb">Ташкент</option>
-                                    <option value="ru">Россия</option>
-                                    <option value="kz">Казахстан</option>
-                                </select>
+                                <label for="formAddress3">Район</label>
+                                <div class="input-paying__unique">
+                                    <div class="last-item__style" id="formAddress-div">
+                                        <select name="formAddress3" id="formAddress3" class="tashkent-regions d-none">
+                                        </select>
+                                        <input type="text" placeholder="Region" class="not-tashkent-region">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -229,6 +169,27 @@
                     </div>
                 </form>
                 <div class="form-button">
+                    <span>
+                        {if $notifier }
+                            <!-- The Modal -->
+                            <div id="myModal5" class="modal5">
+                                   <a href="{$redirect_url|fn_url}">
+                                <!-- Modal content -->
+                                      <div class="modal-content5">
+    {*                                    <span class="close5">&times;</span>*}
+                                        <div class="modal-content5__item">
+                                            <p> Mablag' yetarli emas, call centerga murojaat qiling.</p>
+                                            <span>+998 71 209 2500</span>
+                                        </div>&nbsp; &nbsp;
+                                               <div>
+                                                    <img src="/design/themes/responsive/media/images/addons/installment/back-arrow.png"
+                                                         alt="Arrow image">
+                                               </div>
+                                      </div>
+                                   </a>
+                                </div>
+                        {/if}
+                    </span>
                     <button id="myBtn" class="form-button__item" type="submit" form="form1">Оформить
                         рассрочку
                     </button>
@@ -283,13 +244,6 @@
         </div>
     </div>
 </div>
-{*<div id="mySecondModal" class="secondModal">*}
-{*    <div class="modal-content__second">*}
-{*        <span class="close2">&times;</span>*}
-
-{*    </div>*}
-{*</div>*}
-
 <script>
 $('#card-pin-wrapper').pinlogin({
   placeholder: '*',

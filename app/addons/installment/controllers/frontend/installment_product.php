@@ -1,16 +1,4 @@
 <?php
-/***************************************************************************
- *                                                                          *
- *   (c) 2004 Vladimir V. Kalynyak, Alexey V. Vinokurov, Ilya M. Shalnev    *
- *                                                                          *
- * This  is  commercial  software,  only  users  who have purchased a valid *
- * license  and  accept  to the terms of the  License Agreement can install *
- * and use this program.                                                    *
- *                                                                          *
- ****************************************************************************
- * PLEASE READ THE FULL TEXT  OF THE SOFTWARE  LICENSE   AGREEMENT  IN  THE *
- * "copyright.txt" FILE PROVIDED WITH THIS DISTRIBUTION PACKAGE.            *
- ****************************************************************************/
 
 use Tygh\Registry;
 use Tygh\Tools\Url;
@@ -465,28 +453,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ));
 
             $fargo_response = json_decode(curl_exec($curl));
-//            fn_print_die($fargo_response);
 
             curl_close($curl);
-
-
-//            $response_fargo = php_curl('https://prodapi.shipox.com/api/v2/customer/order', $data, 'POST', $token);
-
-//            $sender_data = [
-//                "address_type" => "residential",
-//                "name" => "testA",
-//                "apartment" => $_REQUEST['apartment'],
-//                "building" => $_REQUEST['building'],
-//                "street" => $_REQUEST['street'],
-//                "city" => [
-//                    "id" => 228171787
-//                ],
-//                "country" => [
-//                    "id" => 234
-//                ],
-//                "phone" => $user['phone']
-//            ];
-
 
             $product_quantity = Tygh::$app['session']['product_info']['product_id'];
             unset(Tygh::$app['session']['product_info']);
@@ -671,6 +639,10 @@ if ($mode == "contract-create") {
         $id = (int)$datas["p_c_id"];
 
         $items = $response->data->orders->$id->price;
+
+        $city = db_get_array('select * from ?:fargo_countries where parent_city_id=?i ORDER BY city_name ASC', 0);;
+
+        Tygh::$app['view']->assign('city', $city);
         Tygh::$app['view']->assign('total', $items->total);
         Tygh::$app['view']->assign('origin', $items->origin);
         Tygh::$app['view']->assign('month', $items->month);
@@ -679,7 +651,12 @@ if ($mode == "contract-create") {
         Tygh::$app['view']->assign('product_quantity', $product_quantity);
         Tygh::$app['view']->assign('user', $user);
         if ((int)$user['i_limit'] < (int)$datas['product_price']['price']) {
-            fn_set_notification('W', __('warning'), " maxsulotni olish mumkin emas, qashshoq! &#128513 ", 'S');
+            Tygh::$app['view']->assign('notifier', true);
+
+
+        } else {
+            Tygh::$app['view']->assign('notifier', false);
+
         }
     }
 }
@@ -707,10 +684,15 @@ if ($mode == 'profile-contracts') {
         foreach ($payed_list as $item => $value) {
             $payed_list_group_by_contract_id[$item] = count($value);
         };
+
+        $city = db_get_row('select * from ?:fargo_countries where parent_city_id=?i', 0);
+        Tygh::$app['view']->assign('city', $city);
         Tygh::$app['view']->assign('contracts', $result);
         Tygh::$app['view']->assign('group_by', $payed_list_group_by_contract_id);
         Tygh::$app['view']->assign('user_api_token', $user['api_key']);
         Tygh::$app['view']->assign('user_phone', $user['phone']);
+        fn_print_die($city);
+
     }
 }
 

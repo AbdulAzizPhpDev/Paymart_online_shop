@@ -61,7 +61,7 @@
                             {else}
                                 <section class="ty-product-review-product-rating-overview-short">
                                     <div class="ty-product-review-reviews-stars ty-product-review-reviews-stars--large" data-ca-product-review-reviews-stars-full="0"></div>
-                                
+
                                     {include file="addons/product_reviews/views/product_reviews/components/product_rating_overview_short.tpl"
                                         average_rating=$product.average_rating
                                         total_product_reviews=$product.product_reviews_count
@@ -255,7 +255,7 @@
         {/hook}
     {/if}
     {/hook}
-    
+
     {hook name="products:bottom_product_layer"}{/hook}
 </div>
 
