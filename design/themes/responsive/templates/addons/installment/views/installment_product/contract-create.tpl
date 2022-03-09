@@ -147,7 +147,7 @@
                                         </select>
                                         <input type="text" placeholder="район" class="not-tashkent-region">
                                     </div>
-                                </div>
+                                </div>{**}
                             </div>
                         </div>
                     </div>
@@ -211,7 +211,6 @@
                 <h1>Введите SMS код </h1>
 
                 <div class="ty-control-group">
-                    {*                    <p>Отправленный на номер <span class="">{$user['phone']}</span></p>*}
 
                     <input type="tel" hidden
                            class="ty-login__input confirm-contract" />
