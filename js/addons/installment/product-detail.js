@@ -139,7 +139,7 @@
     // console.log('ce ajax done event');
     let { product } = productDetailState;
     const { showProductInstallmentPrice, perMonth, getInstallmentPeriod, radioHandler } = productDetailMethods;
-    const updatedPrice = $(`#sec_discounted_price_${product.id}`).text().replace(/[\u00a0]/g, '');
+    const updatedPrice = $(`#sec_discounted_price_${product.id}`).text().replace(/[\u00a0]/g, '') || product.price;
 
     if (updatedPrice) {
       // product.price = Number(updatedPrice);
