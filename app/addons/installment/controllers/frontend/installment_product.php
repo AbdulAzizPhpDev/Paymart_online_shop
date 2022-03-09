@@ -291,8 +291,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($mode == "set_confirm_contract") {
 
-        fn_print_die($_REQUEST);
-
         $user = db_get_row('select * from ?:users where user_id=?i', $auth['user_id']);
 
         $data = [
@@ -312,12 +310,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         INNER JOIN ?:product_prices as product_price ON product.product_id = product_price.product_id 
         INNER JOIN ?:product_descriptions as product_description ON product.product_id = product_description.product_id 
         WHERE product.product_id = ?i ', $product_id);
+            $data = [
+                "username" => FARGO_USERNAME,
+                "password" => FARGO_PASSWORD
+            ];
 
+            $url = FARGO_URL . "/customer/authenticate";
+            $fargo_auth_res = php_curl($url, $data, 'POST', '');
+
+            fn_print_die($data);
+            $city_id = 123;
+            if ((int)$_REQUEST['region'] == 228171787) {
+                $city_id = (int)$_REQUEST['city'];
+            } else {
+                $city_id = (int)$_REQUEST['region'];
+            }
 
             $curl = curl_init();
 
             curl_setopt_array($curl, array(
-                CURLOPT_URL => 'https://prodapi.shipox.com/api/v2/customer/order',
+                CURLOPT_URL => FARGO_URL . '/customer/order',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_MAXREDIRS => 10,
@@ -334,13 +346,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         "building": null,
         "street": "' . $product_info["address"] . '",
         "city": {
-          "id": 228171787
+          "id": "' . $city_id . '"
         },
         "country": {
           "id": 234
-        },
-        "neighborhood": {
-            "id":234827628
         },
         "phone": "' . $product_info["phone"] . '"
     },
@@ -351,13 +360,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         "building": "' . $_REQUEST["building"] . '",
         "street": "' . $_REQUEST["street"] . '",
         "city": {
-          "id": 228171787
+          "id":"' . $city_id . '"
         },
         "country": {
           "id": 234
-        },
-        "neighborhood": {
-            "id":234827631
         },
         "phone": "' . $user['phone'] . '"
     },
@@ -375,7 +381,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   "charge_items": [
     {
       "paid": false,
-      "charge": 100,
+      "charge": 0,
       "charge_type": "cod",
       "payer":"sender"
 
@@ -387,13 +393,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   
 }',
                 CURLOPT_HTTPHEADER => array(
-                    'Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsb2dpc3RpY3NAcGF5bWFydC51eiIsInVzZXJJZCI6MTE3NjU2MDQ5OCwiZXhwIjoxNjQ2MzExODI0fQ.KeyWhL0bST7Ttt94aPhUC7kv_MiNulffuPB8-LOzC5R2POpP4U6BGKC7ydX_X-QHUlD1iCVp7zE_4jlFuKSzVQ',
+                    'Authorization: Bearer ' . $fargo_auth_res->data->id_token,
                     'Content-Type: application/json'
                 ),
             ));
 
             $fargo_response = json_decode(curl_exec($curl));
-
+            fn_print_die($fargo_response);
             curl_close($curl);
 
             $product_quantity = Tygh::$app['session']['product_info']['product_id'];
