@@ -230,8 +230,6 @@ $('#modal-sent').click(function () {
         },
     })
 })
-
-
 // Get the modal
 var modal5 = document.getElementById('myModal5');
 
