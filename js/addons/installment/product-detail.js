@@ -136,12 +136,13 @@
   $installmentButton.on('click', productDetailMethods.setSessionProductQtyAndPeriod);
 
   $.ceEvent('on', 'ce.ajaxdone', function (response_data) {
+    // console.log('ce ajax done event');
     let { product } = productDetailState;
     const { showProductInstallmentPrice, perMonth, getInstallmentPeriod, radioHandler } = productDetailMethods;
     const updatedPrice = $(`#sec_discounted_price_${product.id}`).text().replace(/[\u00a0]/g, '');
 
     if (updatedPrice) {
-      product.price = Number(updatedPrice);
+      // product.price = Number(updatedPrice);
       const period = getInstallmentPeriod();
       const text = perMonth(updatedPrice, period)
 
@@ -151,10 +152,9 @@
       product.name = $('.product-name-for-calculate').val();
       product.price = $('.product-price-for-calculate-price').val();
       product.qty = $('.cm-amount').val();
+      showProductInstallmentPrice();
+      radioHandler();
     }
-
-    showProductInstallmentPrice();
-    radioHandler();
   });
 
   // $.ceEvent('on', 'ce.product_option_changed_post', function () {
