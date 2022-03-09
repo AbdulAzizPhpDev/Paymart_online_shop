@@ -291,6 +291,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($mode == "set_confirm_contract") {
 
+        fn_print_die($_REQUEST);
 
         $user = db_get_row('select * from ?:users where user_id=?i', $auth['user_id']);
 
@@ -313,67 +314,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         WHERE product.product_id = ?i ', $product_id);
 
 
-//        fn_print_die('{
-//    "sender_data": {
-//        "address_type": "residential",
-//        "name": "testA",
-//        "email": "' . $product_info["email"] . '",
-//        "apartment": null,
-//        "building": null,
-//        "street": ' . $product_info["address"] . ',
-//        "city": {
-//          "id": 228171787
-//        },
-//        "country": {
-//          "id": 234
-//        },
-//        "neighborhood": {
-//            "id":234827628
-//        },
-//        "phone": "' . $product_info["phone"] . '"
-//    },
-//    "recipient_data": {
-//        "address_type": "residential",
-//        "name": "' . $user["firstname"] . '",
-//        "apartment": "' . $_REQUEST["apartment"] . '",
-//        "building": "' . $_REQUEST["building"] . '",
-//        "street": "' . $_REQUEST["street"] . '",
-//        "city": {
-//          "id": 228171787
-//        },
-//        "country": {
-//          "id": 234
-//        },
-//        "neighborhood": {
-//            "id":234827631
-//        },
-//        "phone": "' . $user['phone'] . '"
-//    },
-//       "dimensions": {
-//        "weight": 12,
-//        "width": 32,
-//        "length": 45,
-//        "height": 1,
-//        "unit": "METRIC",
-//        "domestic": true
-//  },
-//  "package_type": {
-//    "courier_type": "DOOR_DOOR"
-//  },
-//  "charge_items": [
-//    {
-//      "paid": false,
-//      "charge": 100,
-//      "charge_type": "cod",
-//      "payer":"sender"
-//
-//    }
-//  ],
-//  "recipient_not_available": "do_not_deliver",
-//  "payment_type": "credit_balance",
-//  "payer":"sender"
-//
-//}');
             $curl = curl_init();
 
             curl_setopt_array($curl, array(
