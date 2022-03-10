@@ -139,15 +139,15 @@
                         </div>
                         <div class="main-form__last-input">
 
-                        <div class="main-form__another-item">
+                            <div class="main-form__another-item">
                                 <label for="formAddress3">Район</label>
                                 <div class="input-paying__unique">
                                     <div class="last-item__style" id="formAddress-div">
                                         <select name="formAddress3" id="formAddress3" class="tashkent-regions d-none">
                                         </select>
-                                        <input type="text" placeholder="Region" class="not-tashkent-region">
+                                        <input type="text" placeholder="район" class="not-tashkent-region">
                                     </div>
-                                </div>
+                                </div>{**}
                             </div>
                         </div>
                     </div>
@@ -211,7 +211,6 @@
                 <h1>Введите SMS код </h1>
 
                 <div class="ty-control-group">
-                    {*                    <p>Отправленный на номер <span class="">{$user['phone']}</span></p>*}
 
                     <input type="tel" hidden
                            class="ty-login__input confirm-contract" />
