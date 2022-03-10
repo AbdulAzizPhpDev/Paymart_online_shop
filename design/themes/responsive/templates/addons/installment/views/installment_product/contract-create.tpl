@@ -92,7 +92,7 @@
 
             <div class="section-three">
 
-                <form class="d-flex" style="margin-top:4px;">
+                <form style="margin-top:4px;">
                     <div class="main-form">
                         <div class="d-flex flex-column">
                             <label for="cars">Выберите срок:</label>
@@ -142,11 +142,9 @@
                             <div class="main-form__another-item">
                                 <label for="formAddress3">Район</label>
                                 <div class="input-paying__unique">
-                                    <div class="last-item__style" id="formAddress-div">
                                         <select name="formAddress3" id="formAddress3" class="tashkent-regions d-none">
                                         </select>
                                         <input type="text" placeholder="район" class="not-tashkent-region">
-                                    </div>
                                 </div>{**}
                             </div>
                         </div>
