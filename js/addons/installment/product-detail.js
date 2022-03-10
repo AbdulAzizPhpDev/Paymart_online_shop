@@ -191,7 +191,6 @@
 
     getProductPrice();
     radioHandler();
-    console.log($installmentButton);
     $installmentButton.on('click', productDetailMethods.setSessionProductQtyAndPeriod);
 
     /*let { product } = productDetailState;
