@@ -7,10 +7,20 @@
 {$is_add_to_cart_mv=true}
 {if "MULTIVENDOR"|fn_allowed_for && ($product.master_product_id || !$product.company_id)}{$is_add_to_cart_mv=false}{/if}
 
+{if $product.company_id == 0}
+    {assign var="p_company_id" value="215049"}
+    {assign var="p_company_token" value="76659968c31ffdc11976e6e6175673df"}
+{else}
+    {assign var="p_company_id" value="{$company_info['p_c_id']}"}
+    {assign var="p_company_token" value="{$company_info['p_c_token']}"}
+{/if}
+
 <input class="product-id-for-calculate" type="hidden" value="{$product.product_id}">
 <input class="product-name-for-calculate" type="hidden" value="{$product.product}">
-<input class="company-id-for-calculate-price" type="hidden" value="{$product.company_id}">
+<input class="company-id-for-calculate-price" type="hidden" value="{$p_company_id}">
 <input class="product-price-for-calculate-price" type="hidden" value="{$product.price}">
+<input class="vendor-token" type="hidden" value="{$p_company_token}">
+
 
 {*<p style="color:#ff7643; font-size: 35px;"><span style="font-size: 40px;">12</span> месяцев</p>*}
 

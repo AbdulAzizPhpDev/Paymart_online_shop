@@ -20,9 +20,10 @@
         <item for="install">
             CREATE TABLE IF NOT EXISTS ?:fargo_orders (
             id int unsigned NOT NULL AUTO_INCREMENT,
-            fargo_order_id int unsigned NOT NULL,
-            paymart_contract_id int unsigned NOT NULL,
+            paymart_contract_id bigint unsigned NOT NULL,
+            fargo_order_id text ,
             fargo_contract_id text ,
+            fargo_contract_label text null ,
             PRIMARY KEY (id)
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
         </item>
@@ -38,6 +39,6 @@
     </queries>
     <functions>
         <item for="install">fn_fargo_uz_install</item>
-<!--        <item for="uninstall">fn_fargo_uz_install</item>-->
+        <!--        <item for="uninstall">fn_fargo_uz_install</item>-->
     </functions>
 </addon>
