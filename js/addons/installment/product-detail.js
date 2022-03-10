@@ -9,7 +9,7 @@
       id: $('.product-id-for-calculate').val(),
       name: $('.product-name-for-calculate').val(),
       price: $('.product-price-for-calculate-price').val(),
-      qty: $('.cm-amount').val(),
+      qty: $('.cm-amount').val() || 1,
     },
     vendor_token: $('.vendor-token').val(),
   };
@@ -49,7 +49,7 @@
       });
     },
     getProductPrice: function (price = 0, period = 12) {
-      const { company_id, product, installment_period, PAYMART_API_BASE_URL, vendor_token } = productDetailState;
+      const { company_id, product, PAYMART_API_BASE_URL, vendor_token } = productDetailState;
       const $installmentProductPriceContainer = $('.installment-product-monthly-payment');
 
       let formattedProducts = {};
