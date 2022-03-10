@@ -190,12 +190,12 @@ $('#modal-sent').click(function () {
     var counter = setInterval(timer, 1000); //1000 will  run it every 1 second
     function timer() {
         otpState.timer = otpState.timer - 1;
-        if (otpState.timer <= -0) {
+        if (otpState.timer <= 1) {
             clearInterval(counter);
             //counter ended, do something here
             return;
         }
-        document.querySelector('.card-resend-sms-timer').innerHTML = otpState.timer + ' secs';
+        document.querySelector('.card-resend-sms-timer').textContent = otpState.timer + ' secs';
     }
     $.ceAjax('request', fn_url('installment_product.set_confirm_contract'), {
         method: 'POST',
@@ -210,10 +210,10 @@ $('#modal-sent').click(function () {
         },
         callback: function (response) {
             let spanError = $('.modal-error');
-
-            if (response.result.result.status === 0) {
+            console.log('response', response);
+            if (response.result.status === 0) {
                 spanError.text('tasdiqlash kodi xato! Iltimos, to\'g\'ri kiriting.').css('color', 'red');
-            } else if (response.result.result.status === 1) {
+            } else if (response.result.status === 1) {
                 window.location.href = fn_url('installment_product.profile-contracts');
             }
         },
