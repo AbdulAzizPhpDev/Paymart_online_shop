@@ -166,17 +166,18 @@ country_id, country_name, city_id,  city_name,parent_city_id
 234,        Uzbekistan,   501057523, Zarafshan, 0
 234,        Uzbekistan,   263947138, Zarbdor, 0
 234,        Uzbekistan,   263947144, Zomin, 0
-234,        Uzbekistan,   234827628, Bektemir tumani, 228171787
-234,        Uzbekistan,   234827631, Chilanzar tumani, 228171787
-234,        Uzbekistan,   234827632, Mirobod Tumani, 228171787
-234,        Uzbekistan,   234827633, Mirzo Ulugbek tumani, 228171787
-234,        Uzbekistan,   234827634, Olmazor tumani, 228171787
-234,        Uzbekistan,   234827641, Sirgali tumani, 228171787
-234,        Uzbekistan,   234827642, Yakkasaroy tumani, 228171787
-234,        Uzbekistan,   234827647, Yunusabad tumani, 228171787
-234,        Uzbekistan,   234827643, Uchtepa tumani, 228171787
-234,        Uzbekistan,   234827644, Shayxontohur tuman, 228171787
-234,        Uzbekistan,   234827645, Yashnobod tuman, 228171787
+234,        Uzbekistan,   1216494666, Bektemir tumani, 228171787
+234,        Uzbekistan,   1216494667, Chilanzar tumani, 228171787
+234,        Uzbekistan,   1216494668, Mirobod Tumani, 228171787
+234,        Uzbekistan,   1216494669, Mirzo Ulugbek tumani, 228171787
+234,        Uzbekistan,   1216494670, Olmazor tumani, 228171787
+234,        Uzbekistan,   1216494671, Sirgali tumani, 228171787
+234,        Uzbekistan,   1216494672, Yakkasaroy tumani, 228171787
+234,        Uzbekistan,   1216494676, Yunusobad tumani, 228171787
+234,        Uzbekistan,   1216494673, Uchtepa tumani, 228171787
+234,        Uzbekistan,   1216404884, Shayxontohur tuman, 228171787
+234,        Uzbekistan,   1216375304, Bek baraka, 228171787
+234,        Uzbekistan,   1216494675, Yashnobod tuman, 228171787
 234,        Uzbekistan,   686630820, Samarkand Kattaqo`rg`on, 0
 234,        Uzbekistan,   686630533, Samarkand Ishtixon, 0
 234,        Uzbekistan,   686630094, Samarkand Bulungur, 0
