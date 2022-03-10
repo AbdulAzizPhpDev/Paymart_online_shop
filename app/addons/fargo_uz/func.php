@@ -30,6 +30,7 @@ function fn_fargo_uz_sender_recipient_data(
     $name = "unknown",
     $city,
     $country = 234,
+    $phone = null,
     $email = null,
     $apartment = null,
     $building = null,
@@ -37,8 +38,8 @@ function fn_fargo_uz_sender_recipient_data(
     $landmark = null,
     $neighborhood = null,
     $lat = null,
-    $lon = null,
-    $phone = null
+    $lon = null
+
 )
 {
     $data = [
@@ -72,8 +73,9 @@ function fn_fargo_uz_dimensions($weight, $width, $height, $length, $unit = 1, $d
     } else {
         $data_unit = "IMPERIAL";
     }
+
     $data = [
-        "weight" => $weight,
+        "weight" => ($weight == 0) ? 1 : $weight,
         "width" => $width,
         "height" => $height,
         "length" => $length,

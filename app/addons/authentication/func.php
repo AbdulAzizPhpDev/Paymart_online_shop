@@ -75,8 +75,6 @@ function create_user($phone = 0, $first_name = '', $last_name = '', $password = 
     if (!$email) {
         list($email) = createEmail();
     }
-//    $u_data = fn_get_user_info(30, false);
-//    fn_print_die($u_data);
     $user_data['firstname'] = $first_name;
     $user_data['lastname'] = $last_name;
     $user_data['phone'] = $phone;

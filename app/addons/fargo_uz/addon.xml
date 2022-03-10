@@ -19,9 +19,9 @@
         </item>
         <item for="install">
             CREATE TABLE IF NOT EXISTS ?:fargo_orders (
-            id int(11) unsigned NOT NULL AUTO_INCREMENT,
-            fargo_order_id int(11) unsigned NOT NULL,
-            paymart_contract_id int(11) unsigned NOT NULL,
+            id int unsigned NOT NULL AUTO_INCREMENT,
+            fargo_order_id int unsigned NOT NULL,
+            paymart_contract_id int unsigned NOT NULL,
             fargo_contract_id text ,
             PRIMARY KEY (id)
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;

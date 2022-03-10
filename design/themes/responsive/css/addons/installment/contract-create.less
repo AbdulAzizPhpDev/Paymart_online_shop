@@ -142,10 +142,12 @@ p h1 h2 h3 h4 h5{
   }
   .input-paying{
     display: flex;
+
     label {
       display: flex;
     }
-    select{
+
+    select {
       background-color: #F6F6F6;
       border-radius: 8px;
       border: none;
@@ -153,20 +155,27 @@ p h1 h2 h3 h4 h5{
       height: 56px;
       padding: 8px 8px 8px 16px;
     }
-    select:focus{
+
+    select:focus {
       border-color: @main;
     }
   }
 
   form {
+    display: flex;
+    justify-content: normal;
+    flex-direction: column;
+
     .main-form {
       display: flex;
       justify-content: space-between;
       align-items: center;
+
       label {
         padding-bottom: 4px;
         display: block;
       }
+
       .input-paying {
 
       }
@@ -208,13 +217,14 @@ p h1 h2 h3 h4 h5{
     }
     .main-form__another {
       display: flex;
-      //justify-content: space-between;
-      align-items: center;
+      width: auto;
+      justify-content: space-between;
+      //margin: 0 auto;
 
       &-item {
         display: flex;
         flex-direction: column;
-        margin: 16px 16px 16px 0;
+        margin: 16px 16px 14px 0;
 
         .repeat-input {
           background-color: #F6F6F6;
@@ -242,8 +252,18 @@ p h1 h2 h3 h4 h5{
           height: 56px;
           padding: 8px 8px 8px 16px;
         }
-        select:focus{
+
+        select:focus {
           border-color: #FF7643 !important;
+        }
+
+        input {
+          background-color: #F6F6F6;
+          border-radius: 8px;
+          border: none;
+          width: 320px !important;
+          height: 56px;
+          padding: 8px 8px 8px 16px;
         }
       }
     }
@@ -538,17 +558,13 @@ textarea:focus{
 
   //margin-top: 45px;
 
-  .last-item__style {
-    display: flex;
-    flex-direction: column;
-  }
 
   .last-item__style input {
     background-color: #f6f6f6;
     border-radius: 8px;
     border: none;
     padding: 27px 14px;
-    width: 180%;
+    //width: 180%;
   }
 }
 
@@ -558,4 +574,9 @@ textarea:focus{
   border: none;
   padding: 27px 138px;
   width: 180%;
+}
+
+.not-tashkent-region {
+  width: 100% !important;;
+
 }

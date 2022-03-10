@@ -288,7 +288,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         Registry::get('ajax')->assign('result', $response);
         exit();
     }
-
     if ($mode == "set_confirm_contract") {
 
         $user = db_get_row('select * from ?:users where user_id=?i', $auth['user_id']);
@@ -298,23 +297,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             "code" => $_REQUEST['code'],
             "phone" => $user['phone']
         ];
-
-        $response = php_curl('/buyers/check-user-sms', $data, 'POST', $user['api_key']);
-//
-        if ($response->result->status == 1 || $response->result->status == "success") {
-
-            $product_id = Tygh::$app['session']['product_info']['product_id'];
-
-            $product_info = db_get_row('SELECT *,product_description.product as product_name FROM ?:products as product 
+        $product_id = Tygh::$app['session']['product_info']['product_id'];
+        $product_info = db_get_row('SELECT *,product_description.product as product_name FROM ?:products as product 
         INNER JOIN ?:companies as company ON product.company_id = company.company_id 
         INNER JOIN ?:product_prices as product_price ON product.product_id = product_price.product_id 
         INNER JOIN ?:product_descriptions as product_description ON product.product_id = product_description.product_id 
         WHERE product.product_id = ?i ', $product_id);
 
-            $data = [
-                'amount' => $product_quantity
-            ];
+        $product_quantity = (int)$product_info['amount'] - (int)Tygh::$app['session']['product_info']['product_qty'];
+        if ($product_quantity < 0) {
+            $errors = showErrors('product_is_not_exist');
+            Registry::get('ajax')->assign('result', $errors);
+            exit();
+        }
+        $data = [
+            'amount' => $product_quantity
+        ];
 
+        $response = php_curl('/buyers/check-user-sms', $data, 'POST', $user['api_key']);
+//
+        if ($response->result->status == 1 || $response->result->status == "success") {
             db_query('UPDATE ?:products SET ?u WHERE product_id = ?i', $data, $product_id);
             $city_id = null;
 
@@ -323,11 +325,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             } else {
                 $city_id = (int)$_REQUEST['region'];
             }
+            $product_shipping_data = unserialize($product_info['shipping_params']);
 
             $fargo_data = [
-                "sender_data" => fn_fargo_uz_sender_recipient_data("residential", "laziz", 228171787),
-                "recipient_data" => fn_fargo_uz_sender_recipient_data("residential", "laziz", $city_id),
-                "dimensions" => fn_fargo_uz_dimensions(1, 2, 3, 4, 1, true),
+                "sender_data" => fn_fargo_uz_sender_recipient_data("residential", $product_info['company'], 228171787),
+                "recipient_data" => fn_fargo_uz_sender_recipient_data(
+                    "residential",
+                    $user['lastname'] . ' ' . $user['firstname'],
+                    $city_id,
+                    234,
+                    '+' . $user['phone'],
+                    null,
+                    $_REQUEST['apartment'],
+                    $_REQUEST['building'],
+                    $_REQUEST['street']
+                ),
+                "dimensions" => fn_fargo_uz_dimensions($product_info['weight'], $product_shipping_data['box_width'], $product_shipping_data['box_height'], $product_shipping_data['box_length'], 1, true),
                 "package_type" => [
                     "courier_type" => "DOOR_DOOR"
                 ],
@@ -343,21 +356,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 "username" => FARGO_USERNAME,
                 "password" => FARGO_PASSWORD
             ];
+
             $url = FARGO_URL . "/v1/customer/authenticate";
             $fargo_auth_res = php_curl($url, $data, 'POST', '');
 
             $url = FARGO_URL . '/v2/customer/order';
             $fargo_order_res = php_curl($url, $fargo_data, 'POST', $fargo_auth_res->data->id_token);
+            if ($fargo_order_res->status != "success") {
+                Registry::get('ajax')->assign('result', $fargo_order_res);
+                exit();
+            } else {
+                $data_order = [
+                    'fargo_order_id' => $fargo_order_res->data->order_number,
+                    'fargo_contract_id' => $fargo_order_res->data->id,
+                    'paymart_contract_id' => $_REQUEST['contract_id']
 
+                ];
+                db_query('INSERT INTO ?:fargo_orders ?e', $data_order);
+            }
             $product_quantity = Tygh::$app['session']['product_info']['product_id'];
             unset(Tygh::$app['session']['product_info']);
-
-
         }
         Registry::get('ajax')->assign('result', $response);
         exit();
     }
-
 }
 
 if ($mode == 'get_qty') {
@@ -548,6 +570,7 @@ if ($mode == "contract-create") {
         }
     }
 }
+
 if ($mode == 'profile-contracts') {
 
     if (!$auth['user_id']) {
@@ -579,7 +602,6 @@ if ($mode == 'profile-contracts') {
         Tygh::$app['view']->assign('group_by', $payed_list_group_by_contract_id);
         Tygh::$app['view']->assign('user_api_token', $user['api_key']);
         Tygh::$app['view']->assign('user_phone', $user['phone']);
-        fn_print_die($city);
 
     }
 }

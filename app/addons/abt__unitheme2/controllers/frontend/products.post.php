@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 exit;
 }
 if ($mode == 'view') {
-//    fn_print_die($_REQUEST['period-number']);
+
 if (Registry::get('addons.social_buttons.status') == 'A') {
 $social_buttons_settings = Registry::get('settings.social_buttons');
 if (!empty($social_buttons_settings) && is_array($social_buttons_settings)) {
