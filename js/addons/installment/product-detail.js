@@ -4,7 +4,8 @@
 
   const productDetailState = {
     PAYMART_API_BASE_URL: 'https://test.paymart.uz/api/v1/',
-    company_id: /*$('.company-id-for-calculate-price').val()*/ 215049,
+    company_id: $('.company-id-for-calculate-price').val(),
+    // company_id: 215049,
     product: {
       id: $('.product-id-for-calculate').val(),
       name: $('.product-name-for-calculate').val(),
@@ -148,10 +149,19 @@
         $(radio).on('change', productDetailMethods.onPeriodPicked);
       });
     },
+    redirectVendor: function () {
+      const params = new URLSearchParams(document.location.search);
+      const vendor_id = params.get('vendor_id');
+
+      if (Number(vendor_id) === 0) {
+        $('.ty-sellers-list__price-link')[0].click();
+      }
+    }
   };
 
   productDetailMethods.getProductPrice();
   productDetailMethods.radioHandler();
+  productDetailMethods.redirectVendor();
   // productDetailMethods.showProductInstallmentPrice();
 
   $installmentButton.on('click', productDetailMethods.setSessionProductQtyAndPeriod);
