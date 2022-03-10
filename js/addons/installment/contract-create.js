@@ -190,7 +190,7 @@ $('#modal-sent').click(function () {
     var counter = setInterval(timer, 1000); //1000 will  run it every 1 second
     function timer() {
         otpState.timer = otpState.timer - 1;
-        if (otpState.time <= 0) {
+        if (otpState.timer <= -0) {
             clearInterval(counter);
             //counter ended, do something here
             return;
