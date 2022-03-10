@@ -213,10 +213,10 @@ $('#modal-sent').click(function () {
         callback: function (response) {
             let spanError = $('.modal-error');
 
-            if (response.result.result.status === 0) {
+            if (response.result.status === 0) {
                 spanError.text('tasdiqlash kodi xato! Iltimos, to\'g\'ri kiriting.').css('color', 'red');
 
-            } else if (response.result.result.status === 1) {
+            } else if (response.result.status === 1) {
                 window.location.href = fn_url('installment_product.profile-contracts');
 
             }
