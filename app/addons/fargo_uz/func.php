@@ -25,6 +25,78 @@ function fn_fargo_uz_install()
     }
 }
 
+function fn_fargo_uz_sender_recipient_data(
+    $address_type = "residential",
+    $name = "unknown",
+    $city,
+    $country = 234,
+    $email = null,
+    $apartment = null,
+    $building = null,
+    $street = null,
+    $landmark = null,
+    $neighborhood = null,
+    $lat = null,
+    $lon = null,
+    $phone = null
+)
+{
+    $data = [
+        "adress_type" => $address_type,
+        "name" => $name,
+        "country" => [
+            "id" => $country
+        ],
+        "city" => [
+            "id" => $city
+        ],
+        "email" => $email,
+        "apartment" => $apartment,
+        "building" => $building,
+        "street" => $street,
+        "landmark" => $landmark,
+        "neighborhood" => $neighborhood,
+        "lat" => $lat,
+        "lon" => $lon,
+        "phone" => $phone
+
+    ];
+    return $data;
+}
+
+function fn_fargo_uz_dimensions($weight, $width, $height, $length, $unit = 1, $domestic = false)
+{
+    $data_unit = null;
+    if ($unit == 1) {
+        $data_unit = "METRIC";
+    } else {
+        $data_unit = "IMPERIAL";
+    }
+    $data = [
+        "weight" => $weight,
+        "width" => $width,
+        "height" => $height,
+        "length" => $length,
+        "unit" => $data_unit,
+        "domestic" => boolval($domestic)
+    ];
+
+    return $data;
+}
+
+function fn_fargo_uz_charge_items($charge_type = "service_custom", $payer, $paid = true, $charge = 0)
+{
+    $data = [
+        "paid" => $paid,
+        "charge_type" => $charge_type,
+        "payer" => $payer,
+        "charge" => ($charge_type == "service_custom") ? 0 : $charge,
+    ];
+
+    return $data;
+}
+
+
 //function fn_rus_edost_uninstall()
 //{
 //    $service_ids = db_get_fields('SELECT service_id FROM ?:shipping_services WHERE module = ?s', 'edost');
