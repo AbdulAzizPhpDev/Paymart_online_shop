@@ -167,6 +167,7 @@
   $installmentButton.on('click', productDetailMethods.setSessionProductQtyAndPeriod);
 
   $.ceEvent('on', 'ce.ajaxdone', function (response_data) {
+    const $installmentButton = $('.set_qty');
     let { product } = productDetailState;
     const { radioHandler, getProductPrice, getInstallmentPeriod } = productDetailMethods;
 
@@ -175,6 +176,7 @@
 
     if (updatedPrice) {
       product.price = updatedPrice;
+      $installmentButton.on('click', productDetailMethods.setSessionProductQtyAndPeriod);
 
       return getProductPrice(product.price, period);
     }
@@ -186,6 +188,8 @@
 
     getProductPrice();
     radioHandler();
+
+    $installmentButton.on('click', productDetailMethods.setSessionProductQtyAndPeriod);
 
     /*let { product } = productDetailState;
     const updatedPrice = $(`#sec_discounted_price_${product.id}`).text().replace(/(&nbsp;)|( )/g, '');
