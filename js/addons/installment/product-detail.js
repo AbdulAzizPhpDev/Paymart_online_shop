@@ -154,15 +154,18 @@
       const vendor_id = params.get('vendor_id');
 
       if (Number(vendor_id) === 0) {
-        $('.ty-sellers-list__price-link')[0].click();
+        const $vendorLinks = $('.ty-sellers-list__price-link');
+
+        if ($vendorLinks.length > 0) {
+          $vendorLinks[0].click();
+        }
       }
-    }
+    },
   };
 
   productDetailMethods.getProductPrice();
   productDetailMethods.radioHandler();
   productDetailMethods.redirectVendor();
-  // productDetailMethods.showProductInstallmentPrice();
 
   $installmentButton.on('click', productDetailMethods.setSessionProductQtyAndPeriod);
 
@@ -188,7 +191,7 @@
 
     getProductPrice();
     radioHandler();
-
+    console.log($installmentButton);
     $installmentButton.on('click', productDetailMethods.setSessionProductQtyAndPeriod);
 
     /*let { product } = productDetailState;
@@ -209,9 +212,5 @@
       radioHandler();
     }*/
   });
-
-  /*$.ceEvent('on', 'ce.product_option_changed_post', function () {
-    console.log('option changed');
-  });*/
 
 })(Tygh, Tygh.$);
