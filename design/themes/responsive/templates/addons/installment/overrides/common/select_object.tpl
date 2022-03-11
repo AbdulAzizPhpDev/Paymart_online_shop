@@ -23,8 +23,9 @@
                 {else}
                     {assign var="currency_code" value="SUM"}
                 {/if}
+
                 <li class="ty-select-block__list-item">
-                    <a rel="nofollow" href="{"`$link_tpl``$id`"|fn_url}&currency={$currency_code}" class="ty-select-block__list-a {if $selected_id == $id}is-active{/if} {if $suffix == "live_editor_box"}cm-lang-link{/if}" {if $display_icons == true}data-ca-country-code="{$item.country_code|lower}"{/if} data-ca-name="{$id}">
+                    <a rel="nofollow" href="{$config.current_url|fn_link_attach:"currency={$currency_code}&sl={$id}"|fn_url}" class="ty-select-block__list-a {if $selected_id == $id}is-active{/if} {if $suffix == "live_editor_box"}cm-lang-link{/if}" {if $display_icons == true}data-ca-country-code="{$item.country_code|lower}"{/if} data-ca-name="{$id}">
                     {if $display_icons == true}
                         {include_ext file="common/icon.tpl"
                             class="ty-flag ty-flag-`$item.country_code|lower`"
