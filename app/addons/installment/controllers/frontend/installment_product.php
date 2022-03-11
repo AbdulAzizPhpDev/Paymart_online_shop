@@ -321,7 +321,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $response = php_curl('/buyers/check-user-sms', $data_contract, 'POST', $user['api_key']);
 
-        if ($response->result->status == 1 || $response->result->status == "success") {
+        if ($response->result->status == 1) {
 
             db_query('UPDATE ?:products SET ?u WHERE product_id = ?i', $data, $product_id);
             $city_id = null;
