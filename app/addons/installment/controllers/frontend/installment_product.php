@@ -319,12 +319,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($response->result->status == 1 || $response->result->status == "success") {
             db_query('UPDATE ?:products SET ?u WHERE product_id = ?i', $data, $product_id);
             $city_id = null;
-
+            $neighborhood = [];
             if ((int)$_REQUEST['region'] == 228171787) {
-                $city_id = (int)$_REQUEST['city'];
+                $city_id = 228171787;
+                $neighborhood = [
+                    "id" => (int)$_REQUEST['city']
+                ];
             } else {
                 $city_id = (int)$_REQUEST['region'];
+                $neighborhood = [
+                    "name" => $_REQUEST['city']
+                ];
             }
+
             $product_shipping_data = unserialize($product_info['shipping_params']);
 
             $fargo_data = [
@@ -338,9 +345,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     null,
                     $_REQUEST['apartment'],
                     $_REQUEST['building'],
-                    $_REQUEST['street']
+                    $_REQUEST['street'],
+                    $neighborhood
+
                 ),
-                "dimensions" => fn_fargo_uz_dimensions($product_info['weight'], $product_shipping_data['box_width'], $product_shipping_data['box_height'], $product_shipping_data['box_length'], 1, true),
+                "dimensions" => fn_fargo_uz_dimensions(
+                    $product_info['weight'],
+                    $product_shipping_data['box_width'],
+                    $product_shipping_data['box_height'],
+                    $product_shipping_data['box_length'],
+                    1,
+                    true),
                 "package_type" => [
                     "courier_type" => "DOOR_DOOR"
                 ],
@@ -362,6 +377,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $url = FARGO_URL . '/v2/customer/order';
             $fargo_order_res = php_curl($url, $fargo_data, 'POST', $fargo_auth_res->data->id_token);
+
             if ($fargo_order_res->status != "success") {
                 Registry::get('ajax')->assign('result', $fargo_order_res);
                 exit();
@@ -370,12 +386,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     'fargo_order_id' => $fargo_order_res->data->order_number,
                     'fargo_contract_id' => $fargo_order_res->data->id,
                     'paymart_contract_id' => $_REQUEST['contract_id']
-
                 ];
                 db_query('INSERT INTO ?:fargo_orders ?e', $data_order);
             }
             $product_quantity = Tygh::$app['session']['product_info']['product_id'];
             unset(Tygh::$app['session']['product_info']);
+
+            $fargo_label_res = php_curl(
+                FARGO_URL . '/v1/customer/orders/airwaybill_mini?ids=&order_numbers=' . $fargo_order_res->data->order_number,
+                [],
+                'GET',
+                $fargo_auth_res->data->id_token
+            );
+            $data_label = [
+                "fargo_contract_label" => $fargo_label_res->data->value
+            ];
+            db_query('UPDATE ?:fargo_orders SET ?u WHERE fargo_order_id = ?i', $data_label, $fargo_order_res->data->order_number);
         }
         Registry::get('ajax')->assign('result', $response);
         exit();
