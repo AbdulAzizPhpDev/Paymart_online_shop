@@ -387,7 +387,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $url = FARGO_URL . '/v2/customer/order';
             $fargo_order_res = php_curl($url, $fargo_data, 'POST', $fargo_auth_res->data->id_token);
-            fn_print_die($fargo_order_res);
             if ($fargo_order_res->status != "success") {
                 Registry::get('ajax')->assign('result', $fargo_order_res);
                 exit();
