@@ -233,6 +233,7 @@ $('#modal-sent').click(function () {
             building: building,
             street: street,
         },
+<<<<<<< HEAD
         callback: function (response) {
             let spanError = $('.modal-error');
             console.log('response', response.result);
@@ -244,6 +245,17 @@ $('#modal-sent').click(function () {
                 window.location.href = fn_url('installment_product.profile-contracts');
             }
         },
+=======
+        // callback: function (response) {
+        //     let spanError = $('.modal-error');
+        //
+        //     if (response.result.result.status === 0) {
+        //         spanError.text('tasdiqlash kodi xato! Iltimos, to\'g\'ri kiriting.').css('color', 'red');
+        //     } else if (response.result.result.status === 1) {
+        //         window.location.href = fn_url('installment_product.profile-contracts');
+        //     }
+        // },
+>>>>>>> e8b70e63b2eba0b622d74445dc83ec3fb82bc039
     })
 })
 // Get the modal
