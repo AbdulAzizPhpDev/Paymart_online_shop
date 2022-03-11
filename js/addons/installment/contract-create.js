@@ -190,8 +190,31 @@ $('#modal-sent').click(function () {
     var counter = setInterval(timer, 1000); //1000 will  run it every 1 second
     function timer() {
         otpState.timer = otpState.timer - 1;
-        if (otpState.timer <= -0) {
+        if (otpState.timer <= 1) {
             clearInterval(counter);
+            $('.btn-request').removeClass('d-none').click(function () {
+                $.ceAjax('request', fn_url('installment_product.set_confirm_contract'), {
+                    method: 'POST',
+                    data: {
+                        code: otpInputVal,
+                        contract_id: otpState.contractId,
+                        city: !($select).hasClass('d-none') ? $($select).val() : $($input).val(),
+                        region: region,
+                        apartment: apartment,
+                        building: building,
+                        street: street,
+                    },
+                    callback: function (response) {
+                        let spanError = $('.modal-error');
+                        // console.log('response', response.result);
+                        if (response.status === 'success') {
+                            window.location.href = fn_url('installment_product.profile-contracts');
+                        } else {
+                            spanError.text(response.response.message).css('color', 'red');
+                        }
+                    },
+                });
+            });
             //counter ended, do something here
             return;
         }
@@ -210,13 +233,15 @@ $('#modal-sent').click(function () {
         },
         callback: function (response) {
             let spanError = $('.modal-error');
-
-            if (response.result.result.status === 0) {
-                spanError.text('tasdiqlash kodi xato! Iltimos, to\'g\'ri kiriting.').css('color', 'red');
-            } else if (response.result.result.status === 1) {
+            console.log('response', response);
+            if (response.result.status === 'success') {
                 window.location.href = fn_url('installment_product.profile-contracts');
+            } else {
+                spanError.text(response.result.message).css('color', 'red');
             }
         },
+
+
     })
 })
 // Get the modal

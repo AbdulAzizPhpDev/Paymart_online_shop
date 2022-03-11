@@ -221,6 +221,9 @@
                 <button disabled class="ty-btn ty-btn__secondary" type="button" id="modal-sent">
                     Продолжить
                 </button>
+                <button class="btn-request">
+                    recent
+                </button>
             </div>
         </div>
     </div>
