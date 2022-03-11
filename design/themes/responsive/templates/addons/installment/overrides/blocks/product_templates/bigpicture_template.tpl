@@ -161,10 +161,11 @@
                 {/if}
 
                 {if $smarty.capture.$price|trim}
+                    <div class="installment-product-monthly-payment"></div>
+
                     <div class="ut2-pb__price-actual">
                         {$smarty.capture.$price nofilter}
                     </div>
-                    <div class="installment-product-monthly-payment"></div>
                 {/if}
 
                 {if $smarty.capture.$old_price|trim || $smarty.capture.$clean_price|trim || $smarty.capture.$list_discount|trim}
