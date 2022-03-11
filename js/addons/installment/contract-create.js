@@ -192,6 +192,31 @@ $('#modal-sent').click(function () {
         otpState.timer = otpState.timer - 1;
         if (otpState.timer <= 1) {
             clearInterval(counter);
+            $('.btn-request').removeClass('d-none').click(function () {
+                $.ceAjax('request', fn_url('installment_product.set_confirm_contract'), {
+                    method: 'POST',
+                    data: {
+                        code: otpInputVal,
+                        contract_id: otpState.contractId,
+                        city: !($select).hasClass('d-none') ? $($select).val() : $($input).val(),
+                        region: region,
+                        apartment: apartment,
+                        building: building,
+                        street: street,
+                    },
+                    callback: function (response) {
+                        let spanError = $('.modal-error');
+                        console.log('response', response.result);
+                        if (response.result.status === 0) {
+                            spanError.text('.contract_not_found').css('color', 'red');
+                        } else if (response.result.result.status === 0) {
+                            spanError.text('tasdiqlash kodi xato! Iltimos, to\'g\'ri kiriting.').css('color', 'red');
+                        } else if (response.result.result.status === 1) {
+                            window.location.href = fn_url('installment_product.profile-contracts');
+                        }
+                    },
+                });
+            });
             //counter ended, do something here
             return;
         }
@@ -210,10 +235,12 @@ $('#modal-sent').click(function () {
         },
         callback: function (response) {
             let spanError = $('.modal-error');
-            console.log('response', response);
+            console.log('response', response.result);
             if (response.result.status === 0) {
+                spanError.text('.contract_not_found').css('color', 'red');
+            } else if (response.result.result.status === 0) {
                 spanError.text('tasdiqlash kodi xato! Iltimos, to\'g\'ri kiriting.').css('color', 'red');
-            } else if (response.result.status === 1) {
+            } else if (response.result.result.status === 1) {
                 window.location.href = fn_url('installment_product.profile-contracts');
             }
         },
