@@ -288,6 +288,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         Registry::get('ajax')->assign('result', $response);
         exit();
     }
+
     if ($mode == "set_confirm_contract") {
 
         $user = db_get_row('select * from ?:users where user_id=?i', $auth['user_id']);
@@ -318,10 +319,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             "phone" => $user['phone']
         ];
 
-//        $response = php_curl('/buyers/check-user-sms', $data_contract, 'POST', $user['api_key']);
+        $response = php_curl('/buyers/check-user-sms', $data_contract, 'POST', $user['api_key']);
 
-//        if ($response->result->status == 1 || $response->result->status == "success") {
-        if (true) {
+        if ($response->result->status == 1 || $response->result->status == "success") {
+
             db_query('UPDATE ?:products SET ?u WHERE product_id = ?i', $data, $product_id);
             $city_id = null;
             $neighborhood = [];
