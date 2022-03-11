@@ -28,7 +28,7 @@ const otpState = {
     setContract: 'installment_product.set_contracts',
     api_token: Cookies.get('api_token'),
     buyerPhone: Cookies.get('buyer-phone'),
-    timer: 60,
+    timer: 20,
     interval: null,
     expDate: null,
     selectedFirst: selectedMonth,
@@ -185,14 +185,15 @@ $('#modal-sent').click(function () {
     let apartment = $('#story').val();
     let building = $('#story2').val();
     let street = $('#story3').val();
+    $(this).attr('disabled', true);
     let otpInputVal = $('.ty-login__input').val();
     $('.resend-sms-card').css('display', 'block');
     var counter = setInterval(timer, 1000); //1000 will  run it every 1 second
     function timer() {
         otpState.timer = otpState.timer - 1;
-        if (otpState.timer <= 1) {
+        if (otpState.timer <= 0) {
             clearInterval(counter);
-            $('.btn-request').removeClass('d-none').click(function () {
+            $('#modal-sent').attr('disabled', false).click(function () {
                 $.ceAjax('request', fn_url('installment_product.set_confirm_contract'), {
                     method: 'POST',
                     data: {
@@ -208,10 +209,11 @@ $('#modal-sent').click(function () {
                         let spanError = $('.modal-error');
                         console.log('response-timer', response);
                         if (response.status === 'success') {
-                            // window.location.href = fn_url('installment_product.profile-contracts');\
+                            window.location.href = fn_url('installment_product.profile-contracts');
                             console.log('shut timer success');
                         } else {
-                            spanError.text(response.response.message).css('color', 'red');
+                            spanError.text(response.result.response.message).css('color', 'red');
+                            $('#modal-sent').attr('disabled', true);
                         }
                     },
                 });
@@ -236,10 +238,11 @@ $('#modal-sent').click(function () {
             let spanError = $('.modal-error');
             console.log('response-first', response);
             if (response.result.status === 'success') {
-                // window.location.href = fn_url('installment_product.profile-contracts');
+                window.location.href = fn_url('installment_product.profile-contracts');
                 console.log('shut second success');
             } else {
-                spanError.text(response.result.message).css('color', 'red');
+                spanError.text(response.result.response.message).css('color', 'red');
+                $('#modal-sent').attr('disabled', true);
             }
         },
 
