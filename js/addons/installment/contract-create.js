@@ -206,13 +206,11 @@ $('#modal-sent').click(function () {
                     },
                     callback: function (response) {
                         let spanError = $('.modal-error');
-                        console.log('response', response.result);
-                        if (response.result.status === 0) {
-                            spanError.text('.contract_not_found').css('color', 'red');
-                        } else if (response.result.result.status === 0) {
-                            spanError.text('tasdiqlash kodi xato! Iltimos, to\'g\'ri kiriting.').css('color', 'red');
-                        } else if (response.result.result.status === 1) {
+                        // console.log('response', response.result);
+                        if (response.status === 'success') {
                             window.location.href = fn_url('installment_product.profile-contracts');
+                        } else {
+                            spanError.text(response.response.message).css('color', 'red');
                         }
                     },
                 });
@@ -235,13 +233,11 @@ $('#modal-sent').click(function () {
         },
         callback: function (response) {
             let spanError = $('.modal-error');
-            console.log('response', response.result);
-            if (response.result.status === 0) {
-                spanError.text('.contract_not_found').css('color', 'red');
-            } else if (response.result.result.status === 0) {
-                spanError.text('tasdiqlash kodi xato! Iltimos, to\'g\'ri kiriting.').css('color', 'red');
-            } else if (response.result.result.status === 1) {
+            console.log('response', response);
+            if (response.result.status === 'success') {
                 window.location.href = fn_url('installment_product.profile-contracts');
+            } else {
+                spanError.text(response.result.message).css('color', 'red');
             }
         },
 
