@@ -5,10 +5,6 @@
 
 {if "MULTIVENDOR"|fn_allowed_for && ($product.master_product_id || !$product.company_id)}{$is_add_to_cart_mv=false}{/if}
 
-{*<input class="product-id-for-calculate" type="hidden" value="{$product.product_id}">*}
-{*<input class="product-name-for-calculate" type="hidden" value="{$product.product}">*}
-{*<input class="company-id-for-calculate-price" type="hidden" value="{$product.company_id}">*}
-{*<input class="product-price-for-calculate-price" type="hidden" value="{$product.price}">*}
 {if $product.company_id == 0}
     {assign var="p_company_id" value="215049"}
     {assign var="p_company_token" value="76659968c31ffdc11976e6e6175673df"}
