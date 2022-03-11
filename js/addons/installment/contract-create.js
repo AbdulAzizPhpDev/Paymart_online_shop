@@ -206,9 +206,10 @@ $('#modal-sent').click(function () {
                     },
                     callback: function (response) {
                         let spanError = $('.modal-error');
-                        // console.log('response', response.result);
+                        console.log('response-timer', response);
                         if (response.status === 'success') {
-                            window.location.href = fn_url('installment_product.profile-contracts');
+                            // window.location.href = fn_url('installment_product.profile-contracts');\
+                            console.log('shut timer success');
                         } else {
                             spanError.text(response.response.message).css('color', 'red');
                         }
@@ -233,9 +234,10 @@ $('#modal-sent').click(function () {
         },
         callback: function (response) {
             let spanError = $('.modal-error');
-            console.log('response', response);
+            console.log('response-first', response);
             if (response.result.status === 'success') {
-                window.location.href = fn_url('installment_product.profile-contracts');
+                // window.location.href = fn_url('installment_product.profile-contracts');
+                console.log('shut second success');
             } else {
                 spanError.text(response.result.message).css('color', 'red');
             }
