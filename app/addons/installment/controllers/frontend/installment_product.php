@@ -387,8 +387,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $url = FARGO_URL . '/v2/customer/order';
             $fargo_order_res = php_curl($url, $fargo_data, 'POST', $fargo_auth_res->data->id_token);
+
+
             if ($fargo_order_res->status != "success") {
-                Registry::get('ajax')->assign('result', $fargo_order_res);
+                $errors_data = [
+                    'error_test' => $fargo_order_res->message
+                ];
+                $errors = showErrors("service_error", $errors_data, "error");
+                Registry::get('ajax')->assign('result', $errors);
                 exit();
             } else {
                 $data_order = [
@@ -411,9 +417,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 "fargo_contract_label" => $fargo_label_res->data->value
             ];
             db_query('UPDATE ?:fargo_orders SET ?u WHERE fargo_order_id = ?i', $data_label, $fargo_order_res->data->order_number);
+
+            $errors = showErrors('contract_create_successfully', [], "success");
+            Registry::get('ajax')->assign('result', $errors);
+            exit();
+
+        } else {
+
+            $errors = showErrors('wrong_confirmation_code', [], "error");
+            Registry::get('ajax')->assign('result', $errors);
+            exit();
+
         }
-        Registry::get('ajax')->assign('result', $response);
-        exit();
     }
 }
 
