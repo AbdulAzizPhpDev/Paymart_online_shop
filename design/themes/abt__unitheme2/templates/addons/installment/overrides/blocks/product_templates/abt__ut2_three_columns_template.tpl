@@ -244,6 +244,7 @@
                                 <div class="ty-product-prices">
                                     {if $smarty.capture.$old_price|trim}{$smarty.capture.$old_price nofilter}{/if}
                                     {/if}
+                                    <div class="installment-product-monthly-payment" style="margin-top: 8px;"></div>
 
                                     {if $smarty.capture.$price|trim}
                                         <div class="ut2-pb__price-actual">
@@ -254,7 +255,6 @@
                                     {if $smarty.capture.$old_price|trim || $smarty.capture.$clean_price|trim || $smarty.capture.$list_discount|trim}
                                     {$smarty.capture.$clean_price nofilter}
                                     {$smarty.capture.$list_discount nofilter}
-                                    <div class="installment-product-monthly-payment" style="margin-top: 8px;"></div>
 
                                     {if $product.prices}
                                         <div class="ut2__qty-discounts">{include file="views/products/components/products_qty_discounts.tpl"}</div>
