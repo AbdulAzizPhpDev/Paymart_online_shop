@@ -10,16 +10,18 @@
                     <form class="vendor-login-from" method="post" action={fn_url('vendor_login.login')}>
                         <div class="ty-control-group">
                             <label for="vendor_id" class="ty-control-group__title cm-required">{__("id")}</label>
-                            <input style="width: 100%;" type="number" id="vendor_id" name="id" size="32" maxlength="32" />
+                            <input style="width: 100%;" type="number" id="vendor_id" name="id" size="32"
+                                   maxlength="32" placeholder=""/>
                         </div>
 
                         <div class="ty-control-group">
                             <label for="password"
                                    class="ty-control-group__title cm-required ">{__("password")}</label>
-                            <input style="width: 100%;" type="password" id="password" name="password" size="32" maxlength="32" />
+                            <input style="width: 100%;" type="password" id="password" name="password" size="32"
+                                   maxlength="32" placeholder="{__('shipping.rus_dellin.password')}"/>
                         </div>
 
-                        <button class="ty-btn ty-btn__primary">Войти</button>
+                        <button class="ty-btn ty-btn__primary">{__('sign_in')}</button>
                     </form>
                 </div>
 
