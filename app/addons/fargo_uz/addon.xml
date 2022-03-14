@@ -39,6 +39,6 @@
     </queries>
     <functions>
         <item for="install">fn_fargo_uz_install</item>
-        <!--        <item for="uninstall">fn_fargo_uz_install</item>-->
+        <item for="uninstall">fn_fargo_uz_uninstall</item>
     </functions>
 </addon>

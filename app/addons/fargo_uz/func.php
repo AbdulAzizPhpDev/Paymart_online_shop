@@ -1,6 +1,7 @@
 <?php
 
 use Tygh\Registry;
+use Tygh\Languages\Languages;
 
 if (!defined('AREA')) {
     die('Access denied');
@@ -22,6 +23,40 @@ function fn_fargo_uz_install()
             'parent_city_id' => trim($data[4])
         ];
         db_query('INSERT INTO ?:fargo_countries ?e', $data_city);
+    }
+
+    $service = [
+        'status' => 'A',
+        'module' => FARGO_MODULE_NAME,
+        'code' => 'fargo',
+        'sp_file' => ''
+    ];
+
+    $service['service_id'] = db_query("INSERT INTO ?:shipping_services ?e", $service);
+
+    foreach (Languages::getAll() as $lang_code => $lang_data) {
+
+        if ($lang_code == 'ru') {
+            $service['description'] = "FARGO: Курьерская служба";
+        } elseif ($lang_code == 'uz') {
+            $service['description'] = "Fargo: Posilka xizmati";
+        } else {
+            $service['description'] = "FARGO: Parcel Service";
+        }
+        $service['lang_code'] = $lang_code;
+
+        db_query('INSERT INTO ?:shipping_service_descriptions ?e', $service);
+
+    }
+
+}
+
+function fn_fargo_uz_uninstall()
+{
+    $service_ids = db_get_fields('SELECT service_id FROM ?:shipping_services WHERE module = ?s', 'fargo');
+    if (!empty($service_ids)) {
+        db_query('DELETE FROM ?:shipping_services WHERE service_id IN (?a)', $service_ids);
+        db_query('DELETE FROM ?:shipping_service_descriptions WHERE service_id IN (?a)', $service_ids);
     }
 }
 

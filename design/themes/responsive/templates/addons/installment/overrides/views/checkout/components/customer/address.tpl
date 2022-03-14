@@ -6,23 +6,17 @@
     {$group_meta = ""}
 {/if}
 
-<div class="{$group_meta} litecheckout__group" data-ca-lite-checkout-element="{$element_identifier}" data-ca-address-position="{$settings.Checkout.address_position}">
+<div class="{$group_meta} litecheckout__group" data-ca-lite-checkout-element="{$element_identifier}"
+     data-ca-address-position="{$settings.Checkout.address_position}">
     {if $show_profiles_on_checkout}
         {include file="views/checkout/components/user_profiles.tpl"}
     {else}
-        {include
-            file="views/checkout/components/profile_fields.tpl"
-            profile_fields=$profile_fields
-            section="ProfileFieldSections::SHIPPING_ADDRESS"|enum
-            exclude=["s_city", "s_country", "s_state", "customer_notes"]
-        }
         <div class="row-fluid" style="padding: 0 4px">
             <div class="span8">
                 <select
                         class="cm-country cm-location-shipping"
                         style="width: 100%"
-                        name="user_data[region]"
-                >
+                        name="user_data[region]">
                     <option disabled="" selected data-ca-rebuild-states="skip">Город</option>
                     <option value="uzb">Ташкент</option>
                     <option value="uzb">Ургенч</option>
