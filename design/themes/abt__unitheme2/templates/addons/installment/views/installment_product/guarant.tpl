@@ -8,7 +8,7 @@
         <div class="guarant">
             <h3>Контакное лицо - 1</h3>
 
-            <p class="ty-mt-s"><label for="first-guarant-name">ФИО</label></p>
+            <p class="ty-mt-s"><label for="first-guarant-name">{__('fullname')}</label></p>
             <input id="first-guarant-name" type="text" placeholder="Введите ФИО">
 
             <p class="ty-mt-s"><label for="first-guarant-phone">Номер телефона</label></p>
@@ -17,7 +17,7 @@
         <div class="guarant">
             <h3>Контакное лицо - 2</h3>
 
-            <p class="ty-mt-s"><label for="second-guarant-name">ФИО</label></p>
+            <p class="ty-mt-s"><label for="second-guarant-name">{__('fullname')}</label></p>
             <input id="second-guarant-name" type="text" placeholder="Введите ФИО">
 
             <p class="ty-mt-s"><label for="second-guarant-phone">Номер телефона</label></p>
@@ -26,7 +26,7 @@
     </div>
 
     <button class="ty-btn ty-btn__secondary" type="button" id="add-guarant-btn">
-        Продолжить
+        {__('continue')}
     </button>
 
     <div class="ty-login-form__wrong-credentials-container">
