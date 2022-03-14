@@ -8,20 +8,20 @@
         <div class="guarant">
             <h3>Контакное лицо - 1</h3>
 
-            <p><label for="first-guarant-name">ФИО</label></p>
-            <input id="first-guarant-name" type="text" placeholder="Введите ИФО">
+            <p class="ty-mt-s"><label for="first-guarant-name">ФИО</label></p>
+            <input id="first-guarant-name" type="text" placeholder="Введите ФИО">
 
-            <p><label for="first-guarant-phone">Номер телефона</label></p>
-            <input id="first-guarant-phone" type="text" placeholder="+998" value="998">
+            <p class="ty-mt-s"><label for="first-guarant-phone">Номер телефона</label></p>
+            <input id="first-guarant-phone" type="text" placeholder="+998">
         </div>
         <div class="guarant">
             <h3>Контакное лицо - 2</h3>
 
-            <p><label for="second-guarant-name">ФИО</label></p>
-            <input id="second-guarant-name" type="text" placeholder="Введите ИФО">
+            <p class="ty-mt-s"><label for="second-guarant-name">ФИО</label></p>
+            <input id="second-guarant-name" type="text" placeholder="Введите ФИО">
 
-            <p><label for="second-guarant-phone">Номер телефона</label></p>
-            <input id="second-guarant-phone" type="text" placeholder="+998" value="998">
+            <p class="ty-mt-s"><label for="second-guarant-phone">Номер телефона</label></p>
+            <input id="second-guarant-phone" type="text" placeholder="+998">
         </div>
     </div>
 
