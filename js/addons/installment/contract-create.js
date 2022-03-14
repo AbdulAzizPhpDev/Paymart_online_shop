@@ -61,7 +61,6 @@ $(document).ready(function () {
                 name: name_product,
             }
         ];
-
         $.ajax({
             type: 'POST',
             url: calculate,
@@ -95,8 +94,6 @@ $(document).ready(function () {
                 city_id: selectedOptionAdress,
             },
             callback: function (response) {
-
-
                 if (response.result == null) {
                     $input.removeClass('d-none').focus();
                     $select.addClass('d-none');

@@ -1,3 +1,5 @@
+{script src="js/addons/installment/adress.js"}
+
 {$element_identifier = "address-group"}
 {$group_meta = "hidden"}
 
@@ -17,30 +19,19 @@
                         class="cm-country cm-location-shipping"
                         style="width: 100%"
                         name="user_data[region]"
+                        id="formAddress__select"
                 >
-{*                    <option disabled="" selected data-ca-rebuild-states="skip">Город</option>*}
-{*                    <option value="uzb">Ташкент</option>*}
-{*                    <option value="uzb">Ургенч</option>*}
-{*                    <option value="uzb">Фергана</option>*}
-{*                    <option value="ru">Нурафшон</option>*}
-{*                    <option value="ru">Гулистан</option>*}
-{*                    <option value="ru">Термез</option>*}
-{*                    <option value="ru">Самарканд</option>*}
-{*                    <option value="ru">Наманган</option>*}
-{*                    <option value="ru">Навои</option>*}
-{*                    <option value="ru">Карши</option>*}
-{*                    <option value="ru">Джизак</option>*}
-{*                    <option value="ru">Бухара</option>*}
-{*                    <option value="ru">Андижан</option>*}
-{*                    <option value="kz">Нукус</option>*}
                     {foreach $cities as $value}
                         <option selected value="{$value['city_id']}">{$value['city_name']}</option>
                     {/foreach}
-
                 </select>
             </div>
             <div class="span8">
-                <input name="user_data[region]" type="text" style="width: 100%" placeholder="Район">
+                {*                <input name="user_data[region]" id="smth" type="text" style="width: 100%" placeholder="Район">*}
+
+                <select name="formAddress5" id="formAddress5" class="tashkent-regions d-none">
+                </select>
+                <input type="text" placeholder="район" class="not-tashkent-region">
             </div>
         </div>
         <div class="row-fluid" style="padding: 8px 4px 0 4px">
