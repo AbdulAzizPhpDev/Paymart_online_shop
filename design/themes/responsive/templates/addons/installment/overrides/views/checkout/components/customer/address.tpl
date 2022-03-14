@@ -23,21 +23,24 @@
                         style="width: 100%"
                         name="user_data[region]"
                 >
-                    <option disabled="" selected data-ca-rebuild-states="skip">Город</option>
-                    <option value="uzb">Ташкент</option>
-                    <option value="uzb">Ургенч</option>
-                    <option value="uzb">Фергана</option>
-                    <option value="ru">Нурафшон</option>
-                    <option value="ru">Гулистан</option>
-                    <option value="ru">Термез</option>
-                    <option value="ru">Самарканд</option>
-                    <option value="ru">Наманган</option>
-                    <option value="ru">Навои</option>
-                    <option value="ru">Карши</option>
-                    <option value="ru">Джизак</option>
-                    <option value="ru">Бухара</option>
-                    <option value="ru">Андижан</option>
-                    <option value="kz">Нукус</option>
+{*                    <option disabled="" selected data-ca-rebuild-states="skip">Город</option>*}
+{*                    <option value="uzb">Ташкент</option>*}
+{*                    <option value="uzb">Ургенч</option>*}
+{*                    <option value="uzb">Фергана</option>*}
+{*                    <option value="ru">Нурафшон</option>*}
+{*                    <option value="ru">Гулистан</option>*}
+{*                    <option value="ru">Термез</option>*}
+{*                    <option value="ru">Самарканд</option>*}
+{*                    <option value="ru">Наманган</option>*}
+{*                    <option value="ru">Навои</option>*}
+{*                    <option value="ru">Карши</option>*}
+{*                    <option value="ru">Джизак</option>*}
+{*                    <option value="ru">Бухара</option>*}
+{*                    <option value="ru">Андижан</option>*}
+{*                    <option value="kz">Нукус</option>*}
+                    {foreach $city as $value}
+                        <option selected value="{$value['city_id']}">{$value['city_name']}</option>
+                    {/foreach}
                 </select>
             </div>
             <div class="span8">
