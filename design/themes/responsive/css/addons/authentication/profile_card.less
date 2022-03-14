@@ -239,15 +239,60 @@ h1, h2, h3, h4, h5, p, ul, li, div {
   border-radius: 12px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
+  margin: 20px 91px 20px 0;
 
-  &__main {
+  &__orange {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     //justify-content: space-between;
     //align-items: start;
     background: url("../media/images/addons/authentication/image/orange-card.png") 20% 40% no-repeat;
+    background-size: cover;
+    //height: 200px;
+    //width: 320px;
+    border-radius: 8px;
+    padding: 16px;
+    height: 171px;
+    width: 300px;
+
+    &-top {
+      display: flex;
+      justify-content: space-between;
+    }
+
+
+    .orange-unique__main-item {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    p {
+      color: #fff;
+      font-weight: 500;
+      font-size: 16px;
+    }
+
+    h1 {
+      color: #fff;
+      font-weight: bold;
+      font-size: 24px;
+    }
+
+    //padding: 4px;
+    //margin: 24px 0 24px 24px;
+    //z-index: 999;
+  }
+
+  &__black {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    //justify-content: space-between;
+    //align-items: start;
+    background: url("../media/images/addons/authentication/image/black-card.png") 20% 40% no-repeat;
     background-size: cover;
     //height: 200px;
     //width: 320px;
@@ -386,8 +431,22 @@ h1, h2, h3, h4, h5, p, ul, li, div {
 
 
 .products-cards__profile {
+
   .products-cards {
     display: flex;
-    justify-content: space-between;
+    //justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+}
+
+.radioButton {
+  #contactChoice1__orange {
+    color: @main;
+    margin: 0 20px 0 0;
+  }
+
+  #contactChoice2__black {
+    color: #000;
   }
 }

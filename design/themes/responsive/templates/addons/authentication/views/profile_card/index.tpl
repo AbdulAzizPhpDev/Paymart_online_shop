@@ -107,7 +107,18 @@
                     </div>
                     <div class="">
                         <span class="modal-error__profile"></span>
-                        <button disabled class="unique-btn__modal-item" type="button" id="modal-sent">
+
+                        <div class="radioButton">
+                            <input type="radio" id="contactChoice1"
+                                   name="contact" value="orange">
+                            <label for="contactChoice1" id="contactChoice1__orange">orange</label>
+
+                            <input type="radio" id="contactChoice2"
+                                   name="contact" value="black">
+                            <label for="contactChoice2" id="contactChoice2__black">black</label>
+                        </div>
+
+                        <button class="unique-btn__modal-item" type="button" id="modal-sent__last">
                             Продолжить
                         </button>
                     </div>

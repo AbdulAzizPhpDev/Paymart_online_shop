@@ -29,18 +29,42 @@ const valuesCards = [
     cardNumber: 8600123364354566,
     cardDate: 1240,
     cardType: 'humo',
+    attr: 'orange',
   },
   {
     cardNumber: 8600123364354566,
     cardDate: 1244,
     cardType: 'Union',
+    attr: 'orange',
   },
   {
     cardNumber: 8600123364354566,
     cardDate: 4444,
     cardType: 'humo',
+    attr: 'black',
   },
 ];
+var radioValue = null;
+$('input[type=\'radio\']').click(function () {
+  radioValue = $('input[name=\'contact\']:checked').val();
+});
+
+$('#modal-sent__last').click(function () {
+  const firstPut = $('#firstPut').val();
+  const secondPut = $('#secondPut').val();
+
+  valuesCards.push({
+    cardNumber: firstPut,
+    cardDate: secondPut,
+    attr: radioValue,
+  });
+  container.innerHTML = returnCards(valuesCards);
+  $('#myModalCard').css('display', 'none');
+});
+
+
+// $('.modal-sent').click(function () {
+// });
 
 // valuesCards.map((item) => {
 //   cardHtml.innerHTML = `
@@ -71,7 +95,7 @@ var container = document.querySelector('.products-cards__profile');
 function returnCards(valuesCards) {
   return '<div class="products-cards">' + valuesCards.map(valuesCard => `
     <div class="orange-unique">
-               <div class="orange-unique__main">
+               <div class="orange-unique__${valuesCard.attr}">
                 <div class="orange-unique__main-top">
                     <div class="orange-unique__main-item">
                         <p>Зарплатная карта</p>
@@ -90,5 +114,5 @@ function returnCards(valuesCards) {
             </div>  `).join('');
 }
 
-console.log('functionr', returnCards(valuesCards));
 container.innerHTML = returnCards(valuesCards);
+
