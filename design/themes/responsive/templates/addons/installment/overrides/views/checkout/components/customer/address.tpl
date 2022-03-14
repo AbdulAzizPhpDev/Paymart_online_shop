@@ -33,7 +33,7 @@
 {*                    <option value="ru">Бухара</option>*}
 {*                    <option value="ru">Андижан</option>*}
 {*                    <option value="kz">Нукус</option>*}
-                    {foreach $city as $value}
+                    {foreach $cities as $value}
                         <option selected value="{$value['city_id']}">{$value['city_name']}</option>
                     {/foreach}
 
