@@ -79,7 +79,7 @@
             if (response.status === 'success') {
               const { data: result } = response;
               let priceLabel;
-              priceLabel = `Рассрочка ${result.price.month} UZS мес.`;
+              priceLabel = `${result.price.month} UZS / мес.`;
 
               $installmentProductPriceContainer.text(priceLabel);
 

@@ -135,13 +135,13 @@
                                     {if $smarty.capture.$old_price|trim}{$smarty.capture.$old_price nofilter}{/if}
                                     {/if}
 
+                                    <div class="installment-product-monthly-payment ty-price-num ty-mb-s"></div>
+
                                     {if $smarty.capture.$price|trim}
                                         <div class="ut2-pb__price-actual">
                                             {$smarty.capture.$price nofilter}
                                         </div>
                                     {/if}
-
-                                    <div class="installment-product-monthly-payment" style="margin-top: 8px;"></div>
 
                                     <div class="installment-periods ty-control-group" style="margin-top: 16px;">
                                         <input type="radio" name="period" value="3" id="3" class="ty-product-options__radio">
@@ -244,7 +244,7 @@
                                 <div class="ty-product-prices">
                                     {if $smarty.capture.$old_price|trim}{$smarty.capture.$old_price nofilter}{/if}
                                     {/if}
-                                    <div class="installment-product-monthly-payment" style="margin-top: 8px;"></div>
+                                    <div class="installment-product-monthly-payment ty-price-num ty-mb-s"></div>
 
                                     {if $smarty.capture.$price|trim}
                                         <div class="ut2-pb__price-actual">
