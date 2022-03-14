@@ -60,17 +60,17 @@
             if (response.result) {
               const { result } = response;
 
-              if (result.result.status === 'success') {
+              if (result.status === 'success') {
                 if (result.url) {
                   window.location.href = result.url;
                 }
               }
 
-              if (result.result.status === 'error') {
-                if (result.result.response.errors.hasOwnProperty('partner_id')) {
-                  vendorAuthMethods.renderErrors(result.result.response.errors.partner_id);
+              if (result.status === 'error') {
+                if (result.response.errors.hasOwnProperty('partner_id')) {
+                  vendorAuthMethods.renderErrors(result.response.errors.partner_id);
                 } else {
-                  vendorAuthMethods.renderErrors(result.result.response.message);
+                  vendorAuthMethods.renderErrors(result.response.message);
                 }
               }
             } else {

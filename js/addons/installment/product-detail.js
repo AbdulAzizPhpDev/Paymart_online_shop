@@ -165,7 +165,7 @@
 
   productDetailMethods.getProductPrice();
   productDetailMethods.radioHandler();
-  productDetailMethods.redirectVendor();
+  // productDetailMethods.redirectVendor();
 
   $installmentButton.on('click', productDetailMethods.setSessionProductQtyAndPeriod);
 
