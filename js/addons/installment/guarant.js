@@ -67,7 +67,6 @@
             $this.attr('disabled', 'disabled');
           },
           success: function (response) {
-            console.log(response);
             if (response.result) {
               const { result } = response;
 
