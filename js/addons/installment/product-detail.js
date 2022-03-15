@@ -51,6 +51,7 @@
     },
     getProductPrice: function (price = 0, period = 12) {
       const { company_id, product, PAYMART_API_BASE_URL, vendor_token } = productDetailState;
+      const { printPricePretty } = productDetailMethods;
       const $installmentProductPriceContainer = $('.installment-product-monthly-payment');
 
       let formattedProducts = {};
@@ -79,7 +80,7 @@
             if (response.status === 'success') {
               const { data: result } = response;
               let priceLabel;
-              priceLabel = `${result.price.month} UZS / мес.`;
+              priceLabel = `${printPricePretty(result.price.month)} UZS / мес.`;
 
               $installmentProductPriceContainer.text(priceLabel);
 
@@ -161,11 +162,14 @@
         }
       }
     },
+    printPricePretty: function (price = 0) {
+      return Intl.NumberFormat().format(price)
+    },
   };
 
   productDetailMethods.getProductPrice();
   productDetailMethods.radioHandler();
-  // productDetailMethods.redirectVendor();
+  productDetailMethods.redirectVendor();
 
   $installmentButton.on('click', productDetailMethods.setSessionProductQtyAndPeriod);
 

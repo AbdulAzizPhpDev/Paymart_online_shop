@@ -94,8 +94,8 @@
             {if $auth.user_id}
                 {if $user_info.firstname || $user_info.lastname}
                     <li class="ty-account-info__item  ty-account-info__name ty-dropdown-box__item">{$user_info.firstname} {$user_info.lastname}</li>
-                {else}
-                    <li class="ty-account-info__item ty-dropdown-box__item ty-account-info__name">{$user_info.email}</li>
+{*                {else}*}
+{*                    <li class="ty-account-info__item ty-dropdown-box__item ty-account-info__name">{$user_info.email}</li>*}
                 {/if}
                 {*<li class="ty-account-info__item ty-dropdown-box__item">
                     <a class="ty-account-info__a underlined"
