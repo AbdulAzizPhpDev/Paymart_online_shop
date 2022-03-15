@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<addon scheme="3.0" edition_type="VENDOR">
+    <id>click_uz</id>
+    
+    <version>1.0.0</version>
+    <priority>7100</priority>
+    <position>710</position>
+    <status>active</status>
+
+    <compatibility>
+        <core_edition>
+            ULTIMATE,MULTIVENDOR
+        </core_edition>
+    </compatibility>
+
+    <functions>
+        <item for="install">fn_click_uz_install</item>
+        <item for="uninstall">fn_click_uz_uninstall</item>
+    </functions>
+
+    <settings edition_type="ROOT,ULT:VENDOR">
+        <sections>
+            <section id="general">
+                <items>
+                    <item id="merchant_id" edition_type="ROOT">
+                        <type>input</type>
+                    </item>
+                    <item id="merchant_user_id" edition_type="ROOT">
+                        <type>input</type>
+                    </item>
+                    <item id="service_id" edition_type="ROOT">
+                        <type>input</type>
+                    </item>
+                    <item id="secret_key" edition_type="ROOT">
+                        <type>input</type>
+                    </item>
+                    <item id="paid_status">
+                        <!-- Варианты данной настроки будут браться из функции fn_settings_variants_[addon_id]_[setting_id]-->
+                        <type>selectbox</type>
+                        <default_value>P</default_value>
+                        <variants/>
+                    </item>
+
+                </items>
+            </section>
+        </sections>
+    </settings>
+</addon>

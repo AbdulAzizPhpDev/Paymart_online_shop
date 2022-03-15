@@ -215,7 +215,7 @@
                 </div>
                 <div id="card-pin-wrapper"></div>
 
-                <p class="resend-sms-card">Отправить SMS еще раз (через <span class="card-resend-sms-timer">60</span>
+                <p class="resend-sms-card">Отправить SMS еще раз (через <span class="card-resend-sms-timer">20</span>
                     сек.)</p>
                 <span class="modal-error"></span>
                 <button disabled class="ty-btn ty-btn__secondary" type="button" id="modal-sent">
@@ -249,7 +249,7 @@ $('#card-pin-wrapper').pinlogin({
   placeholder: '*',
   hideinput: false,
   fields: 4,
-  reset: false,
+  reset: true,
   complete: function (pin) {
     $('.confirm-contract').attr('value', pin);
     $('#modal-sent').removeAttr('disabled');

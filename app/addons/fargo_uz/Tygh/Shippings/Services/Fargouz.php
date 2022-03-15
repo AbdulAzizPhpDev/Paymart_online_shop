@@ -7,6 +7,12 @@ use Tygh\Shippings\IService;
 class Fargouz implements IService
 {
 
+    private $_allow_multithreading = false;
+
+    public $calculation_currency = 'SUM';
+
+    protected $shipping_info;
+
     public function prepareData($shipping_info)
     {
         // TODO: Implement prepareData() method.
