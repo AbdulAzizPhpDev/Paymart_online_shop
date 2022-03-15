@@ -44,6 +44,8 @@ const valuesCards = [
     attr: 'black',
   },
 ];
+
+
 var radioValue = null;
 $('input[type=\'radio\']').click(function () {
   radioValue = $('input[name=\'contact\']:checked').val();
