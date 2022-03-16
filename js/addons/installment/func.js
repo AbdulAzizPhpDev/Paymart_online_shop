@@ -66,6 +66,7 @@
             if (result.status === 'success') {
               $confirmation.removeClass('d-none');
               methods.timerResendSms();
+              $userPhoneSmsSent.text(methods.makePhoneNumberHidden);
 
               $sendingSms.addClass('d-none');
             } else {

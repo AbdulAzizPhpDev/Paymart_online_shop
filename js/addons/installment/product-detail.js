@@ -53,6 +53,7 @@
       const { company_id, product, PAYMART_API_BASE_URL, vendor_token } = productDetailState;
       const { printPricePretty } = productDetailMethods;
       const $installmentProductPriceContainer = $('.installment-product-monthly-payment');
+      const currency = document.querySelector(`#sec_discounted_price_${product.id}`).nextSibling.nextSibling.textContent;
 
       let formattedProducts = {};
       formattedProducts[company_id] = [
@@ -80,7 +81,7 @@
             if (response.status === 'success') {
               const { data: result } = response;
               let priceLabel;
-              priceLabel = `${printPricePretty(result.price.month)} UZS / мес.`;
+              priceLabel = `${printPricePretty(result.price.month)} ${currency} / мес.`;
 
               $installmentProductPriceContainer.text(priceLabel);
 
