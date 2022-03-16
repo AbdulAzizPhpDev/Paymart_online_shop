@@ -3,6 +3,8 @@
 {capture name="login"}
     <form action="{"profiles.send_sms"|fn_url}" id="auth-form" method="post">
         <div class="ty-control-group phone-container">
+            <h1 class="ty-center">{__('authentication.title')}</h1>
+
             <label for="buyer-phone" class="ty-login__filed-label ty-control-group__label">
                 {__("phone")}
             </label>
