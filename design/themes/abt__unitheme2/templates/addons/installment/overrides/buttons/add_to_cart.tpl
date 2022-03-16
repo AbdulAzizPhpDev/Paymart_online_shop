@@ -5,7 +5,7 @@
 {*                class="ut2-btn__options ty-btn ty-btn__primary ty-btn__big set_qty">*}
 {*            {__("installment")}*}
 {*        </button>*}
-        {include file="buttons/button.tpl" but_id=$but_id but_text=$but_text|default:__("abt__ut2.add_to_cart") but_name=$but_name but_onclick=$but_onclick but_href=$but_href but_target=$but_target but_role=$but_role|default:"text" but_meta="ty-btn__primary ty-btn__add-to-cart cm-form-dialog-closer" but_icon="ut2-icon-outline-cart"}
+{*        {include file="buttons/button.tpl" but_id=$but_id but_text=$but_text|default:__("abt__ut2.add_to_cart") but_name=$but_name but_onclick=$but_onclick but_href=$but_href but_target=$but_target but_role=$but_role|default:"text" but_meta="ty-btn__primary ty-btn__add-to-cart cm-form-dialog-closer" but_icon="ut2-icon-outline-cart"}*}
     {else}
 
         {if $runtime.controller == "auth" && $runtime.mode == "login_form"}
