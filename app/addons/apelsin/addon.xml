@@ -17,36 +17,4 @@
         <item for="install">fn_apelsin_install</item>
         <item for="uninstall">fn_apelsin_uninstall</item>
     </functions>
-
-    <!--<settings edition_type="ROOT,ULT:VENDOR">
-        <sections>
-            <section id="general">
-                <items>
-                    <item id="cash" edition_type="ROOT">
-                        <type>input</type>
-                        <default_value>28952a396ad9487fb63db5a71965e044</default_value>
-                    </item>
-                    <item id="redirect_url" edition_type="ROOT">
-                        <type>input</type>
-                    </item>
-                    <item id="description" edition_type="ROOT">
-                        <type>input</type>
-                    </item>
-
-                    <item id="paid_status"> -->
-                        <!-- Варианты данной настроки будут браться из функции fn_settings_variants_[addon_id]_[setting_id]-->
-                        <!--<type>selectbox</type>
-                        <default_value>P</default_value>
-                        <variants>
-                            <item id="test">
-                            </item>
-                            <item id="production">
-                            </item>
-                        </variants>
-                    </item>
-
-                </items>
-            </section>
-        </sections>
-    </settings> -->
 </addon>

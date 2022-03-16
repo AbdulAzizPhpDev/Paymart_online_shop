@@ -45,6 +45,7 @@
       const $this = $(event.target);
 
       if (isValid) {
+        $errorContainer.text('');
         $.ajax({
           url: fn_url('installment_product.set_guarantee'),
           type: 'POST',
@@ -59,6 +60,8 @@
                 phone: $secondPersonPhone.val().replace(/[ -]/g, ''),
               },
             ],
+            is_ajax: 1,
+            security_hash: _.security_hash
           },
           beforeSend: function () {
             $this.attr('disabled', 'disabled');
@@ -90,10 +93,10 @@
   };
 
   $addGuarantBtn.on('click', guarantMethods.confirm);
-  $firstPersonPhone.inputmask('[998 99 999-99-99]', {
-    placeholder: '998 ** ***-**-**',
+  $firstPersonPhone.inputmask('[999 99 999-99-99]', {
+    placeholder: '*',
   });
-  $secondPersonPhone.inputmask('[998 99 999-99-99]', {
-    placeholder: '998 ** ***-**-**',
+  $secondPersonPhone.inputmask('[999 99 999-99-99]', {
+    placeholder: '*',
   });
 })(Tygh, Tygh.$);

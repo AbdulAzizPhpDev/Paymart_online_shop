@@ -8,7 +8,7 @@
         {* ------------------------------------------------------------------------------------- *}
         {* Sending SMS *}
         <div class="sending-sms">
-            <h1>{__('mobile_app.mobile_auth')}</h1>
+            <h1>{__('authentication.title')}</h1>
 
             <div class="ty-control-group installment-phone-container">
                 <label for="buyer-phone" class="ty-login__filed-label ty-control-group__label cm-required cm-trim ">
@@ -27,34 +27,34 @@
             <div class="agreement">
                 <label>
                     <input type="checkbox">
-                    Согласие на обработку персональных данных
+                    {__('authentication.text_confirm_personal_data', ['[personal_data]' => __('authentication.text_personal_data')])}
                 </label>
             </div>
 
             <button class="ty-btn ty-btn__secondary" type="button" disabled id="installmentSendSMSBtn">
-                Отправить заявку
+                {__('continue')}
             </button>
         </div>
 
         {* ------------------------------------------------------------------------------------- *}
         {* Confirmation code *}
         <div class="confirmation d-none">
-            <h1>Введите SMS код </h1>
-            <p>Отправленный на номер <span class="user-phone-sms-sent"></span></p>
+            <h1>{__('authentication.title_sms_code')}</h1>
+            <p class="ty-mtb-s">{__('authentication.sent_phone')} <span class="user-phone-sms-sent"></span></p>
 
             <div class="ty-control-group installment-code-container">
                 <input type="text" hidden class="ty-login__input buyer-sms-code-installment" />
             </div>
             <div id="pinwrapper"></div>
 
-            <p class="resend-sms-phone">Отправить SMS еще раз (через <span class="phone-timer">60</span> сек.)</p>
+            <p class="resend-sms-phone ty-mt-l ty-mb-m">{__('authentication.text_resend_sms')}</p>
 
             <button class="ty-btn ty-btn__secondary" type="button" id="installmentConfirmCodeBtn">
                 {__("continue")}
             </button>
 
             <button class="ty-btn ty-btn__secondary" type="button" id="installmentChangePhoneBtn">
-                {__("addons.installment.change_phone_number")}
+                {__("text_change_number")}
             </button>
         </div>
 

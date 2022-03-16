@@ -18,17 +18,11 @@ if (!defined('BOOTSTRAP')) {
     die('Access denied');
 }
 
-if ($mode == 'checkout') {
-    $city = db_get_array('select * from ?:fargo_countries where parent_city_id=?i', 0);
-    Tygh::$app['view']->assign('cities', $city);
-
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if ($mode == "place_order") {
+        Tygh::$app['session']['fargo_info'] = $_REQUEST['user_data'];
+    }
 }
-
-
-if ($mode == "place_order") {
-    fn_print_die($_REQUEST);
-}
-
 
 
 

@@ -29,7 +29,7 @@
             <div class="span8">
                 {*                <input name="user_data[region]" id="smth" type="text" style="width: 100%" placeholder="Район">*}
 
-                <select name="formAddress5" id="formAddress5" class="tashkent-regions d-none">
+                <select name="user_data[distract]" id="formAddress5" class="tashkent-regions d-none">
                 </select>
                 <input type="text" placeholder="район" class="not-tashkent-region">
             </div>

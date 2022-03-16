@@ -134,7 +134,7 @@
 
                     {assign var="form_open" value="form_open_`$obj_id`"}
                     {$smarty.capture.$form_open nofilter}
-
+{*                    {fn_print_r($product)}*}
                     {hook name="products:product_multicolumns_list"}
 {*                        {fn_print_r($product)}*}
                         <div class="ut2-gl__body">
