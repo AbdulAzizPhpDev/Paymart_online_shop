@@ -40,6 +40,7 @@
     },
     submit: function (event) {
       event.preventDefault();
+      $errorContainer.text('');
       const values = {};
 
       $.each($(this).serializeArray(), function (i, field) {
@@ -83,6 +84,10 @@
       }
     },
   };
+
+  // $('vendor_id').func({
+  //
+  // });
 
   $vendorForm.on('submit', vendorAuthMethods.submit);
   $bitrixContainer.prepend(vendorAuthMethods.bitrixFormAppend);
