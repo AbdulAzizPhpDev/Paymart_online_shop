@@ -21,7 +21,8 @@
             CREATE TABLE IF NOT EXISTS ?:fargo_orders (
             id int unsigned NOT NULL AUTO_INCREMENT,
             paymart_contract_id bigint unsigned NOT NULL,
-            fargo_order_id text ,
+            fargo_order_type varchar(32) NULL,
+            fargo_order_id text,
             fargo_contract_id text ,
             fargo_contract_label text null ,
             PRIMARY KEY (id)
