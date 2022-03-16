@@ -1,4 +1,4 @@
-{script src="js/addons/authentication/profile_card.js"}
+{script src="js/addons/authentication/user_profile.js"}
 
 
 <div class="main-tab">
@@ -16,7 +16,7 @@
         <button class="tablinks" onclick="openTab(event, 'tashkent')"><img
                     src="/design/themes/responsive/media/images/addons/profile_card/diamond.png" alt="">Бонусные суммы
         </button>
-        <button class="tablinks" onclick="openTab(event, 'tashkent')"><img
+        <button class="tablinks" onclick="openTab(event, 'chirchik')"><img
                     src="/design/themes/responsive/media/images/addons/profile_card/clock.png" alt="">Приглосить друга
         </button>
     </div>
@@ -161,6 +161,14 @@
     <div id="Tokyo" class="tabcontent">
         <h3>Tokyo</h3>
         <p>Tokyo is the capital of Japan.</p>
+    </div>
+    <div id="tashkent" class="tabcontent">
+        <h3>tashkent</h3>
+        <p>tashkent is the capital of Japan.</p>
+    </div>
+    <div id="chirchik" class="tabcontent">
+        <h3>chirchik</h3>
+        <p>chirchik is the capital of Japan.</p>
     </div>
 </div>
 

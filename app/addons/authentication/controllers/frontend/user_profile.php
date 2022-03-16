@@ -10,6 +10,10 @@ if (!defined('BOOTSTRAP')) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 }
-if ($mode == "index") {
+if ($mode == "card") {
+
+}
+
+if ($mode == "history") {
 
 }

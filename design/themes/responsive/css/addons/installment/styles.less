@@ -54,6 +54,15 @@
     .confirmation {
       text-align: center;
 
+      h1 {
+        text-align: center;
+        .font(@fs: 40px, @fw: 900, @lh: 40px);
+
+        @media (max-width: @mobile) {
+          font-size: 28px;
+        }
+      }
+
       .installment-code-container {
         margin: 0
       }
@@ -87,4 +96,9 @@
       }
     }
   }
+}
+
+.pinlogin-field {
+
+  border-radius: 8px !important;
 }

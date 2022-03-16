@@ -66,6 +66,7 @@
             if (result.status === 'success') {
               $confirmation.removeClass('d-none');
               methods.timerResendSms();
+              $userPhoneSmsSent.text(methods.makePhoneNumberHidden);
 
               $sendingSms.addClass('d-none');
             } else {
@@ -126,7 +127,7 @@
       }
     },
     makePhoneNumberHidden: function () {
-      const buyerPhone = typeof installmentState.userPhoneNumber !== 'string'
+      const buyerPhone = typeof installmentState.userPhoneNumber != 'string'
         ? String(installmentState.userPhoneNumber)
         : installmentState.userPhoneNumber;
 
@@ -143,9 +144,7 @@
   $changePhoneBtn.on('click', methods.changePhone);
   $agreementCheckbox.on('change', methods.agreement);
   $resendSms.on('click', methods.sendSMS);
-
   $userPhoneSmsSent.text(methods.makePhoneNumberHidden);
-
   $buyerPhone.inputmask('[999 99 999-99-99]', { placeholder: '*' });
 
 })(Tygh, Tygh.$);
