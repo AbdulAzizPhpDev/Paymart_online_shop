@@ -4,12 +4,17 @@
   const $phoneContainer = $('.phone-container');
   const $codeContainer = $('.code-container');
   const $userPhoneSmsSent = $('.user-auth-phone-sms-sent');
+  const $changePhoneNumberBtn = $('.auth-change-phone-number');
+  const $timerSlot = $('.phone-timer');
+  const $resendSms = $('.resend-sms-phone');
 
   const $buyerPhone = $('#buyer-phone');
   const $code = $('.auth-confirmation-code');
 
   const authState = {
-    userPhoneNumber: '99899*****99'
+    userPhoneNumber: '99899*****99',
+    interval: null,
+    timer: 60,
   };
 
   const authMethods = {
@@ -34,6 +39,26 @@
 
       return phoneNumberArray.join('');
     },
+    changePhoneNumber: function () {
+      $form.attr('action', fn_url('profiles.send_sms'));
+      $codeContainer.addClass('d-none');
+      $phoneContainer.removeClass('d-none');
+      $userPhoneSmsSent.text('');
+      $buyerPhone.val('998');
+      clearInterval(authState.interval);
+    },
+    timerResendSms: function () {
+      let { interval, timer } = authState;
+      interval = setInterval(() => {
+        timer -= 1;
+        $timerSlot.text(timer);
+
+        if (timer === 0) {
+          clearInterval(interval);
+          $resendSms.addClass('active');
+        }
+      }, 1000);
+    },
     submit: function (event) {
       event.preventDefault();
       const { sendSMS, confirmCode } = authMethods;
@@ -47,6 +72,7 @@
       }
     },
     sendSMS: function () {
+      $resendSms.removeClass('active');
       authState.userPhoneNumber = $buyerPhone.inputmask('unmaskedvalue');
 
       $.ceAjax('request', fn_url('profiles.send_sms'), {
@@ -62,13 +88,14 @@
               $form.removeAttr('action');
               $codeContainer.removeClass('d-none');
               $phoneContainer.addClass('d-none');
+              authMethods.timerResendSms();
               $userPhoneSmsSent.text(authMethods.makePhoneNumberHidden);
             } else {
               authMethods.showErrors(result.response.message);
             }
 
           } else {
-            document.write(response.text)
+            document.write(response.text);
           }
         },
       });
@@ -90,7 +117,7 @@
               authMethods.showErrors(result.response.message);
             }
           } else {
-            document.write(response.text)
+            document.write(response.text);
           }
         },
       });
@@ -100,6 +127,8 @@
   $form.on('submit', authMethods.submit);
 
   $buyerPhone.inputmask('999 99 999-99-99', { placeholder: '*' });
+  $changePhoneNumberBtn.on('click', authMethods.changePhoneNumber);
+  $resendSms.on('click', authMethods.sendSMS);
 
   // $(_.doc).on('click', '#sendSMSBtn', methods.sendSMS);
 
