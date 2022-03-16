@@ -3,9 +3,14 @@
   const $errorContainer = $('.ty-error-text');
   const $phoneContainer = $('.phone-container');
   const $codeContainer = $('.code-container');
+  const $userPhoneSmsSent = $('.user-auth-phone-sms-sent');
 
   const $buyerPhone = $('#buyer-phone');
-  const $code = $('#confirmation-code');
+  const $code = $('.auth-confirmation-code');
+
+  const authState = {
+    userPhoneNumber: '99899*****99'
+  };
 
   const authMethods = {
     showErrors: function (error) {
@@ -16,6 +21,18 @@
       error.forEach(({ text }) => {
         $errorContainer.text(text);
       });
+    },
+    makePhoneNumberHidden: function () {
+      const { userPhoneNumber } = authState;
+      const buyerPhone = typeof userPhoneNumber !== 'string'
+        ? String(userPhoneNumber)
+        : userPhoneNumber;
+
+      const phoneNumberArray = buyerPhone.split('');
+
+      phoneNumberArray.splice(5, 5, '*', '*', '*', '*', '*');
+
+      return phoneNumberArray.join('');
     },
     submit: function (event) {
       event.preventDefault();
@@ -30,6 +47,8 @@
       }
     },
     sendSMS: function () {
+      authState.userPhoneNumber = $buyerPhone.inputmask('unmaskedvalue');
+
       $.ceAjax('request', fn_url('profiles.send_sms'), {
         method: 'POST',
         data: {
@@ -43,6 +62,7 @@
               $form.removeAttr('action');
               $codeContainer.removeClass('d-none');
               $phoneContainer.addClass('d-none');
+              $userPhoneSmsSent.text(authMethods.makePhoneNumberHidden);
             } else {
               authMethods.showErrors(result.response.message);
             }
@@ -61,7 +81,6 @@
           code: $code.val(),
         },
         callback: function (response) {
-          console.log(response);
           if (response && response.hasOwnProperty('result')) {
             const { result } = response;
 
@@ -80,7 +99,7 @@
 
   $form.on('submit', authMethods.submit);
 
-  $buyerPhone.inputmask('[999 99 999-99-99]', { placeholder: '*' });
+  $buyerPhone.inputmask('999 99 999-99-99', { placeholder: '*' });
 
   // $(_.doc).on('click', '#sendSMSBtn', methods.sendSMS);
 
