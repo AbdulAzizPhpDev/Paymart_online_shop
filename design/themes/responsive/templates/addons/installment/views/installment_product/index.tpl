@@ -8,7 +8,7 @@
         {* ------------------------------------------------------------------------------------- *}
         {* Sending SMS *}
         <div class="sending-sms">
-            <h1>{__('mobile_app.mobile_auth')}</h1>
+            <h1 class="sending-sms__title">{__('mobile_app.mobile_auth')}</h1>
 
             <div class="ty-control-group installment-phone-container">
                 <label for="buyer-phone" class="ty-login__filed-label ty-control-group__label cm-required cm-trim ">
