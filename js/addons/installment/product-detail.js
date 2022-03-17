@@ -57,7 +57,7 @@
 
       const currentLanguage = $installmentProductPriceContainer.data('currency-name');
       const currencySymbol = document.querySelector(`#sec_discounted_price_${product.id}`).nextSibling.nextSibling.textContent;
-      const currencyName = currentLanguage === 'ru' ? 'мес.' : 'oy';
+      const monthName = currentLanguage === 'ru' ? 'мес.' : 'oy';
 
       let formattedProducts = {};
       formattedProducts[company_id] = [
@@ -85,7 +85,7 @@
             if (response.status === 'success') {
               const { data: result } = response;
               let priceLabel;
-              priceLabel = `${printPricePretty(result.price.month)} ${currencySymbol}/${currencyName}`;
+              priceLabel = `${printPricePretty(result.price.month)} ${currencySymbol}/${monthName}`;
 
               $installmentProductPriceContainer.text(priceLabel);
 
