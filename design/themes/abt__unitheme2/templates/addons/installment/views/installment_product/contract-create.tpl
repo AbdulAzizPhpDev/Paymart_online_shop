@@ -39,22 +39,8 @@
                         </div>
                     </div>
                     <div class="status">
-                        {*                <span class="status-item">*}
-                        {*                    Не верефицирован*}
-                        {*                </span>*}
                     </div>
                 </div>
-                {*        <div class="main">*}
-                {*            <div class="text-items">*}
-                {*                <span class="text-items__span">998990778444</span>*}
-                {*                <p>Вы не верефецированны, оформив договор вы пройдете регистрацию чтоб сделка состоялась</p>*}
-                {*            </div>*}
-                {*            <div class="status">*}
-                {*            <span class="status-item">*}
-                {*                Не верефицирован*}
-                {*            </span>*}
-                {*            </div>*}
-                {*        </div>*}
             </div>
             <hr width="100%">
 
@@ -106,45 +92,7 @@
 
             <div class="section-three">
 
-                {*<<<<<<< HEAD*}
-                {*                <form style="margin-top:4px;">*}
-                {*                    <div class="d-flex flex-column">*}
-                {*                        <label for="cars">Выберите срок:</label>*}
-                {*                        <div class="input-paying">*}
-                {*                            <select name="cars" id="cars">*}
-                {*                                <option value="twelve">12 месяцев</option>*}
-                {*                                <option value="nine">9 месяцев</option>*}
-                {*                                <option value="six">6 месяцев</option>*}
-                {*                            </select>*}
-                {*                        </div>*}
-                {*                    </div>*}
-                {*                    <div class="input-link">*}
-                {*                        <img src="design/themes/responsive/media/images/addons/installment_image/billing-ico.png"*}
-                {*                             alt="Billing ico">*}
-                {*                        <div class="input-paying__text">*}
-                {*                            <div class="input-paying__text-title">Ежемесячный платеж:</div>*}
-                {*                            <div class="input-paying__text-p">{$month} сум</div>*}
-                {*                        </div>*}
-                {*                    </div>*}
-                {*                    <div class="input-link">*}
-                {*                        <img src="design/themes/responsive/media/images/addons/installment_image/billing-ico.png"*}
-                {*                             alt="Billing ico">*}
-                {*                        <div class="input-paying__text">*}
-                {*                            <div class="input-paying__text-title">Ежемесячный платеж:</div>*}
-                {*                            <div class="input-paying__text-p">{$total} сум</div>*}
-                {*                        </div>*}
-                {*                    </div>*}
-                {*                    <div>*}
-                {*                        <label for="cars">Выберите срок:</label>*}
-                {*                        <div class="input-paying">*}
-                {*                            <select name="cars" id="cars">*}
-                {*                                <option value="twelve">12 месяцев</option>*}
-                {*                                <option value="nine">9 месяцев</option>*}
-                {*                                <option value="six">6 месяцев</option>*}
-                {*                            </select>*}
-                {*                        </div>*}
-                {*=======*}
-                <form class="d-flex" style="margin-top:4px;">
+                <form style="margin-top:4px;">
                     <div class="main-form">
                         <div class="d-flex flex-column">
                             <label for="cars">Выберите срок:</label>
@@ -184,46 +132,20 @@
                             <div class="input-paying__unique">
                                 <select name="formAddress2" id="formAddress2">
                                     {foreach $city as $value}
-                                        <option value="{$value['city_id']}">{$value['city_name']}</option>
+                                        <option selected value="{$value['city_id']}">{$value['city_name']}</option>
                                     {/foreach}
                                 </select>
-
-{*                                {foreach $city as $value}*}
-{*                                    {$value . “<br>”}*}
-{*                                {/foreach}*}
-
                             </div>
                         </div>
                         <div class="main-form__last-input">
-                            {*                            <label for="formAddress">Район</label>*}
-                            {*                            <div class="input-paying__unique">*}
-                            {*                                <select name="formAddress" id="formAddress">*}
-                            {*                                    <option value="uzb">Ташкент</option>*}
-                            {*                                    <option value="ru">Россия</option>*}
-                            {*                                    <option value="kz">Казахстан</option>*}
-                            {*                                </select>*}
-                            {*                            </div>*}
-                            {*                            <div class="last-item__style">*}
-                            {*                                <label for="story6">Район</label>*}
-                            {*                                <select name="formAddress2" id="story6">*}
-                            {*                                    <option value="{$value['city_id']}">{$value['city_name']}</option>*}
-                            {*                                </select>*}
-                            {*                            </div>*}
+
                             <div class="main-form__another-item">
                                 <label for="formAddress3">Район</label>
                                 <div class="input-paying__unique">
-                                    <div class="last-item__style" id="formAddress-div">
-                                        <select name="formAddress3" id="formAddress3" class="tashkent-regions d-none">
-                                            {*                                        <option disabled="disabled" selected="selected"></option>*}
-                                        </select>
-                                        <input type="text" placeholder="Region" class="not-tashkent-region">
-                                    </div>
-                                    {*                                    <div class="last-item__style" id="formAddress7" style="display: none">*}
-                                    {*                                    </div>*}
-                                    {*                                    <div class="last-item__style" id="formAddress4" style="display: none">*}
-                                    {*                                        <input type="text" placeholder="region">*}
-                                    {*                                    </div>*}
-                                </div>
+                                    <select name="formAddress3" id="formAddress3" class="tashkent-regions d-none">
+                                    </select>
+                                    <input type="text" placeholder="район" class="not-tashkent-region">
+                                </div>{**}
                             </div>
                         </div>
                     </div>
@@ -287,16 +209,15 @@
                 <h1>Введите SMS код </h1>
 
                 <div class="ty-control-group">
-                    {*                    <p>Отправленный на номер <span class="">{$user['phone']}</span></p>*}
 
                     <input type="tel" hidden
                            class="ty-login__input confirm-contract" />
                 </div>
                 <div id="card-pin-wrapper"></div>
-
-                <p class="resend-sms-card">Отправить SMS еще раз (через <span class="card-resend-sms-timer">60</span>
+                <p class="resend-sms-card">Отправить SMS еще раз (через <span class="card-resend-sms-timer">20</span>
                     сек.)</p>
                 <span class="modal-error"></span>
+                <div class="resend-sms-card__ok" style="display: none;">Нажмите продолжить</div>
                 <button disabled class="ty-btn ty-btn__secondary" type="button" id="modal-sent">
                     Продолжить
                 </button>
@@ -320,22 +241,16 @@
         </div>
     </div>
 </div>
-{*<div id="mySecondModal" class="secondModal">*}
-{*    <div class="modal-content__second">*}
-{*        <span class="close2">&times;</span>*}
-
-{*    </div>*}
-{*</div>*}
-
 <script>
 $('#card-pin-wrapper').pinlogin({
   placeholder: '*',
   hideinput: false,
   fields: 4,
-  reset: false,
+  reset: true,
   complete: function (pin) {
     $('.confirm-contract').attr('value', pin);
     $('#modal-sent').removeAttr('disabled');
+    $('#modal-sent').click();
   },
 });
 

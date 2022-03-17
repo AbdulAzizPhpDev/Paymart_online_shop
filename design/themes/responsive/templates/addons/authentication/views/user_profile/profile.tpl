@@ -20,7 +20,6 @@
                     src="/design/themes/responsive/media/images/addons/profile_card/clock.png" alt="">Приглосить друга
         </button>
     </div>
-
     <div id="London" class="tabcontent">
         <div class="container profile-main">
             <h1 class="profile-title">Профиль</h1>
@@ -152,19 +151,14 @@
             </div>
         </div>
     </div>
-
     <div id="Paris" class="tabcontent">
         {include file='addons/authentication/views/user_profile/history.tpl'}
     </div>
-
     <div id="Tokyo" class="tabcontent">
-
     </div>
     <div id="tashkent" class="tabcontent">
-
     </div>
     <div id="chirchik" class="tabcontent">
-
     </div>
 </div>
 

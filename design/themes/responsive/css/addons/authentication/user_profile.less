@@ -484,25 +484,26 @@
 }
 
 //<<<<<<< HEAD
-.main-tab__history {
-  .tab-history {
-    background-color: transparent;
-    display: flex;
-    justify-content: center;
-    border: 1px solid #FF7643;
-    border-radius: 8px;
-    //
-    //button {
-    //  background-color: transparent;
-    //  //display: flex;
-    //  //justify-content: start;
-    //  align-items: center;
-    //  border: none;
-    //  box-sizing: border-box;
-    //  padding: 15px;
-    //}
-  }
-}
+//.main-tab__history {
+//  .tab-history {
+//    background-color: transparent;
+//    display: flex;
+//    justify-content: center;
+//    border: 1px solid #FF7643;
+//    border-radius: 8px;
+//    align-items: center;
+//    //
+//    //button {
+//    //  background-color: transparent;
+//    //  //display: flex;
+//    //  //justify-content: start;
+//    //  align-items: center;
+//    //  border: none;
+//    //  box-sizing: border-box;
+//    //  padding: 15px;
+//    //}
+//  }
+//}
 
 //
 //#installmentSendSMSBtn {
@@ -513,6 +514,29 @@
 //}
 
 
+.main-history {
+  display: flex;
+  flex-direction: column;
+
+  //.main-tab__history {
+  //  .tab-history {
+  //    display: flex;
+  //    border: 1px solid black;
+  //    border-radius: 9px;
+  //
+  //    button {
+  //      padding: 15px;
+  //      border: none;
+  //      background-color: transparent;
+  //      border-radius: 9px;
+  //    }
+  //
+  //    button:active {
+  //      background-color: @main;
+  //    }
+  //  }
+  //}
+}
 
 
 //#auth-form {
@@ -524,3 +548,16 @@
 //}
 //=======
 //>>>>>>> f1dc66c128cf4e6d0a309cfa84b6fb95beadf6f8
+
+
+.tabs__content {
+  display: none; /* по умолчанию прячем все блоки */
+}
+
+.tabs__content.active {
+  display: block; /* по умолчанию показываем нужный блок */
+}
+
+.tabs__caption {
+  background-color: @main;
+}

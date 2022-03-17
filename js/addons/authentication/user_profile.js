@@ -118,38 +118,35 @@ function OnloadOpenCity(evt, cityName) {
   for (i = 1; i < tablinks.length; i++) {
     tablinks[i].className = tablinks[i].className.replace(' active', '');
   }
-  document.getElementById(cityName).style.display = 'none';
-  evt.currentTarget.className += 'none';
+  let smth = document.getElementById(cityName);
+
+  $(smth).css('display', 'none');
+  // evt.currentTarget.className += 'none';
 }
 
+(function ($) {
+  $(function () {
 
+    $('ul.tabs__caption').on('click', 'li:not(.active)', function () {
+      $(this)
+        .addClass('active').siblings().removeClass('active')
+        .closest('div.tabs').find('div.tabs__content').removeClass('active').eq($(this).index()).addClass('active');
+    });
 
-
-// $('.modal-sent').click(function () {
+  });
+})(jQuery);
+//
+//
+// const btn = document.getElementById('btn_first');
+//
+// btn.addEventListener('click', function onClick() {
+//   // btn.style.backgroundColor = 'salmon';
+//   btn.css('backgroundColor', '#FF7643');
 // });
-
-// valuesCards.map((item) => {
-//   cardHtml.innerHTML = `
-//             <div class="orange-unique">
-//                <div class="orange-unique__main">
-//                 <div class="orange-unique__main-top">
-//                     <div class="orange-unique__main-item">
-//                         <p>Зарплатная карта</p>
-//                         <h1>3 534 030.12 сум</h1>
-//                     </div>
-//                     <div class="item-second">
-//                         <img src="/design/themes/responsive/media/images/addons/authentication/image/humo.png"
-//                              alt="Ico">
-//                     </div>
-//                 </div>
-//                 <div class="orange-unique__second">
-//                     <p class="cardNumber" style="color: #fff !important;">${item.cardNumber}</p>
-//                     <p class="cardDate">${item.cardDate}</p>
-//                 </div>
-//             </div>
-//             </div>
-//        `;
-//   document.querySelector('.products-cards')[0].appendChild(cardHtml);
+//
+// const btn2 = document.getElementById('btn_second');
+//
+// $(btn2).click(function () {
+//   // btn2.style.backgroundColor = 'salmon';
+//   btn2.css('background', '#FF7643');
 // });
-
-

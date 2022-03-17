@@ -190,31 +190,10 @@ $('#modal-sent').click(function () {
         otpState.timer = otpState.timer - 1;
         if (otpState.timer <= 0) {
             clearInterval(counter);
-            $('#modal-sent').attr('disabled', false).click(function () {
-                $.ceAjax('request', fn_url('installment_product.set_confirm_contract'), {
-                    method: 'POST',
-                    data: {
-                        code: otpInputVal,
-                        contract_id: otpState.contractId,
-                        city: !($select).hasClass('d-none') ? $($select).val() : $($input).val(),
-                        region: region,
-                        apartment: apartment,
-                        building: building,
-                        street: street,
-                    },
-                    callback: function (response) {
-                        let spanError = $('.modal-error');
-                        console.log('response-timer', response);
-                        if (response.status === 'success') {
-                            window.location.href = fn_url('installment_product.profile-contracts');
-                            console.log('shut timer success');
-                        } else {
-                            spanError.text(response.result.response.message).css('color', 'red');
-                            $('#modal-sent').attr('disabled', true);
-                        }
-                    },
-                });
-            });
+            $('#modal-sent').attr('disabled', false);
+            $('.resend-sms-card').css('display', 'none');
+            $('.resend-sms-card__ok').css('display', 'block');
+            $('.modal-error').css('display', 'none');
             //counter ended, do something here
             return;
         }
