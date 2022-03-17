@@ -44,8 +44,9 @@
       $codeContainer.addClass('d-none');
       $phoneContainer.removeClass('d-none');
       $userPhoneSmsSent.text('');
+      $timerSlot.text('60');
       $buyerPhone.val('998');
-      clearInterval(authState.interval);
+      // clearInterval(authState.interval);
     },
     timerResendSms: function () {
       let { interval, timer } = authState;
@@ -53,9 +54,10 @@
         timer -= 1;
         $timerSlot.text(timer);
 
-        if (timer === 0) {
+        if (timer === 0 || $codeContainer.hasClass('d-none')) {
           clearInterval(interval);
           $resendSms.addClass('active');
+          $resendSms.css('pointer-events', 'auto');
         }
       }, 1000);
     },
@@ -88,6 +90,7 @@
               $form.removeAttr('action');
               $codeContainer.removeClass('d-none');
               $phoneContainer.addClass('d-none');
+              $resendSms.css('pointer-events', 'none');
               authMethods.timerResendSms();
               $userPhoneSmsSent.text(authMethods.makePhoneNumberHidden);
             } else {
