@@ -123,11 +123,11 @@
             {elseif $user_data.email}
                 <li class="ty-account-info__item ty-dropdown-box__item ty-account-info__name">{$user_data.email}</li>
             {/if}
-                <li class="ty-account-info__item ty-dropdown-box__item">
-                    <a class="ty-account-info__a underlined"
-                       href="{"orders.search"|fn_url}"
-                       rel="nofollow">{__("orders")}</a>
-                </li>
+{*                <li class="ty-account-info__item ty-dropdown-box__item">*}
+{*                    <a class="ty-account-info__a underlined"*}
+{*                       href="{"orders.search"|fn_url}"*}
+{*                       rel="nofollow">{__("orders")}</a>*}
+{*                </li>*}
             {if $settings.General.enable_compare_products == 'Y'}
                 {assign var="compared_products" value=""|fn_get_comparison_products}
                 <li class="ty-account-info__item ty-dropdown-box__item">

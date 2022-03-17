@@ -143,7 +143,7 @@
                                         </div>
                                     {/if}
 
-                                    <div class="installment-periods ty-control-group" style="margin-top: 16px;">
+                                    <div data-currency-name="{$smarty.const.CART_LANGUAGE}" class="installment-periods ty-control-group" style="margin-top: 16px;">
                                         <input type="radio" name="period" value="3" id="3" class="ty-product-options__radio">
                                         <label class="ty-product-options__radio--label" for="3">3 месяц</label>
 
@@ -244,7 +244,8 @@
                                 <div class="ty-product-prices">
                                     {if $smarty.capture.$old_price|trim}{$smarty.capture.$old_price nofilter}{/if}
                                     {/if}
-                                    <div class="installment-product-monthly-payment ty-price-num ty-mb-s"></div>
+
+                                    <div data-currency-name="{$smarty.const.CART_LANGUAGE}" class="installment-product-monthly-payment ty-price-num ty-mb-s"></div>
 
                                     {if $smarty.capture.$price|trim}
                                         <div class="ut2-pb__price-actual">

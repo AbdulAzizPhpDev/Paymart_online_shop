@@ -6,23 +6,21 @@
 {capture name="login"}
     <form action="{"profiles.send_sms"|fn_url}" id="auth-form" method="post">
         <div class="ty-control-group phone-container">
-            {*            <h1 class="ty-center">{__('authentication.title')}</h1>*}
 
             <label for="buyer-phone" class="ty-login__filed-label ty-control-group__label">
-                {__("phone")}
+                {__('rapidaphone')}
             </label>
 
             <input id="buyer-phone"
                    type="text"
-                   name="phone"
                    value="998"
-                   placeholder="Phone Number"
+                   placeholder="{__('rapidaphone')}"
                    class="ty-login__input"
             />
 
             <p class="ty-error-text"></p>
 
-            <button type="submit" id="sendSMSBtn" class="ty-btn ty-btn__secondary ty-width-full">
+            <button type="submit" id="sendSMSBtn" style="width: 100%" class="ty-btn ty-btn__secondary">
                 {__('continue')}
             </button>
         </div>
@@ -30,25 +28,25 @@
         <div class="ty-control-group code-container d-none">
             <h1 class="ty-center">{__('authentication.title_sms_code')}</h1>
 
-            <p class="ty-mtb-s ty-center">{__('authentication.sent_phone')} <span
-                        class="user-auth-phone-sms-sent"></span></p>
+            <p class="ty-mtb-s ty-center">
+                {__('authentication.sent_phone')} <span class="user-auth-phone-sms-sent"></span>
+            </p>
 
-            <input type="hidden"
-                   name="code"
-                   placeholder="SMS Code"
-                   class="ty-login__input auth-confirmation-code"
-            />
+            <input type="hidden" class="ty-login__input auth-confirmation-code" />
             <div id="confirmation-pin-code"></div>
+
+            <p class="resend-sms-phone ty-mt-m ty-center">{__('authentication.text_resend_sms')}</p>
 
             <p class="ty-error-text"></p>
 
-            <button type="submit" id="confirmCodeBtn" class="ty-btn ty-btn__secondary auth-confirm-btn">
+            <button type="submit" id="confirmCodeBtn" style="width: 100%"
+                    class="ty-btn ty-btn__secondary auth-confirm-btn">
                 {__("continue")}
             </button>
 
-            {*<button type="button" id="confirmCodeBtn" class="ty-btn ty-btn__secondary">
-                Resend SMS
-            </button>*}
+            <button type="button" style="width: 100%" class="ty-btn ty-btn__secondary auth-change-phone-number">
+                {__("text_change_number")}
+            </button>
         </div>
     </form>
 {/capture}
