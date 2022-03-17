@@ -3,10 +3,12 @@
 <div class="profile-contracts-page">
     {if !empty($contracts->contracts)}
         <h1>Договора</h1>
-        <div class="search-container">
+
+        {*<div class="search-container">
             <input type="search" placeholder="Search" class="form-control search-contracts">
             <img class="search-icon" src="/design/themes/responsive/media/icons/search.svg" alt="search">
-        </div>
+        </div>*}
+
         <div class="contracts">
             {foreach from=$contracts->contracts key=index item=contract}
                 <a href="https://front.paymart.uz/{$smarty.const.CART_LANGUAGE|lower}/market/contract/{$contract->contract_id}?api_token={$user_api_token}&user_phone={$user_phone}"
