@@ -241,7 +241,7 @@
     				    <div class="{if $smarty.capture.$old_price|trim || $smarty.capture.$clean_price|trim || $smarty.capture.$list_discount|trim}prices-container {/if}price-wrap">
 
                             {if $smarty.capture.$old_price|trim || $smarty.capture.$clean_price|trim || $smarty.capture.$list_discount|trim}
-                                <div class="ty-product-prices">
+                                <div class="ty-product-prices" style="max-width: 100%">
                                     {if $smarty.capture.$old_price|trim}{$smarty.capture.$old_price nofilter}{/if}
                                     {/if}
 

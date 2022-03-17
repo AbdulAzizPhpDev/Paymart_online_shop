@@ -44,13 +44,15 @@
         timer -= 1;
         $timerSlot.text(timer);
 
-        if (timer === 0) {
+        if (timer === 0 || $confirmation.hasClass('d-none')) {
           clearInterval(interval);
           $resendSms.addClass('active');
+          $resendSms.css('pointer-events', 'auto');
         }
       }, 1000);
     },
     sendSMS: function (event) {
+      $resendSms.removeClass('active');
       const buyerPhoneUnmasked = $buyerPhone.inputmask('unmaskedvalue');
       installmentState.userPhoneNumber = buyerPhoneUnmasked;
 
@@ -65,6 +67,7 @@
 
             if (result.status === 'success') {
               $confirmation.removeClass('d-none');
+              $resendSms.css('pointer-events', 'none');
               methods.timerResendSms();
               $userPhoneSmsSent.text(methods.makePhoneNumberHidden);
 

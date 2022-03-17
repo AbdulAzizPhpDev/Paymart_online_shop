@@ -29,7 +29,7 @@
             <h1 class="ty-center">{__('authentication.title_sms_code')}</h1>
 
             <p class="ty-mtb-s ty-center">
-                {__('authentication.sent_phone')} <span class="user-auth-phone-sms-sent"></span>
+                {__('authentication.sent_phone', ['[n]' => '<span class="user-auth-phone-sms-sent"></span>' ])}
             </p>
 
             <input type="hidden" class="ty-login__input auth-confirmation-code" />
