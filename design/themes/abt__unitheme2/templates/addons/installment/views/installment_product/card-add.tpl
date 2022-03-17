@@ -4,7 +4,7 @@
 
 <div class="card-add-page">
     <div class="card-info">
-        <h1>Пройдите одноразувую верификацию</h1>
+        <h1>Пройдите одноразoвую верификацию</h1>
         <div class="ty-control-group">
             <label for="buyer-phone" class="ty-login__filed-label ty-control-group__label cm-required cm-trim ">
                 Номер карты
