@@ -154,21 +154,17 @@
     </div>
 
     <div id="Paris" class="tabcontent">
-        <h3>Paris</h3>
-        <p>Paris is the capital of France.</p>
+        {include file='addons/authentication/views/user_profile/history.tpl'}
     </div>
 
     <div id="Tokyo" class="tabcontent">
-        <h3>Tokyo</h3>
-        <p>Tokyo is the capital of Japan.</p>
+
     </div>
     <div id="tashkent" class="tabcontent">
-        <h3>tashkent</h3>
-        <p>tashkent is the capital of Japan.</p>
+
     </div>
     <div id="chirchik" class="tabcontent">
-        <h3>chirchik</h3>
-        <p>chirchik is the capital of Japan.</p>
+
     </div>
 </div>
 

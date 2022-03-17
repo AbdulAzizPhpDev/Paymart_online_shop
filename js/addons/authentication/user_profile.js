@@ -25,22 +25,6 @@ $('.plus').click(function () {
 
 
 // tab
-
-
-function openTab(evt, cityName) {
-  var i, tabcontent, tablinks;
-  tabcontent = document.getElementsByClassName('tabcontent');
-  for (i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].style.display = 'none';
-  }
-  tablinks = document.getElementsByClassName('tablinks');
-  for (i = 0; i < tablinks.length; i++) {
-    tablinks[i].className = tablinks[i].className.replace(' active', '');
-  }
-  document.getElementById(cityName).style.display = 'block';
-  evt.currentTarget.className += ' active';
-}
-
 const valuesCards = [
   {
     cardNumber: 8600123364354566,
@@ -81,6 +65,65 @@ $('#modal-sent__last').click(function () {
   $('#myModalCard').css('display', 'none');
 });
 
+var container = document.querySelector('.products-cards__profile');
+
+function returnCards(valuesCards) {
+  return '<div class="products-cards">' + valuesCards.map(valuesCard => `
+    <div class="orange-unique">
+               <div class="orange-unique__${valuesCard.attr}">
+                <div class="orange-unique__main-top">
+                    <div class="orange-unique__main-item">
+                        <p>Зарплатная карта</p>
+                        <h1>3 534 030.12 сум</h1>
+                    </div>
+                    <div class="item-second">
+                        <img src="/design/themes/responsive/media/images/addons/authentication/image/${valuesCard.cardType}.png"
+                             alt="Ico">
+                    </div>
+                </div>
+                <div class="orange-unique__second">
+                    <p class="cardNumber" style="color: #fff !important;">${valuesCard.cardNumber}</p>
+                    <p class="cardDate">${valuesCard.cardDate}</p>
+                </div>
+            </div>
+            </div>  `).join('');
+}
+
+container.innerHTML = returnCards(valuesCards);
+
+
+function openTab(evt, cityName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName('tabcontent');
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = 'none';
+  }
+  tablinks = document.getElementsByClassName('tablinks');
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(' active', '');
+  }
+  document.getElementById(cityName).style.display = 'flex';
+  evt.currentTarget.className += ' active';
+}
+
+OnloadOpenCity();
+
+function OnloadOpenCity(evt, cityName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName('tabcontent');
+  for (i = 1; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = 'none';
+  }
+  tablinks = document.getElementsByClassName('tablinks');
+  for (i = 1; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(' active', '');
+  }
+  document.getElementById(cityName).style.display = 'none';
+  evt.currentTarget.className += 'none';
+}
+
+
+
 
 // $('.modal-sent').click(function () {
 // });
@@ -109,29 +152,4 @@ $('#modal-sent__last').click(function () {
 //   document.querySelector('.products-cards')[0].appendChild(cardHtml);
 // });
 
-var container = document.querySelector('.products-cards__profile');
-
-function returnCards(valuesCards) {
-  return '<div class="products-cards">' + valuesCards.map(valuesCard => `
-    <div class="orange-unique">
-               <div class="orange-unique__${valuesCard.attr}">
-                <div class="orange-unique__main-top">
-                    <div class="orange-unique__main-item">
-                        <p>Зарплатная карта</p>
-                        <h1>3 534 030.12 сум</h1>
-                    </div>
-                    <div class="item-second">
-                        <img src="/design/themes/responsive/media/images/addons/authentication/image/${valuesCard.cardType}.png"
-                             alt="Ico">
-                    </div>
-                </div>
-                <div class="orange-unique__second">
-                    <p class="cardNumber" style="color: #fff !important;">${valuesCard.cardNumber}</p>
-                    <p class="cardDate">${valuesCard.cardDate}</p>
-                </div>
-            </div>
-            </div>  `).join('');
-}
-
-container.innerHTML = returnCards(valuesCards);
 
