@@ -1,0 +1,123 @@
+@import "../mixins";
+@import "../variables";
+
+.admin-contracts-list {
+  padding-bottom: 60px;
+
+  header {
+  }
+
+  .order-status-tabs {
+    display: flex;
+    background-color: @white;
+    box-shadow: inset 0px -1px 0px rgba(0, 0, 0, 0.12);
+
+    span {
+      padding: 12px 40px;
+      border-right: 1px solid rgba(0, 0, 0, 0.08);
+      cursor: pointer;
+
+      &:last-child {
+        border: none;
+      }
+    }
+  }
+
+  .order {
+    background-color: @white;
+    padding: 24px 40px;
+    box-shadow: inset 0px -1px 0px rgba(0, 0, 0, 0.12);
+
+    .head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .info {
+        display: flex;
+
+        .buyer-info {
+          h3 {
+            .font(@fs: 18px, @fw: 700, @lh: 19px);
+            margin-bottom: 0;
+          }
+        }
+
+        .contract-info {
+          h3 {
+            .font(@fs: 18px, @fw: 700, @lh: 19px);
+            margin-bottom: 0;
+          }
+
+          margin-right: 60px;
+        }
+      }
+
+      .status {
+        -webkit-border-radius: 8px;
+        -moz-border-radius: 8px;
+        border-radius: 8px;
+        padding: 5px 16px;
+        color: #0FBE7B;
+        border: 1px solid @success;
+      }
+    }
+
+    .products-table {
+      table {
+        border: 1px none rgba(0, 0, 0, 0.12);
+        border-top-style: solid;
+        margin-bottom: 0;
+
+        thead {
+          tr {
+            th {
+              text-align: center;
+              border-right: 1px solid rgba(0, 0, 0, 0.12);
+
+              &:first-child {
+                text-align: left;
+              }
+
+              &:last-child {
+                border-right: none;
+              }
+            }
+          }
+        }
+
+        tbody {
+          tr {
+            td {
+              text-align: center;
+              border-right: 1px solid rgba(0, 0, 0, 0.12);
+
+
+              &:first-child {
+                text-align: left;
+              }
+
+              &:last-child {
+                border-right: none;
+              }
+            }
+
+            &.total-price {
+              .font(@fw: 700, @color: @main, @fs: 13px)
+            }
+          }
+        }
+
+        tfoot {
+          tr {
+            td {
+              &:last-child {
+                text-align: right;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
