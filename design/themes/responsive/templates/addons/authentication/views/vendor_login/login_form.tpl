@@ -16,8 +16,7 @@
                         <div class="ty-control-group">
                             <label for="password"
                                    class="ty-control-group__title cm-required ">{__("password")}</label>
-                            <input style="width: 100%;" type="password" id="password" name="password" size="9"
-                                   maxlength="9" placeholder="{__('shipping.rus_dellin.password')}" />
+                            <input style="width: 100%;" type="password" id="password" name="password" placeholder="{__('shipping.rus_dellin.password')}" />
                         </div>
 
                         <button class="ty-btn ty-btn__primary">{__('sign_in')}</button>
