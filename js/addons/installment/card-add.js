@@ -1,6 +1,7 @@
 (function (_, $) {
   const $cardNumberContainer = $('.card-info');
   const $cardNumber = $('.buyer-card-installment');
+  const $cardNumber2 = $('.buyer-card-installment').focus();
 
   const $cardExpContainer = $('.card-confirm');
   const $cardExp = $('.buyer-card-exp-installment');

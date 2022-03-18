@@ -12,12 +12,12 @@ function openCity(evt, cityName) {
   evt.currentTarget.className += ' w3-red';
 }
 
-var span = document.getElementsByClassName('closeBtn')[0];
+var span = $('.closeBtn')[0];
 let modal = document.getElementById('myModalCard');
 
-span.onclick = function () {
+span.click(function () {
   modal.style.display = 'none';
-};
+});
 
 $('.plus').click(function () {
   $('#myModalCard').css('display', 'block');
@@ -91,7 +91,6 @@ function returnCards(valuesCards) {
 
 container.innerHTML = returnCards(valuesCards);
 
-
 function openTab(evt, cityName) {
   var i, tabcontent, tablinks;
   tabcontent = document.getElementsByClassName('tabcontent');
@@ -106,35 +105,25 @@ function openTab(evt, cityName) {
   evt.currentTarget.className += ' active';
 }
 
-OnloadOpenCity();
+// OnloadOpenCity();
+//
+// function OnloadOpenCity(evt, cityName) {
+//   var i, tabcontent, tablinks;
+//   tabcontent = document.getElementsByClassName('tabcontent');
+//   for (i = 1; i < tabcontent.length; i++) {
+//     tabcontent[i].style.display = 'none';
+//   }
+//   tablinks = document.getElementsByClassName('tablinks');
+//   for (i = 1; i < tablinks.length; i++) {
+//     tablinks[i].className = tablinks[i].className.replace(' active', '');
+//   }
+//   let smth = document.getElementById(cityName);
+//
+//   $(smth).css('display', 'none');
+//   // evt.currentTarget.className += 'none';
+// }
 
-function OnloadOpenCity(evt, cityName) {
-  var i, tabcontent, tablinks;
-  tabcontent = document.getElementsByClassName('tabcontent');
-  for (i = 1; i < tabcontent.length; i++) {
-    tabcontent[i].style.display = 'none';
-  }
-  tablinks = document.getElementsByClassName('tablinks');
-  for (i = 1; i < tablinks.length; i++) {
-    tablinks[i].className = tablinks[i].className.replace(' active', '');
-  }
-  let smth = document.getElementById(cityName);
 
-  $(smth).css('display', 'none');
-  // evt.currentTarget.className += 'none';
-}
-
-(function ($) {
-  $(function () {
-
-    $('ul.tabs__caption').on('click', 'li:not(.active)', function () {
-      $(this)
-        .addClass('active').siblings().removeClass('active')
-        .closest('div.tabs').find('div.tabs__content').removeClass('active').eq($(this).index()).addClass('active');
-    });
-
-  });
-})(jQuery);
 //
 //
 // const btn = document.getElementById('btn_first');
@@ -150,3 +139,28 @@ function OnloadOpenCity(evt, cityName) {
 //   // btn2.style.backgroundColor = 'salmon';
 //   btn2.css('background', '#FF7643');
 // });
+
+$(function () {
+  $('#tabs').tabs({
+    activate: function (event, ui) {
+      var $activeTab = $('#tabs').tabs('option', 'active');
+      if ($activeTab == 1) {
+        alert('tab1');
+      }
+    },
+  });
+});
+
+function openCitySec(evt, cityName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName('tabcontentSec');
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = 'none';
+  }
+  tablinks = document.getElementsByClassName('tablinksSec');
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(' active', '');
+  }
+  document.getElementById(cityName).style.display = 'block';
+  evt.currentTarget.className += ' active';
+}

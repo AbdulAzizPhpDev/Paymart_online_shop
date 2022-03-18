@@ -2,24 +2,10 @@
 
 
 <div class="main-tab">
-    <div class="tab">
-        <button class="tablinks" onclick="openTab(event, 'London')"><img
-                    src="/design/themes/responsive/media/images/addons/profile_card/profile.png" alt="">
-            Профиль
-        </button>
-        <a class="tablinks" href="{'user_profile.history'|fn_url}" "><img
-                src="/design/themes/responsive/media/images/addons/profile_card/text.png" alt="">Договора
-        </a>
-        <button class="tablinks" onclick="openTab(event, 'Tokyo')"><img
-                    src="/design/themes/responsive/media/images/addons/profile_card/history.png" alt="">История
-        </button>
-        <button class="tablinks" onclick="openTab(event, 'tashkent')"><img
-                    src="/design/themes/responsive/media/images/addons/profile_card/diamond.png" alt="">Бонусные суммы
-        </button>
-        <button class="tablinks" onclick="openTab(event, 'chirchik')"><img
-                    src="/design/themes/responsive/media/images/addons/profile_card/clock.png" alt="">Приглосить друга
-        </button>
-    </div>
+
+    {include file='addons/authentication/views/user_profile/sidebar.tpl'}
+
+
     <div id="London" class="tabcontent">
         <div class="container profile-main">
             <h1 class="profile-title">Профиль</h1>
@@ -151,14 +137,7 @@
             </div>
         </div>
     </div>
-    <div id="Paris" class="tabcontent">
-        {include file='addons/authentication/views/user_profile/history.tpl'}
-    </div>
-    <div id="Tokyo" class="tabcontent">
-    </div>
-    <div id="tashkent" class="tabcontent">
-    </div>
-    <div id="chirchik" class="tabcontent">
-    </div>
+
+
 </div>
 
