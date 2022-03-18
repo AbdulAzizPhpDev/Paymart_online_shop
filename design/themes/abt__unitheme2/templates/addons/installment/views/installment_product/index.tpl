@@ -72,11 +72,12 @@ $('#pinwrapper').pinlogin({
   hideinput: false,
   fields: 4,
   reset: false,
+  autofocus: true,
   complete: function (pin) {
     $('.buyer-sms-code-installment').attr('value', pin);
     $('#installmentConfirmCodeBtn').click();
   },
-});
+}).focus();
 </script>
 
 {*<div class="modal-content">

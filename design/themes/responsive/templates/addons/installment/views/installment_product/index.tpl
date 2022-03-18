@@ -14,7 +14,7 @@
                 <label for="buyer-phone" class="ty-login__filed-label ty-control-group__label cm-required cm-trim ">
                     {__('rapidaphone')}
                 </label>
-                <input type="tel" class="ty-login__input buyer-phone-installment" va/>
+                <input type="tel" class="ty-login__input buyer-phone-installment" value="+998" />
             </div>
 
             <div class="oferta-container">
@@ -72,6 +72,7 @@ $('#pinwrapper').pinlogin({
   hideinput: false,
   fields: 4,
   reset: false,
+  autofocus: true,
   complete: function (pin) {
     $('.buyer-sms-code-installment').attr('value', pin);
     $('#installmentConfirmCodeBtn').click();
