@@ -2,6 +2,7 @@
   const $sendSmsBtn = $('#installmentSendSMSBtn');
 
   const $buyerPhone = $('.buyer-phone-installment');
+  const $buyerPhone2 = $('.buyer-phone-installment').focus();
   const $buyerSmsCode = $('.buyer-sms-code-installment');
 
   const $changePhoneBtn = $('#installmentChangePhoneBtn');
@@ -67,6 +68,7 @@
 
             if (result.status === 'success') {
               $confirmation.removeClass('d-none');
+              $('#pinwrapper_pinlogin_0').focus();
               $resendSms.css('pointer-events', 'none');
               methods.timerResendSms();
               $userPhoneSmsSent.text(methods.makePhoneNumberHidden);
