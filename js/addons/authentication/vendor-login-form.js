@@ -61,10 +61,8 @@
             if (response.result) {
               const { result } = response;
 
-              if (result.status === 'success') {
-                if (result.url) {
+              if (result.result.status === 'success') {
                   window.location.href = result.url;
-                }
               }
 
               if (result.status === 'error') {
