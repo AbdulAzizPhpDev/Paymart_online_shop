@@ -95,7 +95,14 @@
       const status = params.get('status');
 
       if (page !== Number(adminContractsState.page)) {
-        window.location.href = fn_url('installment_orders.vendor') + `&status=${status}&page=${page}`;
+        const params = new URLSearchParams(document.location.search);
+        const controller = params.get('dispatch');
+
+        if (controller === 'installment_orders.vendor') {
+          window.location.href = fn_url('installment_orders.vendor') + `&status=${status}&page=${page}`;
+        } else {
+          window.location.href = fn_url('installment_orders.index') + `&status=${status}&page=${page}`;
+        }
       }
     },
   });
