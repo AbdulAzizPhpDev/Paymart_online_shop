@@ -75,6 +75,11 @@
                                     data-buyer-phone="{$order->buyer->phone}">
                                 Принять договор
                             </button>
+                            <button class="btn cancel-contract"
+                                    data-contract-id="{$order->id}"
+                                    data-buyer-phone="{$order->buyer->phone}">
+                                Отменить договор
+                            </button>
                         {elseif $order->contract->status == 1}
                             <button class="btn cancel-contract"
                                     data-contract-id="{$order->id}"
