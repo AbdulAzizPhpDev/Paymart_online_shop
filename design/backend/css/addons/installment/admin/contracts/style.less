@@ -17,8 +17,13 @@
       border-right: 1px solid rgba(0, 0, 0, 0.08);
       cursor: pointer;
 
+      &.active {
+        border-bottom: 2px solid @main;
+        color: @main;
+      }
+
       &:last-child {
-        border: none;
+        border-right: none;
       }
     }
   }
@@ -60,6 +65,21 @@
         padding: 5px 16px;
         color: #0FBE7B;
         border: 1px solid @success;
+
+        &.status-3, &.status-4 {
+          color: #FE346E;
+          border: 1px solid #FE346E;
+        }
+
+        &.status-5, &.status-9 {
+          color: #707070;
+          border: 1px solid #707070;
+        }
+
+        &.status-0 {
+          color: #FFA41D;
+          border: 1px solid #FFA41D;
+        }
       }
     }
 
@@ -111,13 +131,54 @@
         tfoot {
           tr {
             td {
+              &:first-child {
+                padding-left: 0;
+
+                a {
+                  border-radius: 8px;
+                  background-color: @main;
+                  border: none;
+                  color: @white;
+                }
+              }
+
               &:last-child {
                 text-align: right;
+                padding-right: 0;
+
+                button {
+                  border-radius: 8px;
+                  background-color: @fail;
+                  border: none;
+                  color: @white;
+                }
               }
             }
           }
         }
       }
     }
+
+    .cancel-contracts-modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: auto;
+      height: auto !important;
+      min-width: 300px;
+      max-width: 600px;
+      border: 1px solid #d3dbe2;
+      -webkit-border-radius: 6px;
+      -moz-border-radius: 6px;
+      border-radius: 6px;
+      -webkit-box-shadow: none;
+      -moz-box-shadow: none;
+      box-shadow: none;
+    }
+  }
+
+  .pagination-contracts {
+    margin-top: 32px;
   }
 }
