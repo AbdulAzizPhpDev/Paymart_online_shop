@@ -36,6 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 if ($mode == "index") {
 
+
     $status = !empty($_REQUEST['status']) ? $_REQUEST['status'] : null;
     $status_data = [];
     $contract = 'contract|status';
@@ -72,6 +73,8 @@ if ($mode == "index") {
             Tygh::$app['view']->assign('all', 'active');
             break;
     }
+    $page = $_REQUEST['page'] ?? 0;
+    $offset = 10 * $page;
 
     $data = [
         "params" => [
@@ -79,9 +82,9 @@ if ($mode == "index") {
                 $contract => $status_data,
             ]
         ],
-        "online" => 1,
+
         "limit" => 10,
-        "offset" => 0,
+        "offset" => $offset,
         "orderByDesc" => "created_at",
         "api_token" => "5319972a3a412569fa05339851b4c7b8"
     ];
@@ -131,6 +134,8 @@ if ($mode == 'vendor') {
             Tygh::$app['view']->assign('all', 'active');
             break;
     }
+    $page = $_REQUEST['page'] ?? 0;
+    $offset = 10 * $page;
 
     $data = [
         "params" => [
@@ -142,7 +147,7 @@ if ($mode == 'vendor') {
             ]
         ],
         "limit" => 10,
-        "offset" => 0,
+        "offset" => $offset,
         "orderByDesc" => "created_at",
         "api_token" => "5319972a3a412569fa05339851b4c7b8"
     ];
