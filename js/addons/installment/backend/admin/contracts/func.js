@@ -94,6 +94,10 @@
     $modal.modal('hide');
   });
 
+  $('.close-accept-contract-modal').on('click', function () {
+    $acceptModal.modal('hide');
+  });
+
   $.each($tabs, function (tab) {
     $(this).on('click', adminContractsMethods.onChangeTabs);
   });

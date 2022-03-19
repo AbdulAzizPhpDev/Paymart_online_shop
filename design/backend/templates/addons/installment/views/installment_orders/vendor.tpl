@@ -120,7 +120,7 @@
         {* Modal - Accept Contract  *}
         <div class="modal signin-modal accept-contract-modal" style="display: none">
             <div class="modal-header">
-                <h3>Отменить договор</h3>
+                <h3>Принять договор</h3>
             </div>
             {*<div class="modal-body">
                 <label for="cancel-contract-code">Введите SMS код</label>
@@ -128,7 +128,7 @@
                 <p class="cancel-contract-error" style="color: red"></p>
             </div>*}
             <div class="modal-footer">
-                <button class="btn close-cancel-contract-modal">Нет</button>
+                <button class="btn close-accept-contract-modal">Нет</button>
                 <button class="btn confirm-accept-contract">Да</button>
             </div>
         </div>
