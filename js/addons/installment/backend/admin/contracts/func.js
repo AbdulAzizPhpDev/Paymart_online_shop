@@ -1,14 +1,20 @@
 (function (_, $) {
   const $cancelContractBtn = $('.cancel-contract');
   const $confirmCancel = $('.confirm-cancel-contract');
-  // const $code = $('#cancel-contract-code');
   const $modal = $('.cancel-contract-modal');
-  const $errorContainer = $('.cancel-contract-error');
+
+  const $acceptContractBtn = $('.accept-contract');
+  const $confirmAccept = $('.confirm-accept-contract');
+  const $acceptModal = $('.accept-contract-modal');
+
   const $tabs = $('.order-status-tabs span');
+  const $errorContainer = $('.cancel-contract-error');
+  const $paginationContainer = $('.pagination-contracts');
+
+  // const $code = $('#cancel-contract-code');
 
   const params = new URLSearchParams(document.location.search);
   const pageNumber = params.get('page');
-  const $paginationContainer = $('.pagination-contracts');
 
   const adminContractsState = {
     order_id: null,
@@ -22,36 +28,40 @@
     cancelContractModalShow: function (event) {
       adminContractsState.order_id = $(this).data('contract-id');
       adminContractsState.buyer_phone = $(this).data('buyer_phone');
-      console.log('Sending confirmation SMS to user');
       $modal.modal('show');
     },
+    acceptContractModalShow: function () {
+      adminContractsState.order_id = $(this).data('contract-id');
+      adminContractsState.buyer_phone = $(this).data('buyer_phone');
+      $acceptModal.modal('show');
+    },
     cancelContract: function () {
-      // const isValid = Boolean($code.val());
-
-      // if (!isValid) {
-      //   return $errorContainer.text('field is empty');
-      // }
-
-      $.ajax({
-        url: adminContractsState.PAYMART_API_BASE_URL + 'buyers/credit/cancel',
-        type: 'POST',
+      $.ceAjax('request', fn_url('installment_orders.change_status'), {
+        method: 'POST',
         data: {
           contract_id: adminContractsState.order_id,
-          buyer_phone: adminContractsState.buyer_phone,
-          api_token: '',
+          status: false,
         },
-        success: function (response) {
-
-        },
-        error: function (error) {
-
+        callback: function (response) {
+          $errorContainer.text(response.text);
         },
       });
 
-      // console.log('code: ' + $code.val());
-      console.log('cancelled contract with id: ' + adminContractsState.order_id);
-
       $modal.modal('hide');
+    },
+    acceptContract: function () {
+      $.ceAjax('request', fn_url('installment_orders.change_status'), {
+        method: 'POST',
+        data: {
+          contract_id: adminContractsState.order_id,
+          status: true,
+        },
+        callback: function (response) {
+          $errorContainer.text(response.text);
+        },
+      });
+
+      $acceptModal.modal('hide');
     },
     onChangeTabs: function () {
       const status = $(this).data('status');
@@ -76,9 +86,14 @@
 
   $confirmCancel.on('click', adminContractsMethods.cancelContract);
   $cancelContractBtn.on('click', adminContractsMethods.cancelContractModalShow);
+
+  $confirmAccept.on('click', adminContractsMethods.acceptContract);
+  $acceptContractBtn.on('click', adminContractsMethods.acceptContractModalShow);
+
   $('.close-cancel-contract-modal').on('click', function () {
     $modal.modal('hide');
   });
+
   $.each($tabs, function (tab) {
     $(this).on('click', adminContractsMethods.onChangeTabs);
   });
@@ -93,11 +108,9 @@
     afterPaging: function (page) {
       const params = new URLSearchParams(document.location.search);
       const status = params.get('status');
+      const controller = params.get('dispatch');
 
       if (page !== Number(adminContractsState.page)) {
-        const params = new URLSearchParams(document.location.search);
-        const controller = params.get('dispatch');
-
         if (controller === 'installment_orders.vendor') {
           window.location.href = fn_url('installment_orders.vendor') + `&status=${status}&page=${page}`;
         } else {

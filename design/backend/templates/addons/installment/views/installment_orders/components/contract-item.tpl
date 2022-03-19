@@ -6,7 +6,7 @@
                 <p>от {$order->contract->created_at}</p>
             </div>
             <div class="buyer-info">
-                {if $order->buyer|count > 0}
+                {if $order->buyer->name != null}
                     <h3>{$order->buyer->surname} {$order->buyer->name} {$order->buyer->patronymic}</h3>
                 {else}
                     <h3>Robert Fox (Test name)</h3>
@@ -69,11 +69,19 @@
                             Tracking
                         </button>
                     {else}
-                        <button class="btn cancel-contract"
-                                data-contract-id="{$order->id}"
-                                data-buyer-phone="{$order->buyer->phone}">
-                            Отменить договор
-                        </button>
+                        {if $order->contract->status == 0 || $order->contract->status == 2}
+                            <button class="btn accept-contract"
+                                    data-contract-id="{$order->id}"
+                                    data-buyer-phone="{$order->buyer->phone}">
+                                Принять договор
+                            </button>
+                        {elseif $order->contract->status == 1}
+                            <button class="btn cancel-contract"
+                                    data-contract-id="{$order->id}"
+                                    data-buyer-phone="{$order->buyer->phone}">
+                                Отменить договор
+                            </button>
+                        {/if}
                     {/if}
                 </td>
             </tr>
