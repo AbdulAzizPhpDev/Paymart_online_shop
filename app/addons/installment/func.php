@@ -99,6 +99,31 @@ function showErrors($text, $data = [], $status = "error"): array
     return $error;
 }
 
+function change_contracts_tabs($status = null) {
+    switch ($status) {
+        case 'moderation':
+            $status = Tygh::$app['view']->assign('moderation', 'active');
+            break;
+        case 1:
+            $status = Tygh::$app['view']->assign('active', 'active');
+            break;
+        case '3|4':
+            $status = Tygh::$app['view']->assign('overdue', 'active');
+            break;
+        case 5:
+            $status = Tygh::$app['view']->assign('cancelled', 'active');
+            break;
+        case 9:
+            $status = Tygh::$app['view']->assign('closed', 'active');
+            break;
+        default:
+            $status = Tygh::$app['view']->assign('all', 'active');
+            break;
+    }
+
+    return $status;
+}
+
 
 
 
