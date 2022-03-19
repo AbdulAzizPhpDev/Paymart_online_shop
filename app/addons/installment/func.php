@@ -99,6 +99,25 @@ function showErrors($text, $data = [], $status = "error"): array
     return $error;
 }
 
+function createOrder($product, $quantity)
+{
+    $ip = fn_get_ip();
+    $order['ip_address'] = fn_ip_to_db($ip['host']);
+    $order['timestamp'] = TIME;
+    $order['updated_at'] = $order['timestamp'];
+    $order['lang_code'] = isset($user_lang) && !empty($user_lang) ? $user_lang : CART_LANGUAGE;
+    $order['company_id'] = 0;
+    $order['status'] = STATUS_INCOMPLETED_ORDER;
+    $order['is_parent_order'] = 'N';
+    $order['company_id'] = Registry::get('runtime.company_id');
+    $order_status = $order['status'];
+    $order['localization_id'] = CART_LOCALIZATION;
+    $order['localization_id'] = CART_LOCALIZATION;
+    $order_id = db_query("INSERT INTO ?:orders ?e", $order);
+
+    return $order_id;
+}
+
 
 
 

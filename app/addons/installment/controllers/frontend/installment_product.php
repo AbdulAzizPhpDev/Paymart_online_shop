@@ -284,9 +284,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ];
 
         $response = php_curl('/buyers/credit/add', $data, 'POST', $product_info['p_c_token']);
+        if (isset($response->result) && $response->result->status == 0) {
 
-        Registry::get('ajax')->assign('result', $response);
-        exit();
+            $errors = showErrors("user_has_indebtedness", [], "error");
+            Registry::get('ajax')->assign('result', $response);
+            exit();
+        } elseif ($response->status == 1) {
+
+
+            Registry::get('ajax')->assign('result', $response);
+            exit();
+        } else {
+            $errors = showErrors("error", [], "error");
+            Registry::get('ajax')->assign('result', $response);
+            exit();
+        }
+
     }
 
     if ($mode == "set_confirm_contract") {
