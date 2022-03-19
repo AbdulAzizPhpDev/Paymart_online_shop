@@ -1,5 +1,6 @@
 {script src="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.min.js"}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.css" />
+
 {script src="js/addons/installment/backend/admin/contracts/func.js"}
 {*{fn_print_die($paymart_orders)}*}
 
