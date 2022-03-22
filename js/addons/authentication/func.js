@@ -77,12 +77,13 @@
     },
     sendSMS: function () {
       $resendSms.removeClass('active');
-      authState.userPhoneNumber = $buyerPhone.inputmask('unmaskedvalue');
+      const unmaskedPhoneNumber = Inputmask.unmask($buyerPhone.val(), { mask: '999 ## ###-##-##' });
+      authState.userPhoneNumber = unmaskedPhoneNumber;
 
       $.ceAjax('request', fn_url('profiles.send_sms'), {
         method: 'POST',
         data: {
-          phone: $buyerPhone.inputmask('unmaskedvalue'),
+          phone: unmaskedPhoneNumber,
         },
         callback: function (response) {
           if (response.hasOwnProperty('result')) {
@@ -109,7 +110,7 @@
       $.ceAjax('request', fn_url('profiles.confirm'), {
         method: 'POST',
         data: {
-          phone: $buyerPhone.inputmask('unmaskedvalue'),
+          phone: Inputmask.unmask($buyerPhone.val(), { mask: '999 ## ###-##-##' }),
           code: $code.val(),
         },
         callback: function (response) {

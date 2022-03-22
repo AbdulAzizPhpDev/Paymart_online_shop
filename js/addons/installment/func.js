@@ -54,7 +54,7 @@
     },
     sendSMS: function (event) {
       $resendSms.removeClass('active');
-      const buyerPhoneUnmasked = $buyerPhoneInstallment.inputmask('unmaskedvalue');
+      const buyerPhoneUnmasked = Inputmask.unmask($buyerPhoneInstallment.val(), { mask: "999 ## ###-##-##" });
       installmentState.userPhoneNumber = buyerPhoneUnmasked;
 
       $.ceAjax('request', fn_url('profiles.send_sms'), {
@@ -84,7 +84,7 @@
       });
     },
     confirmCode: function (event) {
-      const buyerPhoneUnmasked = $buyerPhoneInstallment.inputmask('unmaskedvalue');
+      const buyerPhoneUnmasked = Inputmask.unmask($buyerPhoneInstallment.val(), { mask: "999 ## ###-##-##" });
 
       $.ceAjax('request', fn_url('profiles.confirm'), {
         method: 'POST',
