@@ -36,6 +36,32 @@
       adminContractsState.order_id = $button.data('contract-id');
       adminContractsState.buyer_phone = $button.data('buyer_phone');
     },
+    initPagination: function () {
+      const contractsLength = Number($paginationContainer.data('contracts-count')) || 0;
+      if (contractsLength === 0) return;
+
+      // Generating fake data for pagination plugin
+      const fakeData = [...new Array(contractsLength)].map(() => Math.round(Math.random() * contractsLength));
+
+      $paginationContainer.pagination({
+        pageSize: 10,
+        pageNumber: adminContractsState.page,
+        dataSource: fakeData,
+        afterPaging: function (page) {
+          const params = new URLSearchParams(document.location.search);
+          const status = params.get('status');
+          const controller = params.get('dispatch');
+
+          if (page !== Number(adminContractsState.page)) {
+            if (controller === 'installment_orders.vendor') {
+              window.location.href = fn_url('installment_orders.vendor') + `&status=${status}&page=${page}`;
+            } else {
+              window.location.href = fn_url('installment_orders.index') + `&status=${status}&page=${page}`;
+            }
+          }
+        },
+      });
+    },
     cancelContract: function () {
       $.ceAjax('request', fn_url('installment_orders.change_status'), {
         method: 'POST',
@@ -44,7 +70,7 @@
           status: false,
         },
         callback: function (response) {
-          $errorContainer.text(response.text);
+          console.log(response);
         },
       });
 
@@ -58,7 +84,7 @@
           status: true,
         },
         callback: function (response) {
-          $errorContainer.text(response.text);
+          console.log(response);
         },
       });
 
@@ -86,6 +112,8 @@
     },
   };
 
+  adminContractsMethods.initPagination();
+
   $confirmCancel.on('click', adminContractsMethods.cancelContract);
   $cancelContractBtn.on('click', adminContractsMethods.showCancelContractModal);
 
@@ -102,29 +130,6 @@
 
   $.each($tabs, function (tab) {
     $(this).on('click', adminContractsMethods.onChangeTabs);
-  });
-
-  // Generating fake data for pagination plugin
-  const contractsLength = Number($paginationContainer.data('contracts-count'));
-  const fakeData = [...new Array(contractsLength)].map(() => Math.round(Math.random() * contractsLength));
-
-  $paginationContainer.pagination({
-    pageSize: 10,
-    pageNumber: adminContractsState.page,
-    dataSource: fakeData,
-    afterPaging: function (page) {
-      const params = new URLSearchParams(document.location.search);
-      const status = params.get('status');
-      const controller = params.get('dispatch');
-
-      if (page !== Number(adminContractsState.page)) {
-        if (controller === 'installment_orders.vendor') {
-          window.location.href = fn_url('installment_orders.vendor') + `&status=${status}&page=${page}`;
-        } else {
-          window.location.href = fn_url('installment_orders.index') + `&status=${status}&page=${page}`;
-        }
-      }
-    },
   });
 
 })(Tygh, Tygh.$);

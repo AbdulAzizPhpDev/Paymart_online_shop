@@ -2,7 +2,7 @@
 
 <div class="profile-contracts-page">
     {if !empty($contracts->contracts)}
-        <h1>Договора</h1>
+        <h1>{__('contracts')}</h1>
 
         {*<div class="search-container">
             <input type="search" placeholder="Search" class="form-control search-contracts">
@@ -15,7 +15,7 @@
                    target="_blank" class="contract-card">
                     <div class="header">
                         <div class="info">
-                            <h3>Договор № {$contract->contract_id}</h3>
+                            <h3>{__('contract')} № {$contract->contract_id}</h3>
                         </div>
                         <div class="status-container">
 
@@ -24,7 +24,7 @@
                         </div>
                     </div>
                     <p class="contract-number" data-contract-id="{$contract->contract_id}">
-                        Остаток: {$contract->remainder}
+                        {__('gift_cert_debit')}: {$contract->remainder}
                     </p>
 
                     <p class="contract-date">Следующая выплата: {$contract->next_pay}</p>
@@ -36,6 +36,6 @@
             {/foreach}
         </div>
     {else}
-        <h1 class="text-center">Пусто</h1>
+        <h1 class="text-center">{__('empty')}</h1>
     {/if}
 </div>

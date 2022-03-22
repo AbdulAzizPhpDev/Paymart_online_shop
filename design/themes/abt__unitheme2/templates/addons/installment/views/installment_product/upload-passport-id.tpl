@@ -1,8 +1,8 @@
 {script src="js/addons/installment/upload-passport-id.js"}
 
 <div class="upload-passport-id-page">
-    <h1>Фото ID карты</h1>
-    <span class="subtitle">Пример фотографии передней части</span>
+    <h1>{__('authentication.id_card.title')}</h1>
+    <span class="subtitle">{__('authentication.passport.subtitle')}</span>
 
     <div class="upload-photos">
 
@@ -16,7 +16,7 @@
                     <path d="M12 9.016V14.984M9.016 12H14.984M18.332 21.332H5.66797C4.01097 21.332 2.66797 19.989 2.66797 18.332V5.66797C2.66797 4.01097 4.01097 2.66797 5.66797 2.66797H18.332C19.989 2.66797 21.332 4.01097 21.332 5.66797V18.332C21.332 19.989 19.989 21.332 18.332 21.332Z"
                           stroke="#FF7643" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
-                <span>Передняя часть</span>
+                <span>{__('authentication.id_card.front')}</span>
             </label>
         </div>
 
@@ -30,7 +30,7 @@
                     <path d="M12 9.016V14.984M9.016 12H14.984M18.332 21.332H5.66797C4.01097 21.332 2.66797 19.989 2.66797 18.332V5.66797C2.66797 4.01097 4.01097 2.66797 5.66797 2.66797H18.332C19.989 2.66797 21.332 4.01097 21.332 5.66797V18.332C21.332 19.989 19.989 21.332 18.332 21.332Z"
                           stroke="#FF7643" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
-                <span>Задняя часть</span>
+                <span>{__('authentication.id_card.back')}</span>
             </label>
         </div>
 
@@ -44,7 +44,7 @@
                     <path d="M12 9.016V14.984M9.016 12H14.984M18.332 21.332H5.66797C4.01097 21.332 2.66797 19.989 2.66797 18.332V5.66797C2.66797 4.01097 4.01097 2.66797 5.66797 2.66797H18.332C19.989 2.66797 21.332 4.01097 21.332 5.66797V18.332C21.332 19.989 19.989 21.332 18.332 21.332Z"
                           stroke="#FF7643" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
-                <span>Селфи с паспортом</span>
+                <span>{__('authentication.passport.selfie')}</span>
             </label>
         </div>
 
@@ -58,13 +58,13 @@
                     <path d="M12 9.016V14.984M9.016 12H14.984M18.332 21.332H5.66797C4.01097 21.332 2.66797 19.989 2.66797 18.332V5.66797C2.66797 4.01097 4.01097 2.66797 5.66797 2.66797H18.332C19.989 2.66797 21.332 4.01097 21.332 5.66797V18.332C21.332 19.989 19.989 21.332 18.332 21.332Z"
                           stroke="#FF7643" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
-                <span>Прописка</span>
+                <span>{__('authentication.passport.address')}</span>
             </label>
         </div>
     </div>
 
     <button class="ty-btn ty-btn__secondary" type="button" id="upload-passport-photos-btn">
-        Продолжить
+        {__("continue")}
     </button>
 
     <div class="ty-login-form__wrong-credentials-container">

@@ -35,7 +35,9 @@
             <input type="hidden" class="ty-login__input auth-confirmation-code" />
             <div id="confirmation-pin-code"></div>
 
-            <p class="resend-sms-phone ty-mt-m ty-center">{__('authentication.text_resend_sms')}</p>
+            <p class="resend-sms-phone ty-mt-m ty-center">
+                {__('authentication.text_resend_sms', ['[n]' => '<span class="phone-timer">60</span>'])}
+            </p>
 
             <p class="ty-error-text"></p>
 
