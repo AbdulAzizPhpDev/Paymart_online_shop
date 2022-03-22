@@ -99,21 +99,50 @@ function showErrors($text, $data = [], $status = "error"): array
 }
 
 
-function createOrder($product, $quantity)
+function createOrder($product_id, $quantity, $user_id, $params = [], $contract_id)
 {
+    $user = db_get_row("SELECT * FROM ?:users WHERE user_id =?i", $user_id);
+    $product = db_get_row('SELECT *,product_description.product as product_name FROM ?:products as product 
+        INNER JOIN ?:companies as company ON product.company_id = company.company_id 
+        INNER JOIN ?:product_prices as product_price ON product.product_id = product_price.product_id 
+        INNER JOIN ?:product_descriptions as product_description ON product.product_id = product_description.product_id 
+        WHERE product.product_id = ?i ', $product_id);
+
     $ip = fn_get_ip();
     $order['ip_address'] = fn_ip_to_db($ip['host']);
     $order['timestamp'] = TIME;
     $order['updated_at'] = $order['timestamp'];
     $order['lang_code'] = isset($user_lang) && !empty($user_lang) ? $user_lang : CART_LANGUAGE;
-    $order['company_id'] = 0;
     $order['status'] = STATUS_INCOMPLETED_ORDER;
     $order['is_parent_order'] = 'N';
     $order['company_id'] = Registry::get('runtime.company_id');
-    $order_status = $order['status'];
-    $order['localization_id'] = CART_LOCALIZATION;
-    $order['localization_id'] = CART_LOCALIZATION;
+
+    $order['user_id'] = $user_id;
+    $order['phone'] = $user['phone'];
+    $order['email'] = $user['email'];
+    $order['firstname'] = $user['firstname'];
+    $order['lastname'] = $user['lastname'];
+    $order['b_firstname'] = $user['firstname'];
+    $order['b_lastname'] = $user['lastname'];
+
+
+    if (!empty($params)) {
+        $order['fargo_address'] = serialize($params);
+        $order['p_contract_id'] = $contract_id;
+    }
+
     $order_id = db_query("INSERT INTO ?:orders ?e", $order);
+
+    $order_details['order_id'] = $order_id;
+    $order_details['item_id '] = TIME;
+    $order_details['product_id'] = $product['product_id'];
+    $order_details['price'] = $product['price'];
+    $order_details['product_code'] = $product['product_code'];
+    $order_details['amount'] = $quantity;
+    $order_details['extra'] = serialize($product);
+
+    db_query("INSERT INTO ?:order_details ?e", $order_details);
+
 
     return $order_id;
 

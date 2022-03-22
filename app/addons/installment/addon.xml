@@ -224,10 +224,18 @@
         <item for="install" editions="ULTIMATE,MULTIVENDOR">
             ALTER TABLE `?:users` ADD COLUMN IF NOT EXISTS i_limit INT NULL DEFAULT 0;
         </item>
+
+        <item for="install" editions="ULTIMATE,MULTIVENDOR">
+            ALTER TABLE `?:orders` ADD COLUMN IF NOT EXISTS p_contract_id INT NULL DEFAULT 0;
+        </item>
+        <item for="install" editions="ULTIMATE,MULTIVENDOR">
+            ALTER TABLE `?:orders` ADD COLUMN IF NOT EXISTS fargo_address TEXT NULL;
+        </item>
+
         <!-- If the parameter "for" equals "uninstall", the query is executed during the add-on uninstallation -->
         <!--        <item for="uninstall">DROP TABLE IF EXISTS `?:addon_test_123456789`</item>-->
-        <item for="uninstall">ALTER TABLE `?:users` DROP COLUMN IF EXISTS i_step;</item>
-        <item for="uninstall">ALTER TABLE `?:users` DROP COLUMN IF EXISTS i_limit;</item>
+        <!--        <item for="uninstall">ALTER TABLE `?:users` DROP COLUMN IF EXISTS i_step;</item>-->
+        <!--        <item for="uninstall">ALTER TABLE `?:users` DROP COLUMN IF EXISTS i_limit;</item>-->
     </queries>
 
     <!-- User-defined functions called on certain events:

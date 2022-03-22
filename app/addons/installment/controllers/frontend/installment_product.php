@@ -290,8 +290,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             Registry::get('ajax')->assign('result', $response);
             exit();
         } elseif ($response->status == 1) {
-
-
             Registry::get('ajax')->assign('result', $response);
             exit();
         } else {
