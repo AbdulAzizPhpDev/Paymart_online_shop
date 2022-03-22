@@ -10,7 +10,7 @@
                     <form class="vendor-login-from" method="post" action={fn_url('vendor_login.login')}>
                         <div class="ty-control-group">
                             <label for="vendor_id" class="ty-control-group__title cm-required">{__("id")}</label>
-                            <input style="width: 100%;" type="number" id="vendor_id" name="id" maxlength="10" />
+                            <input style="width: 100%;" type="text" id="vendor_id" name="id" placeholder="Введите ID партнера" maxlength="10"/>
                         </div>
 
                         <div class="ty-control-group">

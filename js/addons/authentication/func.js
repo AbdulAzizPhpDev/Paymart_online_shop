@@ -3,8 +3,10 @@
   const $errorContainer = $('.ty-error-text');
   const $phoneContainer = $('.phone-container');
   const $codeContainer = $('.code-container');
+
   const $userPhoneSmsSent = $('.user-auth-phone-sms-sent');
   const $changePhoneNumberBtn = $('.auth-change-phone-number');
+
   const $timerSlot = $('.phone-timer');
   const $resendSms = $('.resend-sms-phone');
 
@@ -129,7 +131,13 @@
 
   $form.on('submit', authMethods.submit);
 
-  $buyerPhone.inputmask('999 99 999-99-99', { placeholder: '*' });
+  $.mask.definitions['#'] = $.mask.definitions['9'];
+  delete $.mask.definitions['9'];
+
+  $buyerPhone.mask('998 ## ###-##-##', {
+    placeholder: '*',
+  });
+
   $changePhoneNumberBtn.on('click', authMethods.changePhoneNumber);
   $resendSms.on('click', authMethods.sendSMS);
 
@@ -137,17 +145,17 @@
 
   // $(_.doc).on('click', '#confirmCodeBtn', methods.confirmCode);
 
-  (function ($) {
-    $(function () {
-
-      $('ul.tabs__caption').on('click', 'li:not(.active)', function () {
-        $(this)
-          .addClass('active').siblings().removeClass('active')
-          .closest('div.tabs').find('div.tabs__content').removeClass('active').eq($(this).index()).addClass('active');
-      });
-
-    });
-  })(Tygh);
+  // (function ($) {
+  //   $(function () {
+  //
+  //     $('ul.tabs__caption').on('click', 'li:not(.active)', function () {
+  //       $(this)
+  //         .addClass('active').siblings().removeClass('active')
+  //         .closest('div.tabs').find('div.tabs__content').removeClass('active').eq($(this).index()).addClass('active');
+  //     });
+  //
+  //   });
+  // })(Tygh);
 
 })(Tygh, Tygh.$);
 

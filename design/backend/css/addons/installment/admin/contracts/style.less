@@ -9,7 +9,7 @@
 
   .order-status-tabs {
     display: flex;
-    background-color: @white;
+    background-color: @white-paymart;
     box-shadow: inset 0px -1px 0px rgba(0, 0, 0, 0.12);
 
     span {
@@ -18,8 +18,8 @@
       cursor: pointer;
 
       &.active {
-        border-bottom: 2px solid @main;
-        color: @main;
+        border-bottom: 2px solid @main-paymart;
+        color: @main-paymart;
       }
 
       &:last-child {
@@ -29,7 +29,7 @@
   }
 
   .order {
-    background-color: @white;
+    background-color: @white-paymart;
     padding: 24px 40px;
     box-shadow: inset 0px -1px 0px rgba(0, 0, 0, 0.12);
 
@@ -64,7 +64,7 @@
         border-radius: 8px;
         padding: 5px 16px;
         color: #0FBE7B;
-        border: 1px solid @success;
+        border: 1px solid @success-paymart;
 
         &.status-3, &.status-4 {
           color: #FE346E;
@@ -123,7 +123,7 @@
             }
 
             &.total-price {
-              .font(@fw: 700, @color: @main, @fs: 13px)
+              .font(@fw: 700, @color: @main-paymart, @fs: 13px)
             }
           }
         }
@@ -136,9 +136,9 @@
 
                 a {
                   border-radius: 8px;
-                  background-color: @main;
+                  background-color: @main-paymart;
                   border: none;
-                  color: @white;
+                  color: @white-paymart;
                 }
               }
 
@@ -148,13 +148,13 @@
 
                 button {
                   border-radius: 8px;
-                  background-color: @fail;
+                  background-color: @fail-paymart;
                   border: none;
-                  color: @white;
+                  color: @white-paymart;
 
                   &.accept-contract {
-                    background-color: @success;
-                    color: @white;
+                    background-color: @success-paymart;
+                    color: @white-paymart;
                   }
                 }
               }

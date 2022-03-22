@@ -14,7 +14,7 @@
                 <label for="buyer-phone" class="ty-login__filed-label ty-control-group__label cm-required cm-trim ">
                     {__('rapidaphone')}
                 </label>
-                <input type="tel" class="ty-login__input buyer-phone-installment" value="+998">
+                <input type="tel" class="ty-login__input buyer-phone-installment" placeholder="Введите номер телефона">
             </div>
 
             <div class="oferta-container">

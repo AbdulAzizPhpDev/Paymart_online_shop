@@ -13,18 +13,17 @@
             {include file="addons/installment/views/installment_orders/components/contract-item.tpl" order=$order is_admin=true}
         {/foreach}
         <div class="pagination-contracts" data-contracts-count="{$paymart_orders->response->total}"></div>
-        {*<div class="modal signin-modal cancel-contract-modal" style="display: none">
+        {* Show Tracking Modal  *}
+        {*<div class="modal signin-modal tracking-contract-modal" style="display: none">
             <div class="modal-header">
-                <h3>Отменить договор</h3>
+                <h3>Tracking Products</h3>
             </div>
             <div class="modal-body">
-                <label for="cancel-contract-code">Введите SMS код</label>
-                <input type="text" id="cancel-contract-code" style="width: 100%; color: #000" maxlength="4">
-                <p class="cancel-contract-error" style="color: red"></p>
+                Modal Body
             </div>
             <div class="modal-footer">
-                <button class="btn close-cancel-contract-modal">Нет</button>
-                <button class="btn confirm-cancel-contract">Да</button>
+                <button class="btn close-tracking-contract-modal">Нет</button>
+                <button class="btn confirm-tracking-contract">Да</button>
             </div>
         </div>*}
     {else}
