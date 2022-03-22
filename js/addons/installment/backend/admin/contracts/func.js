@@ -1,7 +1,7 @@
 (function (_, $) {
   const $cancelContractBtn = $('.cancel-contract');
   const $confirmCancel = $('.confirm-cancel-contract');
-  const $modal = $('.cancel-contract-modal');
+  const $cancelModal = $('.cancel-contract-modal');
 
   const $acceptContractBtn = $('.accept-contract');
   const $confirmAccept = $('.confirm-accept-contract');
@@ -19,21 +19,22 @@
   const adminContractsState = {
     order_id: null,
     buyer_phone: null,
-    PAYMART_API_BASE_URL: 'https://test.paymart.uz/api/v1/',
     page: pageNumber,
     status: null,
   };
 
   const adminContractsMethods = {
-    cancelContractModalShow: function (event) {
-      adminContractsState.order_id = $(this).data('contract-id');
-      adminContractsState.buyer_phone = $(this).data('buyer_phone');
-      $modal.modal('show');
+    showCancelContractModal: function (event) {
+      adminContractsMethods.getParamsFromDom($(this));
+      $cancelModal.modal('show');
     },
-    acceptContractModalShow: function () {
-      adminContractsState.order_id = $(this).data('contract-id');
-      adminContractsState.buyer_phone = $(this).data('buyer_phone');
+    showAcceptContractModal: function () {
+      adminContractsMethods.getParamsFromDom($(this));
       $acceptModal.modal('show');
+    },
+    getParamsFromDom: function ($button) {
+      adminContractsState.order_id = $button.data('contract-id');
+      adminContractsState.buyer_phone = $button.data('buyer_phone');
     },
     cancelContract: function () {
       $.ceAjax('request', fn_url('installment_orders.change_status'), {
@@ -47,7 +48,7 @@
         },
       });
 
-      $modal.modal('hide');
+      $cancelModal.modal('hide');
     },
     acceptContract: function () {
       $.ceAjax('request', fn_url('installment_orders.change_status'), {
@@ -70,6 +71,7 @@
 
       if (status === undefined) {
         adminContractsState.status = String(status);
+
         if (controller === 'installment_orders.vendor') {
           return window.location.href = fn_url('installment_orders.vendor');
         }
@@ -85,13 +87,13 @@
   };
 
   $confirmCancel.on('click', adminContractsMethods.cancelContract);
-  $cancelContractBtn.on('click', adminContractsMethods.cancelContractModalShow);
+  $cancelContractBtn.on('click', adminContractsMethods.showCancelContractModal);
 
   $confirmAccept.on('click', adminContractsMethods.acceptContract);
-  $acceptContractBtn.on('click', adminContractsMethods.acceptContractModalShow);
+  $acceptContractBtn.on('click', adminContractsMethods.showAcceptContractModal);
 
   $('.close-cancel-contract-modal').on('click', function () {
-    $modal.modal('hide');
+    $cancelModal.modal('hide');
   });
 
   $('.close-accept-contract-modal').on('click', function () {
@@ -102,6 +104,7 @@
     $(this).on('click', adminContractsMethods.onChangeTabs);
   });
 
+  // Generating fake data for pagination plugin
   const contractsLength = Number($paginationContainer.data('contracts-count'));
   const fakeData = [...new Array(contractsLength)].map(() => Math.round(Math.random() * contractsLength));
 
