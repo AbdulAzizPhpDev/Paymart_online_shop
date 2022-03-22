@@ -40,14 +40,16 @@
         {* Confirmation code *}
         <div class="confirmation d-none">
             <h1>{__('authentication.title_sms_code')}</h1>
-            <p class="ty-mtb-s">{__('authentication.sent_phone')} <span class="user-phone-sms-sent"></span></p>
+            <p class="ty-mtb-s">{__('authentication.sent_phone', ['[n]' => '<span class="user-phone-sms-sent"></span>'])}</p>
 
             <div class="ty-control-group installment-code-container">
                 <input type="text" hidden class="ty-login__input buyer-sms-code-installment" />
             </div>
             <div id="pinwrapper"></div>
 
-            <p class="resend-sms-phone ty-mt-l ty-mb-m">{__('authentication.text_resend_sms')}</p>
+            <p class="resend-sms-phone ty-mt-l ty-mb-m">
+                {__('authentication.text_resend_sms', ['[n]' => '<span class="phone-timer">60</span>'])}
+            </p>
 
             <button class="ty-btn ty-btn__secondary" type="button" id="installmentConfirmCodeBtn">
                 {__("continue")}

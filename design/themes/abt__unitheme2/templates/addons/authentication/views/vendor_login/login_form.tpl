@@ -5,19 +5,22 @@
         <div class="ty-mainbox-container clearfix">
             <div class="ty-mainbox-body"><!-- Inline script moved to the bottom of the page -->
                 <div class="ty-account-benefits">
-                    <h1 class="ty-mainbox-title" style="text-align: center;">Вход партнера</h1>
+                    <h1 class="ty-mainbox-title" style="text-align: center;">{__('authentication.vendor.title')}</h1>
 
                     <form class="vendor-login-from" method="post" action={fn_url('vendor_login.login')}>
                         <div class="ty-control-group">
-                            <label for="vendor_id" class="ty-control-group__title cm-required">{__("id")}</label>
-                            <input style="width: 100%;" type="text" id="vendor_id" name="id" placeholder="Введите ID партнера" maxlength="10"/>
+                            <label for="vendor_id" class="ty-control-group__title cm-required">
+                                {__('authentication.vendor.id')}
+                            </label>
+                            <input style="width: 100%;" type="text" id="vendor_id" name="id"
+                                   placeholder="{__('authentication.vendor.placeholder_id')}" maxlength="10" />
                         </div>
 
                         <div class="ty-control-group">
                             <label for="password"
                                    class="ty-control-group__title cm-required ">{__("password")}</label>
-                            <input style="width: 100%;" type="password" id="password" name="password" 
-                                   placeholder="{__('shipping.rus_dellin.password')}" />
+                            <input style="width: 100%;" type="password" id="password" name="password"
+                                   placeholder="{__("password")}" />
                         </div>
 
                         <button class="ty-btn ty-btn__primary">{__('sign_in')}</button>

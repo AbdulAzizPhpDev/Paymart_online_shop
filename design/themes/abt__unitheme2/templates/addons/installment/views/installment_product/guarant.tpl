@@ -1,26 +1,26 @@
 {script src="js/addons/installment/guarant.js"}
 
 <div class="guarant-page">
-    <h1>Доверительное лицо</h1>
-    <span>Введите данные доверительных лиц</span>
+    <h1>{__('authentication.guarantee.title')}</h1>
+    <span>{__('authentication.guarantee.subtitle')}</span>
 
     <div class="guarants">
         <div class="guarant">
-            <h3>Контакное лицо - 1</h3>
+            <h3>{__('authentication.guarantee.contact', ['[n]' => 1])}</h3>
 
             <p class="ty-mt-s"><label for="first-guarant-name">{__('fullname')}</label></p>
-            <input id="first-guarant-name" type="text" placeholder="Введите ФИО">
+            <input id="first-guarant-name" type="text" placeholder="{__('ph_fullname')}">
 
-            <p class="ty-mt-s"><label for="first-guarant-phone">Номер телефона</label></p>
+            <p class="ty-mt-s"><label for="first-guarant-phone">{__('rapidaphone')}</label></p>
             <input id="first-guarant-phone" type="text" placeholder="+998">
         </div>
         <div class="guarant">
-            <h3>Контакное лицо - 2</h3>
+            <h3>{__('authentication.guarantee.contact', ['[n]' => 2])}</h3>
 
             <p class="ty-mt-s"><label for="second-guarant-name">{__('fullname')}</label></p>
-            <input id="second-guarant-name" type="text" placeholder="Введите ФИО">
+            <input id="second-guarant-name" type="text" placeholder="{__('ph_fullname')}">
 
-            <p class="ty-mt-s"><label for="second-guarant-phone">Номер телефона</label></p>
+            <p class="ty-mt-s"><label for="second-guarant-phone">{__('rapidaphone')}</label></p>
             <input id="second-guarant-phone" type="text" placeholder="+998">
         </div>
     </div>

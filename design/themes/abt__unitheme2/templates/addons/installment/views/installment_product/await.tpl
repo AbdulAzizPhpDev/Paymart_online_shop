@@ -10,11 +10,11 @@
             style="width: 310px"
     ></lottie-player>
 
-    <h1>Ваша заявка обрабатывается</h1>
-    <span>Это может занять несколько минут</span>
+    <h1>{__('authentication.await.title')}</h1>
+    <span>{__('authentication.await.subtitle')}</span>
 
     <button class="ty-btn ty-btn__secondary" type="button" id="await-btn">
-        Посмотреть статус
+        {__('authentication.await.show_status')}
     </button>
 
     <div class="ty-login-form__wrong-credentials-container">
