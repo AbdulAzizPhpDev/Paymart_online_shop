@@ -57,8 +57,12 @@
             <tfoot>
             <tr>
                 <td>
-{*                    <a href="https://newres.paymart.uz/storage/contract/{$order->contract->id}/buyer_account_{$order->contract->id}.pdf"*}
-{*                       target="_blank" class="btn">Распечатать АКТ</a>*}
+                    {if !$is_admin}
+                        {if $order->contract->status == 1}
+                            <a href="https://newres.paymart.uz/storage/contract/{$order->contract->id}/buyer_account_{$order->contract->id}.pdf"
+                               target="_blank" class="btn">Распечатать АКТ</a>
+                        {/if}
+                    {/if}
                 </td>
                 <td colspan="6"></td>
                 <td>
@@ -71,7 +75,7 @@
                             </button>
                         {/if}
                     {else}
-                        {if $order->contract->status == 0 || $order->contract->status == 2}
+                        {if $order->contract->status == 2}
                             <button class="btn accept-contract"
                                     data-contract-id="{$order->contract->id}"
                                     data-order-id="{$order->id}">
