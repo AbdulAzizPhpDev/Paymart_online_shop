@@ -1,7 +1,7 @@
 {script src="js/addons/installment/profile-contracts.js"}
 
 <div class="profile-contracts-page">
-    {if !empty($contracts->contracts)}
+    {if !empty($contracts)}
         <h1>{__('contracts')}</h1>
 
         {*<div class="search-container">
@@ -10,7 +10,7 @@
         </div>*}
 
         <div class="contracts">
-            {foreach from=$contracts->contracts key=index item=contract}
+            {foreach from=$contracts key=index item=contract}
                 <a href="https://front.paymart.uz/{$smarty.const.CART_LANGUAGE|lower}/market/contract/{$contract->contract_id}?api_token={$user_api_token}&user_phone={$user_phone}"
                    target="_blank" class="contract-card">
                     <div class="header">
