@@ -57,17 +57,19 @@
             <tfoot>
             <tr>
                 <td>
-                    <a href="https://newres.paymart.uz/storage/contract/{$order->contract->id}/buyer_account_{$order->contract->id}.pdf"
-                       target="_blank" class="btn">Распечатать АКТ</a>
+{*                    <a href="https://newres.paymart.uz/storage/contract/{$order->contract->id}/buyer_account_{$order->contract->id}.pdf"*}
+{*                       target="_blank" class="btn">Распечатать АКТ</a>*}
                 </td>
                 <td colspan="6"></td>
                 <td>
                     {if $is_admin}
-                        <button class="btn tracking-contract"
-                                data-contract-id="{$order->id}"
-                                data-buyer-phone="{$order->buyer->phone}">
-                            Tracking
-                        </button>
+                        {if $order->contract->status == 1}
+                            <button class="btn tracking-contract"
+                                    data-contract-id="{$order->id}"
+                                    data-buyer-phone="{$order->buyer->phone}">
+                                Tracking
+                            </button>
+                        {/if}
                     {else}
                         {if $order->contract->status == 0 || $order->contract->status == 2}
                             <button class="btn accept-contract"
