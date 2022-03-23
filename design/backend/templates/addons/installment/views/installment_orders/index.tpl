@@ -2,13 +2,13 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.css" />
 
 {script src="js/addons/installment/backend/admin/contracts/func.js"}
-{*{fn_print_die($paymart_orders->data)}*}
+
 <div class="admin-contracts-list">
     <header class="header">
         <h1>Заказы</h1>
     </header>
     {include file="addons/installment/views/installment_orders/components/statuses-tab.tpl"}
-    {if $paymart_orders->data|count > 0}
+    {if !empty($paymart_orders->data)}
         {foreach from=$paymart_orders->data item=order}
             {include file="addons/installment/views/installment_orders/components/contract-item.tpl" order=$order is_admin=true}
         {/foreach}
