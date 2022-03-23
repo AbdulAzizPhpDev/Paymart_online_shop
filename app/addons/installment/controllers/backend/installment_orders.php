@@ -10,7 +10,6 @@ if (!defined('BOOTSTRAP')) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
     if ($mode == "change_status") {
         $order_id = $_REQUEST['order_id'];
         $contract_status = $_REQUEST['status'];
@@ -21,12 +20,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data = [
                 "status" => OrderStatuses::COMPLETE
             ];
-            createFargoOrder($fargo_order_id);
-
-            db_query("UPDATE ?:orders SET ?u WHERE p_contract_id=?i", $data, $order_id);
-            $errors = showErrors('success', $_REQUEST, "success");
+            $order = db_get_row("select * from ?:orders as order_data 
+                         INNER JOIN ?:companies as company ON order_data.company_id = company.company_id   
+                         INNER JOIN ?:order_details as order_detail ON order_data.order_id = order_detail.order_id
+                         where order_data.p_contract_id=?i", $_REQUEST['order_id']);
+            $data_confirm = [
+                "contract_id" => $order['p_contract_id']
+            ];
+            $confirm_res = php_curl('/v1/buyers/partner-confirm', $data_confirm, "POST", $order['p_c_token']);
+            if ($confirm_res->status) {
+                createFargoOrder($fargo_order_id);
+                db_query("UPDATE ?:orders SET ?u WHERE p_contract_id=?i", $data, $order_id);
+                $errors = showErrors('success', $_REQUEST, "success");
+                Registry::get('ajax')->assign('result', $errors);
+                exit();
+            }
+            $errors = showErrors('error', [], "error");
             Registry::get('ajax')->assign('result', $errors);
             exit();
+
         } else {
             $data = [
                 "status" => OrderStatuses::CANCELED
@@ -49,6 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
     }
+
 }
 
 if ($mode == "index") {
