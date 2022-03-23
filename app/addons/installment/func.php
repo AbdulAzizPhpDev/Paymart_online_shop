@@ -222,8 +222,6 @@ function createFargoOrder($contract_id)
         ];
         db_query('INSERT INTO ?:fargo_orders ?e', $data_order);
     }
-//    $product_quantity = Tygh::$app['session']['product_info']['product_id'];
-//    unset(Tygh::$app['session']['product_info']);
 
     $fargo_label_res = php_curl(
         FARGO_URL . '/v1/customer/orders/airwaybill_mini?ids=&order_numbers=' . $fargo_order_res->data->order_number,
