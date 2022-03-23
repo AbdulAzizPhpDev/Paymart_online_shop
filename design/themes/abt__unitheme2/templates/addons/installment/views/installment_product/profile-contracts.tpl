@@ -27,7 +27,7 @@
                         {__('gift_cert_debit')}: {$contract->remainder}
                     </p>
 
-                    <p class="contract-date">Следующая выплата: {$contract->next_pay}</p>
+                    <p class="contract-date">{__('profile.contracts.next_pay')}: {$contract->next_pay}</p>
                     <span class="sum">{$contract->monthly_payment}</span><span class="currency">Cум</span>
 
                     <div class="progress active" data-percentage="{$group_by[$contract->contract_id]}"></div>
