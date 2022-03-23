@@ -65,27 +65,27 @@
                     {if $is_admin}
                         {if $order->contract->status == 1}
                             <button class="btn tracking-contract"
-                                    data-contract-id="{$order->id}"
-                                    data-buyer-phone="{$order->buyer->phone}">
+                                    data-contract-id="{$order->contract->id}"
+                                    data-order-id="{$order->id}">
                                 Tracking
                             </button>
                         {/if}
                     {else}
                         {if $order->contract->status == 0 || $order->contract->status == 2}
                             <button class="btn accept-contract"
-                                    data-contract-id="{$order->id}"
-                                    data-buyer-phone="{$order->buyer->phone}">
+                                    data-contract-id="{$order->contract->id}"
+                                    data-order-id="{$order->id}">
                                 Принять договор
                             </button>
                             <button class="btn cancel-contract"
-                                    data-contract-id="{$order->id}"
-                                    data-buyer-phone="{$order->buyer->phone}">
+                                    data-contract-id="{$order->contract->id}"
+                                    data-order-id="{$order->id}">
                                 Отменить договор
                             </button>
                         {elseif $order->contract->status == 1}
                             <button class="btn cancel-contract"
-                                    data-contract-id="{$order->id}"
-                                    data-buyer-phone="{$order->buyer->phone}">
+                                    data-contract-id="{$order->contract->id}"
+                                    data-order-id="{$order->id}">
                                 Отменить договор
                             </button>
                         {/if}
