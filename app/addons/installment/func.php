@@ -240,4 +240,16 @@ function createFargoOrder($contract_id)
 }
 
 
+function fargoAuth()
+{
+    $fargo_data_auth = [
+        "username" => FARGO_USERNAME,
+        "password" => FARGO_PASSWORD
+    ];
+    $url = FARGO_URL . "/v1/customer/authenticate";
+    $fargo_auth_res = php_curl($url, $fargo_data_auth, 'POST', '');
+    return $fargo_auth_res->data->id_token;
+}
+
+
 

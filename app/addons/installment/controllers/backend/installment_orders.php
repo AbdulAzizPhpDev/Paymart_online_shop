@@ -10,30 +10,43 @@ if (!defined('BOOTSTRAP')) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-fn_print_die($_REQUEST);
+
     if ($mode == "change_status") {
-        $contract_id = $_REQUEST['contract_id'];
+        $order_id = $_REQUEST['order_id'];
         $contract_status = $_REQUEST['status'];
+        $fargo_data = db_get_row("select *  from ?:fargo_orders where paymart_contract_id=?i ", $_REQUEST['order_id']);
+        $fargo_order_id = $fargo_data['fargo_contract_id'];
         $data = null;
         if ($contract_status) {
             $data = [
                 "status" => OrderStatuses::COMPLETE
             ];
+            createFargoOrder($fargo_order_id);
+
+            db_query("UPDATE ?:orders SET ?u WHERE p_contract_id=?i", $data, $order_id);
+            $errors = showErrors('success', $_REQUEST, "success");
+            Registry::get('ajax')->assign('result', $errors);
+            exit();
         } else {
             $data = [
                 "status" => OrderStatuses::CANCELED
             ];
+
+            $url = FARGO_URL . "/v1/customer/order/$fargo_order_id/status?status=cancelled";
+            $cancel_order = php_curl($url, [], "PUT", fargoAuth());
+
+            if ($cancel_order->status == "success") {
+                db_query("UPDATE ?:orders SET ?u WHERE p_contract_id=?i", $data, $order_id);
+
+                $errors = showErrors('success', $_REQUEST, "success");
+                Registry::get('ajax')->assign('result', $errors);
+                exit();
+            }
+
+            $errors = showErrors('error', [], "error");
+            Registry::get('ajax')->assign('result', $errors);
+            exit();
         }
-        fn_print_die($_REQUEST);
-        $fargo_data = db_get_row("select *  from ?:fargo_orders where paymart_contract_id=?i ", $_REQUEST['contract_id']);
-        $url = FARGO_URL . '/v1/customer/order//status?status=cancelled';
-        php_curl('https://prodapi.shipox.com/api/v1/customer/order/1240763539/status?status=cancelled');
-
-        db_query("UPDATE ?:orders SET ?u WHERE p_contract_id=?i", $data, $contract_id);
-
-        $errors = showErrors('success', [], "success");
-        Registry::get('ajax')->assign('result', $errors);
-        exit();
 
     }
 }
