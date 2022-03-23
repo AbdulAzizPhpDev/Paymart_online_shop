@@ -33,19 +33,21 @@ function checkUserFromPaymart($user_id)
 
     if (!empty($user['api_key'])) {
         $response = php_curl('/buyer/check_status', [], 'POST', $user['api_key']);
-
-        if ($response->data->status != $user['i_step']) {
-            $user_info = [
-                'i_step' => $response->data->status
-            ];
-            db_query('UPDATE ?:users SET ?u WHERE user_id = ?i', $user_info, $user['user_id']);
-        } else {
-            if ($response->data->status == 4) {
-                $user_info = ['i_limit' => $response->data->available_balance];
+        if ($response->status == "success") {
+            if ($response->data->status != $user['i_step']) {
+                $user_info = [
+                    'i_step' => $response->data->status
+                ];
                 db_query('UPDATE ?:users SET ?u WHERE user_id = ?i', $user_info, $user['user_id']);
+            } else {
+                if ($response->data->status == 4) {
+                    $user_info = ['i_limit' => $response->data->available_balance];
+                    db_query('UPDATE ?:users SET ?u WHERE user_id = ?i', $user_info, $user['user_id']);
+                }
             }
+            return true;
         }
-        return true;
+
     }
     return false;
 }
@@ -99,15 +101,8 @@ function showErrors($text, $data = [], $status = "error"): array
 }
 
 
-function createOrder($product_id, $quantity, $user_id, $params = [], $contract_id)
+function createOrder($product, $quantity, $user, $params = [], $contract_id)
 {
-    $user = db_get_row("SELECT * FROM ?:users WHERE user_id =?i", $user_id);
-    $product = db_get_row('SELECT *,product_description.product as product_name FROM ?:products as product 
-        INNER JOIN ?:companies as company ON product.company_id = company.company_id 
-        INNER JOIN ?:product_prices as product_price ON product.product_id = product_price.product_id 
-        INNER JOIN ?:product_descriptions as product_description ON product.product_id = product_description.product_id 
-        WHERE product.product_id = ?i ', $product_id);
-
     $ip = fn_get_ip();
     $order['ip_address'] = fn_ip_to_db($ip['host']);
     $order['timestamp'] = TIME;
@@ -117,7 +112,7 @@ function createOrder($product_id, $quantity, $user_id, $params = [], $contract_i
     $order['is_parent_order'] = 'N';
     $order['company_id'] = Registry::get('runtime.company_id');
 
-    $order['user_id'] = $user_id;
+    $order['user_id'] = $user['user_id'];
     $order['phone'] = $user['phone'];
     $order['email'] = $user['email'];
     $order['firstname'] = $user['firstname'];
@@ -143,11 +138,96 @@ function createOrder($product_id, $quantity, $user_id, $params = [], $contract_i
 
     db_query("INSERT INTO ?:order_details ?e", $order_details);
 
-
-    return $order_id;
+    return true;
 
 }
-
+//
+//function createFargoOrder($contract_id)
+//{
+//    $product_shipping_data = unserialize($product_info['shipping_params']);
+//
+//    $fargo_data = [
+//        "sender_data" => fn_fargo_uz_sender_recipient_data(
+//            "residential",
+//            $product_info['company'],
+//            $product_info['city'],
+//            234,
+//            '+' . $product_info['phone'],
+//            null,
+//            $product_info['address']
+//        ),
+//        "recipient_data" => fn_fargo_uz_sender_recipient_data(
+//            "residential",
+//            $user['lastname'] . ' ' . $user['firstname'],
+//            $city_id,
+//            234,
+//            '+' . $user['phone'],
+//            null,
+//            $_REQUEST['apartment'],
+//            $_REQUEST['building'],
+//            $_REQUEST['street']
+//        ),
+//        "dimensions" => fn_fargo_uz_dimensions(
+//            $product_info['weight'],
+//            $product_shipping_data['box_width'],
+//            $product_shipping_data['box_height'],
+//            $product_shipping_data['box_length'],
+//            1,
+//            true),
+//        "package_type" => [
+//            "courier_type" => "DOOR_DOOR"
+//        ],
+//        "charge_items" => [
+//            fn_fargo_uz_charge_items("service_custom", "sender")
+//        ],
+//        "recipient_not_available" => "do_not_deliver",
+//        "payment_type" => "credit_balance",
+//        "payer" => "sender"
+//    ];
+//
+//    $fargo_data_auth = [
+//        "username" => FARGO_USERNAME,
+//        "password" => FARGO_PASSWORD
+//    ];
+//    $url = FARGO_URL . "/v1/customer/authenticate";
+//    $fargo_auth_res = php_curl($url, $fargo_data_auth, 'POST', '');
+//
+//
+//    $url = FARGO_URL . '/v2/customer/order';
+//    $fargo_order_res = php_curl($url, $fargo_data, 'POST', $fargo_auth_res->data->id_token);
+//
+//
+//    if ($fargo_order_res->status != "success") {
+//        $errors_data = [
+//            'error_test' => $fargo_order_res->message
+//        ];
+//        $errors = showErrors("service_error", $errors_data, "error");
+//        Registry::get('ajax')->assign('result', $errors);
+//        exit();
+//    } else {
+//        $data_order = [
+//            'fargo_order_id' => $fargo_order_res->data->order_number,
+//            'fargo_contract_id' => $fargo_order_res->data->id,
+//            'paymart_contract_id' => $_REQUEST['contract_id']
+//        ];
+//        db_query('INSERT INTO ?:fargo_orders ?e', $data_order);
+//    }
+//    $product_quantity = Tygh::$app['session']['product_info']['product_id'];
+//    unset(Tygh::$app['session']['product_info']);
+//
+//    $fargo_label_res = php_curl(
+//        FARGO_URL . '/v1/customer/orders/airwaybill_mini?ids=&order_numbers=' . $fargo_order_res->data->order_number,
+//        [],
+//        'GET',
+//        $fargo_auth_res->data->id_token
+//    );
+//    $data_label = [
+//        "fargo_contract_label" => $fargo_label_res->data->value
+//    ];
+//    db_query('UPDATE ?:fargo_orders SET ?u WHERE fargo_order_id = ?i', $data_label, $fargo_order_res->data->order_number);
+//
+//    return true;
+//}
 
 
 

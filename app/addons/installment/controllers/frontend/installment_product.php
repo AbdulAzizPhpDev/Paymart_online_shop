@@ -280,7 +280,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 ]
             ],
             "limit" => $_REQUEST['limit'],
-            "buyer_phone" => $user['phone']
+            "buyer_phone" => $user['phone'],
+            "online" => 1
         ];
 
         $response = php_curl('/buyers/credit/add', $data, 'POST', $product_info['p_c_token']);
@@ -305,6 +306,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $user = db_get_row('select * from ?:users where user_id=?i', $auth['user_id']);
 
         $product_id = Tygh::$app['session']['product_info']['product_id'];
+        $product_amount = (int)Tygh::$app['session']['product_info']['product_qty'];
 
         $product_info = db_get_row('SELECT *,product_description.product as product_name FROM ?:products as product 
         INNER JOIN ?:companies as company ON product.company_id = company.company_id 
@@ -312,7 +314,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         INNER JOIN ?:product_descriptions as product_description ON product.product_id = product_description.product_id 
         WHERE product.product_id = ?i ', $product_id);
 
-        $product_quantity = (int)$product_info['amount'] - (int)Tygh::$app['session']['product_info']['product_qty'];
+        $product_quantity = (int)$product_info['amount'] - $product_amount;
 
         if ($product_quantity < 0) {
             $errors = showErrors('product_is_not_exist');
@@ -335,99 +337,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($response->result->status == 1) {
 
             db_query('UPDATE ?:products SET ?u WHERE product_id = ?i', $data, $product_id);
-            $city_id = null;
+
+            $params["apartment"] = $_REQUEST['apartment'];
+            $params["building"] = $_REQUEST['building'];
+            $params["street"] = $_REQUEST['street'];
+
             $neighborhood = [];
             if ((int)$_REQUEST['region'] == 228171787) {
-                $city_id = 228171787;
-                $neighborhood = [
-                    "id" => (int)$_REQUEST['city']
-                ];
-            } else {
-                $city_id = (int)$_REQUEST['region'];
-                $neighborhood = null;
-            }
+                $params["city_id"] = 228171787;
 
+            } else {
+                $params["city_id"] = (int)$_REQUEST['region'];
+
+            }
             $product_shipping_data = unserialize($product_info['shipping_params']);
-
-            $fargo_data = [
-                "sender_data" => fn_fargo_uz_sender_recipient_data(
-                    "residential",
-                    $product_info['company'],
-                    $product_info['city'],
-                    234,
-                    '+' . $product_info['phone'],
-                    null,
-                    $product_info['address']
-                ),
-                "recipient_data" => fn_fargo_uz_sender_recipient_data(
-                    "residential",
-                    $user['lastname'] . ' ' . $user['firstname'],
-                    $city_id,
-                    234,
-                    '+' . $user['phone'],
-                    null,
-                    $_REQUEST['apartment'],
-                    $_REQUEST['building'],
-                    $_REQUEST['street']
-                ),
-                "dimensions" => fn_fargo_uz_dimensions(
-                    $product_info['weight'],
-                    $product_shipping_data['box_width'],
-                    $product_shipping_data['box_height'],
-                    $product_shipping_data['box_length'],
-                    1,
-                    true),
-                "package_type" => [
-                    "courier_type" => "DOOR_DOOR"
-                ],
-                "charge_items" => [
-                    fn_fargo_uz_charge_items("service_custom", "sender")
-                ],
-                "recipient_not_available" => "do_not_deliver",
-                "payment_type" => "credit_balance",
-                "payer" => "sender"
-            ];
-
-            $fargo_data_auth = [
-                "username" => FARGO_USERNAME,
-                "password" => FARGO_PASSWORD
-            ];
-            $url = FARGO_URL . "/v1/customer/authenticate";
-            $fargo_auth_res = php_curl($url, $fargo_data_auth, 'POST', '');
-
-
-            $url = FARGO_URL . '/v2/customer/order';
-            $fargo_order_res = php_curl($url, $fargo_data, 'POST', $fargo_auth_res->data->id_token);
-
-
-            if ($fargo_order_res->status != "success") {
-                $errors_data = [
-                    'error_test' => $fargo_order_res->message
-                ];
-                $errors = showErrors("service_error", $errors_data, "error");
-                Registry::get('ajax')->assign('result', $errors);
-                exit();
-            } else {
-                $data_order = [
-                    'fargo_order_id' => $fargo_order_res->data->order_number,
-                    'fargo_contract_id' => $fargo_order_res->data->id,
-                    'paymart_contract_id' => $_REQUEST['contract_id']
-                ];
-                db_query('INSERT INTO ?:fargo_orders ?e', $data_order);
-            }
-            $product_quantity = Tygh::$app['session']['product_info']['product_id'];
-            unset(Tygh::$app['session']['product_info']);
-
-            $fargo_label_res = php_curl(
-                FARGO_URL . '/v1/customer/orders/airwaybill_mini?ids=&order_numbers=' . $fargo_order_res->data->order_number,
-                [],
-                'GET',
-                $fargo_auth_res->data->id_token
-            );
-            $data_label = [
-                "fargo_contract_label" => $fargo_label_res->data->value
-            ];
-            db_query('UPDATE ?:fargo_orders SET ?u WHERE fargo_order_id = ?i', $data_label, $fargo_order_res->data->order_number);
+            $params["shipping_params"] = $product_shipping_data;
+            $data = createOrder($product_info, $product_amount, $user, $params, $_REQUEST['contract_id']);
 
             $errors = showErrors('contract_create_successfully', [], "success");
             Registry::get('ajax')->assign('result', $errors);
