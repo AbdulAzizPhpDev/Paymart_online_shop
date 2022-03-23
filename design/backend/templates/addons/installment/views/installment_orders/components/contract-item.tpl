@@ -51,7 +51,7 @@
                 <td></td>
                 <td>15%</td>
                 <td></td>
-                <td>{$order->contract->total}</td>
+                <td>{$order->contract->total|number_format}</td>
             </tr>
             </tbody>
             <tfoot>
