@@ -141,93 +141,103 @@ function createOrder($product, $quantity, $user, $params = [], $contract_id)
     return true;
 
 }
-//
-//function createFargoOrder($contract_id)
-//{
-//    $product_shipping_data = unserialize($product_info['shipping_params']);
-//
-//    $fargo_data = [
-//        "sender_data" => fn_fargo_uz_sender_recipient_data(
-//            "residential",
-//            $product_info['company'],
-//            $product_info['city'],
-//            234,
-//            '+' . $product_info['phone'],
-//            null,
-//            $product_info['address']
-//        ),
-//        "recipient_data" => fn_fargo_uz_sender_recipient_data(
-//            "residential",
-//            $user['lastname'] . ' ' . $user['firstname'],
-//            $city_id,
-//            234,
-//            '+' . $user['phone'],
-//            null,
-//            $_REQUEST['apartment'],
-//            $_REQUEST['building'],
-//            $_REQUEST['street']
-//        ),
-//        "dimensions" => fn_fargo_uz_dimensions(
-//            $product_info['weight'],
-//            $product_shipping_data['box_width'],
-//            $product_shipping_data['box_height'],
-//            $product_shipping_data['box_length'],
-//            1,
-//            true),
-//        "package_type" => [
-//            "courier_type" => "DOOR_DOOR"
-//        ],
-//        "charge_items" => [
-//            fn_fargo_uz_charge_items("service_custom", "sender")
-//        ],
-//        "recipient_not_available" => "do_not_deliver",
-//        "payment_type" => "credit_balance",
-//        "payer" => "sender"
-//    ];
-//
-//    $fargo_data_auth = [
-//        "username" => FARGO_USERNAME,
-//        "password" => FARGO_PASSWORD
-//    ];
-//    $url = FARGO_URL . "/v1/customer/authenticate";
-//    $fargo_auth_res = php_curl($url, $fargo_data_auth, 'POST', '');
-//
-//
-//    $url = FARGO_URL . '/v2/customer/order';
-//    $fargo_order_res = php_curl($url, $fargo_data, 'POST', $fargo_auth_res->data->id_token);
-//
-//
-//    if ($fargo_order_res->status != "success") {
-//        $errors_data = [
-//            'error_test' => $fargo_order_res->message
-//        ];
-//        $errors = showErrors("service_error", $errors_data, "error");
-//        Registry::get('ajax')->assign('result', $errors);
-//        exit();
-//    } else {
-//        $data_order = [
-//            'fargo_order_id' => $fargo_order_res->data->order_number,
-//            'fargo_contract_id' => $fargo_order_res->data->id,
-//            'paymart_contract_id' => $_REQUEST['contract_id']
-//        ];
-//        db_query('INSERT INTO ?:fargo_orders ?e', $data_order);
-//    }
+
+function createFargoOrder($contract_id)
+{
+    $order = db_get_row("select * from ?:orders as order_data 
+                         INNER JOIN ?:order_details as order_detail ON order_data.order_id = order_detail.order_id   
+                         where order_data.p_contract_id=?i", $contract_id);
+
+    $product_info = db_get_row('SELECT *,product_description.product as product_name FROM ?:products as product 
+        INNER JOIN ?:companies as company ON product.company_id = company.company_id 
+        INNER JOIN ?:product_prices as product_price ON product.product_id = product_price.product_id 
+        INNER JOIN ?:product_descriptions as product_description ON product.product_id = product_description.product_id 
+        WHERE product.product_id = ?i ', $order['product_id']);
+    $user = db_get_row('select * from ?:users where user_id=?i', $order['user_id']);
+    $product_shipping_data = unserialize($order['fargo_address']);
+
+    $fargo_data = [
+        "sender_data" => fn_fargo_uz_sender_recipient_data(
+            "residential",
+            $product_info['company'],
+            $product_info['city'],
+            234,
+            '+' . $product_info['phone'],
+            null,
+            $product_info['address']
+        ),
+        "recipient_data" => fn_fargo_uz_sender_recipient_data(
+            "residential",
+            $user['lastname'] . ' ' . $user['firstname'],
+            $product_shipping_data['city_id'],
+            234,
+            '+' . $user['phone'],
+            null,
+            $product_shipping_data['apartment'],
+            $product_shipping_data['building'],
+            $product_shipping_data['street']
+        ),
+        "dimensions" => fn_fargo_uz_dimensions(
+            $product_info['weight'],
+            $product_shipping_data['shipping_params']['box_width'],
+            $product_shipping_data['shipping_params']['box_height'],
+            $product_shipping_data['shipping_params']['box_length'],
+            1,
+            true),
+        "package_type" => [
+            "courier_type" => "DOOR_DOOR"
+        ],
+        "charge_items" => [
+            fn_fargo_uz_charge_items("service_custom", "sender")
+        ],
+        "recipient_not_available" => "do_not_deliver",
+        "payment_type" => "credit_balance",
+        "payer" => "sender"
+    ];
+
+    $fargo_data_auth = [
+        "username" => FARGO_USERNAME,
+        "password" => FARGO_PASSWORD
+    ];
+    $url = FARGO_URL . "/v1/customer/authenticate";
+    $fargo_auth_res = php_curl($url, $fargo_data_auth, 'POST', '');
+
+
+    $url = FARGO_URL . '/v2/customer/order';
+    $fargo_order_res = php_curl($url, $fargo_data, 'POST', $fargo_auth_res->data->id_token);
+
+
+    if ($fargo_order_res->status != "success") {
+        $errors_data = [
+            'error_test' => $fargo_order_res->message
+        ];
+        $errors = showErrors("service_error", $errors_data, "error");
+        Registry::get('ajax')->assign('result', $errors);
+        exit();
+    } else {
+        $data_order = [
+            'fargo_order_id' => $fargo_order_res->data->order_number,
+            'fargo_contract_id' => $fargo_order_res->data->id,
+            'paymart_contract_id' => $order['p_contract_id']
+        ];
+        db_query('INSERT INTO ?:fargo_orders ?e', $data_order);
+    }
 //    $product_quantity = Tygh::$app['session']['product_info']['product_id'];
 //    unset(Tygh::$app['session']['product_info']);
-//
-//    $fargo_label_res = php_curl(
-//        FARGO_URL . '/v1/customer/orders/airwaybill_mini?ids=&order_numbers=' . $fargo_order_res->data->order_number,
-//        [],
-//        'GET',
-//        $fargo_auth_res->data->id_token
-//    );
-//    $data_label = [
-//        "fargo_contract_label" => $fargo_label_res->data->value
-//    ];
-//    db_query('UPDATE ?:fargo_orders SET ?u WHERE fargo_order_id = ?i', $data_label, $fargo_order_res->data->order_number);
-//
-//    return true;
-//}
+
+    $fargo_label_res = php_curl(
+        FARGO_URL . '/v1/customer/orders/airwaybill_mini?ids=&order_numbers=' . $fargo_order_res->data->order_number,
+        [],
+        'GET',
+        $fargo_auth_res->data->id_token
+    );
+    $data_label = [
+        "fargo_contract_label" => $fargo_label_res->data->value
+    ];
+    db_query('UPDATE ?:fargo_orders SET ?u WHERE fargo_order_id = ?i', $data_label, $fargo_order_res->data->order_number);
+
+    return true;
+}
 
 
 

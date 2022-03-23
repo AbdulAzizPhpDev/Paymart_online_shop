@@ -10,7 +10,7 @@ if (!defined('BOOTSTRAP')) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
+fn_print_die($_REQUEST);
     if ($mode == "change_status") {
         $contract_id = $_REQUEST['contract_id'];
         $contract_status = $_REQUEST['status'];
@@ -24,8 +24,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 "status" => OrderStatuses::CANCELED
             ];
         }
-        db_query("UPDATE ?:orders SET ?u WHERE p_contract_id=?i", $data, $contract_id);
+        fn_print_die($_REQUEST);
+        $fargo_data = db_get_row("select *  from ?:fargo_orders where paymart_contract_id=?i ", $_REQUEST['contract_id']);
+        $url = FARGO_URL . '/v1/customer/order//status?status=cancelled';
+        php_curl('https://prodapi.shipox.com/api/v1/customer/order/1240763539/status?status=cancelled');
 
+        db_query("UPDATE ?:orders SET ?u WHERE p_contract_id=?i", $data, $contract_id);
 
         $errors = showErrors('success', [], "success");
         Registry::get('ajax')->assign('result', $errors);
