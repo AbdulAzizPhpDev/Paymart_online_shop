@@ -187,6 +187,23 @@ myBtn.onclick = function () {
     callback: function (response) {
       otpState.contractId = response.result.paymart_client.contract_id;
       modal.style.display = 'block';
+
+      $('.resend-sms-card').css('display', 'block');
+      var counter = setInterval(timer, 1000); //1000 will  run it every 1 second
+      function timer() {
+        otpState.timer = otpState.timer - 1;
+        if (otpState.timer <= 0) {
+          clearInterval(counter);
+          $('#modal-sent').attr('disabled', false);
+          $('.resend-sms-card').css('display', 'none');
+          $('.resend-sms-card__ok').css('display', 'block');
+          $('.modal-error').css('display', 'none');
+          //counter ended, do something here
+          return;
+        }
+        document.querySelector('.card-resend-sms-timer').innerHTML = otpState.timer + ' secs';
+      }
+
     },
   });
 };
@@ -206,22 +223,6 @@ $('#modal-sent').click(function () {
   let street = $('#story3').val();
   $(this).attr('disabled', true);
   let otpInputVal = $('.ty-login__input').val();
-  $('.ty-login__input').attr('disabled', true);
-  $('.resend-sms-card').css('display', 'block');
-  var counter = setInterval(timer, 1000); //1000 will  run it every 1 second
-  function timer() {
-    otpState.timer = otpState.timer - 1;
-    if (otpState.timer <= 0) {
-      clearInterval(counter);
-      $('#modal-sent').attr('disabled', false);
-      $('.resend-sms-card').css('display', 'none');
-      $('.resend-sms-card__ok').css('display', 'block');
-      $('.modal-error').css('display', 'none');
-      //counter ended, do something here
-      return;
-    }
-    document.querySelector('.card-resend-sms-timer').innerHTML = otpState.timer + ' secs';
-  }
 
   $.ceAjax('request', fn_url('installment_product.set_confirm_contract'), {
     method: 'POST',
