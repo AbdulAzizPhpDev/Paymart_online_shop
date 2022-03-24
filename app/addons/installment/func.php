@@ -101,8 +101,9 @@ function showErrors($text, $data = [], $status = "error"): array
 }
 
 
-function createOrder($product, $quantity, $user, $params = [], $contract_id)
+function createOrder($product, $quantity, $user, $params, $contract_id)
 {
+
     $ip = fn_get_ip();
     $order['ip_address'] = fn_ip_to_db($ip['host']);
     $order['timestamp'] = TIME;
@@ -110,7 +111,7 @@ function createOrder($product, $quantity, $user, $params = [], $contract_id)
     $order['lang_code'] = isset($user_lang) && !empty($user_lang) ? $user_lang : CART_LANGUAGE;
     $order['status'] = STATUS_INCOMPLETED_ORDER;
     $order['is_parent_order'] = 'N';
-    $order['company_id'] = Registry::get('runtime.company_id');
+    $order['company_id'] = $product['company_id'];
 
     $order['user_id'] = $user['user_id'];
     $order['phone'] = $user['phone'];
@@ -155,12 +156,12 @@ function createFargoOrder($contract_id)
         WHERE product.product_id = ?i ', $order['product_id']);
     $user = db_get_row('select * from ?:users where user_id=?i', $order['user_id']);
     $product_shipping_data = unserialize($order['fargo_address']);
-
+    fn_print_die($order);
     $fargo_data = [
         "sender_data" => fn_fargo_uz_sender_recipient_data(
             "residential",
             $product_info['company'],
-            $product_info['city'],
+            263947147,
             234,
             '+' . $product_info['phone'],
             null,
@@ -205,7 +206,6 @@ function createFargoOrder($contract_id)
 
     $url = FARGO_URL . '/v2/customer/order';
     $fargo_order_res = php_curl($url, $fargo_data, 'POST', $fargo_auth_res->data->id_token);
-
 
     if ($fargo_order_res->status != "success") {
         $errors_data = [
