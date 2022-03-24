@@ -131,8 +131,12 @@
                             <label for="formAddress2">Город</label>
                             <div class="input-paying__unique">
                                 <select name="formAddress2" id="formAddress2">
-                                    {foreach $city as $value}
-                                        <option selected value="{$value['city_id']}">{$value['city_name']}</option>
+                                    {foreach $city as $key => $value}
+                                        {if $key==134}
+                                            <option selected value="{$value['city_id']}">{$value['city_name']}</option>
+                                        {else }
+                                            <option value="{$value['city_id']}">{$value['city_name']}</option>
+                                        {/if}
                                     {/foreach}
                                 </select>
                             </div>
@@ -198,7 +202,7 @@
 </div>
 
 <!-- The Modal -->
-<div id="myModal" class="modal">
+<div id="myModal" class="modal" style="display: block">
     <!-- Modal content -->
     <div class="modal-content">
         <span class="close">
@@ -246,13 +250,16 @@ $('#card-pin-wrapper').pinlogin({
   placeholder: '*',
   hideinput: false,
   fields: 4,
-  reset: true,
+  reset: false,
+  disable: true,
+  focus: false,
+  autofocus: false,
   complete: function (pin) {
     $('.confirm-contract').attr('value', pin);
     $('#modal-sent').removeAttr('disabled');
     $('#modal-sent').click();
+    $('.pinlogin-field').attr('disable');
   },
+
 });
-
-
 </script>

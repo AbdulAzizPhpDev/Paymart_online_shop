@@ -1,5 +1,6 @@
 @import "../mixins";
 @import "../variables";
+@import "../tracking-stepper";
 
 .admin-contracts-list {
   padding-bottom: 60px;
@@ -180,6 +181,21 @@
       -webkit-box-shadow: none;
       -moz-box-shadow: none;
       box-shadow: none;
+    }
+  }
+
+  .tracking-contract-modal {
+    width: 100%;
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+
+      .close-tracking-contract-modal {
+        background-color: transparent;
+        border: none;
+        font-size: 28px;
+      }
     }
   }
 

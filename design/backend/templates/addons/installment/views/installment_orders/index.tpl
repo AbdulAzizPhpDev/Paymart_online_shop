@@ -14,17 +14,18 @@
         {/foreach}
         <div class="pagination-contracts" data-contracts-count="{$paymart_orders->response->total}"></div>
         {* Show Tracking Modal  *}
-        <div class="modal signin-modal tracking-contract-modal" style="display: none">
+        <div class="modal signin-modal tracking-contract-modal" style="display: none;">
             <div class="modal-header">
-                <h3>Tracking Products</h3>
+                <div><h3>Tracking Products</h3></div>
+                <button class="close-tracking-contract-modal">&times;</button>
             </div>
             <div class="modal-body tracking-modal-body">
-                Modal Body
+                {include file="addons/installment/views/installment_orders/components/stepper.tpl"}
             </div>
-            <div class="modal-footer">
+            {*<div class="modal-footer">
                 <button class="btn close-tracking-contract-modal">Нет</button>
                 <button class="btn confirm-tracking-contract">Да</button>
-            </div>
+            </div>*}
         </div>
     {else}
         <h4>Пусто</h4>
