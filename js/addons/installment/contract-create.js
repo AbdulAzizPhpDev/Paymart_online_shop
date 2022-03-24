@@ -13,7 +13,7 @@ var myBtn = document.getElementById('myBtn');
 // Get the <span> element that closes the modal
 var span = document.getElementsByClassName('close')[0];
 
-// let value = $('.confirm-contract').val();
+let valueConfirm = $('.confirm-contract').val();
 let e = document.getElementById('selectedId');
 let formAdress = document.getElementById('formAddress2');
 let formAdress3 = document.getElementById('formAddress3');
@@ -206,6 +206,7 @@ $('#modal-sent').click(function () {
   let street = $('#story3').val();
   $(this).attr('disabled', true);
   let otpInputVal = $('.ty-login__input').val();
+  $('.ty-login__input').attr('disabled', true);
   $('.resend-sms-card').css('display', 'block');
   var counter = setInterval(timer, 1000); //1000 will  run it every 1 second
   function timer() {
