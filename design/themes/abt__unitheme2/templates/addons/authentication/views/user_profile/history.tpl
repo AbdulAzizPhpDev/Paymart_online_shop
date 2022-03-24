@@ -1,10 +1,11 @@
 {script src="js/addons/authentication/user_profile.js"}
 <div class="main-tab">
     {include file='addons/authentication/views/user_profile/sidebar.tpl'}
+
+
     <div class="tabSec">
         <button class="tablinksSec" onclick="openCitySec(event, 'London')">London</button>
         <button class="tablinksSec" onclick="openCitySec(event, 'Paris')">Paris</button>
-        <button class="tablinksSec" onclick="openCitySec(event, 'Tokyo')">Tokyo</button>
     </div>
 
     <div id="London" class="tabcontentSec">
