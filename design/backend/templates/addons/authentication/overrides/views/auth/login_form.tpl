@@ -1,6 +1,8 @@
 {*{hook name="auth:login_form"}*}
 <div class="modal signin-modal back-to-home">
-    {if fn_url()!="http://market.paymart.uz/admin.php"}
+    {assign var="url_name" value=explode('/', fn_url())}
+{*    {if $url_name[3]!="market_paymart_uz_admin.php"}*}
+    {if $url_name[3]!="admin.php"}
         <a href="/" role="button">&leftarrow; Назад</a>
     {else}
         <form action="{""|fn_url}" method="post" name="main_login_form"

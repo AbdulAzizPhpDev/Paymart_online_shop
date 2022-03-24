@@ -11,26 +11,30 @@ if (!defined('BOOTSTRAP')) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($mode == "change_status") {
+
         $order_id = $_REQUEST['order_id'];
         $contract_status = $_REQUEST['status'];
-        $fargo_data = db_get_row("select *  from ?:fargo_orders where paymart_contract_id=?i ", $_REQUEST['order_id']);
-        $fargo_order_id = $fargo_data['fargo_contract_id'];
-        $data = null;
-        if ($contract_status) {
-            $data = [
-                "status" => OrderStatuses::COMPLETE
-            ];
-            $order = db_get_row("select * from ?:orders as order_data 
+        $order_data = null;
+
+        $order = db_get_row("select *,order_data.phone as user_phone from ?:orders as order_data 
                          INNER JOIN ?:companies as company ON order_data.company_id = company.company_id   
                          INNER JOIN ?:order_details as order_detail ON order_data.order_id = order_detail.order_id
-                         where order_data.p_contract_id=?i", $_REQUEST['order_id']);
-            $data_confirm = [
-                "contract_id" => $order['p_contract_id']
+                         where order_data.p_contract_id=?i", $order_id);
+
+        if (filter_var($contract_status, FILTER_VALIDATE_BOOLEAN)) {
+
+            $order_data = [
+                "status" => OrderStatuses::COMPLETE
             ];
-            $confirm_res = php_curl('/v1/buyers/partner-confirm', $data_confirm, "POST", $order['p_c_token']);
+            $data_confirm = [
+                "contract_id" => (int)$order['p_contract_id'],
+                "online" => 1
+            ];
+
+            $confirm_res = php_curl('/buyers/partner-confirm', $data_confirm, "POST", $order['p_c_token'], 1);
             if ($confirm_res->status) {
-                createFargoOrder($fargo_order_id);
-                db_query("UPDATE ?:orders SET ?u WHERE p_contract_id=?i", $data, $order_id);
+                createFargoOrder($order_id);
+                db_query("UPDATE ?:orders SET ?u WHERE p_contract_id=?i", $order_data, $order_id);
                 $errors = showErrors('success', $_REQUEST, "success");
                 Registry::get('ajax')->assign('result', $errors);
                 exit();
@@ -40,24 +44,56 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit();
 
         } else {
-            $data = [
+            $order_data = [
                 "status" => OrderStatuses::CANCELED
             ];
+            $cancel_contract_data = [
+                "contract_id" => $order['p_contract_id'],
+                "buyer_phone" => $order['user_phone'],
+                "api_token" => $order['p_c_token'],
+                "online" => 1
+            ];
+            $contract_cancel_res = php_curl('/buyers/credit/cancel', $cancel_contract_data, 'POST', null);
 
-            $url = FARGO_URL . "/v1/customer/order/$fargo_order_id/status?status=cancelled";
-            $cancel_order = php_curl($url, [], "PUT", fargoAuth());
+            if ($contract_cancel_res->result->status === 1) {
 
-            if ($cancel_order->status == "success") {
-                db_query("UPDATE ?:orders SET ?u WHERE p_contract_id=?i", $data, $order_id);
+            db_query("UPDATE ?:orders SET ?u WHERE p_contract_id=?i", $order_data, $order_id);
 
-                $errors = showErrors('success', $_REQUEST, "success");
+            $product = db_get_row('select * from ?:products where product_id=?i', $order['product_id']);
+            $product_data = [
+                'amount' => (int)$product['amount'] + (int)$order['amount']
+            ];
+            db_query('UPDATE ?:products SET ?u WHERE product_id = ?i', $product_data, $product['product_id']);
+
+            } else {
+                $errors = showErrors('error', $contract_cancel_res, "error");
                 Registry::get('ajax')->assign('result', $errors);
                 exit();
             }
 
-            $errors = showErrors('error', [], "error");
-            Registry::get('ajax')->assign('result', $errors);
-            exit();
+            $fargo_data = db_get_row("select *  from ?:fargo_orders where paymart_contract_id=?i ", (int)$order_id);
+
+            if (empty($fargo_data)) {
+
+                $errors = showErrors('success', $_REQUEST, "success");
+                Registry::get('ajax')->assign('result', $errors);
+                exit();
+            } else {
+                $fargo_order_id = $fargo_data['fargo_contract_id'];
+                $url = FARGO_URL . "/v1/customer/order/$fargo_order_id/status?status=cancelled";
+                $cancel_order = php_curl($url, [], "PUT", fargoAuth());
+
+                if ($cancel_order->status == "success") {
+                    $errors = showErrors('success', $_REQUEST, "success");
+                    Registry::get('ajax')->assign('result', $errors);
+                    exit();
+                }
+                $errors = showErrors('error', $cancel_order, "error");
+                Registry::get('ajax')->assign('result', $errors);
+                exit();
+            }
+
+
         }
 
     }
@@ -65,7 +101,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 if ($mode == "index") {
-
 
     $status = !empty($_REQUEST['status']) ? $_REQUEST['status'] : null;
     $status_data = [];

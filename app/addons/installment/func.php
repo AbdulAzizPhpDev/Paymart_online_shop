@@ -52,7 +52,7 @@ function checkUserFromPaymart($user_id)
     return false;
 }
 
-function php_curl($url = '', $data = [], $method = 'GET', $token = null)
+function php_curl($url = '', $data = [], $method = 'GET', $token = null, $header_type = 0)
 {
 
     if (filter_var($url, FILTER_VALIDATE_URL)) {
@@ -67,13 +67,21 @@ function php_curl($url = '', $data = [], $method = 'GET', $token = null)
     $curl_options[CURLOPT_FOLLOWLOCATION] = true;
     $curl_options[CURLOPT_HTTP_VERSION] = CURL_HTTP_VERSION_1_1;
     $curl_options[CURLOPT_CUSTOMREQUEST] = "$method";
-    $curl_options[CURLOPT_HTTPHEADER] = array('Content-Type: application/json');
+    if ($header_type == 1) {
+        $curl_options[CURLOPT_HTTPHEADER] = [];
+    } else {
+        $curl_options[CURLOPT_HTTPHEADER] = array('Content-Type: application/json');
+    }
     if (!empty($token)) {
 
         array_push($curl_options[CURLOPT_HTTPHEADER], ('Authorization: Bearer ' . $token));
     }
     if (!empty($data)) {
-        $curl_options[CURLOPT_POSTFIELDS] = json_encode($data);
+        if ($header_type == 1) {
+            $curl_options[CURLOPT_POSTFIELDS] = ($data);
+        } else {
+            $curl_options[CURLOPT_POSTFIELDS] = json_encode($data);
+        }
 
     }
 
@@ -145,6 +153,7 @@ function createOrder($product, $quantity, $user, $params, $contract_id)
 
 function createFargoOrder($contract_id)
 {
+
     $order = db_get_row("select * from ?:orders as order_data 
                          INNER JOIN ?:order_details as order_detail ON order_data.order_id = order_detail.order_id   
                          where order_data.p_contract_id=?i", $contract_id);
@@ -156,7 +165,7 @@ function createFargoOrder($contract_id)
         WHERE product.product_id = ?i ', $order['product_id']);
     $user = db_get_row('select * from ?:users where user_id=?i', $order['user_id']);
     $product_shipping_data = unserialize($order['fargo_address']);
-    fn_print_die($order);
+
     $fargo_data = [
         "sender_data" => fn_fargo_uz_sender_recipient_data(
             "residential",
