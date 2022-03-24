@@ -104,7 +104,7 @@ if ($mode == "index") {
             break;
     }
     $page = $_REQUEST['page'] ?? 0;
-    $offset = 10 * $page;
+    $offset = (10 * $page) - 10;
 
     $data = [
         "params" => [
@@ -116,7 +116,7 @@ if ($mode == "index") {
         "limit" => 10,
         "offset" => $offset,
         "orderByDesc" => "created_at",
-        "api_token" => "83d31dbe5da41397ea2352f58e163dee"
+        "api_token" => "76d66c5a5356104a8fc6784e007d9c33"
     ];
 
     $order_res = php_curl('/orders/list', $data, 'POST', null);
@@ -165,7 +165,7 @@ if ($mode == 'vendor') {
             break;
     }
     $page = $_REQUEST['page'] ?? 0;
-    $offset = 10 * $page;
+    $offset = (10 * $page) - 10;
 
     $data = [
         "params" => [
@@ -182,7 +182,6 @@ if ($mode == 'vendor') {
         "orderByDesc" => "created_at",
         "api_token" => "5233c73b2a68016fbcfc51ccfd35c6ed"
     ];
-
     $order_res = php_curl('/orders/list', $data, 'POST', null);
 
     Tygh::$app['view']->assign('paymart_orders', $order_res);
