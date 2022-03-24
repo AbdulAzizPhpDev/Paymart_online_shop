@@ -132,7 +132,8 @@
                             <div class="input-paying__unique">
                                 <select name="formAddress2" id="formAddress2">
                                     {foreach $city as $value}
-                                        <option selected value="{$value['city_id']}">{$value['city_name']}</option>
+                                        <option selected value="{$value['city_id']}">{$value['city_name'][10]}</option>
+                                        {fn_print_die($value['city_name'])}
                                     {/foreach}
                                 </select>
                             </div>
@@ -142,9 +143,9 @@
                             <div class="main-form__another-item">
                                 <label for="formAddress3">Район</label>
                                 <div class="input-paying__unique">
-                                        <select name="formAddress3" id="formAddress3" class="tashkent-regions d-none">
-                                        </select>
-                                        <input type="text" placeholder="район" class="not-tashkent-region">
+                                    <select name="formAddress3" id="formAddress3" class="tashkent-regions d-none">
+                                    </select>
+                                    <input type="text" placeholder="район" class="not-tashkent-region">
                                 </div>{**}
                             </div>
                         </div>
@@ -254,6 +255,4 @@ $('#card-pin-wrapper').pinlogin({
     $('#modal-sent').click();
   },
 });
-
-
 </script>
