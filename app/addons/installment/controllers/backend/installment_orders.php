@@ -57,13 +57,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             if ($contract_cancel_res->result->status === 1) {
 
-            db_query("UPDATE ?:orders SET ?u WHERE p_contract_id=?i", $order_data, $order_id);
+                db_query("UPDATE ?:orders SET ?u WHERE p_contract_id=?i", $order_data, $order_id);
 
-            $product = db_get_row('select * from ?:products where product_id=?i', $order['product_id']);
-            $product_data = [
-                'amount' => (int)$product['amount'] + (int)$order['amount']
-            ];
-            db_query('UPDATE ?:products SET ?u WHERE product_id = ?i', $product_data, $product['product_id']);
+                $product = db_get_row('select * from ?:products where product_id=?i', $order['product_id']);
+                $product_data = [
+                    'amount' => (int)$product['amount'] + (int)$order['amount']
+                ];
+                db_query('UPDATE ?:products SET ?u WHERE product_id = ?i', $product_data, $product['product_id']);
 
             } else {
                 $errors = showErrors('error', $contract_cancel_res, "error");
@@ -98,6 +98,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     }
 
+    if ($mode == "order_tracking") {
+        $order_id = $_REQUEST['order_id'];
+        $fargo_data = db_get_row("select *  from ?:fargo_orders where paymart_contract_id=?i ", (int)$order_id);
+        $fargo_order_id = $fargo_data['fargo_contract_id'];
+        $url = FARGO_URL . "/v1/customer/order/$fargo_order_id/history_items";
+        $track_order = php_curl($url, [], "GET", fargoAuth());
+
+        Registry::get('ajax')->assign('result', $track_order);
+        exit();
+    }
 }
 
 if ($mode == "index") {
@@ -221,3 +231,4 @@ if ($mode == 'vendor') {
 
     Tygh::$app['view']->assign('paymart_orders', $order_res);
 }
+
