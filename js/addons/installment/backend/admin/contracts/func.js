@@ -1,3 +1,5 @@
+import { tr } from '../../../../../core/src/core/Tygh';
+
 (function (_, $) {
   // cancelling contract (vendor)
   const $cancelContractBtn = $('.cancel-contract');
@@ -111,7 +113,7 @@
 
         li.classList.add('event');
         li.setAttribute('data-date', eventDate.toLocaleString());
-        li.innerHTML = `<h3>${status_desc}</h3>`;
+        li.innerHTML = `<h3>${_.tr(status_desc)}</h3>`;
 
         timeline.appendChild(li);
       });
