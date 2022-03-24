@@ -38,11 +38,11 @@
                     <td>{$product->name}</td>
                     <td>Шт</td>
                     <td>{$product->amount}</td>
-                    <td>{$product->price}</td>
-                    <td>{($product->price * $product->amount) - ((($product->price * $product->amount) / 100) * 15 )}</td>
+                    <td>{$product->price_discount}</td>
+                    <td>{($product->price_discount * $product->amount) - ((($product->price_discount * $product->amount) / 100) * 15 )}</td>
                     <td>15%</td>
-                    <td>{((($product->price * $product->amount) / 100) * 15 )}</td>
-                    <td>{$product->price * $product->amount}</td>
+                    <td>{((($product->price_discount * $product->amount) / 100) * 15 )}</td>
+                    <td>{$product->price_discount * $product->amount}</td>
                 </tr>
             {/foreach}
             <tr class="total-price">
@@ -51,7 +51,7 @@
                 <td></td>
                 <td>15%</td>
                 <td></td>
-                <td>{$order->contract->total|number_format}</td>
+                <td>{$order->partner_total|number_format:false:false:' '}</td>
             </tr>
             </tbody>
             <tfoot>
