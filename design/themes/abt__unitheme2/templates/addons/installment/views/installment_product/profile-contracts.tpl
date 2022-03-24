@@ -1,8 +1,8 @@
 {script src="js/addons/installment/profile-contracts.js"}
 
 <div class="profile-contracts-page">
-    {if !empty($contracts->contracts)}
-        <h1>Договора</h1>
+    {if !empty($contracts)}
+        <h1>{__('contracts')}</h1>
 
         {*<div class="search-container">
             <input type="search" placeholder="Search" class="form-control search-contracts">
@@ -10,12 +10,12 @@
         </div>*}
 
         <div class="contracts">
-            {foreach from=$contracts->contracts key=index item=contract}
+            {foreach from=$contracts key=index item=contract}
                 <a href="https://front.paymart.uz/{$smarty.const.CART_LANGUAGE|lower}/market/contract/{$contract->contract_id}?api_token={$user_api_token}&user_phone={$user_phone}"
                    target="_blank" class="contract-card">
                     <div class="header">
                         <div class="info">
-                            <h3>Договор № {$contract->contract_id}</h3>
+                            <h3>{__('contract')} № {$contract->contract_id}</h3>
                         </div>
                         <div class="status-container">
 
@@ -24,10 +24,10 @@
                         </div>
                     </div>
                     <p class="contract-number" data-contract-id="{$contract->contract_id}">
-                        Остаток: {$contract->remainder}
+                        {__('gift_cert_debit')}: {$contract->remainder}
                     </p>
 
-                    <p class="contract-date">Следующая выплата: {$contract->next_pay}</p>
+                    <p class="contract-date">{__('profile.contracts.next_pay')}: {$contract->next_pay}</p>
                     <span class="sum">{$contract->monthly_payment}</span><span class="currency">Cум</span>
 
                     <div class="progress active" data-percentage="{$group_by[$contract->contract_id]}"></div>
@@ -36,6 +36,6 @@
             {/foreach}
         </div>
     {else}
-        <h1 class="text-center">Пусто</h1>
+        <h1 class="text-center">{__('empty')}</h1>
     {/if}
 </div>

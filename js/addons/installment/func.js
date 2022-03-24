@@ -1,8 +1,8 @@
 (function (_, $) {
   const $sendSmsBtn = $('#installmentSendSMSBtn');
 
-  const $buyerPhone = $('.buyer-phone-installment');
-  const $buyerPhone2 = $('.buyer-phone-installment').focus();
+  const $buyerPhoneInstallment = $('.buyer-phone-installment');
+  // const $buyerPhone2 = $('.buyer-phone-installment').focus();
   const $buyerSmsCode = $('.buyer-sms-code-installment');
 
   const $changePhoneBtn = $('#installmentChangePhoneBtn');
@@ -54,7 +54,7 @@
     },
     sendSMS: function (event) {
       $resendSms.removeClass('active');
-      const buyerPhoneUnmasked = $buyerPhone.inputmask('unmaskedvalue');
+      const buyerPhoneUnmasked = Inputmask.unmask($buyerPhoneInstallment.val(), { mask: "999 ## ###-##-##" });
       installmentState.userPhoneNumber = buyerPhoneUnmasked;
 
       $.ceAjax('request', fn_url('profiles.send_sms'), {
@@ -84,7 +84,7 @@
       });
     },
     confirmCode: function (event) {
-      const buyerPhoneUnmasked = $buyerPhone.inputmask('unmaskedvalue');
+      const buyerPhoneUnmasked = Inputmask.unmask($buyerPhoneInstallment.val(), { mask: "999 ## ###-##-##" });
 
       $.ceAjax('request', fn_url('profiles.confirm'), {
         method: 'POST',
@@ -125,7 +125,7 @@
     agreement: function (e) {
       const hasChecked = e.target.checked;
 
-      if (hasChecked && Boolean($buyerPhone.val())) {
+      if (hasChecked && Boolean($buyerPhoneInstallment.val())) {
         $sendSmsBtn.removeAttr('disabled', 'disabled');
       } else {
         $sendSmsBtn.attr('disabled', 'disabled');
@@ -150,7 +150,11 @@
   $agreementCheckbox.on('change', methods.agreement);
   $resendSms.on('click', methods.sendSMS);
   $userPhoneSmsSent.text(methods.makePhoneNumberHidden);
-  $buyerPhone.inputmask('[999 99 999-99-99]', { placeholder: '*' });
+
+  $buyerPhoneInstallment.mask('998 ## ###-##-##', {
+    placeholder: '*',
+  });
+  // $buyerPhoneInstallment.inputmask('[999 99 999-99-99]', { placeholder: '*' });
 
 })(Tygh, Tygh.$);
 /*

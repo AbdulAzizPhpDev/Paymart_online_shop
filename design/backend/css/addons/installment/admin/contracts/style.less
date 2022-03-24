@@ -9,7 +9,7 @@
 
   .order-status-tabs {
     display: flex;
-    background-color: @white;
+    background-color: @white-paymart;
     box-shadow: inset 0px -1px 0px rgba(0, 0, 0, 0.12);
 
     span {
@@ -17,14 +17,19 @@
       border-right: 1px solid rgba(0, 0, 0, 0.08);
       cursor: pointer;
 
+      &.active {
+        border-bottom: 2px solid @main-paymart;
+        color: @main-paymart;
+      }
+
       &:last-child {
-        border: none;
+        border-right: none;
       }
     }
   }
 
   .order {
-    background-color: @white;
+    background-color: @white-paymart;
     padding: 24px 40px;
     box-shadow: inset 0px -1px 0px rgba(0, 0, 0, 0.12);
 
@@ -59,7 +64,22 @@
         border-radius: 8px;
         padding: 5px 16px;
         color: #0FBE7B;
-        border: 1px solid @success;
+        border: 1px solid @success-paymart;
+
+        &.status-3, &.status-4 {
+          color: #FE346E;
+          border: 1px solid #FE346E;
+        }
+
+        &.status-5, &.status-9, &.status-2 {
+          color: #707070;
+          border: 1px solid #707070;
+        }
+
+        &.status-0 {
+          color: #FFA41D;
+          border: 1px solid #FFA41D;
+        }
       }
     }
 
@@ -103,7 +123,7 @@
             }
 
             &.total-price {
-              .font(@fw: 700, @color: @main, @fs: 13px)
+              .font(@fw: 700, @color: @main-paymart, @fs: 13px)
             }
           }
         }
@@ -111,13 +131,59 @@
         tfoot {
           tr {
             td {
+              &:first-child {
+                padding-left: 0;
+
+                a {
+                  border-radius: 8px;
+                  background-color: @main-paymart;
+                  border: none;
+                  color: @white-paymart;
+                }
+              }
+
               &:last-child {
                 text-align: right;
+                padding-right: 0;
+
+                button {
+                  border-radius: 8px;
+                  background-color: @fail-paymart;
+                  border: none;
+                  color: @white-paymart;
+
+                  &.accept-contract {
+                    background-color: @success-paymart;
+                    color: @white-paymart;
+                  }
+                }
               }
             }
           }
         }
       }
     }
+
+    .cancel-contracts-modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: auto;
+      height: auto !important;
+      min-width: 300px;
+      max-width: 600px;
+      border: 1px solid #d3dbe2;
+      -webkit-border-radius: 6px;
+      -moz-border-radius: 6px;
+      border-radius: 6px;
+      -webkit-box-shadow: none;
+      -moz-box-shadow: none;
+      box-shadow: none;
+    }
+  }
+
+  .pagination-contracts {
+    margin-top: 32px;
   }
 }

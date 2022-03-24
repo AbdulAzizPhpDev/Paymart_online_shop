@@ -2,6 +2,7 @@
   const $vendorForm = $('.vendor-login-from');
   const $errorContainer = $('.error-vendor-login');
   const $bitrixContainer = $('#bitrixForm');
+  const $vendorId = $('#vendor_id');
 
   const vendorAuthState = {};
 
