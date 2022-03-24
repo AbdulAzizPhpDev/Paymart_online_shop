@@ -107,9 +107,10 @@
 
       trackingList.forEach(({ status_desc, date }) => {
         const li = document.createElement('li');
+        const eventDate = new Date(date);
 
         li.classList.add('event');
-        li.setAttribute('data-date', date);
+        li.setAttribute('data-date', eventDate.toLocaleString());
         li.innerHTML = `<h3>${status_desc}</h3>`;
 
         timeline.appendChild(li);
