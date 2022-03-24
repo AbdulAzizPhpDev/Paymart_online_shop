@@ -2,6 +2,7 @@
   const $percentageActive = $('.progress.active');
   const $searchInput = $('.search-contracts');
   const $searchIcon = $('.search-icon');
+  const $contractCards = $('.contract-card');
   // const $contractNumber = $('.contract-number');
 
   // const contractsState = {
@@ -27,9 +28,19 @@
           break;
       }
     },
+    handleCard: function () {
+      $(this).on('click', contractsMethods.onChooseCard)
+    },
+    onChooseCard: function (e) {
+      if (e.target.tagName === 'IMG') {
+        e.preventDefault();
+        alert('Tracking contracts displays soon!')
+      }
+    }
   };
 
   $percentageActive.each(contractsMethods.calculateProgress);
+  $contractCards.each(contractsMethods.handleCard)
   $searchIcon.on('click', contractsMethods.searchContract);
   $searchInput.on('keyup', contractsMethods.searchContract);
 })(Tygh, Tygh.$);

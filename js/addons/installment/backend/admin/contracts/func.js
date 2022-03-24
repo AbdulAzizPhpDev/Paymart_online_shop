@@ -107,13 +107,14 @@ import { tr } from '../../../../../core/src/core/Tygh';
       const timeline = document.querySelector('.timeline');
       timeline.innerHTML = '';
 
-      trackingList.forEach(({ status_desc, date }) => {
+      trackingList.forEach(({ status, date }) => {
         const li = document.createElement('li');
         const eventDate = new Date(date);
+        const text_status = _.tr(status);
 
         li.classList.add('event');
         li.setAttribute('data-date', eventDate.toLocaleString());
-        li.innerHTML = `<h3>${_.tr(status_desc)}</h3>`;
+        li.innerHTML = `<h3>${text_status}</h3>`;
 
         timeline.appendChild(li);
       });

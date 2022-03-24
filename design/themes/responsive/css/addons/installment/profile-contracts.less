@@ -122,15 +122,21 @@
         }
       }
 
-      span {
-        &.sum {
-          .font(@fs: 20px, @lh: 25px, @fw: 900, @color: @main);
-          margin-right: 6px;
-        }
+      .contract-card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
 
-        &.currency {
-          .font(@lh: 19px, @fw: 600, @color: @black);
-          opacity: .3;
+        span {
+          &.sum {
+            .font(@fs: 20px, @lh: 25px, @fw: 900, @color: @main);
+            margin-right: 6px;
+          }
+
+          &.currency {
+            .font(@lh: 19px, @fw: 600, @color: @black);
+            opacity: .3;
+          }
         }
       }
 
