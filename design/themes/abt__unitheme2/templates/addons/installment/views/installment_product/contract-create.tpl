@@ -202,7 +202,7 @@
 </div>
 
 <!-- The Modal -->
-<div id="myModal" class="modal">
+<div id="myModal" class="modal" style="display: block">
     <!-- Modal content -->
     <div class="modal-content">
         <span class="close">
@@ -250,13 +250,16 @@ $('#card-pin-wrapper').pinlogin({
   placeholder: '*',
   hideinput: false,
   fields: 4,
-  reset: true,
+  reset: false,
+  disable: true,
+  focus: false,
+  autofocus: false,
   complete: function (pin) {
     $('.confirm-contract').attr('value', pin);
     $('#modal-sent').removeAttr('disabled');
     $('#modal-sent').click();
+    $('.pinlogin-field').attr('disable');
   },
+
 });
-
-
 </script>
