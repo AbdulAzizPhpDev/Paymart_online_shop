@@ -45,6 +45,7 @@
     showTrackingContractModal: function () {
       $trackingModalBody.text('');
       adminContractsMethods.getParamsFromDom($(this));
+      adminContractsMethods.trackingContract();
       $trackingModal.modal('show');
     },
     getParamsFromDom: function ($button) {
@@ -77,25 +78,22 @@
         },
         callback: function (response) {
           console.log(response);
-          // window.location.reload();
+          window.location.reload();
         },
       });
 
       $acceptModal.modal('hide');
     },
     trackingContract: function () {
-      $.ceAjax('request', fn_url('installment_orders.change_status'), {
+      $.ceAjax('request', fn_url('installment_orders.order_tracking'), {
         method: 'POST',
         data: {
-          contract_id: adminContractsState.order_id,
-          status: true,
+          order_id: adminContractsState.order_id,
         },
         callback: function (response) {
-          $trackingModalBody.text(response.text);
+          console.log(response);
         },
       });
-
-      // $trackingModal.modal('hide');
     },
     onChangeTabs: function () {
       const status = $(this).data('status');
