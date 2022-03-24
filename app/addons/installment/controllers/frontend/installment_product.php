@@ -336,6 +336,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if ($response->result->status == 1) {
 
+
             db_query('UPDATE ?:products SET ?u WHERE product_id = ?i', $data, $product_id);
 
             $params["apartment"] = $_REQUEST['apartment'];
@@ -352,6 +353,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
             $product_shipping_data = unserialize($product_info['shipping_params']);
             $params["shipping_params"] = $product_shipping_data;
+
             $data = createOrder($product_info, $product_amount, $user, $params, $_REQUEST['contract_id']);
 
             $errors = showErrors('contract_create_successfully', [], "success");

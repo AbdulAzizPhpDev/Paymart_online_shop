@@ -52,7 +52,7 @@ function checkUserFromPaymart($user_id)
     return false;
 }
 
-function php_curl($url = '', $data = [], $method = 'GET', $token = null)
+function php_curl($url = '', $data = [], $method = 'GET', $token = null, $header_type = 0)
 {
 
     if (filter_var($url, FILTER_VALIDATE_URL)) {
@@ -67,13 +67,21 @@ function php_curl($url = '', $data = [], $method = 'GET', $token = null)
     $curl_options[CURLOPT_FOLLOWLOCATION] = true;
     $curl_options[CURLOPT_HTTP_VERSION] = CURL_HTTP_VERSION_1_1;
     $curl_options[CURLOPT_CUSTOMREQUEST] = "$method";
-    $curl_options[CURLOPT_HTTPHEADER] = array('Content-Type: application/json');
+    if ($header_type == 1) {
+        $curl_options[CURLOPT_HTTPHEADER] = [];
+    } else {
+        $curl_options[CURLOPT_HTTPHEADER] = array('Content-Type: application/json');
+    }
     if (!empty($token)) {
 
         array_push($curl_options[CURLOPT_HTTPHEADER], ('Authorization: Bearer ' . $token));
     }
     if (!empty($data)) {
-        $curl_options[CURLOPT_POSTFIELDS] = json_encode($data);
+        if ($header_type == 1) {
+            $curl_options[CURLOPT_POSTFIELDS] = ($data);
+        } else {
+            $curl_options[CURLOPT_POSTFIELDS] = json_encode($data);
+        }
 
     }
 
@@ -101,8 +109,9 @@ function showErrors($text, $data = [], $status = "error"): array
 }
 
 
-function createOrder($product, $quantity, $user, $params = [], $contract_id)
+function createOrder($product, $quantity, $user, $params, $contract_id)
 {
+
     $ip = fn_get_ip();
     $order['ip_address'] = fn_ip_to_db($ip['host']);
     $order['timestamp'] = TIME;
@@ -110,7 +119,7 @@ function createOrder($product, $quantity, $user, $params = [], $contract_id)
     $order['lang_code'] = isset($user_lang) && !empty($user_lang) ? $user_lang : CART_LANGUAGE;
     $order['status'] = STATUS_INCOMPLETED_ORDER;
     $order['is_parent_order'] = 'N';
-    $order['company_id'] = Registry::get('runtime.company_id');
+    $order['company_id'] = $product['company_id'];
 
     $order['user_id'] = $user['user_id'];
     $order['phone'] = $user['phone'];
@@ -144,6 +153,7 @@ function createOrder($product, $quantity, $user, $params = [], $contract_id)
 
 function createFargoOrder($contract_id)
 {
+
     $order = db_get_row("select * from ?:orders as order_data 
                          INNER JOIN ?:order_details as order_detail ON order_data.order_id = order_detail.order_id   
                          where order_data.p_contract_id=?i", $contract_id);
@@ -160,7 +170,7 @@ function createFargoOrder($contract_id)
         "sender_data" => fn_fargo_uz_sender_recipient_data(
             "residential",
             $product_info['company'],
-            $product_info['city'],
+            263947147,
             234,
             '+' . $product_info['phone'],
             null,
@@ -205,7 +215,6 @@ function createFargoOrder($contract_id)
 
     $url = FARGO_URL . '/v2/customer/order';
     $fargo_order_res = php_curl($url, $fargo_data, 'POST', $fargo_auth_res->data->id_token);
-
 
     if ($fargo_order_res->status != "success") {
         $errors_data = [
