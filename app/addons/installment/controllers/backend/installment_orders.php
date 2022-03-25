@@ -110,6 +110,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         Registry::get('ajax')->assign('result', $track_order);
         exit();
     }
+
+    if ($mode == "get_barcode") {
+        $order_id = $_REQUEST['order_id'];
+        $fargo_data = db_get_row("select *  from ?:fargo_orders where paymart_contract_id=?i ", (int)$order_id);
+        Registry::get('ajax')->assign('result', $fargo_data['fargo_contract_label']);
+        exit();
+    }
 }
 
 if ($mode == "index") {
@@ -213,13 +220,17 @@ if ($mode == 'vendor') {
     }
     $page = $_REQUEST['page'] ?? 0;
     $offset = (10 * $page) - 10;
+    $company_id = Registry::get('runtime.company_id');
+
+    $company_data = db_get_row("select *  from ?:companies where company_id=?i ", (int)$company_id);
+    $user = db_get_row('select * from ?:users where company_id=?i', $company_id);
 
     $data = [
         "params" => [
             [
                 $contract => $status_data,
                 "partner_id" => [
-                    215084
+                    $user['p_user_id']
                 ]
             ]
         ],
@@ -227,7 +238,7 @@ if ($mode == 'vendor') {
         "limit" => 10,
         "offset" => $offset,
         "orderByDesc" => "created_at",
-        "api_token" => "5233c73b2a68016fbcfc51ccfd35c6ed"
+        "api_token" => $company_data['p_c_token']
     ];
     $order_res = php_curl('/orders/list', $data, 'POST', null);
 
