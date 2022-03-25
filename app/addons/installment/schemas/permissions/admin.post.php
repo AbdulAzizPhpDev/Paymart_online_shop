@@ -12,8 +12,12 @@
  * "copyright.txt" FILE PROVIDED WITH THIS DISTRIBUTION PACKAGE.            *
  ****************************************************************************/
 
-$schema['instalment_orders'] = [
-    'permissions' => false
+$schema['controllers']['installment_orders'] = [
+    'modes' => [
+        'vendor' => [
+            'permissions' => false,
+        ],
+    ],
 ];
 
 return $schema;

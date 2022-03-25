@@ -170,7 +170,7 @@ function createFargoOrder($contract_id)
         "sender_data" => fn_fargo_uz_sender_recipient_data(
             "residential",
             $product_info['company'],
-            263947147,
+            $product_shipping_data['city_id'],
             234,
             '+' . $product_info['phone'],
             null,

@@ -12,12 +12,22 @@
  * "copyright.txt" FILE PROVIDED WITH THIS DISTRIBUTION PACKAGE.            *
  ****************************************************************************/
 
-use Tygh\Registry;
-use Tygh\Enum\YesNo;
+defined('BOOTSTRAP') or die('Access denied');
 
+$schema['controllers']['installment_orders'] = [
+    'modes' => [
+        'vendor' => [
+            'permissions' => true,
+        ],
+    ],
+];
 
-$schema['controllers']['instalment_orders'] = [
-    'permissions' => true,
+$schema['controllers']['installment'] = [
+    'modes' => [
+        'manage' => [
+            'permissions' => true,
+        ],
+    ],
 ];
 
 
