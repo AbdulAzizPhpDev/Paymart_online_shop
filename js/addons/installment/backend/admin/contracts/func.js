@@ -1,5 +1,3 @@
-import { tr } from '../../../../../core/src/core/Tygh';
-
 (function (_, $) {
   // cancelling contract (vendor)
   const $cancelContractBtn = $('.cancel-contract');
