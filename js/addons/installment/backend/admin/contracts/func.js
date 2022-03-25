@@ -113,11 +113,7 @@
           order_id: adminContractsState.order_id,
         },
         callback: function (response) {
-          if (!response.hasOwnProperty('result')) {
-            return $barCodeModalBody.text('Error!');
-          }
-
-          $barCodeModalBody.find('img').attr('src', response.result);
+          $barCodeModalBody.find('iframe').attr('src', response.result);
         },
       });
     },
