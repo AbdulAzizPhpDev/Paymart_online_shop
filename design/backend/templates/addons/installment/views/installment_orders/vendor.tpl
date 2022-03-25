@@ -33,6 +33,16 @@
                 <button class="btn confirm-accept-contract">Да</button>
             </div>
         </div>
+        {* Show Bar Code Modal  *}
+        <div class="modal signin-modal bar-code-modal" style="display: none;">
+            <div class="modal-header">
+                <div><h3>Bar Code</h3></div>
+                <button class="close-bar-code-modal">&times;</button>
+            </div>
+            <div class="modal-body bar-code-modal-body">
+                <img src="" alt="">
+            </div>
+        </div>
     {else}
         <h4>Пусто</h4>
     {/if}
