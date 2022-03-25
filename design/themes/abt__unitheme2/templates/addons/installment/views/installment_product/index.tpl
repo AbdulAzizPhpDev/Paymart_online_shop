@@ -18,7 +18,7 @@
             </div>
 
             <div class="oferta-container">
-                <a href="#">
+                <a href="/images/files/oferta_{$smarty.const.CART_LANGUAGE|lower}.pdf" target="_blank">
                     <img src="/design/themes/responsive/media/icons/oferta.svg" alt="oferta">
                     <span>{__("authentication.oferta")}</span>
                 </a>
@@ -27,7 +27,8 @@
             <div class="agreement">
                 <label>
                     <input type="checkbox">
-                    {__('authentication.text_confirm_personal_data', ['[personal_data]' => __('authentication.text_personal_data')])}
+                    {assign var="text_personal_data" value="<a href='/images/files/policy_{$smarty.const.CART_LANGUAGE|lower}.pdf' target='_blank' style='color: #FF7643'>{__('authentication.text_personal_data')}</a>"}
+                    {__('authentication.text_confirm_personal_data', ['[personal_data]' => $text_personal_data])}
                 </label>
             </div>
 
