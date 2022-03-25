@@ -218,19 +218,15 @@ function returnMiniCards(valuesMiniCards) {
                         <img src="${valuesMiniCard.image}" alt="Mini image">
                         <p>${valuesMiniCard.time}</p>
                     </div>
-                    <div class="item-second">
-                        <img src="/design/themes/responsive/media/images/addons/authentication/image/${valuesCard.cardType}.png"
-                             alt="Ico">
+                    <div class="mini-card__item mini-item-second">
+                        <p>Договор: </p>
+                        <p>${valuesMiniCard.date}</p>
                     </div>
-                </div>
-                <div class="orange-unique__second">
-                    <p class="cardNumber" style="color: #fff !important;">${valuesCard.cardNumber}</p>
-                    <p class="cardDate">${valuesCard.cardDate}</p>
                 </div>
             </div>
             </div>  `).join('');
 }
 
-var historyDoc = document.querySelector('.products-cards__profile');
+var historyDoc = document.querySelector('.products-cards__mini-profile');
 
 historyDoc.innerHTML = returnMiniCards(valuesMiniCards);
