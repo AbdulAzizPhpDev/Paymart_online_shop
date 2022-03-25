@@ -42,7 +42,7 @@
             {/foreach}
         </div>
         {* Show Tracking Modal  *}
-        <div class="hidden" id="tracking-contract-modal" title="Tracking Contract">
+        <div class="hidden tracking-contract-modal" id="tracking-contract-modal" title="{__('track_my_order')}" data-tracking-title="{__('track_my_order')}">
             <div class="tracking-modal-body">
                 <ul class="timeline">{__('empty')}</ul>
             </div>

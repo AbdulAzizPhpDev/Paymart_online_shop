@@ -3,7 +3,7 @@
   // const $searchInput = $('.search-contracts');
   // const $searchIcon = $('.search-icon');
   const $contractCards = $('.contract-card');
-  // const $trackingModal = $('.tracking-contract-modal');
+  const $trackingModal = $('.tracking-contract-modal');
 
   // const $contractNumber = $('.contract-number');
 
@@ -37,8 +37,10 @@
       if (e.target.tagName === 'IMG') {
         e.preventDefault();
         const orderId = $(this).data('order-id');
+        const modalTitle = $trackingModal.data('tracking-title');
+        // console.log(modalTitle);
+        $trackingModal.attr('title', modalTitle);
         profileContractsMethods.trackingContract(orderId);
-        // $trackingModal.modal('show');
       }
     },
     trackingContract: function (order_id) {
@@ -49,7 +51,7 @@
         },
         callback: function (response) {
           if (!response.hasOwnProperty('result')) {
-            return document.querySelector('.timeline').innerText = 'Error when give data!';
+            return document.querySelector('.timeline').innerText = _.tr('empty');
           }
 
           const { result } = response;
