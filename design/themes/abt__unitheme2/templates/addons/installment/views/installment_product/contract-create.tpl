@@ -101,7 +101,7 @@
                                     <option value="12">12 месяцев</option>
                                     <option value="9">9 месяцев</option>
                                     <option value="6">6 месяцев</option>
-                                    <option value="3">3 месяцев</option>
+                                    {*                                    <option value="3">3 месяцев</option>*}
                                 </select>
                             </div>
                         </div>
