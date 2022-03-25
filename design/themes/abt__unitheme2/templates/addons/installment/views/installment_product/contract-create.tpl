@@ -202,7 +202,7 @@
 </div>
 
 <!-- The Modal -->
-<div id="myModal" class="modal" style="display: block">
+<div id="myModal" class="modal">
     <!-- Modal content -->
     <div class="modal-content">
         <span class="close">
