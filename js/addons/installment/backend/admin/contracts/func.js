@@ -7,26 +7,7 @@ const $acceptContractBtn = $('.accept-contract');
 const $confirmAccept = $('.confirm-accept-contract');
 const $acceptModal = $('.accept-contract-modal');
 
-<
-<
-<
-<
-<
-<< HEAD
-    // tracking contract (admin)
-    const $trackingContractBtn=$('.tracking-contract'
-)
-;
-const $confirmTracking = $('.confirm-tracking-contract');
-const $trackingModal = $('.tracking-contract-modal');
 
-const $trackingModalBody = $('.tracking-modal-body');
-
-const $tabs = $('.order-status-tabs span');
-const $errorContainer = $('.cancel-contract-error');
-const $paginationContainer = $('.pagination-contracts');
-======
-=
 // bar code contract (vendor)
 const $barCodeBtn = $('.show-bar-code');
 const $barCodeModal = $('.bar-code-modal');
@@ -39,9 +20,7 @@ const $trackingModal = $('.tracking-contract-modal');
 const $tabs = $('.order-status-tabs span');
 const $errorContainer = $('.cancel-contract-error');
 const $paginationContainer = $('.pagination-contracts');
->>>>>>>
-0
-a1f759f021734c6e15c5ceff6914dcf70a31c23
+
 
 // const $code = $('#cancel-contract-code');
 
@@ -77,51 +56,8 @@ const adminContractsMethods = {
         $barCodeModal.modal('show');
     },
     getParamsFromDom: function ($button) {
-        <
-        <
-        <
-        <
-        <
-        << HEAD
-            adminContractsState.order_id=$button.data('order-id'
-    )
-        ;
-        adminContractsState.contract_id = $button.data('contract-id');
-    },
-    cancelContract: function () {
-        $.ceAjax('request', fn_url('installment_orders.change_status'), {
-            method: 'POST',
-            data: {
-                contract_id: adminContractsState.contract_id,
-                order_id: adminContractsState.order_id,
-                status: false,
-            },
-            callback: function (response) {
-                console.log(response);
-                window.location.reload();
-            },
-        });
 
-        $cancelModal.modal('hide');
-    },
-    acceptContract: function () {
-        $.ceAjax('request', fn_url('installment_orders.change_status'), {
-            method: 'POST',
-            data: {
-                contract_id: adminContractsState.contract_id,
-                order_id: adminContractsState.order_id,
-                status: true,
-            },
-            callback: function (response) {
-                console.log(response);
-                window.location.reload();
-            },
-        });
-
-        $acceptModal.modal('hide');
-    ======
-        =
-            adminContractsState.order_id = $button.data('order-id');
+        adminContractsState.order_id = $button.data('order-id');
     },
     cancelContract: function () {
         $.ceAjax('request', fn_url('installment_orders.change_status'), {
@@ -152,9 +88,7 @@ const adminContractsMethods = {
         });
 
         $acceptModal.modal('hide');
-    >>>>>>>
-        0
-        a1f759f021734c6e15c5ceff6914dcf70a31c23
+
     },
     trackingContract: function () {
         $.ceAjax('request', fn_url('installment_orders.order_tracking'), {
