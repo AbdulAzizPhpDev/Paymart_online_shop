@@ -7,8 +7,16 @@ const $acceptContractBtn = $('.accept-contract');
 const $confirmAccept = $('.confirm-accept-contract');
 const $acceptModal = $('.accept-contract-modal');
 
-// tracking contract (admin)
-const $trackingContractBtn = $('.tracking-contract');
+<
+<
+<
+<
+<
+<< HEAD
+    // tracking contract (admin)
+    const $trackingContractBtn=$('.tracking-contract'
+)
+;
 const $confirmTracking = $('.confirm-tracking-contract');
 const $trackingModal = $('.tracking-contract-modal');
 
@@ -17,6 +25,23 @@ const $trackingModalBody = $('.tracking-modal-body');
 const $tabs = $('.order-status-tabs span');
 const $errorContainer = $('.cancel-contract-error');
 const $paginationContainer = $('.pagination-contracts');
+======
+=
+// bar code contract (vendor)
+const $barCodeBtn = $('.show-bar-code');
+const $barCodeModal = $('.bar-code-modal');
+const $barCodeModalBody = $('.bar-code-modal-body');
+
+// tracking contract (admin)
+const $trackingContractBtn = $('.tracking-contract');
+const $trackingModal = $('.tracking-contract-modal');
+
+const $tabs = $('.order-status-tabs span');
+const $errorContainer = $('.cancel-contract-error');
+const $paginationContainer = $('.pagination-contracts');
+>>>>>>>
+0
+a1f759f021734c6e15c5ceff6914dcf70a31c23
 
 // const $code = $('#cancel-contract-code');
 
@@ -25,7 +50,6 @@ const pageNumber = params.get('page');
 
 const adminContractsState = {
     order_id: null,
-    contract_id: null,
     buyer_phone: null,
     page: pageNumber,
     status: null,
@@ -46,8 +70,22 @@ const adminContractsMethods = {
         adminContractsMethods.trackingContract();
         $trackingModal.modal('show');
     },
+    showBarCodeModal: function () {
+        console.log('opening bar code modal...');
+        adminContractsMethods.getParamsFromDom($(this));
+        adminContractsMethods.getBarCode();
+        $barCodeModal.modal('show');
+    },
     getParamsFromDom: function ($button) {
-        adminContractsState.order_id = $button.data('order-id');
+        <
+        <
+        <
+        <
+        <
+        << HEAD
+            adminContractsState.order_id=$button.data('order-id'
+    )
+        ;
         adminContractsState.contract_id = $button.data('contract-id');
     },
     cancelContract: function () {
@@ -81,6 +119,42 @@ const adminContractsMethods = {
         });
 
         $acceptModal.modal('hide');
+    ======
+        =
+            adminContractsState.order_id = $button.data('order-id');
+    },
+    cancelContract: function () {
+        $.ceAjax('request', fn_url('installment_orders.change_status'), {
+            method: 'POST',
+            data: {
+                order_id: adminContractsState.order_id,
+                status: false,
+            },
+            callback: function (response) {
+                console.log(response);
+                window.location.reload();
+            },
+        });
+
+        $cancelModal.modal('hide');
+    },
+    acceptContract: function () {
+        $.ceAjax('request', fn_url('installment_orders.change_status'), {
+            method: 'POST',
+            data: {
+                order_id: adminContractsState.order_id,
+                status: true,
+            },
+            callback: function (response) {
+                console.log(response);
+                window.location.reload();
+            },
+        });
+
+        $acceptModal.modal('hide');
+    >>>>>>>
+        0
+        a1f759f021734c6e15c5ceff6914dcf70a31c23
     },
     trackingContract: function () {
         $.ceAjax('request', fn_url('installment_orders.order_tracking'), {
@@ -96,6 +170,22 @@ const adminContractsMethods = {
                         adminContractsMethods.generateModalContent(result.data.list);
                     }
                 }
+            },
+        });
+    },
+    getBarCode: function () {
+        console.log('getting bar code url...');
+        $.ceAjax('request', fn_url('installment_orders.get_barcode'), {
+            method: 'POST',
+            data: {
+                order_id: adminContractsState.order_id,
+            },
+            callback: function (response) {
+                if (!response.hasOwnProperty('result')) {
+                    return $barCodeModalBody.text('Error!');
+                }
+
+                $barCodeModalBody.find('img').attr('src', response.result);
             },
         });
     },
@@ -179,10 +269,17 @@ $('.close-accept-contract-modal').on('click', function () {
     $acceptModal.modal('hide');
 });
 
+
+// bar code (vendor)
+$barCodeBtn.on('click', adminContractsMethods.showBarCodeModal);
+$('.close-bar-code-modal').on('click', function () {
+    $barCodeModal.modal('hide');
+});
+
 // tracking contract (admin)
-$confirmTracking.on('click', adminContractsMethods.trackingContract);
 $trackingContractBtn.on('click', adminContractsMethods.showTrackingContractModal);
 $('.close-tracking-contract-modal').on('click', function () {
+
     $trackingModal.modal('hide');
 });
 

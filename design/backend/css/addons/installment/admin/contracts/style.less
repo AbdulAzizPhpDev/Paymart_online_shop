@@ -157,6 +157,11 @@
                     background-color: @success-paymart;
                     color: @white-paymart;
                   }
+
+                  &.show-bar-code {
+                    background-color: @dark-gray-paymart;
+                    color: @white-paymart;
+                  }
                 }
               }
             }
@@ -192,6 +197,21 @@
       justify-content: space-between;
 
       .close-tracking-contract-modal {
+        background-color: transparent;
+        border: none;
+        font-size: 28px;
+      }
+    }
+  }
+
+  .bar-code-modal {
+    width: 100%;
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+
+      .close-bar-code-modal {
         background-color: transparent;
         border: none;
         font-size: 28px;

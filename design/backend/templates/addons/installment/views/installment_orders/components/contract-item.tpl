@@ -87,6 +87,10 @@
                                 Отменить договор
                             </button>
                         {elseif $order->contract->status == 1}
+                            <button class="btn show-bar-code"
+                                    data-order-id="{$order->id}">
+                                Bar Code
+                            </button>
                             <button class="btn cancel-contract"
                                     data-contract-id="{$order->contract->id}"
                                     data-order-id="{$order->id}">

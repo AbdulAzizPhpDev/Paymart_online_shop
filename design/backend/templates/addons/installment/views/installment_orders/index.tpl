@@ -22,10 +22,6 @@
             <div class="modal-body tracking-modal-body">
                 {include file="addons/installment/views/installment_orders/components/stepper.tpl"}
             </div>
-            {*<div class="modal-footer">
-                <button class="btn close-tracking-contract-modal">Нет</button>
-                <button class="btn confirm-tracking-contract">Да</button>
-            </div>*}
         </div>
     {else}
         <h4>Пусто</h4>
