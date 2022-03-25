@@ -15,14 +15,11 @@ function openCity(evt, cityName) {
 var span = $('.closeBtn')[0];
 let modal = document.getElementById('myModalCard');
 
-span.click(function () {
-  modal.style.display = 'none';
-});
-
-$('.plus').click(function () {
-  $('#myModalCard').css('display', 'block');
-});
-
+if ($('div').hasClass('.plus')) {
+  $('.plus').click(function () {
+    $('#myModalCard').css('display', 'block');
+  });
+}
 
 // tab
 const valuesCards = [
@@ -65,10 +62,11 @@ $('#modal-sent__last').click(function () {
   $('#myModalCard').css('display', 'none');
 });
 
-var container = document.querySelector('.products-cards__profile');
+if ($('div').hasClass('.products-cards__profile')) {
+  var container = document.querySelector('.products-cards__profile');
 
-function returnCards(valuesCards) {
-  return '<div class="products-cards">' + valuesCards.map(valuesCard => `
+  function returnCards(valuesCards) {
+    return '<div class="products-cards">' + valuesCards.map(valuesCard => `
     <div class="orange-unique">
                <div class="orange-unique__${valuesCard.attr}">
                 <div class="orange-unique__main-top">
@@ -87,9 +85,10 @@ function returnCards(valuesCards) {
                 </div>
             </div>
             </div>  `).join('');
-}
+  }
 
-container.innerHTML = returnCards(valuesCards);
+  container.innerHTML = returnCards(valuesCards);
+}
 
 function openTab(evt, cityName) {
   var i, tabcontent, tablinks;
@@ -164,3 +163,74 @@ function openCitySec(evt, cityName) {
   document.getElementById(cityName).style.display = 'block';
   evt.currentTarget.className += ' active';
 }
+
+if ($('button').hasClass('tablinksSec')) {
+
+  const btnFirst = document.querySelector('#firstButton');
+  const btnLast = document.querySelector('#secondButton');
+
+  btnFirst.addEventListener('click', function onClick() {
+    console.log('clicked first');
+    btnFirst.style.backgroundColor = '#FF7643';
+    btnFirst.style.color = '#FF7643';
+    btnLast.style.backgroundColor = 'transparent';
+    btnLast.style.color = '#FF7643';
+    btnFirst.style.color = '#fff';
+  });
+
+  btnLast.addEventListener('click', function onClick() {
+    console.log('clicked second');
+    btnFirst.style.backgroundColor = 'transparent';
+    btnLast.style.backgroundColor = '#FF7643';
+    btnLast.style.color = '#fff';
+    btnFirst.style.color = '#FF7643';
+  });
+
+}
+
+const valuesMiniCards = [
+  {
+    image: '/design/themes/responsive/media/images/addons/profile_card/image/text-image.png',
+    time: '23:23',
+    date: '#12/05 от 23.04.2020',
+  },
+  {
+    image: '/design/themes/responsive/media/images/addons/profile_card/image/text-image.png',
+    time: '23:23',
+    date: '#12/05 от 23.04.2020',
+  },
+  {
+    image: '/design/themes/responsive/media/images/addons/profile_card/image/text-image.png',
+    time: '23:23',
+    date: '#12/05 от 23.04.2020',
+  },
+  {
+    image: '/design/themes/responsive/media/images/addons/profile_card/image/text-image.png',
+    time: '23:23',
+    date: '#12/05 от 23.04.2020',
+  },
+];
+
+function returnMiniCards(valuesMiniCards) {
+  return '<div class="mini-card">' + valuesMiniCards.map(valuesMiniCard => `
+    <div class="mini-card__items">
+                    <div class="mini-card__item">
+                        <img src="${valuesMiniCard.image}" alt="Mini image">
+                        <p>${valuesMiniCard.time}</p>
+                    </div>
+                    <div class="item-second">
+                        <img src="/design/themes/responsive/media/images/addons/authentication/image/${valuesCard.cardType}.png"
+                             alt="Ico">
+                    </div>
+                </div>
+                <div class="orange-unique__second">
+                    <p class="cardNumber" style="color: #fff !important;">${valuesCard.cardNumber}</p>
+                    <p class="cardDate">${valuesCard.cardDate}</p>
+                </div>
+            </div>
+            </div>  `).join('');
+}
+
+var historyDoc = document.querySelector('.products-cards__profile');
+
+historyDoc.innerHTML = returnMiniCards(valuesMiniCards);
