@@ -191,6 +191,5 @@ $.each($tabs, function (tab) {
     $(this).on('click', adminContractsMethods.onChangeTabs);
 });
 
-})
 (Tygh, Tygh.$);
 
