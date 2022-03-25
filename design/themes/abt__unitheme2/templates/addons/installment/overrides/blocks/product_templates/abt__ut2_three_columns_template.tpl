@@ -144,8 +144,8 @@
                                     {/if}
 
                                     <div data-currency-name="{$smarty.const.CART_LANGUAGE}" class="installment-periods ty-control-group" style="margin-top: 16px;">
-                                        <input type="radio" name="period" value="3" id="3" class="ty-product-options__radio">
-                                        <label class="ty-product-options__radio--label" for="3">3 {__('month')|lower}</label>
+{*                                        <input type="radio" name="period" value="3" id="3" class="ty-product-options__radio">*}
+{*                                        <label class="ty-product-options__radio--label" for="3">3 {__('month')|lower}</label>*}
 
                                         <input class="ty-product-options__radio" value="6" type="radio" name="period" id="6">
                                         <label class="ty-product-options__radio--label" for="6">6 {__('ab__dotd.countdown.simple.months')}</label>
@@ -284,8 +284,8 @@
 
                             {if $settings.abt__device != "mobile"}
                                 <div class="installment-periods ty-control-group">
-                                    <input type="radio" name="period" value="3" id="3" class="ty-product-options__radio">
-                                    <label class="ty-product-options__radio--label" for="3">3 {__('month')|lower}</label>
+{*                                    <input type="radio" name="period" value="3" id="3" class="ty-product-options__radio">*}
+{*                                    <label class="ty-product-options__radio--label" for="3">3 {__('month')|lower}</label>*}
 
                                     <input class="ty-product-options__radio" value="6" type="radio" name="period" id="6">
                                     <label class="ty-product-options__radio--label" for="6">6 {__('ab__dotd.countdown.simple.months')}</label>
