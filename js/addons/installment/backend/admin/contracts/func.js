@@ -1,3 +1,5 @@
+import { tr } from '../../../../../core/src/core/Tygh';
+
 (function (_, $) {
   // cancelling contract (vendor)
   const $cancelContractBtn = $('.cancel-contract');
@@ -43,7 +45,7 @@
       $acceptModal.modal('show');
     },
     showTrackingContractModal: function () {
-      $trackingModalBody.text('');
+      // $trackingModalBody.text('');
       adminContractsMethods.getParamsFromDom($(this));
       adminContractsMethods.trackingContract();
       $trackingModal.modal('show');
@@ -91,8 +93,29 @@
           order_id: adminContractsState.order_id,
         },
         callback: function (response) {
-          console.log(response);
+          if (response.hasOwnProperty('result')) {
+            const { result } = response;
+
+            if (result.status === 'success') {
+              adminContractsMethods.generateModalContent(result.data.list);
+            }
+          }
         },
+      });
+    },
+    generateModalContent: function (trackingList = []) {
+      const timeline = document.querySelector('.timeline');
+      timeline.innerHTML = '';
+
+      trackingList.forEach(({ status_desc, date }) => {
+        const li = document.createElement('li');
+        const eventDate = new Date(date);
+
+        li.classList.add('event');
+        li.setAttribute('data-date', eventDate.toLocaleString());
+        li.innerHTML = `<h3>${_.tr(status_desc)}</h3>`;
+
+        timeline.appendChild(li);
       });
     },
     onChangeTabs: function () {
