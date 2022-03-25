@@ -567,7 +567,7 @@ if ($mode == 'profile-contracts') {
 
         $user = db_get_row('SELECT * FROM ?:users WHERE user_id = ?i', $auth['user_id']);
         $response = php_curl('/buyer/contracts', [], 'GET', $user['api_key']);
-
+//        fn_print_die($response);
         $result = $response;
         $payed_list = [];
         $payed_list_group_by_contract_id = [];
