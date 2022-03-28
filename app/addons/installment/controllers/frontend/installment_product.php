@@ -10,6 +10,21 @@ if (!defined('BOOTSTRAP')) {
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    if ($mode == "order_tracking") {
+
+        $order_id = $_REQUEST['order_id'];
+        $fargo_data = db_get_row("select *  from ?:fargo_orders where paymart_contract_id=?i ", (int)$order_id);
+        $fargo_order_id = $fargo_data['fargo_order_id'];
+
+        $url = FARGO_URL . "/v1/customer/order/$fargo_order_id/history_items";
+        $track_order = php_curl($url, [], "GET", fargoAuth());
+
+        Registry::get('ajax')->assign('result', $track_order);
+        exit();
+    }
+
+
     if ($mode == 'set_card') {
 
         $data = [
@@ -272,17 +287,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $user = db_get_row('select * from ?:users where user_id=?i', $auth['user_id']);
 
 
-        $product_feature_values = db_get_array("select * from ?:product_features_values
-                                 where product_id=?i ", Tygh::$app['session']['product_info']['product_id']);
+        $product_feature_values = db_get_array("
+        select pfvd.variant from ?:product_features_values as pfv
+        INNER JOIN ?:product_feature_variant_descriptions as pfvd ON pfvd.variant_id = pfv.variant_id and
+         pfvd.lang_code = 'ru'
+        where pfv.product_id=?i and pfv.lang_code=?s and pfv.variant_id!=0",
+            $product_info['product_id'], CART_LANGUAGE);
 
-        $product_text = "";
         foreach ($product_feature_values as $value) {
-            if (!empty($value['value'])) {
-                $product_text .= '; ' . $value['value'];
+            if (!empty($value['variant'])) {
+                $product_text .= $value['variant'] . ' ';
             }
 
         }
-
+        $datas['product_text'] = $product_text;
 
         $data = [
             'products' => [
@@ -518,12 +536,18 @@ if ($mode == "contract-create") {
         $datas = db_get_row('SELECT * FROM ?:products as product 
                              INNER JOIN ?:companies as company ON product.company_id = company.company_id 
                              WHERE product.product_id = ?i ', $product_id);
-        $product_feature_values = db_get_array("select * from ?:product_features_values where product_id=?i ", $datas['product_id']);
-        $product_text = "";
+
+
+        $product_feature_values = db_get_array("
+        select pfvd.variant from ?:product_features_values as pfv
+        INNER JOIN ?:product_feature_variant_descriptions as pfvd ON pfvd.variant_id = pfv.variant_id and
+         pfvd.lang_code = 'ru'
+        where pfv.product_id=?i and pfv.lang_code=?s and pfv.variant_id!=0",
+            $datas['product_id'], CART_LANGUAGE);
 
         foreach ($product_feature_values as $value) {
-            if (!empty($value['value'])) {
-                $product_text .= '; ' . $value['value'];
+            if (!empty($value['variant'])) {
+                $product_text .= $value['variant'] . ' ';
             }
 
         }
@@ -624,7 +648,7 @@ if ($mode == 'profile-contracts') {
 
         $user = db_get_row('SELECT * FROM ?:users WHERE user_id = ?i', $auth['user_id']);
         $response = php_curl('/buyer/contracts', [], 'GET', $user['api_key']);
-//        fn_print_die($response);
+
         $result = $response;
         $payed_list = [];
         $payed_list_group_by_contract_id = [];

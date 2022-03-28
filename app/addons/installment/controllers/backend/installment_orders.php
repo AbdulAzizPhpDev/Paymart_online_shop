@@ -98,24 +98,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     }
 
-    if ($mode == "order_tracking") {
 
-        $order_id = $_REQUEST['order_id'];
-        $fargo_data = db_get_row("select *  from ?:fargo_orders where paymart_contract_id=?i ", (int)$order_id);
-        $fargo_order_id = $fargo_data['fargo_order_id'];
-
-        $url = FARGO_URL . "/v1/customer/order/$fargo_order_id/history_items";
-        $track_order = php_curl($url, [], "GET", fargoAuth());
-
-        Registry::get('ajax')->assign('result', $track_order);
-        exit();
-    }
 
     if ($mode == "get_barcode") {
 
 
         $order_id = $_REQUEST['order_id'];
-        $fargo_data = db_get_row("select *  from ?:fargo_orders where paymart_contract_id=?i ", 63997);
+        $fargo_data = db_get_row("select *  from ?:fargo_orders where paymart_contract_id=?i ", $order_id
+        );
 
         Registry::get('ajax')->assign('result', $fargo_data['fargo_contract_label']);
         exit();
