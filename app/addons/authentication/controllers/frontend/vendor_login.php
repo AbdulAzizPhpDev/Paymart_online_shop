@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             $data_des = [
                                 "company_id" => $company_id,
                                 "lang_code" => "ru",
-                                "company_description"=>$check_user_res->company_description
+                                "company_description" => $check_user_res->company_description
                             ];
                             db_query('INSERT INTO ?:company_descriptions ?e', $data_des);
                             //$user_data = db_get_row('select * from ?:users where p_user_id=?i ', $check_user_res->data->user_id);
@@ -91,8 +91,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             $data_u = [
                                 'company' => $check_user_res->company_name
                             ];
+
                             db_query('UPDATE ?:companies SET ?u WHERE company_id = ?i', $data_u, $check['company_id']);
                             $user_data = db_get_row('select * from ?:users where user_type="V" and company_id=?i ', $check['company_id']);
+
+
+                            if (empty($user_data['p_user_id']) || $user_data['p_user_id'] == 0) {
+
+                                $user_detail = php_curl('/buyer/detail', [], 'GET', $check_user_res->user_token);
+
+                                if ($user_detail->status == "success") {
+
+                                    $data_u = [
+                                        'p_user_id' => $user_detail->data->id
+                                    ];
+                                    db_query('UPDATE ?:users SET ?u WHERE user_id = ?i', $data_u, $user_data['user_id']);
+                                }
+
+                            }
                             if (empty($user_data)) {
                                 $error = showErrors('vendor_id_empty');
                                 Registry::get('ajax')->assign('result', $error);

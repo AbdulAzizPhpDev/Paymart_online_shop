@@ -19,5 +19,12 @@ $schema['central']['orders']['items']['instalment'] = array(
     'href' => 'installment_orders.index',
     'position' => 100
 );
+$schema['central']['orders']['items']['instalment_vendor'] = array(
+    'attrs' => array(
+        'class' => 'is-addon'
+    ),
+    'href' => 'installment_orders.vendor',
+    'position' => 101
+);
 
 return $schema;

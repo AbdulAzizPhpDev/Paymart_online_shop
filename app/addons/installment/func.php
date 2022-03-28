@@ -165,12 +165,11 @@ function createFargoOrder($contract_id)
         WHERE product.product_id = ?i ', $order['product_id']);
     $user = db_get_row('select * from ?:users where user_id=?i', $order['user_id']);
     $product_shipping_data = unserialize($order['fargo_address']);
-
     $fargo_data = [
         "sender_data" => fn_fargo_uz_sender_recipient_data(
             "residential",
             $product_info['company'],
-            263947147,
+            $product_info['city'],
             234,
             '+' . $product_info['phone'],
             null,

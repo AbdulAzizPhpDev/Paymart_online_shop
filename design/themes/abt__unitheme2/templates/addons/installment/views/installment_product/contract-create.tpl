@@ -56,9 +56,10 @@
                         <td class="bolded">Сумма НДС</td>
                     </tr>
                     <tr>
-                        {*                        {fn_print_die($product_info)}*}
+
+
                         <td>
-                            {$product_info['product_descriptions']['product']}
+                            {$product_info['product_descriptions']['product'] } {$product_info['product_text']}
                         </td>
                         <td>{$product_quantity}</td>
 
@@ -66,9 +67,10 @@
                     </tr>
                     <tr>
                         <td class="orange">Итого</td>
-                        {*                        {$total}*}
+                        {*                        *}
                         <td>{$product_quantity}</td>
                         <td class="orange">{$product_quantity * $product_info['product_price']['price'] }</td>
+                        {*                        {fn_print_die($product_info['product_price']['price'])}*}
                     </tr>
                 </table>
 
@@ -101,7 +103,7 @@
                                     <option value="12">12 месяцев</option>
                                     <option value="9">9 месяцев</option>
                                     <option value="6">6 месяцев</option>
-                                    <option value="3">3 месяцев</option>
+                                    {*                                    <option value="3">3 месяцев</option>*}
                                 </select>
                             </div>
                         </div>
@@ -170,9 +172,10 @@
                         </div>
                     </div>
                 </form>
+                {*                {fn_print_die($notifier)}*}
                 <div class="form-button">
                     <span>
-                        {if $notifier }
+                        {if ($user['i_limit'] < $total)}
                             <!-- The Modal -->
                             <div id="myModal5" class="modal5">
                                    <a href="{$redirect_url|fn_url}">
@@ -182,7 +185,7 @@
                                         <div class="modal-content5__item">
                                             <p> Mablag' yetarli emas, call centerga murojaat qiling.</p>
                                             <span>+998 71 209 2500</span>
-                                        </div>&nbsp; &nbsp;
+                                        </div>
                                                <div>
                                                     <img src="/design/themes/responsive/media/images/addons/installment/back-arrow.png"
                                                          alt="Arrow image">
