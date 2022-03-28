@@ -59,7 +59,7 @@
 
 
                         <td>
-                            {$product_info['product_descriptions']['product'] } {$product_info['product_text']}
+                            {$product_info['product_descriptions']['product']} {$product_info['product_text']}
                         </td>
                         <td>{$product_quantity}</td>
 
