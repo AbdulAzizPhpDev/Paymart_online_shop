@@ -12,7 +12,6 @@ if (!defined('BOOTSTRAP')) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($mode == "order_tracking") {
 
-
         $order_id = $_REQUEST['order_id'];
         $fargo_data = db_get_row("select *  from ?:fargo_orders where paymart_contract_id=?i ", (int)$order_id);
         $fargo_order_id = $fargo_data['fargo_order_id'];
