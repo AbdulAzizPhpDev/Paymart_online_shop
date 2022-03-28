@@ -100,10 +100,9 @@
                             <label for="cars">Выберите срок:</label>
                             <div class="input-paying">
                                 <select name="selectName" id="selectedId">
-                                    <option value="12">12 месяцев</option>
-                                    <option value="9">9 месяцев</option>
-                                    <option value="6">6 месяцев</option>
-                                    {*                                    <option value="3">3 месяцев</option>*}
+                                    {foreach $periods as $period => $item}
+                                        <option value="{$period}" {$item['selected']}>{$item['name']}</option>
+                                    {/foreach}
                                 </select>
                             </div>
                         </div>

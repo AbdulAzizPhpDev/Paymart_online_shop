@@ -599,11 +599,34 @@ if ($mode == "contract-create") {
 
         $city = db_get_array('select * from ?:fargo_countries where parent_city_id=?i ORDER BY city_name ASC', 0);
 
+        $periods = [
+            6 => [
+                'name' => 6 . ' ' . __('ab__dotd.countdown.simple.months'),
+                'selected' => null
+            ],
+            9 => [
+                'name' => 9 . ' ' . __('ab__dotd.countdown.simple.months'),
+                'selected' => null
+            ],
+            12 => [
+                'name' => 12 . ' ' . __('ab__dotd.countdown.simple.months'),
+                'selected' => null
+            ],
+        ];
+        switch ($period) {
+            case 6:
+            case 9:
+            case 12:
+                $periods[$period]['selected'] = 'selected';
+                break;
+        }
+//        fn_print_die($selected);
+
         Tygh::$app['view']->assign('city', $city);
         Tygh::$app['view']->assign('total', $items->total);
         Tygh::$app['view']->assign('origin', $items->origin);
         Tygh::$app['view']->assign('month', $items->month);
-        Tygh::$app['view']->assign('period', $period);
+        Tygh::$app['view']->assign('periods', $periods);
         Tygh::$app['view']->assign('deposit', $items->deposit);
         Tygh::$app['view']->assign('product_info', $datas);
 

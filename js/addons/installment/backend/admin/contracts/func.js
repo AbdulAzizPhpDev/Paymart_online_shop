@@ -102,14 +102,13 @@
             const { result } = response;
 
             if (result.status === 'success') {
-              adminContractsMethods.generateModalContent(result.data.list);
+              adminContractsMethods.generateModalContent(result.list);
             }
           }
         },
       });
     },
     getBarCode: function () {
-
       console.log('getting bar code url...');
       $.ceAjax('request', fn_url('installment_orders.get_barcode'), {
         method: 'POST',
@@ -129,11 +128,10 @@
       trackingList.forEach(({ status, date }) => {
         const li = document.createElement('li');
         const eventDate = new Date(date);
-        const text_status = _.tr(status);
 
         li.classList.add('event');
         li.setAttribute('data-date', eventDate.toLocaleString());
-        li.innerHTML = `<h3>${text_status}</h3>`;
+        li.innerHTML = `<h3>${status}</h3>`;
 
         timeline.appendChild(li);
       });
