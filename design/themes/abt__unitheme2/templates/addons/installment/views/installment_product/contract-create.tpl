@@ -62,13 +62,14 @@
                         </td>
                         <td>{$product_quantity}</td>
 
-                        <td class="">{$product_quantity * $product_info['product_price']['price'] }</td>
+                        <td class="">{$product_info['product_price']['price']}</td>
                     </tr>
                     <tr>
                         <td class="orange">Итого</td>
                         {*                        {$total}*}
-                        <td>{$product_quantity}</td>
+                        <td></td> {*{$product_quantity}*}
                         <td class="orange">{$product_quantity * $product_info['product_price']['price'] }</td>
+                        {*                        {fn_print_die($product_info['product_price']['price'])}*}
                     </tr>
                 </table>
 

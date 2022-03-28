@@ -7,12 +7,10 @@
     </div>
 
     <div id="salement" class="tabcontentSec">
-        <h3>London</h3>
-        <p>London is the capital city of England.</p>
+        <div class="">another one</div>
     </div>
 
     <div id="doc" class="tabcontentSec">
-        <h3>Paris</h3>
-        <p>Paris is the capital of France.</p>
+        <div class="products-cards__mini-profile"></div>
     </div>
 </div>
