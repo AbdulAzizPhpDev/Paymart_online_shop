@@ -544,6 +544,7 @@ if ($mode == "contract-create") {
         Tygh::$app['view']->assign('total', $items->total);
         Tygh::$app['view']->assign('origin', $items->origin);
         Tygh::$app['view']->assign('month', $items->month);
+        Tygh::$app['view']->assign('period', $period);
         Tygh::$app['view']->assign('deposit', $items->deposit);
         Tygh::$app['view']->assign('product_info', $datas);
         Tygh::$app['view']->assign('product_quantity', $product_quantity);
