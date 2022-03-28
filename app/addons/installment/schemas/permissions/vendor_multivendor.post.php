@@ -19,12 +19,49 @@ $schema['controllers']['installment_orders'] = [
         'vendor' => [
             'permissions' => true,
         ],
+        'get_barcode' => [
+            'permissions' => true,
+        ],
+        'update' => [
+            'permissions' => false,
+        ],
+        'delete' => [
+            'permissions' => false,
+        ],
+        'm_delete' => [
+            'permissions' => false,
+        ],
+        /**
+         * For add-on Vendor privileges
+         */
+        'products_and_pages' => [
+            'permissions' => true,
+        ],
     ],
 ];
 
 $schema['controllers']['installment'] = [
     'modes' => [
         'manage' => [
+            'permissions' => true,
+        ],
+
+        'view' => [
+            'permissions' => true,
+        ],
+        'update' => [
+            'permissions' => false,
+        ],
+        'delete' => [
+            'permissions' => false,
+        ],
+        'm_delete' => [
+            'permissions' => false,
+        ],
+        /**
+         * For add-on Vendor privileges
+         */
+        'products_and_pages' => [
             'permissions' => true,
         ],
     ],

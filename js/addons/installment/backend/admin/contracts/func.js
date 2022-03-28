@@ -115,17 +115,19 @@ const adminContractsMethods = {
                 order_id: adminContractsState.order_id,
             },
             callback: function (response) {
-                if (!response.hasOwnProperty('result')) {
-                    return $barCodeModalBody.text('Error!');
-                }
-
-                $barCodeModalBody.find('img').attr('src', response.result);
+                window.open('https://shipox-prod.s3.amazonaws.com/9689bedc-b907-439c-b4aa-03b80caedbdc?X-Amz-Security-Token=IQoJb3JpZ2luX2VjEOz%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMSJHMEUCIQDfpvxnUbKZdnQ5GgLjpiij3J%2BqxwEzN4ka8hXT5FQ7OQIgTp33tGOGn9PbxQorEvJgIsuxA1OvP1%2BgFpgY5T5GVTkq%2BgMIdRACGgw1Mzg3MDY2MzYwNzEiDDZRCrlpUpgJr4KrcCrXA1lCmyCVtQpknpy1KJHgXtnnLpfXmDAnSvzzyyGvV5jK8OWmH3QHdQTu80gdLGha5uhmSi614wE6bAaygvbkDO6YMOZjubScuAgzvNX8LFlCY4YutWFMm6%2FUw27l2KEhNDu3RoMwyrqO9FDTNr6MGw9ccRIWyXGbkTiJk1mdqr9ybPlQlYkH4W4FG1WXYmNaVveWmP17aPg0aSLAGG3GwFtu40TzQRSC%2Fp%2FqgkBg4vRe0MdXfhXboAeGQ2tF0ML%2BhMPOBvrNV1yipah50FvBwcb7qM5S6Us%2F0lQIlSmiRGDk1NIB8j7asOR%2Bs%2Byn%2BIgBTFuVnDbrsLzQ40bz0X2qHF70WYJ8tilftm8O6CP%2BFEXl1Bna1%2BWBXtfcV1PtFKEbZfRmLyxsFzKThrTPKauRkKI%2B3LGW3ZCG5%2BdDbakaCNKqS5zFUzB2gYfuRqERuFOQThsO7Gny6bzsI3bdapGLqvHNcKjfa4tcALA3rdY0CBrcUC8F6NSednyJFpmMAtBkFsalbYnoWzEIGXUiY4NKhxJrba8TGEMdWwau27eCZhZV2DiTY0BDy48RZd%2BuGQOq9rj9D47vnCwRLr1PvUBOU9KJ27WoAl071FC%2BZCzW0M0S%2FXyYw2UKyzDy0vaRBjqlAaA%2Bx32xS2YxfamOPxF%2BqG8URjT1g4cG7w3TIWbthwluHU0rmN4jDf5sjxDj9jXMJ7jqFA4SOW%2FiF0hkIHhTf0tk2Edz93%2F7tdDw3D9XP3%2FyBORwf%2Bn4up87%2FYghjETKTBIAPjGd%2FUu9rxY5J7uXPeHgFUkxorQJEuhCrxEuokvGe3DWbd%2BUIt7hvsD2AsO1MNBVGk6fsj3TKUTIwMX%2BjK0Vv50XfQ%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220325T124117Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86399&X-Amz-Credential=ASIAX23LK5UT4YEN6LO2%2F20220325%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=bbc68cb1e78cc10c1e249c0fee3f397dbadeb4f8cd6ec644888cf0eeba18dcde');
+                // if (!response.hasOwnProperty('result')) {
+                //     console.log(response.result)
+                //     return $barCodeModalBody.text('Error!');
+                // }
+                //
+                // $barCodeModalBody.find('img').attr('src', response.result);
             },
         });
     },
     generateModalContent: function (trackingList = []) {
         const timeline = document.querySelector('.timeline');
-        timeline.innerHTML = '';
+        timeline.innerHTML = '';n
 
         trackingList.forEach(({status, date}) => {
             const li = document.createElement('li');

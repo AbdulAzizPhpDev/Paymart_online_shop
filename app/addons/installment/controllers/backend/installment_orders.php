@@ -112,8 +112,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if ($mode == "get_barcode") {
+
+
         $order_id = $_REQUEST['order_id'];
-        $fargo_data = db_get_row("select *  from ?:fargo_orders where paymart_contract_id=?i ", (int)$order_id);
+        $fargo_data = db_get_row("select *  from ?:fargo_orders where paymart_contract_id=?i ", 63997);
+
         Registry::get('ajax')->assign('result', $fargo_data['fargo_contract_label']);
         exit();
     }
