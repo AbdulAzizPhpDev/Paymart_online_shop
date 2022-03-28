@@ -16,7 +16,7 @@
         {* Show Tracking Modal  *}
         <div class="modal signin-modal tracking-contract-modal" style="display: none;">
             <div class="modal-header">
-                <div><h3>Tracking Products</h3></div>
+                <div><h3>{__('track_request_subj')}</h3></div>
                 <button class="close-tracking-contract-modal">&times;</button>
             </div>
             <div class="modal-body tracking-modal-body">
