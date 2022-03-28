@@ -22,6 +22,9 @@ $schema['controllers']['installment_orders'] = [
         'get_barcode' => [
             'permissions' => true,
         ],
+        'change_status' => [
+            'permissions' => true,
+        ],
         'update' => [
             'permissions' => false,
         ],

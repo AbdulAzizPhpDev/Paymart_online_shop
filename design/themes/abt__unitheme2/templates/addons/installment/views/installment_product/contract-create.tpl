@@ -56,9 +56,10 @@
                         <td class="bolded">Сумма НДС</td>
                     </tr>
                     <tr>
-                        {*                        {fn_print_die($product_info)}*}
+
+
                         <td>
-                            {$product_info['product_descriptions']['product']}
+                            {$product_info['product_descriptions']['product'] } {$product_info['product_text']}
                         </td>
                         <td>{$product_quantity}</td>
 

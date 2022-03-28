@@ -271,10 +271,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $user = db_get_row('select * from ?:users where user_id=?i', $auth['user_id']);
 
+
+        $product_feature_values = db_get_array("select * from ?:product_features_values
+                                 where product_id=?i ", Tygh::$app['session']['product_info']['product_id']);
+
+        $product_text = "";
+        foreach ($product_feature_values as $value) {
+            if (!empty($value['value'])) {
+                $product_text .= '; ' . $value['value'];
+            }
+
+        }
+
+
         $data = [
             'products' => [
                 [
-                    "name" => $product_info['product_name'],
+                    "name" => $product_info['product_name'] . '; ' . $product_text,
                     "amount" => (int)Tygh::$app['session']['product_info']['product_qty'],
                     "price" => (int)$product_info['price']
                 ]
@@ -303,7 +316,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($mode == "set_confirm_contract") {
 
-        $user = db_get_row('select * from ?:users where user_id=?i', $auth['user_id']);
+        $user = db_get_row('select * from ?:users 
+                            where user_id=?i', $auth['user_id']);
 
         $product_id = Tygh::$app['session']['product_info']['product_id'];
         $product_amount = (int)Tygh::$app['session']['product_info']['product_qty'];
@@ -334,6 +348,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $response = php_curl('/buyers/check-user-sms', $data_contract, 'POST', $user['api_key']);
 
+
         if ($response->result->status == 1) {
 
 
@@ -345,17 +360,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $neighborhood = [];
             if ((int)$_REQUEST['region'] == 228171787) {
+
+                $address = db_get_row("select * from ?:fargo_countries where  city_id=?i ", $_REQUEST['city']);
+
                 $params["city_id"] = 228171787;
+
+                $params["street"] = $address['city_name'] . ' ' . $params["street"];
 
             } else {
                 $params["city_id"] = (int)$_REQUEST['region'];
-
+                $params["street"] = $_REQUEST['city'] . ' ' . $params["street"];
             }
             $product_shipping_data = unserialize($product_info['shipping_params']);
             $params["shipping_params"] = $product_shipping_data;
 
             $data = createOrder($product_info, $product_amount, $user, $params, $_REQUEST['contract_id']);
-
+            unset(Tygh::$app['session']['product_info']);
             $errors = showErrors('contract_create_successfully', [], "success");
             Registry::get('ajax')->assign('result', $errors);
             exit();
@@ -495,8 +515,22 @@ if ($mode == "contract-create") {
         $product_quantity = Tygh::$app['session']['product_info']['product_qty'];
         $period = Tygh::$app['session']['product_info']['period'];
 
-        $datas = db_get_row('SELECT * FROM ?:products as product INNER JOIN ?:companies as company ON product.company_id = company.company_id WHERE product.product_id = ?i ', $product_id);
+        $datas = db_get_row('SELECT * FROM ?:products as product 
+                             INNER JOIN ?:companies as company ON product.company_id = company.company_id 
+                             WHERE product.product_id = ?i ', $product_id);
+        $product_feature_values = db_get_array("select * from ?:product_features_values where product_id=?i ", $datas['product_id']);
+        $product_text = "";
+
+        foreach ($product_feature_values as $value) {
+            if (!empty($value['value'])) {
+                $product_text .= '; ' . $value['value'];
+            }
+
+        }
+        $datas['product_text'] = $product_text;
+
         $datas['product_descriptions'] = db_get_row('SELECT * FROM ?:product_descriptions WHERE product_id = ?i', $datas['product_id']);
+
         $datas['product_price'] = db_get_row('SELECT * FROM ?:product_prices WHERE product_id = ?i', $datas['product_id']);
         $user = db_get_row('SELECT * FROM ?:users WHERE user_id = ?i', $auth['user_id']);
 
@@ -524,7 +558,7 @@ if ($mode == "contract-create") {
                     [
                         "price" => $datas['product_price']['price'],
                         "amount" => $product_quantity,
-                        "name" => $datas['product_descriptions']['product']
+                        "name" => $datas['product_descriptions']['product'] . "; " . $product_text
                     ]
                 ]
             ],
@@ -532,6 +566,7 @@ if ($mode == "contract-create") {
             "user_id" => $user['p_user_id']
 
         ];
+
         $response = php_curl('/order/calculate', $data, 'POST', $datas['p_c_token']);
 
         $id = (int)$datas["p_c_id"];
@@ -546,15 +581,13 @@ if ($mode == "contract-create") {
         Tygh::$app['view']->assign('month', $items->month);
         Tygh::$app['view']->assign('deposit', $items->deposit);
         Tygh::$app['view']->assign('product_info', $datas);
+
         Tygh::$app['view']->assign('product_quantity', $product_quantity);
         Tygh::$app['view']->assign('user', $user);
         if ((int)$user['i_limit'] < (int)$datas['product_price']['price']) {
             Tygh::$app['view']->assign('notifier', true);
-
-
         } else {
             Tygh::$app['view']->assign('notifier', false);
-
         }
     }
 }
