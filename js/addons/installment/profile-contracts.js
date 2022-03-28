@@ -56,9 +56,7 @@
 
           const { result } = response;
 
-          if (result.status === 'success') {
-            profileContractsMethods.generateModalContent(result.data.list);
-          }
+          profileContractsMethods.generateModalContent(result.list);
         },
       });
     },
@@ -69,11 +67,10 @@
       trackingList.forEach(({ status, date }) => {
         const li = document.createElement('li');
         const eventDate = new Date(date);
-        const text_status = _.tr(status);
 
         li.classList.add('event');
         li.setAttribute('data-date', eventDate.toLocaleString());
-        li.innerHTML = `<h3>${text_status}</h3>`;
+        li.innerHTML = `<h3>${status}</h3>`;
 
         timeline.appendChild(li);
       });
