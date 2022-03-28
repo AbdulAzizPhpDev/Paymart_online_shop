@@ -582,12 +582,13 @@ if ($mode == "contract-create") {
 
         $items = $response->data->orders->$id->price;
 
-        $city = db_get_array('select * from ?:fargo_countries where parent_city_id=?i ORDER BY city_name ASC', 0);;
+        $city = db_get_array('select * from ?:fargo_countries where parent_city_id=?i ORDER BY city_name ASC', 0);
 
         Tygh::$app['view']->assign('city', $city);
         Tygh::$app['view']->assign('total', $items->total);
         Tygh::$app['view']->assign('origin', $items->origin);
         Tygh::$app['view']->assign('month', $items->month);
+        Tygh::$app['view']->assign('period', $period);
         Tygh::$app['view']->assign('deposit', $items->deposit);
         Tygh::$app['view']->assign('product_info', $datas);
 
