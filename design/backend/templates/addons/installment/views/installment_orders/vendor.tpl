@@ -19,8 +19,8 @@
                 <h3>Отменить договор</h3>
             </div>
             <div class="modal-footer">
-                <button class="btn close-cancel-contract-modal">Нет</button>
-                <button class="btn confirm-cancel-contract">Да</button>
+                <button class="btn close-cancel-contract-modal">{__('false')}</button>
+                <button class="btn confirm-cancel-contract">{__('yes')}</button>
             </div>
         </div>
         {* Modal - Accept Contract  *}
@@ -29,8 +29,19 @@
                 <h3>Принять договор</h3>
             </div>
             <div class="modal-footer">
-                <button class="btn close-accept-contract-modal">Нет</button>
-                <button class="btn confirm-accept-contract">Да</button>
+                <button class="btn close-accept-contract-modal">{__('false')}</button>
+                <button class="btn confirm-accept-contract">{__('yes')}</button>
+            </div>
+        </div>
+        {* Show Bar Code Modal  *}
+        <div class="modal signin-modal bar-code-modal" style="display: none;">
+            <div class="modal-header">
+                <div><h3>{__('yml2_offer_feature_common_barcode')}</h3></div>
+                <button class="close-bar-code-modal">&times;</button>
+            </div>
+            <div class="modal-body bar-code-modal-body">
+                <iframe src="" frameborder="0" height="650" width="100%"></iframe>
+{*                <img src="https://img.icons8.com/ios/32/000000/truck.png" alt="bar-code">*}
             </div>
         </div>
     {else}

@@ -16,16 +16,12 @@
         {* Show Tracking Modal  *}
         <div class="modal signin-modal tracking-contract-modal" style="display: none;">
             <div class="modal-header">
-                <div><h3>Tracking Products</h3></div>
+                <div><h3>{__('track_request_subj')}</h3></div>
                 <button class="close-tracking-contract-modal">&times;</button>
             </div>
             <div class="modal-body tracking-modal-body">
                 {include file="addons/installment/views/installment_orders/components/stepper.tpl"}
             </div>
-            {*<div class="modal-footer">
-                <button class="btn close-tracking-contract-modal">Нет</button>
-                <button class="btn confirm-tracking-contract">Да</button>
-            </div>*}
         </div>
     {else}
         <h4>Пусто</h4>

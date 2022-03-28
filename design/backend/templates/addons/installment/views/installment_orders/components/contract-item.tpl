@@ -71,7 +71,7 @@
                             <button class="btn tracking-contract"
                                     data-contract-id="{$order->contract->id}"
                                     data-order-id="{$order->id}">
-                                Tracking
+                                {__('track_request_subj')}
                             </button>
                         {/if}
                     {else}
@@ -87,6 +87,10 @@
                                 Отменить договор
                             </button>
                         {elseif $order->contract->status == 1}
+                            <button class="btn show-bar-code"
+                                    data-order-id="{$order->id}">
+                                {__('yml2_offer_feature_common_barcode')}
+                            </button>
                             <button class="btn cancel-contract"
                                     data-contract-id="{$order->contract->id}"
                                     data-order-id="{$order->id}">
