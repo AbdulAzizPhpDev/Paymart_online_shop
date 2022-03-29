@@ -25,7 +25,7 @@
                                  alt="Profile image">
                             <div class="main-profile__text">
                                 <span class="main-profile__text-item">{$user['firstname']}  {$user['lastname']}</span>
-                                <span class="main-profile__text-second">Тел: {$user['phone']}</span>
+                                <span class="main-profile__text-second">{__('customer_phone')}: {$user['phone']}</span>
                                 <input id="phone_input" type="hidden" value="{$user['phone']}">
                             </div>
                         </div>
@@ -33,8 +33,8 @@
                             <img src="/design/themes/responsive/media/images/addons/installment/billing-ico.png"
                                  alt="Billing ico">
                             <div class="text-items__second-items">
-                                <div class="first-item">Доступная рассрочка:</div>
-                                <div class="second-item">{$user['i_limit']} сум</div>
+                                <div class="first-item">{__('avialable_installment')}:</div>
+                                <div class="second-item">{$user['i_limit']|number_format:false:false:' '} сум</div>
                             </div>
                         </div>
                     </div>
@@ -46,14 +46,14 @@
 
             <div class="section-two">
                 <h2 class="second-title">
-                    Товары
+                    {__('abt__ut2.export.actions.products')}
                 </h2>
 
                 <table>
                     <tr>
-                        <td class="bolded">Наименование</td>
-                        <td class="bolded">Кол-во</td>
-                        <td class="bolded">Сумма НДС</td>
+                        <td class="bolded">{__('name')}</td>
+                        <td class="bolded">{__('promotion_op_amount')|capitalize}</td>
+                        <td class="bolded">{__('total_nds')}</td>
                     </tr>
                     <tr>
 
@@ -63,13 +63,13 @@
                         </td>
                         <td>{$product_quantity}</td>
 
-                        <td class="">{$product_quantity * $product_info['product_price']['price'] }</td>
+                        <td class="">{($product_quantity * $product_info['product_price']['price'])|number_format:false:false:' '}</td>
                     </tr>
                     <tr>
-                        <td class="orange">Итого</td>
+                        <td class="orange">{__('total')}</td>
                         {*                        *}
                         <td>{$product_quantity}</td>
-                        <td class="orange">{$product_quantity * $product_info['product_price']['price'] }</td>
+                        <td class="orange">{($product_quantity * $product_info['product_price']['price'])|number_format:false:false:' ' }</td>
                         {*                        {fn_print_die($product_info['product_price']['price'])}*}
                     </tr>
                 </table>
@@ -82,7 +82,7 @@
                 <input type="hidden" value="{$user['p_user_id']}" id="user_id">
 
                 <h2 class="second-title">
-                    Расчет стоимости
+                    {__('cost_calculation')}
                 </h2>
 
 
@@ -97,7 +97,7 @@
                 <form style="margin-top:4px;">
                     <div class="main-form">
                         <div class="d-flex flex-column">
-                            <label for="cars">Выберите срок:</label>
+                            <label for="cars">{__('choose_period')}:</label>
                             <div class="input-paying">
                                 <select name="selectName" id="selectedId">
                                     {foreach $periods as $period => $item}
@@ -110,30 +110,30 @@
                             <img src="/design/themes/responsive/media/images/addons/installment/billing-ico.png"
                                  alt="Billing ico">
                             <div class="input-paying__text">
-                                <div class="input-paying__text-title">Ежемесячный платеж:</div>
-                                <div class="input-paying__text-a">{$month} сум</div>
+                                <div class="input-paying__text-title">{__('monthly_payment')}:</div>
+                                <div class="input-paying__text-a">{$month|number_format:false:false:' '} сум</div>
                             </div>
                         </div>
                         <div class="input-link">
                             <img src="/design/themes/responsive/media/images/addons/installment/billing-ico.png"
                                  alt="Billing ico">
                             <div class="input-paying__text">
-                                <div class="input-paying__text-title">Итого с учетом наценки:</div>
-                                <div class="input-paying__text-p">{$total} сум</div>
+                                <div class="input-paying__text-title">{__('total_with_markup')}:</div>
+                                <div class="input-paying__text-p">{$total|number_format:false:false:' '} сум</div>
                             </div>
                         </div>
                     </div>
                     <div class="main-form__another">
                         <div class="main-form__another-item">
-                            <label for="inputAddress">Страна</label>
+                            <label for="inputAddress">{__('country')}</label>
                             <input class="repeat-input" type="text" id="inputAddress" disabled value="Узбекистан">
                         </div>
                         <div class="main-form__another-item">
-                            <label for="formAddress2">Город</label>
+                            <label for="formAddress2">{__('city')}</label>
                             <div class="input-paying__unique">
                                 <select name="formAddress2" id="formAddress2">
                                     {foreach $city as $key => $value}
-                                        {if $key==134}
+                                        {if $value['city_id'] == 228171787}
                                             <option selected value="{$value['city_id']}">{$value['city_name']}</option>
                                         {else }
                                             <option value="{$value['city_id']}">{$value['city_name']}</option>
@@ -145,7 +145,7 @@
                         <div class="main-form__last-input">
 
                             <div class="main-form__another-item">
-                                <label for="formAddress3">Район</label>
+                                <label for="formAddress3">{__('district')}</label>
                                 <div class="input-paying__unique">
                                     <select name="formAddress3" id="formAddress3" class="tashkent-regions d-none">
                                     </select>
@@ -157,45 +157,45 @@
                     <div class="main-form__last">
                         <div class="main-form__last-item">
                             <div class="last-item__style">
-                                <label for="story">Квартира </label>
+                                <label for="story">{__('apartment')} </label>
                                 <input id="story" type="text">
                             </div>
                             <div class="last-item__style">
-                                <label for="story2">Дом </label>
+                                <label for="story2">{__('home')}</label>
                                 <input id="story2" type="text">
                             </div>
                             <div class="last-item__style">
-                                <label for="story3">Улица</label>
+                                <label for="story3">{__('street')}</label>
                                 <input id="story3" type="text">
                             </div>
                         </div>
                     </div>
                 </form>
-                {*                {fn_print_die($notifier)}*}
+{*                {fn_print_die($notifier)}*}
                 <div class="form-button">
                     <span>
-                        {if ($user['i_limit'] < $total)}
+                        {if ($notifier)}
                             <!-- The Modal -->
                             <div id="myModal5" class="modal5">
-                                   <a href="{$redirect_url|fn_url}">
-                                <!-- Modal content -->
-                                      <div class="modal-content5">
-    {*                                    <span class="close5">&times;</span>*}
+                                <a href="{$redirect_url|fn_url}">
+                                    <!-- Modal content -->
+                                    <div class="modal-content5">
+{*                                    <span class="close5">&times;</span>*}
                                         <div class="modal-content5__item">
-                                            <p> Mablag' yetarli emas, call centerga murojaat qiling.</p>
-                                            <span>+998 71 209 2500</span>
+                                            <p>{__('text_customer_support')}</p>
+                                            <span>{$customer_support_phone}</span>
                                         </div>
-                                               <div>
-                                                    <img src="/design/themes/responsive/media/images/addons/installment/back-arrow.png"
-                                                         alt="Arrow image">
-                                               </div>
-                                      </div>
-                                   </a>
-                                </div>
+                                        <div>
+                                            <img src="/design/themes/responsive/media/images/addons/installment/back-arrow.png"
+                                                 alt="Arrow image">
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
                         {/if}
                     </span>
-                    <button id="myBtn" class="form-button__item" type="submit" form="form1">Оформить
-                        рассрочку
+                    <button id="myBtn" class="form-button__item" type="submit" form="form1">
+                        {__('apply_for_an_installment')}
                     </button>
                 </div>
             </div>

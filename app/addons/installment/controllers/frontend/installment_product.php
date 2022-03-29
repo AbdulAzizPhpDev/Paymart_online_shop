@@ -630,6 +630,7 @@ if ($mode == "contract-create") {
         Tygh::$app['view']->assign('periods', $periods);
         Tygh::$app['view']->assign('deposit', $items->deposit);
         Tygh::$app['view']->assign('product_info', $datas);
+        Tygh::$app['view']->assign('customer_support_phone', CUSTOMER_SUPPORT_PHONE);
 
         Tygh::$app['view']->assign('product_quantity', $product_quantity);
         Tygh::$app['view']->assign('user', $user);
