@@ -202,7 +202,6 @@ myBtn.onclick = function () {
         }
         document.querySelector('.card-resend-sms-timer').innerHTML = otpState.timer;
       }
-
     },
   });
 };

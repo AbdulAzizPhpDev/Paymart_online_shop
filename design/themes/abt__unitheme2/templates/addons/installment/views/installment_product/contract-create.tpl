@@ -1,7 +1,7 @@
 {script src="js/addons/installment/contract-create.js"}
 {script src="https://cdn.jsdelivr.net/npm/jquery-pinlogin@1.0.3/src/jquery.pinlogin.min.js"}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-pinlogin@1.0.3/src/jquery.pinlogin.css">
-
+{assign var=language_symbol value=$currencies[$smarty.const.CART_PRIMARY_CURRENCY].symbol}
 
 <div class="main-page">
     {if isset($redirect_url)}
@@ -34,7 +34,7 @@
                                  alt="Billing ico">
                             <div class="text-items__second-items">
                                 <div class="first-item">{__('avialable_installment')}:</div>
-                                <div class="second-item">{$user['i_limit']|number_format:false:false:' '} сум</div>
+                                <div class="second-item">{$user['i_limit']|number_format:false:false:' '} {$language_symbol}</div>
                             </div>
                         </div>
                     </div>
@@ -53,6 +53,7 @@
                     <tr>
                         <td class="bolded">{__('name')}</td>
                         <td class="bolded">{__('promotion_op_amount')|capitalize}</td>
+                        <td class="bolded">{__('ab__stickers.conditions.names.price')}</td>
                         <td class="bolded">{__('total_nds')}</td>
                     </tr>
                     <tr>
@@ -62,13 +63,14 @@
                             {$product_info['product_descriptions']['product']} {$product_info['product_text']}
                         </td>
                         <td>{$product_quantity}</td>
+                        <td>{($product_info['product_price']['price'])|number_format:false:false:' '}</td>
 
                         <td class="">{($product_quantity * $product_info['product_price']['price'])|number_format:false:false:' '}</td>
                     </tr>
                     <tr>
-                        <td class="orange">{__('total')}</td>
+                        <td class="orange" colspan="3">{__('total')}</td>
                         {*                        *}
-                        <td>{$product_quantity}</td>
+{*                        <td>{$product_quantity}</td>*}
                         <td class="orange">{($product_quantity * $product_info['product_price']['price'])|number_format:false:false:' ' }</td>
                         {*                        {fn_print_die($product_info['product_price']['price'])}*}
                     </tr>
@@ -111,7 +113,7 @@
                                  alt="Billing ico">
                             <div class="input-paying__text">
                                 <div class="input-paying__text-title">{__('monthly_payment')}:</div>
-                                <div class="input-paying__text-a">{$month|number_format:false:false:' '} сум</div>
+                                <div class="input-paying__text-a">{$month|number_format:false:false:' '} {$currencies[$smarty.const.CART_PRIMARY_CURRENCY].symbol}</div>
                             </div>
                         </div>
                         <div class="input-link">
@@ -119,10 +121,13 @@
                                  alt="Billing ico">
                             <div class="input-paying__text">
                                 <div class="input-paying__text-title">{__('total_with_markup')}:</div>
-                                <div class="input-paying__text-p">{$total|number_format:false:false:' '} сум</div>
+                                <div class="input-paying__text-p">{$total|number_format:false:false:' '} {$currencies[$smarty.const.CART_PRIMARY_CURRENCY].symbol}</div>
                             </div>
                         </div>
                     </div>
+                    <h2 class="second-title">
+                        {__('address')}
+                    </h2>
                     <div class="main-form__another">
                         <div class="main-form__another-item">
                             <label for="inputAddress">{__('country')}</label>
@@ -161,7 +166,7 @@
                                 <input id="story" type="text">
                             </div>
                             <div class="last-item__style">
-                                <label for="story2">{__('home')}</label>
+                                <label for="story2">{__('house')}</label>
                                 <input id="story2" type="text">
                             </div>
                             <div class="last-item__style">
