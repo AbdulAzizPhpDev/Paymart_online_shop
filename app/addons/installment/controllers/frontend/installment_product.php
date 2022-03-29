@@ -378,16 +378,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $neighborhood = [];
             if ((int)$_REQUEST['region'] == 228171787) {
-
                 $address = db_get_row("select * from ?:fargo_countries where  city_id=?i ", $_REQUEST['city']);
 
                 $params["city_id"] = 228171787;
+                $params["neighborhood"] = $address['city_name'];
 
-                $params["street"] = $address['city_name'] . ' ' . $params["street"];
 
             } else {
                 $params["city_id"] = (int)$_REQUEST['region'];
-                $params["street"] = $_REQUEST['city'] . ' ' . $params["street"];
+                $params["neighborhood"] = $_REQUEST['city'];
             }
             $product_shipping_data = unserialize($product_info['shipping_params']);
             $params["shipping_params"] = $product_shipping_data;
@@ -521,7 +520,7 @@ if ($mode == "await") {
 }
 
 if ($mode == "contract-create") {
-
+    $product_text = "";
     if (!$auth['user_id']) {
         return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
     } else {
