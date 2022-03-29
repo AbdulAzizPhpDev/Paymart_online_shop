@@ -212,20 +212,25 @@
         </span>
         <div class="card-add__page">
             <div class="card-confirm">
-                <h1>Введите SMS код </h1>
+                <h1>{__('authentication.title_sms_code')}</h1>
+
+                <p>{__('authentication.sent_phone', ['[n]' => $user['phone']])}</p>
 
                 <div class="ty-control-group">
-
-                    <input type="tel" hidden
-                           class="ty-login__input confirm-contract" />
+                    <input type="tel" hidden class="ty-login__input confirm-contract" />
                 </div>
                 <div id="card-pin-wrapper"></div>
-                <p class="resend-sms-card">Отправить SMS еще раз (через <span class="card-resend-sms-timer">20</span>
-                    сек.)</p>
+
+                <p class="resend-sms-card">
+                    {__('authentication.text_resend_sms', ['[n]' => '<span class="card-resend-sms-timer">60</span>'])}
+                </p>
+
                 <span class="modal-error"></span>
-                <div class="resend-sms-card__ok" style="display: none;">Нажмите продолжить</div>
+
+                <div class="resend-sms-card__ok" style="display: none;">{__('vendor_communication.send_message')}</div>
+
                 <button disabled class="ty-btn ty-btn__secondary" type="button" id="modal-sent">
-                    Продолжить
+                    {__('continue')}
                 </button>
             </div>
         </div>

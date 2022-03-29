@@ -28,7 +28,7 @@ const otpState = {
   setContract: 'installment_product.set_contracts',
   api_token: Cookies.get('api_token'),
   buyerPhone: Cookies.get('buyer-phone'),
-  timer: 20,
+  timer: 60,
   interval: null,
   expDate: null,
   selectedFirst: selectedMonth,
@@ -47,7 +47,6 @@ let seller_token = document.getElementById('seller_token').value;
 let seller_id = document.getElementById('seller_id').value;
 let user_id = document.getElementById('user_id').value;
 // setUrl = fn_url('installment_product.set_contracts');
-
 
 $(document).ready(function () {
   $('#selectedId').change(function () {
@@ -201,7 +200,7 @@ myBtn.onclick = function () {
           //counter ended, do something here
           return;
         }
-        document.querySelector('.card-resend-sms-timer').innerHTML = otpState.timer + ' secs';
+        document.querySelector('.card-resend-sms-timer').innerHTML = otpState.timer;
       }
 
     },
@@ -216,7 +215,8 @@ window.onclick = function (event) {
 };
 
 $('.resend-sms-card').css('display', 'none');
-$('#modal-sent').click(function () {
+
+const confirmContract = () => {
   let region = $('#formAddress2').val();
   let apartment = $('#story').val();
   let building = $('#story2').val();
@@ -246,10 +246,13 @@ $('#modal-sent').click(function () {
         $('#modal-sent').attr('disabled', true);
       }
     },
-
-
   });
-});
+}
+
+$('#modal-sent').on('click', confirmContract);
+
+document.querySelector('resend-sms-card__ok').addEventListener('click', confirmContract);
+
 // Get the modal
 var modal5 = document.getElementById('myModal5');
 

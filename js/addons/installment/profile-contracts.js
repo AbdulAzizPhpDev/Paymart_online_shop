@@ -56,7 +56,7 @@
 
           const { result } = response;
 
-          profileContractsMethods.generateModalContent(result.list);
+            profileContractsMethods.generateModalContent(result.list);
         },
       });
     },
