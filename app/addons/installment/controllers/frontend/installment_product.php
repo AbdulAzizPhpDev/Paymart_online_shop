@@ -544,6 +544,7 @@ if ($mode == "contract-create") {
         where pfv.product_id=?i and pfv.lang_code=?s and pfv.variant_id!=0",
             $datas['product_id'], CART_LANGUAGE);
 
+        $product_text = '';
         foreach ($product_feature_values as $value) {
             if (!empty($value['variant'])) {
                 $product_text .= $value['variant'] . ' ';
@@ -628,6 +629,7 @@ if ($mode == "contract-create") {
         Tygh::$app['view']->assign('periods', $periods);
         Tygh::$app['view']->assign('deposit', $items->deposit);
         Tygh::$app['view']->assign('product_info', $datas);
+        Tygh::$app['view']->assign('customer_support_phone', CUSTOMER_SUPPORT_PHONE);
 
         Tygh::$app['view']->assign('product_quantity', $product_quantity);
         Tygh::$app['view']->assign('user', $user);

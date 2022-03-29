@@ -28,7 +28,7 @@ const otpState = {
   setContract: 'installment_product.set_contracts',
   api_token: Cookies.get('api_token'),
   buyerPhone: Cookies.get('buyer-phone'),
-  timer: 20,
+  timer: 60,
   interval: null,
   expDate: null,
   selectedFirst: selectedMonth,
@@ -47,7 +47,6 @@ let seller_token = document.getElementById('seller_token').value;
 let seller_id = document.getElementById('seller_id').value;
 let user_id = document.getElementById('user_id').value;
 // setUrl = fn_url('installment_product.set_contracts');
-
 
 $(document).ready(function () {
   $('#selectedId').change(function () {
@@ -201,7 +200,7 @@ myBtn.onclick = function () {
           //counter ended, do something here
           return;
         }
-        document.querySelector('.card-resend-sms-timer').innerHTML = otpState.timer + ' secs';
+        document.querySelector('.card-resend-sms-timer').innerHTML = otpState.timer;
       }
 
     },
@@ -216,7 +215,11 @@ window.onclick = function (event) {
 };
 
 $('.resend-sms-card').css('display', 'none');
-$('#modal-sent').click(function () {
+
+const confirmContract = () => {
+  let spanError = $('.modal-error');
+  // spanError.css('display', 'none');
+
   let region = $('#formAddress2').val();
   let apartment = $('#story').val();
   let building = $('#story2').val();
@@ -236,20 +239,29 @@ $('#modal-sent').click(function () {
       street: street,
     },
     callback: function (response) {
-      let spanError = $('.modal-error');
       console.log('response-first', response);
       if (response.result.status === 'success') {
         window.location.href = fn_url('installment_product.profile-contracts');
         console.log('shut second success');
       } else {
-        spanError.text(response.result.response.message).css('color', 'red');
+        spanError.text(response.result.response.message).css({
+          display: 'block',
+          color: 'red',
+        });
         $('#modal-sent').attr('disabled', true);
       }
     },
-
-
   });
+}
+
+$('#modal-sent').on('click', confirmContract);
+
+$('.resend-sms-card__ok').on('click', function () {
+  otpState.timer = 60;
+  $(this).css('display', 'none');
+  $('#myBtn').click();
 });
+
 // Get the modal
 var modal5 = document.getElementById('myModal5');
 
