@@ -545,6 +545,7 @@ if ($mode == "contract-create") {
         where pfv.product_id=?i and pfv.lang_code=?s and pfv.variant_id!=0",
             $datas['product_id'], CART_LANGUAGE);
 
+        $product_text = '';
         foreach ($product_feature_values as $value) {
             if (!empty($value['variant'])) {
                 $product_text .= $value['variant'] . ' ';
