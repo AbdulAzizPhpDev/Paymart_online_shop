@@ -408,6 +408,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 if ($mode == 'get_qty') {
+
     $qty = $_REQUEST['qty'];
     $product_id = $_REQUEST['product_id'];
     $period = $_REQUEST['period'];

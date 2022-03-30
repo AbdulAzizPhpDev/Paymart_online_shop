@@ -3,7 +3,7 @@
 
 {$is_add_to_cart_mv=true}
 {if "MULTIVENDOR"|fn_allowed_for && ($product.master_product_id || !$product.company_id)}{$is_add_to_cart_mv=false}{/if}
-
+{*{fn_print_die($product)}*}
 {if $product.company_id == 0}
     {assign var="p_company_id" value="215049"}
     {assign var="p_company_token" value="76659968c31ffdc11976e6e6175673df"}
