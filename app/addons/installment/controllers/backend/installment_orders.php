@@ -116,6 +116,7 @@ if ($mode == "index") {
 
     $status = !empty($_REQUEST['status']) ? $_REQUEST['status'] : null;
     $status_data = [];
+    $params = [];
     $contract = 'contract|status';
 
     switch ($status) {
@@ -165,6 +166,7 @@ if ($mode == "index") {
         "orderByDesc" => "created_at",
         "api_token" => "76d66c5a5356104a8fc6784e007d9c33"
     ];
+//    fn_print_die($data);
 
     $order_res = php_curl('/orders/list', $data, 'POST', null);
 
@@ -176,57 +178,98 @@ if ($mode == "index") {
 if ($mode == 'vendor') {
 
     $status = !empty($_REQUEST['status']) ? $_REQUEST['status'] : null;
+    $company_id = Registry::get('runtime.company_id');
+    $company_data = db_get_row("select *  from ?:companies where company_id=?i ", (int)$company_id);
+    $user = db_get_row('select * from ?:users where company_id=?i', $company_id);
+
     $status_data = [];
-    $contract = 'contract|status';
+    $params = [];
 
     switch ($status) {
         case 'moderation':
-            $status_data = MODERATION_CONFIRMATION_FROM_USER;
+            $params = [
+                [
+                    'contract|status' => 0,
+                    "partner_id" => [
+                        $user['p_user_id']
+                    ]
+                ],
+                [
+                    'query_operation' => 'or',
+                    'contract|status' => 2,
+                    "partner_id" => [
+                        $user['p_user_id']
+                    ]
+                ]
+            ];
             Tygh::$app['view']->assign('moderation', 'active');
             break;
         case 1:
-            $status_data = ACCEPTED_ORDER;
+            $params = [
+                [
+                    'contract|status' => ACCEPTED_ORDER,
+                    "partner_id" => [
+                        $user['p_user_id']
+                    ]
+                ]
+            ];
             Tygh::$app['view']->assign('active', 'active');
             break;
         case '3|4':
-            $status_data = [3, 4];
+            $params = [
+                [
+                    'contract|status' => [3, 4],
+                    "partner_id" => [
+                        $user['p_user_id']
+                    ]
+                ]
+            ];
             Tygh::$app['view']->assign('overdue', 'active');
             break;
         case 5:
-            $status_data = CANCELED_ORDER;
+            $params = [
+                [
+                    'contract|status' => CANCELED_ORDER,
+                    "partner_id" => [
+                        $user['p_user_id']
+                    ]
+                ]
+            ];
             Tygh::$app['view']->assign('cancelled', 'active');
             break;
         case 9:
-            $status_data = COMPLETED_INSTALLMENT;
+            $params = [
+                [
+                    'contract|status' => COMPLETED_INSTALLMENT,
+                    "partner_id" => [
+                        $user['p_user_id']
+                    ]
+                ]
+            ];
             Tygh::$app['view']->assign('closed', 'active');
             break;
         default:
-            $status_data = [
-                MODERATION_CONFIRMATION_FROM_USER,
-                CANCELED_ORDER,
-                COMPLETED_INSTALLMENT
+            $params = [
+                [
+                    'status' => [
+                        MODERATION_CONFIRMATION_FROM_USER,
+                        CANCELED_ORDER,
+                        COMPLETED_INSTALLMENT
+                    ],
+                    "partner_id" => [
+                        $user['p_user_id']
+                    ]
+                ]
             ];
-            $contract = 'status';
 
             Tygh::$app['view']->assign('all', 'active');
             break;
     }
     $page = $_REQUEST['page'] ?? 0;
     $offset = (10 * $page) - 10;
-    $company_id = Registry::get('runtime.company_id');
-
-    $company_data = db_get_row("select *  from ?:companies where company_id=?i ", (int)$company_id);
-    $user = db_get_row('select * from ?:users where company_id=?i', $company_id);
 
     $data = [
-        "params" => [
-            [
-                $contract => $status_data,
-                "partner_id" => [
-                    $user['p_user_id']
-                ]
-            ]
-        ],
+        "params" => $params,
         "online" => 1,
         "limit" => 10,
         "offset" => $offset,

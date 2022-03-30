@@ -14,6 +14,37 @@
 
 /* Timeline */
 
+.tracking-contract-modal {
+  max-width: 700px;
+  width: 100%;
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+
+    .close-tracking-contract-modal {
+      background-color: transparent;
+      border: none;
+      font-size: 28px;
+    }
+  }
+}
+
+.bar-code-modal {
+  width: 100%;
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+
+    .close-bar-code-modal {
+      background-color: transparent;
+      border: none;
+      font-size: 28px;
+    }
+  }
+}
+
 .timeline {
   border-left: @line solid @color-primary;
   border-bottom-right-radius: @radius;
@@ -52,9 +83,9 @@
     }
 
     &:after {
-      box-shadow: 0 0 0 @dotborder fade(@color-primary,100%);
+      box-shadow: 0 0 0 @dotborder fade(@color-primary, 100%);
       left: (@spacing + @line + (@dot * 0.35)) * -1;
-      background: lighten(@background,5%);
+      background: lighten(@background, 5%);
       border-radius: 50%;
       height: @dot;
       width: @dot;

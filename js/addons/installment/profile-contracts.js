@@ -14,7 +14,7 @@
   const profileContractsMethods = {
     calculateProgress: function () {
       const percentage = Number($(this).data('percentage')) * 10 || 0;
-      $(this).css('width', `${percentage}%`);
+      $(this).css('width', `${percentage / 12}%`);
     },
     // searchContract: function (event) {
     //   const searchValue = $searchInput.val();
