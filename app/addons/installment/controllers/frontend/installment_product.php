@@ -633,7 +633,7 @@ if ($mode == "contract-create") {
 
         Tygh::$app['view']->assign('product_quantity', $product_quantity);
         Tygh::$app['view']->assign('user', $user);
-        if ((int)$user['i_limit'] < (int)$datas['product_price']['price']) {
+        if ((int)$user['i_limit'] < $product_quantity * (int)$datas['product_price']['price']) {
             Tygh::$app['view']->assign('notifier', true);
         } else {
             Tygh::$app['view']->assign('notifier', false);
