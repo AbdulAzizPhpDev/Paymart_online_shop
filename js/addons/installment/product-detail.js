@@ -174,7 +174,7 @@
 
   productDetailMethods.getProductPrice();
   productDetailMethods.radioHandler();
-  productDetailMethods.redirectVendor();
+  // productDetailMethods.redirectVendor();
 
   $installmentButton.on('click', productDetailMethods.setSessionProductQtyAndPeriod);
 
@@ -219,6 +219,10 @@
       showProductInstallmentPrice();
       radioHandler();
     }*/
+  });
+
+  $.ceEvent('on', 'ce.product_option_changed_post', function () {
+    console.log('product color changed');
   });
 
 })(Tygh, Tygh.$);
