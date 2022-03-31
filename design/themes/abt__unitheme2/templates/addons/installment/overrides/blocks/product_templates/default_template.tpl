@@ -3,7 +3,7 @@
 
 {$is_add_to_cart_mv=true}
 {if "MULTIVENDOR"|fn_allowed_for && ($product.master_product_id || !$product.company_id)}{$is_add_to_cart_mv=false}{/if}
-
+{*{fn_print_die($product)}*}
 {if $product.company_id == 0}
     {assign var="p_company_id" value="215049"}
     {assign var="p_company_token" value="76659968c31ffdc11976e6e6175673df"}
@@ -229,6 +229,7 @@
                     {$smarty.capture.$list_buttons nofilter}
 
                 </div>
+                <h1 style="color: #ff0e0e">test1111</h1>
                 {if $capture_buttons}{/capture}{/if}
 
                 {if $show_short_descr}
@@ -278,7 +279,7 @@
 
     {/hook}
     </div>
-
+  <h1 style="color: #ff0e0e">test1111</h1>
     {if $smarty.capture.hide_form_changed == "YesNo::YES"|enum}
         {assign var="hide_form" value=$smarty.capture.orig_val_hide_form}
     {/if}
@@ -291,9 +292,14 @@
 
             {if $blocks.$tabs_block_id.properties.wrapper}
                 {include file=$blocks.$tabs_block_id.properties.wrapper content=$smarty.capture.tabsbox_content title=$blocks.$tabs_block_id.description}
+
             {else}
+  <h1 style="color: #ff0e0e">test_tap_start</h1>
+             
+{$smarty.capture.tabsbox_content|fn_print_r}
                 {$smarty.capture.tabsbox_content nofilter}
             {/if}
+  <h1 style="color: #ff0e0e">test_tap_end</h1>
         {/hook}
     {/if}
     {/hook}

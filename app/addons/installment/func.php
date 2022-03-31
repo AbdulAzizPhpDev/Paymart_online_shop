@@ -165,6 +165,9 @@ function createFargoOrder($contract_id)
         WHERE product.product_id = ?i ', $order['product_id']);
     $user = db_get_row('select * from ?:users where user_id=?i', $order['user_id']);
     $product_shipping_data = unserialize($order['fargo_address']);
+    $neighborhood = [
+        "name" => $product_shipping_data['neighborhood']
+    ];
     $fargo_data = [
         "sender_data" => fn_fargo_uz_sender_recipient_data(
             "residential",
@@ -173,7 +176,12 @@ function createFargoOrder($contract_id)
             234,
             '+' . $product_info['phone'],
             null,
-            $product_info['address']
+            $product_info['address'],
+            null,
+            null,
+            null,
+            ["name" => $product_info['state']]
+
         ),
         "recipient_data" => fn_fargo_uz_sender_recipient_data(
             "residential",
@@ -184,7 +192,10 @@ function createFargoOrder($contract_id)
             null,
             $product_shipping_data['apartment'],
             $product_shipping_data['building'],
-            $product_shipping_data['street']
+            $product_shipping_data['street'],
+            null,
+            $neighborhood
+
         ),
         "dimensions" => fn_fargo_uz_dimensions(
             $product_info['weight'],

@@ -378,16 +378,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $neighborhood = [];
             if ((int)$_REQUEST['region'] == 228171787) {
-
                 $address = db_get_row("select * from ?:fargo_countries where  city_id=?i ", $_REQUEST['city']);
 
                 $params["city_id"] = 228171787;
+                $params["neighborhood"] = $address['city_name'];
 
-                $params["street"] = $address['city_name'] . ' ' . $params["street"];
 
             } else {
                 $params["city_id"] = (int)$_REQUEST['region'];
-                $params["street"] = $_REQUEST['city'] . ' ' . $params["street"];
+                $params["neighborhood"] = $_REQUEST['city'];
             }
             $product_shipping_data = unserialize($product_info['shipping_params']);
             $params["shipping_params"] = $product_shipping_data;
@@ -409,7 +408,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 if ($mode == 'get_qty') {
-    $qty = $_REQUEST['qty'];
+
+    $qty = isset($_REQUEST['qty']) ?? 1;
     $product_id = $_REQUEST['product_id'];
     $period = $_REQUEST['period'];
 
@@ -515,13 +515,15 @@ if ($mode == "await") {
         list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
         $user_step = checkInstallmentStep($auth['user_id']);
         if ($mode_type !== $user_step) {
+            $user = db_get_row('select * from ?:users where user_id = ?s', $auth['user_id']);
+            Tygh::$app['view']->assign('user_ipa_token', $user['api_key']);
             return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
         }
     }
 }
 
 if ($mode == "contract-create") {
-
+    $product_text = "";
     if (!$auth['user_id']) {
         return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
     } else {
@@ -530,6 +532,7 @@ if ($mode == "contract-create") {
             return array(CONTROLLER_STATUS_REDIRECT, fn_url());
         }
         $product_id = Tygh::$app['session']['product_info']['product_id'];
+
         $product_quantity = Tygh::$app['session']['product_info']['product_qty'];
         $period = Tygh::$app['session']['product_info']['period'];
 
@@ -634,7 +637,7 @@ if ($mode == "contract-create") {
 
         Tygh::$app['view']->assign('product_quantity', $product_quantity);
         Tygh::$app['view']->assign('user', $user);
-        if ((int)$user['i_limit'] < (int)$datas['product_price']['price']) {
+        if ((int)$user['i_limit'] < $product_quantity * (int)$datas['product_price']['price']) {
             Tygh::$app['view']->assign('notifier', true);
         } else {
             Tygh::$app['view']->assign('notifier', false);
