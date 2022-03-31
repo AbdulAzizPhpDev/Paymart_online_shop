@@ -409,7 +409,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 if ($mode == 'get_qty') {
 
-    $qty = $_REQUEST['qty'];
+    $qty = isset($_REQUEST['qty']) ?? 1;
     $product_id = $_REQUEST['product_id'];
     $period = $_REQUEST['period'];
 
@@ -515,6 +515,8 @@ if ($mode == "await") {
         list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
         $user_step = checkInstallmentStep($auth['user_id']);
         if ($mode_type !== $user_step) {
+            $user = db_get_row('select * from ?:users where user_id = ?s', $auth['user_id']);
+            Tygh::$app['view']->assign('user_ipa_token', $user['api_key']);
             return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
         }
     }
@@ -530,6 +532,7 @@ if ($mode == "contract-create") {
             return array(CONTROLLER_STATUS_REDIRECT, fn_url());
         }
         $product_id = Tygh::$app['session']['product_info']['product_id'];
+
         $product_quantity = Tygh::$app['session']['product_info']['product_qty'];
         $period = Tygh::$app['session']['product_info']['period'];
 

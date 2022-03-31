@@ -15,13 +15,13 @@
         <div class="ty-tabs cm-j-tabs{if $track} cm-track{/if} clearfix">
             <ul class="ty-tabs__list" {if $tabs_section}id="tabs_{$tabs_section}"{/if}>
                 {foreach from=$navigation.tabs item=tab key=key name=tabs}
+
                     {if ((!$tabs_section && !$tab.section) || ($tabs_section == $tab.section)) && !$key|in_array:$empty_tab_ids}
                         {if !$active_tab}
                             {assign var="active_tab" value=$key}
                         {/if}
                         {assign var="_tabs" value=true}
-                        <li id="{$key}"
-                            class="ty-tabs__item{if $tab.js} cm-js{elseif $tab.ajax} cm-js cm-ajax{/if}{if $key == $active_tab} active{/if}">
+                        <li id="{$key}" class="ty-tabs__item{if $tab.js} cm-js{elseif $tab.ajax} cm-js cm-ajax{/if}{if $key == $active_tab} active{/if}">
                             <a class="ty-tabs__a" {if $tab.href} href="{$tab.href|fn_url}"{/if}>{$tab.title}</a>
                         </li>
                     {/if}
@@ -39,9 +39,7 @@
     {if $onclick}
         <script>
             var hndl = {$ldelim}
-            'tabs_{$tabs_section}'
-            :
-            {$onclick}
+            'tabs_{$tabs_section}': {$onclick}
             {$rdelim}
         </script>
     {/if}
