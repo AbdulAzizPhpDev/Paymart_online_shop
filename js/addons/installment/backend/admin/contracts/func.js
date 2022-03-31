@@ -100,7 +100,7 @@
         callback: function (response) {
           if (response.hasOwnProperty('result')) {
             const { result } = response;
-            adminContractsMethods.generateModalContent(result.list);
+            adminContractsMethods.generateModalContent(result.list.reverse());
           }
         },
       });

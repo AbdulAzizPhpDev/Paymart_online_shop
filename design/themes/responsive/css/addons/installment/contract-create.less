@@ -1,60 +1,75 @@
 @import "mixins";
 @import "variables";
 
-p h1 h2 h3 h4 h5{
+p h1 h2 h3 h4 h5 {
   margin: 0;
   padding: 0;
 }
 
-.orange{
+.orange {
   color: #FF7643 !important;
 }
-.bolded{
+
+.bolded {
   .font(@fw: bold);
 }
 
-.main-page{
+.main-page {
   display: flex;
   justify-content: center;
   align-items: start;
   margin: 40px;
 
-  @media(max-width: @mobile){
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      margin: 40px 0;
+  @media (max-width: @mobile) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 40px 0;
   }
-  .back-button{
+
+  .back-button {
     background-color: #F6F6F6;
     padding: 16px;
     border-radius: 8px;
     margin-right: 43px;
 
-    @media(max-width: @mobile){
+    @media (max-width: @mobile) {
       margin-left: 20px;
       margin-bottom: 20px;
     }
 
-    img{
+    img {
 
     }
   }
-  .section-one, .section-two, .section-three{
+
+  .section-one, .section-two, .section-three {
     display: flex;
     flex-direction: column;
-    .main{
+
+    .main {
       display: flex;
       justify-content: space-between;
       align-items: center;
+
       .main-first {
         display: flex;
 
+        @media screen and (max-width: @mobile) {
+          flex-direction: column;
+        }
 
         .main-profile {
           display: flex;
           justify-content: center;
           align-items: center;
+
+          img {
+            @media screen and (max-width: @mobile) {
+              width: 50px;
+              height: 50px;
+            }
+          }
 
           &__img {
             border-radius: 100%;
@@ -91,6 +106,13 @@ p h1 h2 h3 h4 h5{
           align-items: center;
           justify-content: center;
           margin-left: 69px;
+
+          @media screen and (max-width: @mobile) {
+            justify-content: unset;
+            margin-top: 16px;
+            margin-left: 0;
+          }
+
           img {
 
           }
@@ -111,6 +133,7 @@ p h1 h2 h3 h4 h5{
 
 
       }
+
       .status {
         display: inline-block;
 
@@ -127,20 +150,25 @@ p h1 h2 h3 h4 h5{
     }
 
   }
-  .section-one{
+
+  .section-one {
     margin-bottom: 32px;
   }
+
   table, th, td {
     Height: 51px;
     border: 2px solid rgba(0, 0, 0, 0.08);
   }
+
   td {
     padding: 16px;
   }
-  .second-title{
+
+  .second-title {
     margin: 16px 0 16px 0;
   }
-  .input-paying{
+
+  .input-paying {
     display: flex;
 
     label {
@@ -167,9 +195,9 @@ p h1 h2 h3 h4 h5{
     flex-direction: column;
 
     .main-form {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      //display: flex;
+      //justify-content: space-between;
+      //align-items: center;
 
       label {
         padding-bottom: 4px;
@@ -179,10 +207,11 @@ p h1 h2 h3 h4 h5{
       .input-paying {
 
       }
+
       .input-link {
         display: flex;
-        margin-right: 20px;
-        margin-left: 20px;
+        //margin-right: 20px;
+        //margin-left: 20px;
 
         img {
           width: 40px;
@@ -215,6 +244,7 @@ p h1 h2 h3 h4 h5{
 
       }
     }
+
     .main-form__another {
       display: flex;
       width: auto;
@@ -243,6 +273,7 @@ p h1 h2 h3 h4 h5{
           padding-bottom: 4px;
         }
       }
+
       .input-paying__unique {
         select {
           background-color: #F6F6F6;
@@ -267,7 +298,8 @@ p h1 h2 h3 h4 h5{
         }
       }
     }
-    .main-form__last{
+
+    .main-form__last {
       label {
         padding-bottom: 4px;
       }
@@ -294,7 +326,7 @@ p h1 h2 h3 h4 h5{
     }
   }
 
-  .form-button{
+  .form-button {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -315,15 +347,16 @@ p h1 h2 h3 h4 h5{
   }
 }
 
-input[type="text"]:hover{
+input[type="text"]:hover {
   border-color: #FF7643 !important;
 }
 
 #formAddress {
-  appearance: none;       /* Remove default arrow */
+  appearance: none; /* Remove default arrow */
   background: url("../media/images/addons/installment/arrow.png") no-repeat 287px 26px !important;
   background-color: #f6f6f6 !important;
 }
+
 #formAddress2 {
   appearance: none; /* Remove default arrow */
   background: url("../media/images/addons/installment/arrow.png") no-repeat 287px 26px !important;
@@ -335,36 +368,41 @@ input[type="text"]:hover{
   background: url("../media/images/addons/installment/arrow.png") no-repeat 287px 26px !important;
   background-color: #f6f6f6 !important;
 }
-#formAddress:focus{
+
+#formAddress:focus {
   border: 1px solid #FF7643 !important;
 }
 
-#formAddress:focus{
+#formAddress:focus {
   border: 1px solid #FF7643 !important;
 }
+
 //select#xyz option {
 //  Border: none;
 //}
-#selectedId{
-  appearance: none;       /* Remove default arrow */
+#selectedId {
+  appearance: none; /* Remove default arrow */
   background: url("../media/images/addons/installment/arrow.png") no-repeat 287px 26px !important;
   background-color: #f6f6f6 !important;
 }
 
-#formAddress2:focus{
-  border: 1px solid #FF7643 !important;
-}
-#selectedId:focus{
-  border: 1px solid #FF7643 !important;
- /* Add custom arrow */
-}
-.repeat-input:focus{
+#formAddress2:focus {
   border: 1px solid #FF7643 !important;
 }
 
-textarea:focus{
+#selectedId:focus {
+  border: 1px solid #FF7643 !important;
+  /* Add custom arrow */
+}
+
+.repeat-input:focus {
   border: 1px solid #FF7643 !important;
 }
+
+textarea:focus {
+  border: 1px solid #FF7643 !important;
+}
+
 //modal
 
 /* The Modal (background) */
@@ -377,8 +415,8 @@ textarea:focus{
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 }
 
 /* Modal Content/Box */
@@ -413,17 +451,18 @@ textarea:focus{
 }
 
 
-
 .card-add__page {
   display: flex;
   align-items: center;
   flex-direction: column;
   margin-top: 10px;
-  .card-confirm{
+
+  .card-confirm {
     width: 564px;
     display: flex;
     flex-direction: column;
     align-items: center;
+
     .ty-control-group {
       text-align: center;
     }

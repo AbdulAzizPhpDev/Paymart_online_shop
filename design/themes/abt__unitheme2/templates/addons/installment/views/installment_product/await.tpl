@@ -2,6 +2,7 @@
 {script src="https://unpkg.com/@lottiefiles/lottie-player@0.4.0/dist/lottie-player.js"}
 
 <div class="await-page">
+    <input type="hidden" value="{$user_api_token}" class="user-api-token">
     <lottie-player
             class="lottie-player"
             autoplay

@@ -97,8 +97,8 @@
             <div class="section-three">
 
                 <form style="margin-top:4px;">
-                    <div class="main-form">
-                        <div class="d-flex flex-column">
+                    <div class="row-fluid main-form">
+                        <div class="span6">
                             <label for="cars">{__('choose_period')}:</label>
                             <div class="input-paying">
                                 <select name="selectName" id="selectedId">
@@ -108,7 +108,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="input-link">
+                        <div class="span6 ty-m-none input-link">
                             <img src="/design/themes/responsive/media/images/addons/installment/billing-ico.png"
                                  alt="Billing ico">
                             <div class="input-paying__text">
@@ -116,7 +116,7 @@
                                 <div class="input-paying__text-a">{$month|number_format:false:false:' '} {$currencies[$smarty.const.CART_PRIMARY_CURRENCY].symbol}</div>
                             </div>
                         </div>
-                        <div class="input-link">
+                        <div class="span4 ty-m-none input-link">
                             <img src="/design/themes/responsive/media/images/addons/installment/billing-ico.png"
                                  alt="Billing ico">
                             <div class="input-paying__text">
