@@ -27,12 +27,18 @@
     },
     checkStatus: function () {
       const { baseUrl, api_token } = awaitState;
+      const $button = $(this);
+      const prevText = $button.text();
 
       $.ajax({
         url: `${baseUrl}/buyer/check_status`,
         type: 'GET',
         headers: {
           Authorization: `Bearer ${api_token}`,
+        },
+        beforeSend: function () {
+          $button.attr('disabled', 'true')
+          $button.text(_.tr('loading'));
         },
         success: function (response) {
           if (!response) {
@@ -43,9 +49,20 @@
             return awaitMethods.renderErrors(response.response.message);
           }
 
-          if (Number(response.data.status) !== 2) {
-            window.location.reload();
+          if (Number(response.data.status) === 2) {
+            return $.ceNotification('show', {
+              type: 'N',
+              title: _.tr('notice'),
+              message: _.tr('text_page_loading'),
+              message_state: 'I',
+            });
           }
+
+          window.location.reload();
+        },
+        complete: function () {
+          $button.removeAttr('disabled');
+          $button.text(prevText);
         },
       });
     },

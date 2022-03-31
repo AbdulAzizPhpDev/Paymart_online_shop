@@ -515,10 +515,10 @@ if ($mode == "await") {
         list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
         $user_step = checkInstallmentStep($auth['user_id']);
         if ($mode_type !== $user_step) {
-            $user = db_get_row('select * from ?:users where user_id = ?s', $auth['user_id']);
-            Tygh::$app['view']->assign('user_ipa_token', $user['api_key']);
             return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
         }
+        $user = db_get_row('select * from ?:users where user_id = ?s', $auth['user_id']);
+        Tygh::$app['view']->assign('user_api_token', $user['api_key']);
     }
 }
 
