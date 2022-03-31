@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'hash' => $response_data->hash
             ];
             fn_set_session_data('user_info', $user_info);
-            $error = showErrors('massage_send', $data, 'success');
+            $error = showErrors('massage_send', $data,'success');
             Registry::get('ajax')->assign('result', $error);
             exit();
         } else {
@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'hash' => $response_data->hash
             ];
             fn_set_session_data('user_info', $user_info);
-            $error = showErrors('massage_send', $data, 'success');
+            $error = showErrors('massage_send', $data,'success');
             Registry::get('ajax')->assign('result', $error);
             exit();
         }
