@@ -29,16 +29,44 @@
     },
     setSessionProductQtyAndPeriod: function (event) {
       const qty = $('.cm-amount').val();
-      const { product } = productDetailState;
-
       const period = productDetailMethods.getInstallmentPeriod();
+
+      let company_id = $(this).data('company-id');
+      let vendorProductId = $(this).data('product-id');
+      let variationName = $(this).data('variation_name');
+
+      if (!variationName) {
+        variationName = $('.variation-name-for-calculate').val();
+      }
+
+      if (!vendorProductId) {
+        vendorProductId = $('.product-id-for-calculate').val();
+      }
+
+      if (!company_id) {
+        const $companyIdInputs = $('.ty-sellers-list__company_id input');
+
+        if ($companyIdInputs.length > 0) {
+          company_id = $($companyIdInputs[0]).val();
+        }
+      }
+
+      console.log({
+        product_id: vendorProductId,
+        qty,
+        period,
+        company_id,
+        variation_name: variationName,
+      });
 
       $.ceAjax('request', fn_url('installment_product.get_qty'), {
         method: 'GET',
         data: {
+          product_id: vendorProductId,
           qty,
-          product_id: product.id,
           period,
+          company_id,
+          variation_name: variationName
         },
         callback: function (response) {
           if (response.result) {
@@ -174,7 +202,7 @@
 
   productDetailMethods.getProductPrice();
   productDetailMethods.radioHandler();
-  // productDetailMethods.redirectVendor();
+  productDetailMethods.redirectVendor();
 
   $installmentButton.on('click', productDetailMethods.setSessionProductQtyAndPeriod);
 

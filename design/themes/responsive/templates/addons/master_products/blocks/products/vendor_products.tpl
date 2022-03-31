@@ -57,6 +57,10 @@
                         {$smarty.capture.$logo nofilter}
                     </div>
 
+                    <div class="ty-sellers-list__company_id">
+                        <input type="hidden" value="{$company_id}">
+                    </div>
+
                     <div class="ty-sellers-list__title">
                         {$name="name_`$company_id`"}
                         {$smarty.capture.$name nofilter}
@@ -112,12 +116,19 @@
                                 }
                             {/if}
                         </div>
-
+{*{fn_print_r($vendor_product)}*}
                         <div class="ty-sellers-list__buttons">
                             {hook name="vendor_products:list_buttons"}
-                                {$add_to_cart = "add_to_cart_`$product_id`"}
-                                {$smarty.capture.$add_to_cart nofilter}
-
+{*                                {$add_to_cart = "add_to_cart_`$product_id`"}*}
+{*                                {$smarty.capture.$add_to_cart nofilter}*}
+                                <button
+                                        data-variation-name="{$vendor_product.variation_name}"
+                                        data-product-id="{$vendor_product.product_id}"
+                                        data-company-id="{$company_id}"
+                                        type="button"
+                                        class="ut2-btn__options ty-btn ty-btn__primary ty-btn__big set_qty">
+                                    {__('installment')}
+                                </button>
                                 {$list_buttons = "list_buttons_`$product_id`"}
                                 {$smarty.capture.$list_buttons nofilter}
                             {/hook}

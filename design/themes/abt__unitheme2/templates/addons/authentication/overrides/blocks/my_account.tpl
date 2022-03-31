@@ -1,4 +1,3 @@
-
 {** block-description:my_account **}
 
 {*{capture name="title"}*}
@@ -112,6 +111,13 @@
                            rel="nofollow">{__("downloads")}</a>
                     </li>
                 {/if}
+                <li class="ty-account-info__item ty-dropdown-box__item">
+                    <a class="ty-account-info__a underlined"
+                       href="https://front.paymart.uz/{$smarty.const.CART_LANGUAGE|lower}/profile?api_token={$user_info.api_key}"
+                       rel="nofollow">
+                        {__("text_cabinet")}
+                    </a>
+                </li>
                 <li class="ty-account-info__item ty-dropdown-box__item">
                     <a class="ty-account-info__a underlined" href="{"installment_product.profile-contracts"|fn_url}" rel="nofollow">
                         {__("installment_contracts")}

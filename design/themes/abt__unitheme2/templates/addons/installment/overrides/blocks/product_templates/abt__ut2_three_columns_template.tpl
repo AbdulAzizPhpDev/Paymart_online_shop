@@ -15,6 +15,7 @@
 {/if}
 
 <input class="product-id-for-calculate" type="hidden" value="{$product.product_id}">
+<input class="variation-name-for-calculate" type="hidden" value="{$product.variation_name}">
 <input class="product-name-for-calculate" type="hidden" value="{$product.product}">
 <input class="company-id-for-calculate-price" type="hidden" value="{$p_company_id}">
 <input class="product-price-for-calculate-price" type="hidden" value="{$product.price}">
