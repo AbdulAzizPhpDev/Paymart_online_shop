@@ -279,7 +279,7 @@
 
     {/hook}
     </div>
-  <h1 style="color: #ff0e0e">test1111</h1>
+
     {if $smarty.capture.hide_form_changed == "YesNo::YES"|enum}
         {assign var="hide_form" value=$smarty.capture.orig_val_hide_form}
     {/if}
@@ -294,12 +294,10 @@
                 {include file=$blocks.$tabs_block_id.properties.wrapper content=$smarty.capture.tabsbox_content title=$blocks.$tabs_block_id.description}
 
             {else}
-  <h1 style="color: #ff0e0e">test_tap_start</h1>
-             
-{$smarty.capture.tabsbox_content|fn_print_r}
+
                 {$smarty.capture.tabsbox_content nofilter}
             {/if}
-  <h1 style="color: #ff0e0e">test_tap_end</h1>
+
         {/hook}
     {/if}
     {/hook}
