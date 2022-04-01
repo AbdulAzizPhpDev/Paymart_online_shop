@@ -104,8 +104,9 @@
               const { result } = response;
 
               if (result.status === 'success') {
+                fn_url('guarant.index');
 
-                passportMethods.makeRoute({ action: 'guarant' });
+                // passportMethods.makeRoute({ action: 'guarant' });
 
               } else {
                 passportMethods.renderErrors(result.response.message);
