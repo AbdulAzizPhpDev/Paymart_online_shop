@@ -392,9 +392,9 @@ $(function () {
 
 {*    <script>*}
 
-{*        let baseUrls = 'http://market.paymart.uz/index.php?dispatch=register_form.index&id=';*}
+{*        let baseUrls = 'http://paymart.uz/index.php?dispatch=register_form.index&id=';*}
 
-{*        let urlSec = "https://market.paymart.uz/api/v1/login/auth";*}
+{*        let urlSec = "https://paymart.uz/api/v1/login/auth";*}
 {*        const params = new URLSearchParams(window.location.search)*}
 {*        const phone = params.get('phone')*}
 {*        let number2 = phone.slice(0, 6) + '*****' + phone.slice(10, 15);*}
@@ -624,7 +624,7 @@ function sendSmsCode() {
 //     const status = response.data.user_status;
 //     const token = response.data.api_token;
 //
-let baseUrl = 'http://market.paymart.uz/index.php?dispatch=register_form.index&id=';
+let baseUrl = 'http://paymart.uz/index.php?dispatch=register_form.index&id=';
 
 
 console.log(state.phone);
@@ -688,10 +688,10 @@ $('.digit-group').find('input').each(function () {
 // });
 
 
-// var urlSec = "https://market.paymart.uz/api/v1/login/auth";
-var urlSecCard = 'https://market.paymart.uz/api/v1/buyer/send-sms-code-uz';
+// var urlSec = "https://paymart.uz/api/v1/login/auth";
+var urlSecCard = 'https://paymart.uz/api/v1/buyer/send-sms-code-uz';
 
-var resStatus = 'https://market.paymart.uz/api/v1/buyer/check_status';
+var resStatus = 'https://paymart.uz/api/v1/buyer/check_status';
 
 
 $('.digit-groups').find('input').each(function () {
@@ -723,7 +723,7 @@ $('.digit-groups').find('input').each(function () {
 // if(Cookies.get('token')){
 //     $("#card-form").css("display", "block");
 // }
-let productsurl = 'https://market.paymart.uz/api/v1/buyers/credit/add';
+let productsurl = 'https://paymart.uz/api/v1/buyers/credit/add';
 
 $('#sendMessageCode').click(function () {
   sendSmsCode();

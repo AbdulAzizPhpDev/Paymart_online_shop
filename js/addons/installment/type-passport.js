@@ -4,7 +4,7 @@
 
   const typePassportMethods = {
     makeRoute: function ({ controller = 'installment_product', action = 'index' }) {
-      return window.location.href = `http://market.paymart.uz/index.php?dispatch=${controller}.${action}`;
+      return window.location.href = `http://paymart.uz/index.php?dispatch=${controller}.${action}`;
     },
   };
 

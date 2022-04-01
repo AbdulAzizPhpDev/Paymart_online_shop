@@ -409,14 +409,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 if ($mode == 'get_qty') {
 
-    $qty = isset($_REQUEST['qty']) ?? 1;
+    $qty = $_REQUEST['qty'] ?? 1;
     $product_id = $_REQUEST['product_id'];
     $period = $_REQUEST['period'];
+    $product_name = $_REQUEST['variation_name'];
+    $company_id = $_REQUEST['company_id'];
+
 
     Tygh::$app['session']['product_info'] = array(
         'product_id' => $product_id,
         'product_qty' => $qty,
-        'period' => $period
+        'period' => $period,
+        'product_name' => $product_name,
+        'company_id' => $company_id
     );
 //    fn_set_session_data('product_id', $product_id, 7);
 //    fn_set_session_data('product_id', $qty, 7);
@@ -518,15 +523,15 @@ if ($mode == "await") {
             return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
         }
 
-            $user = db_get_row('select * from ?:users where user_id = ?s', $auth['user_id']);
-            Tygh::$app['view']->assign('user_api_token', $user['api_key']);
+        $user = db_get_row('select * from ?:users where user_id = ?s', $auth['user_id']);
+        Tygh::$app['view']->assign('user_api_token', $user['api_key']);
 
     }
 }
 
 if ($mode == "contract-create") {
+
     $product_text = "";
-    fn_print_die(Tygh::$app['session']['test_xxx']);
 
     if (!$auth['user_id']) {
         return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
@@ -535,35 +540,44 @@ if ($mode == "contract-create") {
         if (!isset(Tygh::$app['session']['product_info'])) {
             return array(CONTROLLER_STATUS_REDIRECT, fn_url());
         }
+
         $product_id = Tygh::$app['session']['product_info']['product_id'];
 
         $product_quantity = Tygh::$app['session']['product_info']['product_qty'];
         $period = Tygh::$app['session']['product_info']['period'];
+        $product_name = Tygh::$app['session']['product_info']['product_name'];
+        $company_id = Tygh::$app['session']['product_info']['company_id'];
 
-        $datas = db_get_row('SELECT * FROM ?:products as product 
-                             INNER JOIN ?:companies as company ON product.company_id = company.company_id 
-                             WHERE product.product_id = ?i ', $product_id);
+        $datas = db_get_row('SELECT * FROM ?:companies 
+                             WHERE company_id = ?i ', $company_id);
 
+//        $datas = db_get_row('SELECT * FROM ?:products as product
+//                             INNER JOIN ?:companies as company ON product.company_id = company.company_id
+//                             WHERE product.product_id = ?i ', $product_id);
+//        $product_feature_values = db_get_array("
+//        select pfvd.variant from ?:product_features_values as pfv
+//        INNER JOIN ?:product_feature_variant_descriptions as pfvd ON pfvd.variant_id = pfv.variant_id and
+//         pfvd.lang_code = 'ru'
+//        where pfv.product_id=?i and pfv.lang_code=?s and pfv.variant_id!=0",
+//            $datas['product_id'], CART_LANGUAGE);
+//
+//        $product_text = '';
+//        foreach ($product_feature_values as $value) {
+//            if (!empty($value['variant'])) {
+//                $product_text .= $value['variant'] . ' ';
+//            }
+//
+//        }
+        if (!empty($product_name))
+            $datas['product_text'] = $product_name;
+        else
 
-        $product_feature_values = db_get_array("
-        select pfvd.variant from ?:product_features_values as pfv
-        INNER JOIN ?:product_feature_variant_descriptions as pfvd ON pfvd.variant_id = pfv.variant_id and
-         pfvd.lang_code = 'ru'
-        where pfv.product_id=?i and pfv.lang_code=?s and pfv.variant_id!=0",
-            $datas['product_id'], CART_LANGUAGE);
+            $datas['product_text'] = Tygh::$app['session']['test_xxx']['variation_name'];
 
-        $product_text = '';
-        foreach ($product_feature_values as $value) {
-            if (!empty($value['variant'])) {
-                $product_text .= $value['variant'] . ' ';
-            }
+        $datas['product_descriptions'] = db_get_row('SELECT * FROM ?:product_descriptions 
+                                       WHERE product_id = ?i', $product_id);
 
-        }
-        $datas['product_text'] = $product_text;
-
-        $datas['product_descriptions'] = db_get_row('SELECT * FROM ?:product_descriptions WHERE product_id = ?i', $datas['product_id']);
-
-        $datas['product_price'] = db_get_row('SELECT * FROM ?:product_prices WHERE product_id = ?i', $datas['product_id']);
+        $datas['product_price'] = db_get_row('SELECT * FROM ?:product_prices WHERE product_id = ?i', $product_id);
         $user = db_get_row('SELECT * FROM ?:users WHERE user_id = ?i', $auth['user_id']);
 
         if (empty($user['firstname']) && empty($user['lastname'])) {
@@ -590,7 +604,7 @@ if ($mode == "contract-create") {
                     [
                         "price" => $datas['product_price']['price'],
                         "amount" => $product_quantity,
-                        "name" => $datas['product_descriptions']['product'] . "; " . $product_text
+                        "name" => $product_text
                     ]
                 ]
             ],
@@ -605,7 +619,8 @@ if ($mode == "contract-create") {
 
         $items = $response->data->orders->$id->price;
 
-        $city = db_get_array('select * from ?:fargo_countries where parent_city_id=?i ORDER BY city_name ASC', 0);
+        $city = db_get_array('select * from ?:fargo_countries 
+                              where parent_city_id=?i ORDER BY city_name ASC', 0);
 
         $periods = [
             6 => [

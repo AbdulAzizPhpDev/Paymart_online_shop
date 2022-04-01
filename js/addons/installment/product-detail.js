@@ -3,7 +3,7 @@
   const $installmentButton = $('.set_qty');
 
   const productDetailState = {
-    PAYMART_API_BASE_URL: 'https://test.paymart.uz/api/v1/',
+    PAYMART_API_BASE_URL: 'https://cabinet.paymart.uz/api/v1/',
     company_id: $('.company-id-for-calculate-price').val(),
     // company_id: 215049,
     product: {
@@ -33,7 +33,7 @@
 
       let company_id = $(this).data('company-id');
       let vendorProductId = $(this).data('product-id');
-      let variationName = $(this).data('variation_name');
+      let variationName = $(this).data('variation-name');
 
       if (!variationName) {
         variationName = $('.variation-name-for-calculate').val();
@@ -51,13 +51,13 @@
         }
       }
 
-      console.log({
-        product_id: vendorProductId,
-        qty,
-        period,
-        company_id,
-        variation_name: variationName,
-      });
+      // console.log({
+      //   product_id: vendorProductId,
+      //   qty,
+      //   period,
+      //   company_id,
+      //   variation_name: variationName,
+      // });
 
       $.ceAjax('request', fn_url('installment_product.get_qty'), {
         method: 'GET',

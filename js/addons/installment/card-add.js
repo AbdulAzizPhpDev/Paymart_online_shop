@@ -16,7 +16,7 @@
   const $sendBtn = $('#installmentSendSMSCardBtn');
 
   const cardState = {
-    baseUrl: 'https://test.paymart.uz/api/v1',
+    baseUrl: 'https://cabinet.paymart.uz/api/v1',
     api_token: Cookies.get('api_token'),
     buyerPhone: Cookies.get('buyer-phone') || 998999000009,
     timer: 60,
@@ -25,7 +25,7 @@
 
   const cardMethods = {
     makeRoute({ controller = 'installment_product', action = 'index' }) {
-      return window.location.href = `http://market.paymart.uz/index.php?dispatch=${controller}.${action}`;
+      return window.location.href = `http://paymart.uz/index.php?dispatch=${controller}.${action}`;
     },
     renderErrors: function (errors) {
       if (typeof errors !== 'string') {

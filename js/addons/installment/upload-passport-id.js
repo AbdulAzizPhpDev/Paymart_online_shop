@@ -9,13 +9,13 @@
 
   const passportState = {
     api_token: Cookies.get('api_token'),
-    baseUrl: 'https://test.paymart.uz/api/v1',
+    baseUrl: 'https://cabinet.paymart.uz/api/v1',
     files: {},
   };
 
   const passportMethods = {
     makeRoute({ controller = 'installment_product', action = 'index' }) {
-      return window.location.href = `http://market.paymart.uz/index.php?dispatch=${controller}.${action}`;
+      return window.location.href = `http://paymart.uz/index.php?dispatch=${controller}.${action}`;
     },
     renderErrors: function (errors) {
       if (typeof errors !== 'string') {

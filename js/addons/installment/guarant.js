@@ -11,13 +11,13 @@
 
   const guarantState = {
     api_token: Cookies.get('api_token'),
-    baseUrl: 'https://test.paymart.uz/api/v1',
+    baseUrl: 'https://cabinet.paymart.uz/api/v1',
     user_id: Cookies.get('user_id') || 23455,
   };
 
   const guarantMethods = {
     makeRoute({ controller = 'installment_product', action = 'index' }) {
-      return window.location.href = `http://market.paymart.uz/index.php?dispatch=${controller}.${action}`;
+      return window.location.href = `http://paymart.uz/index.php?dispatch=${controller}.${action}`;
     },
     renderErrors: function (errors) {
       if (typeof errors !== 'string') {
