@@ -11,7 +11,7 @@
 
   const guarantState = {
     api_token: Cookies.get('api_token'),
-    baseUrl: 'https://test.paymart.uz/api/v1',
+    baseUrl: 'https://cabinet.paymart.uz/api/v1',
     user_id: Cookies.get('user_id') || 23455,
   };
 

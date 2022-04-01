@@ -9,7 +9,7 @@
 
   const passportState = {
     api_token: Cookies.get('api_token'),
-    baseUrl: 'https://test.paymart.uz/api/v1',
+    baseUrl: 'https://cabinet.paymart.uz/api/v1',
     files: {},
   };
 

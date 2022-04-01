@@ -3,7 +3,7 @@
   const $installmentButton = $('.set_qty');
 
   const productDetailState = {
-    PAYMART_API_BASE_URL: 'https://test.paymart.uz/api/v1/',
+    PAYMART_API_BASE_URL: 'https://cabinet.paymart.uz/api/v1/',
     company_id: $('.company-id-for-calculate-price').val(),
     // company_id: 215049,
     product: {

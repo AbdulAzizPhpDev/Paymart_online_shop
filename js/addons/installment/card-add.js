@@ -16,7 +16,7 @@
   const $sendBtn = $('#installmentSendSMSCardBtn');
 
   const cardState = {
-    baseUrl: 'https://test.paymart.uz/api/v1',
+    baseUrl: 'https://cabinet.paymart.uz/api/v1',
     api_token: Cookies.get('api_token'),
     buyerPhone: Cookies.get('buyer-phone') || 998999000009,
     timer: 60,
