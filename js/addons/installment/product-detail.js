@@ -44,10 +44,10 @@
       }
 
       if (!company_id) {
-        const $companyIdInputs = $('.ty-sellers-list__company_id input');
+        const companyIdInputs = $('.ty-sellers-list__company_id input');
 
-        if ($companyIdInputs.length > 0) {
-          company_id = $($companyIdInputs[0]).val();
+        if (companyIdInputs.length > 0) {
+          company_id = $(companyIdInputs[0]).val();
         }
       }
 

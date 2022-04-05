@@ -1,4 +1,5 @@
 (function (_, $) {
+
     const $uploadBtn = $('#upload-passport-photos-btn');
     const $passportFirstPage = $('#passport_first_page');
     const $passportAddress = $('#passport_with_address');
@@ -127,4 +128,5 @@
     $passportSelfie.on('change', passportMethods.chooseFiles);
 
     $uploadBtn.on('click', passportMethods.upload);
+
 })(Tygh, Tygh.$);

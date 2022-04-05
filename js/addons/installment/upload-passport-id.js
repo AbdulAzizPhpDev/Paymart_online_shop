@@ -14,49 +14,46 @@
   };
 
   const passportMethods = {
-    makeRoute({ controller = 'installment_product', action = 'index' }) {
-      return window.location.href = `http://paymart.uz/index.php?dispatch=${controller}.${action}`;
-    },
     renderErrors: function (errors) {
       if (typeof errors !== 'string') {
-        errors.forEach(error => {
-          if (error.hasOwnProperty('text')) {
-            $errorContainer.text(error.text);
-          } else {
-            let errorText = '';
-            errorText += error + '<br>';
-            $errorContainer.append(errorText);
-          }
-        });
-      } else {
-        $errorContainer.text(errors);
+        return $errorContainer.text(errors);
       }
+
+      errors.forEach(error => {
+        if (error.hasOwnProperty('text')) {
+          $errorContainer.text(error.text);
+        } else {
+          let errorText = '';
+          errorText += error + '<br>';
+          $errorContainer.append(errorText);
+        }
+      });
     },
     chooseFiles: function (event) {
       const { updateFiles } = passportMethods;
       const files = event.target.files;
       const name = event.target.id;
 
-      if (files.length > 0) {
-        switch (name) {
-          case 'passport_first_page':
-            updateFiles(name, files[0]);
-            break;
+      if (files.length === 0) {
+        return console.error(`el: ${event.target.id} files empty`);
+      }
 
-          case 'passport_second_page':
-            updateFiles(name, files[0]);
-            break;
+      switch (name) {
+        case 'passport_first_page':
+          updateFiles(name, files[0]);
+          break;
 
-          case 'passport_with_address':
-            updateFiles(name, files[0]);
-            break;
+        case 'passport_second_page':
+          updateFiles(name, files[0]);
+          break;
 
-          case 'passport_selfie':
-            updateFiles(name, files[0]);
-            break;
-        }
-      } else {
-        console.error(`el: ${event.target.id} files empty`);
+        case 'passport_with_address':
+          updateFiles(name, files[0]);
+          break;
+
+        case 'passport_selfie':
+          updateFiles(name, files[0]);
+          break;
       }
     },
 
@@ -77,8 +74,10 @@
 
     upload: function () {
       const isValid = passportState.files.hasOwnProperty('passport_first_page')
+        && passportState.files.hasOwnProperty('passport_second_page')
         && passportState.files.hasOwnProperty('passport_with_address')
         && passportState.files.hasOwnProperty('passport_selfie');
+
 
       if (isValid) {
         const formData = new FormData();
@@ -128,7 +127,37 @@
         });
       } else {
         passportMethods.renderErrors('Fields are valid');
+
       }
+
+      const formData = new FormData();
+
+      Object.entries(passportState.files).forEach(([name, file]) => {
+        formData.append(name, file);
+      });
+
+      formData.append('step', '2');
+      formData.append('security_hash', _.security_hash);
+      formData.append('is_ajax', '1');
+
+      $.ajax({
+        url: fn_url('installment_product.set_passport_id'),
+        type: 'POST',
+        processData: false,
+        contentType: false,
+        data: formData,
+        success: function (response) {
+          if (!response.hasOwnProperty('result')) {
+            return console.error('Result does not exist. %cmethod[/buyer/send-sms-code-uz]', 'color: white; padding: 2px 5px; border: 1px dashed green');
+          }
+
+          if (response.result.status === 'error') {
+            return passportMethods.renderErrors(result.response.message);
+          }
+
+          // window.location.href = fn_url('installment_product.guarant');
+        },
+      });
     },
   };
 

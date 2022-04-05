@@ -29,7 +29,7 @@
             </a>
         </div>
 
-        <button disabled class="ty-btn ty-btn__secondary" type="button" id="installmentSendSMSCardBtn">
+        <button class="ty-btn ty-btn__secondary" type="button" id="installmentSendSMSCardBtn">
             {__("continue")}
         </button>
     </div>
