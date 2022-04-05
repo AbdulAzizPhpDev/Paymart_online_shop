@@ -1,409 +1,160 @@
 @import "mixins";
 @import "variables";
 
-p h1 h2 h3 h4 h5 {
-  margin: 0;
-  padding: 0;
-}
+.contract-create-page {
+  margin-top: 40px;
 
-.orange {
-  color: #FF7643 !important;
-}
-
-.bolded {
-  .font(@fw: bold);
-}
-
-.main-page {
-  display: flex;
-  justify-content: center;
-  align-items: start;
-  margin: 40px;
-
-  @media (max-width: @mobile) {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin: 40px 0;
+  input {
+    width: 100%;
+    background: @gray !important;
+    border-radius: 12px !important;
+    border: none;
+    height: 56px !important;
   }
 
-  .back-button {
-    background-color: #F6F6F6;
-    padding: 16px;
-    border-radius: 8px;
-    margin-right: 43px;
+  select {
+    appearance: none;
+    width: 100%;
+    border-radius: 12px;
+    border: none;
+    height: 56px;
+    padding: 8px 8px 8px 16px;
+    background: @gray url("../media/images/addons/installment/arrow.png") no-repeat 320px 26px;
 
-    @media (max-width: @mobile) {
-      margin-left: 20px;
-      margin-bottom: 20px;
-    }
-
-    img {
-
-    }
-  }
-
-  .section-one, .section-two, .section-three {
-    display: flex;
-    flex-direction: column;
-
-    .main {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      .main-first {
-        display: flex;
-
-        @media screen and (max-width: @mobile) {
-          flex-direction: column;
-        }
-
-        .main-profile {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-
-          img {
-            @media screen and (max-width: @mobile) {
-              width: 50px;
-              height: 50px;
-            }
-          }
-
-          &__img {
-            border-radius: 100%;
-            width: 80px;
-            height: 80px;
-          }
-
-          &__text {
-            display: flex;
-            flex-direction: column;
-            margin-left: 16px;
-
-            &-item {
-              .font(@fs: 24px, @fw: bold)
-            }
-
-            &-second {
-              .font(@fs: 16px)
-            }
-          }
-        }
-
-        .text-items {
-          display: inline-block;
-
-          &__span {
-            .font(@fw: bold, @fs:24px);
-            margin-bottom: 4px;
-          }
-        }
-
-        .text-items__second {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-left: 69px;
-
-          @media screen and (max-width: @mobile) {
-            justify-content: unset;
-            margin-top: 16px;
-            margin-left: 0;
-          }
-
-          img {
-
-          }
-
-          &-items {
-            padding: 0 0 0 4px;
-
-            .first-item {
-              .font(@fs: 16, @fw: bold)
-            }
-
-            .second-item {
-              color: #FF7643 !important;
-              .font(@fs: 16, @fw: bold);
-            }
-          }
-        }
-
-
-      }
-
-      .status {
-        display: inline-block;
-
-        .status-item {
-          border: 1px solid #0FBE7B;
-          border-radius: 8px;
-          color: #0FBE7B;
-          margin-left: 7rem;
-          font-size: 14px;
-          padding: 5px 16px;
-
-        }
-      }
-    }
-
-  }
-
-  .section-one {
-    margin-bottom: 32px;
-  }
-
-  table, th, td {
-    Height: 51px;
-    border: 2px solid rgba(0, 0, 0, 0.08);
-  }
-
-  td {
-    padding: 16px;
-  }
-
-  .second-title {
-    margin: 16px 0 16px 0;
-  }
-
-  .input-paying {
-    display: flex;
-
-    label {
-      display: flex;
-    }
-
-    select {
-      background-color: #F6F6F6;
-      border-radius: 8px;
-      border: none;
-      width: 320px;
-      height: 56px;
-      padding: 8px 8px 8px 16px;
-    }
-
-    select:focus {
+    &:focus {
       border-color: @main;
     }
   }
 
-  form {
-    display: flex;
-    justify-content: normal;
-    flex-direction: column;
+  .back-button {
+    margin-bottom: 32px;
 
-    .main-form {
-      //display: flex;
-      //justify-content: space-between;
-      //align-items: center;
-
-      label {
-        padding-bottom: 4px;
-        display: block;
-      }
-
-      .input-paying {
-
-      }
-
-      .input-link {
-        display: flex;
-        //margin-right: 20px;
-        //margin-left: 20px;
-
-        img {
-          width: 40px;
-          height: 40px;
-        }
-
-        .input-paying__text {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          margin: 0 0 0 4px;
-
-
-          label {
-            margin-bottom: 10px;
-            padding-bottom: 10px;
-          }
-
-          &-title {
-            font-weight: bold;
-            white-space: nowrap;
-          }
-
-          &-p {
-            display: block;
-            align-items: center;
-            justify-content: center;
-          }
-        }
-
-      }
+    a {
+      background-color: @gray;
+      padding: 16px 8px;
+      border-radius: 12px;
     }
+  }
 
-    .main-form__another {
+  .buyer-header {
+    .info {
       display: flex;
-      width: auto;
-      justify-content: space-between;
-      //margin: 0 auto;
+      align-items: center;
 
-      &-item {
+      .main-profile__text {
         display: flex;
         flex-direction: column;
-        margin: 16px 16px 14px 0;
+        margin-left: 16px;
 
-        .repeat-input {
-          background-color: #F6F6F6;
-          border-radius: 8px;
-          border: none;
-          width: 320px;
-          height: 56px;
-          padding: 8px 8px 8px 16px;
+        .main-profile__text-item {
+          .font(@fs: 24px, @fw: 700, @lh: 29px)
         }
 
-        .repeat-input:focus {
-          border-color: @main;
-        }
-
-        label {
-          padding-bottom: 4px;
-        }
-      }
-
-      .input-paying__unique {
-        select {
-          background-color: #F6F6F6;
-          border-radius: 8px;
-          border: none;
-          width: 320px;
-          height: 56px;
-          padding: 8px 8px 8px 16px;
-        }
-
-        select:focus {
-          border-color: #FF7643 !important;
-        }
-
-        input {
-          background-color: #F6F6F6;
-          border-radius: 8px;
-          border: none;
-          width: 320px !important;
-          height: 56px;
-          padding: 8px 8px 8px 16px;
+        .main-profile__text-second {
+          .font(@fs: 18px, @lh: 21.7px);
         }
       }
     }
 
-    .main-form__last {
-      label {
-        padding-bottom: 4px;
-      }
+    .installment-limit {
+      display: flex;
+      align-items: center;
+      height: 80px;
 
-      &-item {
-        display: flex;
-        margin-top: 10px;
-        //justify-content: space-around;
-      }
-
-      .last-item__style {
+      .text {
+        margin-left: 16px;
         display: flex;
         flex-direction: column;
-        width: 32%;
-        margin-right: 16px;
 
-        input {
-          background-color: #f6f6f6;
-          border-radius: 8px;
-          border: none;
-          padding: 27px 14px;
+        .title {
+          .font(@fw: 700, @lh: 19.3px)
+        }
+
+        .price {
+          .font(@fs: 18px, @fw: 700, @lh: 21.7px, @color: @main)
+        }
+      }
+    }
+
+    .status {
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+
+      span {
+        border: 1px solid #0FBE7B;
+        border-radius: 8px;
+        color: #0FBE7B;
+        padding: 5px 16px;
+      }
+
+      @media only screen and (max-width: @mobile) {
+        justify-content: unset;
+      }
+    }
+  }
+
+  .products {
+    h3 {
+      margin-top: 32px;
+      margin-bottom: 16px;
+      .font(@fs: 24px, @fw: 700, @lh: 29px);
+    }
+
+    table, th, td {
+      border: 2px solid rgba(0, 0, 0, 0.08);
+    }
+
+    th, td {
+      padding: 16px;
+
+      @media screen and (max-width: @mobile) {
+        padding: 8px;
+      }
+    }
+  }
+
+  .calculate-price {
+    h3 {
+      margin-top: 32px;
+      margin-bottom: 16px;
+      .font(@fs: 24px, @fw: 700, @lh: 29px);
+    }
+
+    .monthly-payment, .total-price {
+      display: flex;
+      align-items: center;
+      margin-top: 14px;
+
+      .text {
+        margin-left: 16px;
+        display: flex;
+        flex-direction: column;
+
+        .title {
+          .font(@fw: 700, @lh: 19.3px)
+        }
+
+        .price-month {
+          .font(@fs: 18px, @lh: 21.7px);
+        }
+
+        .price {
+          .font(@fs: 18px, @fw: 700, @lh: 21.7px, @color: @main)
         }
       }
     }
   }
 
-  .form-button {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-top: 56px;
-
-    &__item {
-      background-color: #FF7643;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      padding: 18px 80px;
-    }
-
-    &__item:hover {
-      background-color: @dark-gray;
+  .shipping-address {
+    h3 {
+      margin-top: 32px;
+      margin-bottom: 16px;
+      .font(@fs: 24px, @fw: 700, @lh: 29px);
     }
   }
 }
-
-input[type="text"]:hover {
-  border-color: #FF7643 !important;
-}
-
-#formAddress {
-  appearance: none; /* Remove default arrow */
-  background: url("../media/images/addons/installment/arrow.png") no-repeat 287px 26px !important;
-  background-color: #f6f6f6 !important;
-}
-
-#formAddress2 {
-  appearance: none; /* Remove default arrow */
-  background: url("../media/images/addons/installment/arrow.png") no-repeat 287px 26px !important;
-  background-color: #f6f6f6 !important;
-}
-
-#formAddress3 {
-  appearance: none; /* Remove default arrow */
-  background: url("../media/images/addons/installment/arrow.png") no-repeat 287px 26px !important;
-  background-color: #f6f6f6 !important;
-}
-
-#formAddress:focus {
-  border: 1px solid #FF7643 !important;
-}
-
-#formAddress:focus {
-  border: 1px solid #FF7643 !important;
-}
-
-//select#xyz option {
-//  Border: none;
-//}
-#selectedId {
-  appearance: none; /* Remove default arrow */
-  background: url("../media/images/addons/installment/arrow.png") no-repeat 287px 26px !important;
-  background-color: #f6f6f6 !important;
-}
-
-#formAddress2:focus {
-  border: 1px solid #FF7643 !important;
-}
-
-#selectedId:focus {
-  border: 1px solid #FF7643 !important;
-  /* Add custom arrow */
-}
-
-.repeat-input:focus {
-  border: 1px solid #FF7643 !important;
-}
-
-textarea:focus {
-  border: 1px solid #FF7643 !important;
-}
-
-//modal
 
 /* The Modal (background) */
 .modal {
@@ -512,45 +263,6 @@ textarea:focus {
   .stepperStyle();
 }
 
-
-/* The Modal (background) */
-//#mySecondModal {
-//  display: none; /* Hidden by default */
-//  position: fixed; /* Stay in place */
-//  z-index: 1; /* Sit on top */
-//  left: 0;
-//  top: 0;
-//  width: 100%; /* Full width */
-//  height: 100%; /* Full height */
-//  overflow: auto; /* Enable scroll if needed */
-//  background-color: rgb(0,0,0); /* Fallback color */
-//  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-//}
-//
-///* Modal Content/Box */
-//.modal-content__second {
-//  background-color: #fefefe;
-//  margin: 15% auto; /* 15% from the top and centered */
-//  padding: 20px;
-//  border: 1px solid #888;
-//  width: 80%; /* Could be more or less, depending on screen size */
-//}
-//
-///* The Close Button */
-//.close2 {
-//  color: #aaa;
-//  float: right;
-//  font-size: 28px;
-//  font-weight: bold;
-//}
-//
-//.close2:hover,
-//.close2:focus {
-//  color: black;
-//  text-decoration: none;
-//  cursor: pointer;
-//}
-
 /* The Modal (background) */
 .modal5 {
   display: block;
@@ -568,14 +280,20 @@ textarea:focus {
 
 /* Modal Content */
 .modal-content5 {
-  display: flex;
-  justify-content: center;
   text-align: center;
   background-color: #fefefe;
   margin: auto;
   padding: 20px;
-  border: 1px solid #888;
-  width: 43%;
+  border-radius: 12px;
+  width: 50%;
+
+  h1 {
+    .font(@fs: 24px, @fw: 700, @lh: 29px);
+  }
+
+  @media screen and (max-width: @mobile) {
+    width: 90%;
+  }
 
   .modal-content5__item {
     text-decoration: none;

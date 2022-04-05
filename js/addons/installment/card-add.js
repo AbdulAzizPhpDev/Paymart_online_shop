@@ -17,16 +17,12 @@
 
   const cardState = {
     baseUrl: 'https://cabinet.paymart.uz/api/v1',
-    api_token: Cookies.get('api_token'),
-    buyerPhone: Cookies.get('buyer-phone') || 998999000009,
+    buyerPhone: 998999000009,
     timer: 60,
     interval: null,
   };
 
   const cardMethods = {
-    makeRoute({ controller = 'installment_product', action = 'index' }) {
-      return window.location.href = `http://market.paymart.uz/index.php?dispatch=${controller}.${action}`;
-    },
     renderErrors: function (errors) {
       if (typeof errors !== 'string') {
         errors.forEach(error => {
@@ -79,6 +75,11 @@
       }
     },
     sendSMS: function () {
+      /*cardMethods.timerResendSms();
+      $cardNumberContainer.addClass('d-none');
+      $cardPin.removeClass('d-none');
+      $cardExpContainer.removeClass('d-none');*/
+
       $errorContainer.text('');
       const isValid = cardMethods.fieldsValidation();
       const cardNumberUnmasked = $cardNumber.inputmask('unmaskedvalue');
@@ -147,7 +148,6 @@
 
               if (result.status === 'success') {
                 window.location.reload();
-                // cardMethods.makeRoute({ action: 'type-passport' });
               } else {
                 cardMethods.renderErrors(result.response.message);
               }

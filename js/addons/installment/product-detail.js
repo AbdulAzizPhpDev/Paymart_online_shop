@@ -44,20 +44,20 @@
       }
 
       if (!company_id) {
-        const $companyIdInputs = $('.ty-sellers-list__company_id input');
+        const companyIdInputs = $('.ty-sellers-list__company_id input');
 
-        if ($companyIdInputs.length > 0) {
-          company_id = $($companyIdInputs[0]).val();
+        if (companyIdInputs.length > 0) {
+          company_id = $(companyIdInputs[0]).val();
         }
       }
 
-      console.log({
-        product_id: vendorProductId,
-        qty,
-        period,
-        company_id,
-        variation_name: variationName,
-      });
+      // console.log({
+      //   product_id: vendorProductId,
+      //   qty,
+      //   period,
+      //   company_id,
+      //   variation_name: variationName,
+      // });
 
       $.ceAjax('request', fn_url('installment_product.get_qty'), {
         method: 'GET',

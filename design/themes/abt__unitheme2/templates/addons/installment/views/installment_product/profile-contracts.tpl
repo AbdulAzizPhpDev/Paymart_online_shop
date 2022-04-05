@@ -10,7 +10,7 @@
         </div>*}
         <div class="contracts">
             {foreach from=$contracts key=index item=contract}
-                <a href="https://client.paymart.uz/{$smarty.const.CART_LANGUAGE|lower}/market/contract/{$contract->contract_id}?api_token={$user_api_token}&user_phone={$user_phone}"
+                <a href="https://front.paymart.uz/{$smarty.const.CART_LANGUAGE|lower}/market/contract/{$contract->contract_id}?api_token={$user_api_token}&user_phone={$user_phone}"
                    target="_blank" class="contract-card" data-order-id="{$contract->order_id}">
                     <div class="header">
                         <div class="info">

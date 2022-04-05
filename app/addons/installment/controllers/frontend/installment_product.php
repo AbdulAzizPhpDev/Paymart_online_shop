@@ -526,7 +526,7 @@ if ($mode == "await") {
 
 if ($mode == "contract-create") {
     $product_text = "";
-    fn_print_die(Tygh::$app['session']['test_xxx']);
+//    fn_print_die(Tygh::$app['session']['test_xxx']);
 
     if (!$auth['user_id']) {
         return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
