@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                             $ekey = fn_generate_ekey($user_id, 'U', SECONDS_IN_DAY);
 
-                            $url = "http://market.paymart.uz/vendor.php?dispatch=auth.ekey_login&ekey=$ekey&company_id=$company_id";
+                            $url = "http://paymart.uz/vendor.php?dispatch=auth.ekey_login&ekey=$ekey&company_id=$company_id";
 
                             $res = [
                                 'result' => $check_pass_res,
@@ -116,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             }
                             $ekey = fn_generate_ekey($user_data['user_id'], 'U', SECONDS_IN_DAY);
                             $vendor_id = $check['company_id'];
-                            $url = "http://market.paymart.uz/vendor.php?dispatch=auth.ekey_login&ekey=$ekey&company_id=$vendor_id";
+                            $url = "http://paymart.uz/vendor.php?dispatch=auth.ekey_login&ekey=$ekey&company_id=$vendor_id";
                             $res = [
                                 'result' => $check_pass_res,
                                 'url' => $url

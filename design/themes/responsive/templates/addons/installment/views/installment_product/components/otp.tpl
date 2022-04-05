@@ -28,7 +28,7 @@
 
     let baseUrls = 'https://test.paymart.uz/api/v1/';
 
-    let urlSec = "https://market.paymart.uz/api/v1/login/auth";
+    let urlSec = "https://paymart.uz/api/v1/login/auth";
     const params = new URLSearchParams(window.location.search)
     const phone = params.get('phone')
     let number2 = phone.slice(0, 6) + '*****' + phone.slice(10, 15);

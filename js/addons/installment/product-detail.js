@@ -33,7 +33,7 @@
 
       let company_id = $(this).data('company-id');
       let vendorProductId = $(this).data('product-id');
-      let variationName = $(this).data('variation_name');
+      let variationName = $(this).data('variation-name');
 
       if (!variationName) {
         variationName = $('.variation-name-for-calculate').val();
