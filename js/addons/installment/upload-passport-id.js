@@ -99,12 +99,15 @@
           processData: false,
           contentType: false,
           data: formData,
+            beforeSend: function () {
+                $uploadBtn.attr('disabled', 'disabled');
+            },
           success: function (response) {
             if (response) {
               const { result } = response;
 
               if (result.status === 'success') {
-                fn_url('guarant.index');
+                window.location.href =  fn_url('installment_product.guarant');
 
                 // passportMethods.makeRoute({ action: 'guarant' });
 
@@ -115,6 +118,12 @@
             } else {
               console.error('Result does not exist. %cmethod[/buyer/send-sms-code-uz]', 'color: white; padding: 2px 5px; border: 1px dashed green');
             }
+          },
+          error: function (error) {
+            passportMethods.renderErrors('Server Error');
+          },
+          complete: function () {
+            $uploadBtn.removeAttr('disabled');
           },
         });
       } else {
