@@ -38,11 +38,19 @@
                     <td>{$product->name}</td>
                     <td>Шт</td>
                     <td>{$product->amount}</td>
-                    <td>{$product->price_discount}</td>
-                    <td>{($product->price_discount * $product->amount) - ((($product->price_discount * $product->amount) / 100) * 15 )}</td>
-                    <td>15%</td>
-                    <td>{((($product->price_discount * $product->amount) / 100) * 15 )}</td>
-                    <td>{$product->price_discount * $product->amount}</td>
+                    {if $is_admin}
+                        <td>{$product->price}</td>
+                        <td>{($product->price * $product->amount) - ((($product->price * $product->amount) / 100) * 15 )}</td>
+                        <td>15%</td>
+                        <td>{((($product->price * $product->amount) / 100) * 15 )}</td>
+                        <td>{$product->price * $product->amount}</td>
+                    {else}
+                        <td>{$product->price_discount}</td>
+                        <td>{($product->price_discount * $product->amount) - ((($product->price_discount * $product->amount) / 100) * 15 )}</td>
+                        <td>15%</td>
+                        <td>{((($product->price_discount * $product->amount) / 100) * 15 )}</td>
+                        <td>{$product->price_discount * $product->amount}</td>
+                    {/if}
                 </tr>
             {/foreach}
             <tr class="total-price">
