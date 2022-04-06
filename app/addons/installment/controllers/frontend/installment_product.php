@@ -90,30 +90,52 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($mode == 'set_passport_id') {
         $response = null;
         if ($auth['user_id']) {
+
             $user = db_get_row('select * from ?:users where user_id = ?s', $auth['user_id']);
-            foreach ($_FILES as $key => $image) {
-                $data = [];
-                if ($key == "passport_selfie") {
-                    $data = [
-                        $key => new CURLFILE(
-                            str_replace('\\', '/', $image['tmp_name']),
-                            mime_content_type($image['tmp_name']),
-                            $image['name']
-                        ),
-                        "step" => 2,
-                        "type" => 2
-                    ];
-                } else {
-                    $data = [
-                        $key => new CURLFILE(
-                            str_replace('\\', '/', $image['tmp_name']),
-                            mime_content_type($image['tmp_name']),
-                            $image['name']),
-                        "step" => 2
-                    ];
-                }
-                $response = php_curl('/buyer/verify/modify', $data, 'POST', $user['api_key'], 1);
-            }
+            $file = $_FILES['passport_first_page'];
+            $data = [
+                "passport_first_page" => new CURLFILE(
+                    str_replace('\\', '/', $file['tmp_name']),
+                    $file['type'],
+                    $file['name']
+                ),
+                "step" => 2,
+            ];
+            $response = php_curl('/buyer/verify/modify', $data, 'POST', $user['api_key'], 1);
+
+            $file = $_FILES['passport_second_page'];
+            $data = [
+                "passport_first_page" => new CURLFILE(
+                    str_replace('\\', '/', $file['tmp_name']),
+                    $file['type'],
+                    $file['name']
+                ),
+                "step" => 2,
+            ];
+            $response = php_curl('/buyer/verify/modify', $data, 'POST', $user['api_key'], 1);
+
+            $file = $_FILES['passport_with_address'];
+            $data = [
+                "passport_with_address" => new CURLFILE(
+                    str_replace('\\', '/', $file['tmp_name']),
+                    $file['type'],
+                    $file['name']
+                ),
+                "step" => 2,
+            ];
+            $response = php_curl('/buyer/verify/modify', $data, 'POST', $user['api_key'], 1);
+
+            $file = $_FILES['passport_selfie'];
+            $data = [
+                "passport_selfie" => new CURLFILE(
+                    str_replace('\\', '/', $file['tmp_name']),
+                    $file['type'],
+                    $file['name']
+                ),
+                "step" => 2,
+                "type" => 2
+            ];
+            $response = php_curl('/buyer/verify/modify', $data, 'POST', $user['api_key'], 1);
             if ($response->status == "success") {
                 $user_info['i_step'] = $response->data->status;
                 db_query('UPDATE ?:users SET ?u WHERE p_user_id = ?i', $user_info, $response->data->id);
