@@ -27,7 +27,7 @@
           $errorContainer.append(errorText);
         }
       });
-      },
+    },
     chooseFiles: function (event) {
       const { updateFiles } = passportMethods;
       const files = event.target.files;
@@ -94,18 +94,15 @@
           $uploadBtn.attr('disabled', 'disabled');
         },
         success: function (response) {
-          console.log(response);
-          // if (response) {
-          //   const { result } = response;
-          //
-          //   if (result.status === 'success') {
-          //     window.location.href = fn_url('installment_product.guarant');
-          //   } else {
-          //     passportMethods.renderErrors(result.response.message);
-          //   }
-          // } else {
-          //   console.error('Result does not exist. %cmethod[installment_product.set_passport]', 'color: white; padding: 2px 5px; border: 1px dashed green');
-          // }
+          if (!response.hasOwnProperty('result')) {
+            return console.error('Result does not exist. %cmethod[installment_product.set_passport]', 'color: white; padding: 2px 5px; border: 1px dashed green');
+          }
+
+          if (response.result.status === 'error') {
+            passportMethods.renderErrors(result.response.message);
+          }
+
+          window.location.href = fn_url('installment_product.guarant');
         },
         error: function (error) {
           passportMethods.renderErrors('Server Error');
