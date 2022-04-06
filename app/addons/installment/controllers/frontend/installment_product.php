@@ -427,6 +427,7 @@ if ($mode == "await") {
 
         $user = db_get_row('select * from ?:users where user_id = ?s', $auth['user_id']);
         Tygh::$app['view']->assign('user_api_token', $user['api_key']);
+        Tygh::$app['view']->assign('api_base_url', INSTALLMENT_PAYMART_URL);
 
     }
 }
@@ -470,11 +471,12 @@ if ($mode == "contract-create") {
 //            }
 //
 //        }
-        if (!empty($product_name))
-            $datas['product_text'] = $product_name;
-        else
 
+        if (!empty($product_name)) {
+            $datas['product_text'] = $product_name;
+        } else {
             $datas['product_text'] = Tygh::$app['session']['test_xxx']['variation_name'];
+        }
 
         $datas['product_descriptions'] = db_get_row('SELECT * FROM ?:product_descriptions 
                                        WHERE product_id = ?i', $product_id);

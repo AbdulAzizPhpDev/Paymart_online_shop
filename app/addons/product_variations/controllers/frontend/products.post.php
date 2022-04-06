@@ -36,7 +36,6 @@ if ($mode === 'view' || $mode === 'quick_view') {
 
         $is_exist = array_search($product['product_id'], Tygh::$app['session']['recently_viewed_products']);
         unset(Tygh::$app['session']['recently_viewed_products'][$is_exist]);
-
         Tygh::$app['session']['test_xxx'] = [
             "parent_product_id" => $product['parent_product_id'],
             "variation_parent_product_id" => $product['variation_parent_product_id'],
