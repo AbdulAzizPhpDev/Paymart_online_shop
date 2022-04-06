@@ -5,7 +5,7 @@
   const $errorContainer = $('.error-await-installment');
 
   const awaitState = {
-    baseUrl: 'https://test.paymart.uz/api/v1',
+    baseUrl: $('.api_base_url').val(),
     api_token: $('.user-api-token').val(),
   };
 
@@ -37,7 +37,7 @@
           Authorization: `Bearer ${api_token}`,
         },
         beforeSend: function () {
-          $button.attr('disabled', 'true')
+          $button.attr('disabled', 'true');
           $button.text(_.tr('loading'));
         },
         success: function (response) {

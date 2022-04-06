@@ -3,6 +3,8 @@
 
 <div class="await-page">
     <input type="hidden" value="{$user_api_token}" class="user-api-token">
+    <input type="hidden" value="{$api_base_url}" class="api_base_url">
+
     <lottie-player
             class="lottie-player"
             autoplay

@@ -1,8 +1,3 @@
-(function (_, $) {
-  console.log('contract create page init');
-})(Tygh, Tygh.$);
-
-
 // Get the modal
 var modal = document.getElementById('myModal');
 var modal1 = document.getElementById('myModal1');
