@@ -63,7 +63,7 @@
                 <tbody>
                 <tr>
                     <td>
-                        {$product_info['product_descriptions']['product']} {$product_info['product_text']}
+                        {$product_info['product_text']}
                     </td>
                     <td>{$product_quantity}</td>
                     <td>{($product_info['product_price']['price'])|number_format:false:false:' '}</td>
