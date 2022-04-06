@@ -99,11 +99,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
 
-
     if ($mode == "get_barcode") {
 
 
         $order_id = $_REQUEST['order_id'];
+
         $fargo_data = db_get_row("select *  from ?:fargo_orders where paymart_contract_id=?i ", $order_id
         );
 
@@ -118,55 +118,78 @@ if ($mode == "index") {
     $status_data = [];
     $params = [];
     $contract = 'contract|status';
-
     switch ($status) {
         case 'moderation':
-            $status_data = MODERATION_CONFIRMATION_FROM_USER;
+            $params = [
+                [
+                    'contract|status' => 0,
+                ],
+                [
+                    'query_operation' => 'or',
+                    'contract|status' => 2,
+                ]
+            ];
             Tygh::$app['view']->assign('moderation', 'active');
             break;
         case 1:
-            $status_data = ACCEPTED_ORDER;
+            $params = [
+                [
+                    'contract|status' => ACCEPTED_ORDER,
+                ]
+            ];
             Tygh::$app['view']->assign('active', 'active');
             break;
         case '3|4':
-            $status_data = [3, 4];
+            $params = [
+                [
+                    'contract|status' => [3, 4],
+                ]
+            ];
             Tygh::$app['view']->assign('overdue', 'active');
             break;
         case 5:
-            $status_data = CANCELED_ORDER;
+            $params = [
+                [
+                    'contract|status' => CANCELED_ORDER,
+                ]
+            ];
             Tygh::$app['view']->assign('cancelled', 'active');
             break;
         case 9:
-            $status_data = COMPLETED_INSTALLMENT;
+            $params = [
+                [
+                    'contract|status' => COMPLETED_INSTALLMENT,
+                ]
+            ];
             Tygh::$app['view']->assign('closed', 'active');
             break;
         default:
-            $status_data = [
-                MODERATION_CONFIRMATION_FROM_USER,
-                CANCELED_ORDER,
-                COMPLETED_INSTALLMENT
+            $params = [
+                [
+                    'status' => [
+                        MODERATION_CONFIRMATION_FROM_USER,
+                        CANCELED_ORDER,
+                        COMPLETED_INSTALLMENT
+                    ],
+                ]
             ];
-            $contract = 'status';
 
             Tygh::$app['view']->assign('all', 'active');
             break;
     }
+
     $page = $_REQUEST['page'] ?? 0;
     $offset = (10 * $page) - 10;
 
     $data = [
-        "params" => [
-            [
-                $contract => $status_data,
-            ]
-        ],
+        "params" => $params,
         "online" => 1,
         "limit" => 10,
         "offset" => $offset,
         "orderByDesc" => "created_at",
         "api_token" => "76d66c5a5356104a8fc6784e007d9c33"
     ];
-//    fn_print_die($data);
+
 
     $order_res = php_curl('/orders/list', $data, 'POST', null);
 

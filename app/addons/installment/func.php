@@ -68,7 +68,7 @@ function php_curl($url = '', $data = [], $method = 'GET', $token = null, $header
     $curl_options[CURLOPT_HTTP_VERSION] = CURL_HTTP_VERSION_1_1;
     $curl_options[CURLOPT_CUSTOMREQUEST] = "$method";
     if ($header_type == 1) {
-        $curl_options[CURLOPT_HTTPHEADER] = [];
+        $curl_options[CURLOPT_HTTPHEADER] = array('Content-Type:multipart/form-data');
     } else {
         $curl_options[CURLOPT_HTTPHEADER] = array('Content-Type: application/json');
     }

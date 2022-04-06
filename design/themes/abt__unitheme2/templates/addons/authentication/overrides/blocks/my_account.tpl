@@ -89,12 +89,13 @@
 
         {assign var="return_current_url" value=$config.current_url|escape:url}
         <ul class="ty-account-info">
-{*            {hook name="profiles:my_account_menu"}*}
+            {*            {hook name="profiles:my_account_menu"}*}
             {if $auth.user_id}
+
                 {if $user_info.firstname || $user_info.lastname}
                     <li class="ty-account-info__item  ty-account-info__name ty-dropdown-box__item">{$user_info.firstname} {$user_info.lastname}</li>
-{*                {else}*}
-{*                    <li class="ty-account-info__item ty-dropdown-box__item ty-account-info__name">{$user_info.email}</li>*}
+                    {*                {else}*}
+                    {*                    <li class="ty-account-info__item ty-dropdown-box__item ty-account-info__name">{$user_info.email}</li>*}
                 {/if}
                 {*<li class="ty-account-info__item ty-dropdown-box__item">
                     <a class="ty-account-info__a underlined"
@@ -111,29 +112,31 @@
                            rel="nofollow">{__("downloads")}</a>
                     </li>
                 {/if}
+                {if $user_info.i_step==4}
+                    <li class="ty-account-info__item ty-dropdown-box__item">
+                        <a class="ty-account-info__a underlined"
+                           href="https://front.paymart.uz/{$smarty.const.CART_LANGUAGE|lower}/profile?api_token={$user_info.api_key}"
+                           rel="nofollow">
+                            {__("text_cabinet")}
+                        </a>
+                    </li>
+                {/if}
                 <li class="ty-account-info__item ty-dropdown-box__item">
-                    <a class="ty-account-info__a underlined"
-                       href="https://front.paymart.uz/{$smarty.const.CART_LANGUAGE|lower}/profile?api_token={$user_info.api_key}"
+                    <a class="ty-account-info__a underlined" href="{"installment_product.profile-contracts"|fn_url}"
                        rel="nofollow">
-                        {__("text_cabinet")}
-                    </a>
-                </li>
-                <li class="ty-account-info__item ty-dropdown-box__item">
-                    <a class="ty-account-info__a underlined" href="{"installment_product.profile-contracts"|fn_url}" rel="nofollow">
                         {__("installment_contracts")}
                     </a>
                 </li>
-
             {elseif $user_data.firstname || $user_data.lastname}
                 <li class="ty-account-info__item  ty-dropdown-box__item ty-account-info__name">{$user_data.firstname} {$user_data.lastname}</li>
             {elseif $user_data.email}
                 <li class="ty-account-info__item ty-dropdown-box__item ty-account-info__name">{$user_data.email}</li>
             {/if}
-{*                <li class="ty-account-info__item ty-dropdown-box__item">*}
-{*                    <a class="ty-account-info__a underlined"*}
-{*                       href="{"orders.search"|fn_url}"*}
-{*                       rel="nofollow">{__("orders")}</a>*}
-{*                </li>*}
+            {*                <li class="ty-account-info__item ty-dropdown-box__item">*}
+            {*                    <a class="ty-account-info__a underlined"*}
+            {*                       href="{"orders.search"|fn_url}"*}
+            {*                       rel="nofollow">{__("orders")}</a>*}
+            {*                </li>*}
             {if $settings.General.enable_compare_products == 'Y'}
                 {assign var="compared_products" value=""|fn_get_comparison_products}
                 <li class="ty-account-info__item ty-dropdown-box__item">
@@ -147,7 +150,7 @@
                     <a href="{"wishlist.view"|fn_url}">{__("wishlist")}</a>
                 </li>
             {/if}
-{*            {/hook}*}
+            {*            {/hook}*}
         </ul>
 
         {*{if $settings.Appearance.display_track_orders == 'Y'}
@@ -188,7 +191,7 @@
                    data-ca-target-id="login_block{$block.snapping_id}"
                    class="cm-dialog-opener cm-dialog-auto-size ty-btn ty-btn__secondary"
                    rel="nofollow">{__("sign_in")}</a>
-{*                <a href="{"profiles.add"|fn_url}" rel="nofollow" class="ty-btn ty-btn__primary">{__("register")}</a>*}
+                {*                <a href="{"profiles.add"|fn_url}" rel="nofollow" class="ty-btn ty-btn__primary">{__("register")}</a>*}
                 <div id="login_block{$block.snapping_id}" class="hidden" title="{__("sign_in")}">
                     <div class="ty-login-popup">
                         {include file="views/auth/login_form.tpl" style="popup" id="popup`$block.snapping_id`"}

@@ -7,8 +7,6 @@
   const $errorContainer = $('.error-passport-installment');
 
   const passportState = {
-    api_token: Cookies.get('api_token'),
-    baseUrl: 'https://cabinet.paymart.uz/api/v1',
     files: {},
   };
 
@@ -119,4 +117,5 @@
   $passportSelfie.on('change', passportMethods.chooseFiles);
 
   $uploadBtn.on('click', passportMethods.upload);
+
 })(Tygh, Tygh.$);

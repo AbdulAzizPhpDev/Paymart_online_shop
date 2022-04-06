@@ -8,8 +8,6 @@
   const $errorContainer = $('.error-passport-installment');
 
   const passportState = {
-    api_token: Cookies.get('api_token'),
-    baseUrl: 'https://cabinet.paymart.uz/api/v1',
     files: {},
   };
 
@@ -111,6 +109,12 @@
           }
 
           window.location.href = fn_url('installment_product.guarant');
+        },
+        error: function (error) {
+          passportMethods.renderErrors('Server Error');
+        },
+        complete: function () {
+          $uploadBtn.removeAttr('disabled');
         },
       });
     },

@@ -5,7 +5,7 @@
   const $errorContainer = $('.error-await-installment');
 
   const awaitState = {
-    baseUrl: 'https://cabinet.paymart.uz/api/v1',
+    baseUrl: 'https://test.paymart.uz/api/v1',
     api_token: $('.user-api-token').val(),
   };
 
