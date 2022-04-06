@@ -547,9 +547,11 @@ if ($mode == "contract-create") {
                 $periods[$period]['selected'] = 'selected';
                 break;
         }
-//        fn_print_die($selected);
+
+        $redirect_url = fn_url('products.view?product_id=' . $datas['product_price']['product_id']);
 
         Tygh::$app['view']->assign('city', $city);
+        Tygh::$app['view']->assign('redirect_url', $redirect_url);
         Tygh::$app['view']->assign('total', $items->total);
         Tygh::$app['view']->assign('origin', $items->origin);
         Tygh::$app['view']->assign('month', $items->month);

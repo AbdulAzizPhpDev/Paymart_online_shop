@@ -55,6 +55,7 @@ $(document).ready(function () {
         name: name_product,
       },
     ];
+    console.log(formattedProducts);
     $.ajax({
       type: 'POST',
       url: calculate,
@@ -69,8 +70,8 @@ $(document).ready(function () {
         user_id: user_id,
       },
       success: function (response) {
-        $('.input-paying__text-p').html(response.data.price.total + ' сум');
-        $('.input-paying__text-a').html(response.data.price.month + ' сум');
+        $('.monthly-payment .text .price-month').html(response.data.price.total + ' сум');
+        $('.total-price .text .price').html(response.data.price.month + ' сум');
         // $(".orange").html(response.data.price.total + ' сум')
       },
     });
