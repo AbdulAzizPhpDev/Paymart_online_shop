@@ -584,11 +584,8 @@ if ($mode == 'profile-contracts') {
         return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
     } else {
 
-        $data = [
-            'status' => 1
-        ];
         $user = db_get_row('SELECT * FROM ?:users WHERE user_id = ?i', $auth['user_id']);
-        $response = php_curl('/buyer/contracts', $data, 'GET', $user['api_key']);
+        $response = php_curl('/buyer/contracts', [], 'GET', $user['api_key']);
 
         $result = $response;
         $payed_list = [];
@@ -606,9 +603,13 @@ if ($mode == 'profile-contracts') {
             $payed_list_group_by_contract_id[$item] = count($value);
         };
 
+        $contracts = array_reverse(array_filter($result->contracts, function ($contract, $key) {
+            return $contract->status == 'active';
+        }, ARRAY_FILTER_USE_BOTH));
+
         $city = db_get_row('select * from ?:fargo_countries where parent_city_id=?i', 0);
         Tygh::$app['view']->assign('city', $city);
-        Tygh::$app['view']->assign('contracts', array_reverse($result->contracts));
+        Tygh::$app['view']->assign('contracts', $contracts);
         Tygh::$app['view']->assign('group_by', $payed_list_group_by_contract_id);
         Tygh::$app['view']->assign('user_api_token', $user['api_key']);
         Tygh::$app['view']->assign('user_phone', $user['phone']);
