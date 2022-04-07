@@ -40,7 +40,8 @@
                 <button class="close-bar-code-modal">&times;</button>
             </div>
             <div class="modal-body bar-code-modal-body">
-                <iframe src="" frameborder="0" height="650" width="100%"></iframe>
+                {__('empty')}
+{*                <iframe src="" frameborder="0" height="650" width="100%"></iframe>*}
 {*                <img src="https://img.icons8.com/ios/32/000000/truck.png" alt="bar-code">*}
             </div>
         </div>
