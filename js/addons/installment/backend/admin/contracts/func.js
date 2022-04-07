@@ -111,7 +111,7 @@
           order_id: adminContractsState.order_id,
         },
         callback: function (response) {
-          if (!response.result) {
+          if (response.result === null) {
             return $barCodeModalBody.html(_.tr('empty'));
           }
 
