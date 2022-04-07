@@ -153,7 +153,7 @@ function createOrder($product, $quantity, $user, $params, $contract_id)
 
 function createFargoOrder($contract_id)
 {
-
+    $category = "";
     $order = db_get_row("select * from ?:orders as order_data 
                          INNER JOIN ?:order_details as order_detail ON order_data.order_id = order_detail.order_id   
                          where order_data.p_contract_id=?i", $contract_id);
@@ -212,7 +212,8 @@ function createFargoOrder($contract_id)
         ],
         "recipient_not_available" => "do_not_deliver",
         "payment_type" => "credit_balance",
-        "payer" => "sender"
+        "payer" => "sender",
+        "note" => "$category - НУЖНО ПОДПИСАТЬ АКТ И ВЕРНУТЬ ОТПРАВИТЕЛЮ"
     ];
 
     $fargo_data_auth = [
@@ -263,6 +264,7 @@ function fargoAuth()
         "username" => FARGO_USERNAME,
         "password" => FARGO_PASSWORD
     ];
+    fn_print_die($fargo_data_auth);
     $url = FARGO_URL . "/v1/customer/authenticate";
     $fargo_auth_res = php_curl($url, $fargo_data_auth, 'POST', '');
     return $fargo_auth_res->data->id_token;

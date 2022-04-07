@@ -435,7 +435,7 @@ if ($mode == "await") {
 if ($mode == "contract-create") {
 
     $product_text = "";
-
+    $datas = null;
     if (!$auth['user_id']) {
         return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
     } else {
@@ -450,13 +450,16 @@ if ($mode == "contract-create") {
         $period = Tygh::$app['session']['product_info']['period'];
         $product_name = Tygh::$app['session']['product_info']['product_name'];
         $company_id = Tygh::$app['session']['product_info']['company_id'];
-
-        $datas = db_get_row('SELECT * FROM ?:companies 
+        if (!empty($company_id)) {
+            $datas = db_get_row('SELECT * FROM ?:companies 
                              WHERE company_id = ?i ', $company_id);
+        } else {
 
-//        $datas = db_get_row('SELECT * FROM ?:products as product
-//                             INNER JOIN ?:companies as company ON product.company_id = company.company_id
-//                             WHERE product.product_id = ?i ', $product_id);
+            $datas = db_get_row('SELECT * FROM ?:products as product
+                             INNER JOIN ?:companies as company ON product.company_id = company.company_id
+                             WHERE product.product_id = ?i ', $product_id);
+        }
+//        fn_print_die($datas);
 //        $product_feature_values = db_get_array("
 //        select pfvd.variant from ?:product_features_values as pfv
 //        INNER JOIN ?:product_feature_variant_descriptions as pfvd ON pfvd.variant_id = pfv.variant_id and
@@ -471,17 +474,21 @@ if ($mode == "contract-create") {
 //            }
 //
 //        }
+        $datas['product_descriptions'] = db_get_row('SELECT * FROM ?:product_descriptions 
+                                       WHERE product_id = ?i', $product_id);
+        $datas['product_price'] = db_get_row('SELECT * FROM ?:product_prices WHERE product_id = ?i', $product_id);
 
         if (!empty($product_name)) {
             $datas['product_text'] = $product_name;
         } else {
-            $datas['product_text'] = Tygh::$app['session']['test_xxx']['variation_name'];
+            if (isset(Tygh::$app['session']['test_xxx'])) {
+                $datas['product_text'] = Tygh::$app['session']['test_xxx']['variation_name'];
+            } else {
+                $datas['product_text'] = $datas['product_descriptions']['product'];
+            }
         }
 
-        $datas['product_descriptions'] = db_get_row('SELECT * FROM ?:product_descriptions 
-                                       WHERE product_id = ?i', $product_id);
 
-        $datas['product_price'] = db_get_row('SELECT * FROM ?:product_prices WHERE product_id = ?i', $product_id);
         $user = db_get_row('SELECT * FROM ?:users WHERE user_id = ?i', $auth['user_id']);
 
         if (empty($user['firstname']) && empty($user['lastname'])) {
@@ -552,6 +559,7 @@ if ($mode == "contract-create") {
 
         Tygh::$app['view']->assign('city', $city);
         Tygh::$app['view']->assign('redirect_url', $redirect_url);
+        Tygh::$app['view']->assign('api_base_url', INSTALLMENT_PAYMART_URL);
         Tygh::$app['view']->assign('total', $items->total);
         Tygh::$app['view']->assign('origin', $items->origin);
         Tygh::$app['view']->assign('month', $items->month);

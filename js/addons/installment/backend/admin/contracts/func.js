@@ -68,7 +68,6 @@
           status: false,
         },
         callback: function (response) {
-          console.log(response);
           window.location.reload();
         },
       });
