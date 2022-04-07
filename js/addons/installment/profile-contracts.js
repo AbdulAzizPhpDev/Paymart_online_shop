@@ -34,14 +34,14 @@
       $(this).on('click', profileContractsMethods.showTrackingModal);
     },
     showTrackingModal: function (e) {
-      if (e.target.tagName === 'IMG') {
-        e.preventDefault();
-        const orderId = $(this).data('order-id');
-        const modalTitle = $trackingModal.data('tracking-title');
-        // console.log(modalTitle);
-        $trackingModal.attr('title', modalTitle);
-        profileContractsMethods.trackingContract(orderId);
-      }
+      // if (e.target.tagName === 'IMG') {
+      e.preventDefault();
+      const orderId = $(this).data('order-id');
+      const modalTitle = $trackingModal.data('tracking-title');
+      // console.log(modalTitle);
+      $trackingModal.attr('title', modalTitle);
+      profileContractsMethods.trackingContract(orderId);
+      // }
     },
     trackingContract: function (order_id) {
       $.ceAjax('request', fn_url('installment_orders.order_tracking'), {
@@ -56,7 +56,7 @@
 
           const { result } = response;
 
-            profileContractsMethods.generateModalContent(result.list);
+          profileContractsMethods.generateModalContent(result.list);
         },
       });
     },
