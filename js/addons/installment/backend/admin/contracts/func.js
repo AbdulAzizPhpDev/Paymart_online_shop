@@ -117,7 +117,7 @@
           iframe.setAttribute('height', '650');
           iframe.setAttribute('width', '100%');
 
-          $barCodeModalBody.appendChild(iframe);
+          $barCodeModalBody.html(iframe);
         },
       });
 
