@@ -115,7 +115,7 @@
                 {if $user_info.i_step==4}
                     <li class="ty-account-info__item ty-dropdown-box__item">
                         <a class="ty-account-info__a underlined"
-                           href="https://front.paymart.uz/{$smarty.const.CART_LANGUAGE|lower}/profile?api_token={$user_info.api_key}"
+                           href="{$smarty.const.PAYMART_CLIENT_BASE_URL}/{$smarty.const.CART_LANGUAGE|lower}/profile?api_token={$user_info.api_key}"
                            rel="nofollow">
                             {__("text_cabinet")}
                         </a>
