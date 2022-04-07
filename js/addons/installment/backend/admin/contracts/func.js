@@ -17,13 +17,11 @@
 // tracking contract (admin)
   const $trackingContractBtn = $('.tracking-contract');
   const $trackingModal = $('.tracking-contract-modal');
+  const $trackingModalBody = $('.tracking-modal-body');
 
   const $tabs = $('.order-status-tabs span');
-  const $errorContainer = $('.cancel-contract-error');
+  // const $errorContainer = $('.cancel-contract-error');
   const $paginationContainer = $('.pagination-contracts');
-
-
-// const $code = $('#cancel-contract-code');
 
   const params = new URLSearchParams(document.location.search);
   const pageNumber = params.get('page');
@@ -45,19 +43,18 @@
       $acceptModal.modal('show');
     },
     showTrackingContractModal: function () {
-      // $trackingModalBody.text('');
+      $trackingModalBody.html('');
       adminContractsMethods.getParamsFromDom($(this));
       adminContractsMethods.trackingContract();
       $trackingModal.modal('show');
     },
     showBarCodeModal: function () {
-      console.log('opening bar code modal...');
+      $barCodeModalBody.html('');
       adminContractsMethods.getParamsFromDom($(this));
       adminContractsMethods.getBarCode();
       $barCodeModal.modal('show');
     },
     getParamsFromDom: function ($button) {
-
       adminContractsState.order_id = $button.data('order-id');
     },
     cancelContract: function () {
@@ -112,6 +109,7 @@
           order_id: adminContractsState.order_id,
         },
         callback: function (response) {
+          $barCodeModalBody.html('');
           $barCodeModalBody.find('iframe').attr('src', response.result);
         },
       });
@@ -119,7 +117,6 @@
     },
     generateModalContent: function (trackingList = []) {
       const timeline = document.querySelector('.timeline');
-      timeline.innerHTML = '';
 
       trackingList.forEach(({ status, date }) => {
         const li = document.createElement('li');

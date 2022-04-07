@@ -584,8 +584,11 @@ if ($mode == 'profile-contracts') {
         return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
     } else {
 
+        $data = [
+            'status' => 1
+        ];
         $user = db_get_row('SELECT * FROM ?:users WHERE user_id = ?i', $auth['user_id']);
-        $response = php_curl('/buyer/contracts', [], 'GET', $user['api_key']);
+        $response = php_curl('/buyer/contracts', $data, 'GET', $user['api_key']);
 
         $result = $response;
         $payed_list = [];
