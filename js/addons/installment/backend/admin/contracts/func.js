@@ -51,7 +51,7 @@
       $trackingModal.modal('show');
     },
     showBarCodeModal: function () {
-      $barCodeModalBody.find('iframe').addClass('d-none');
+      $barCodeModalBody.html(_.tr('loading'));
       adminContractsMethods.getParamsFromDom($(this));
       adminContractsMethods.getBarCode();
       $barCodeModal.modal('show');
@@ -111,7 +111,13 @@
           order_id: adminContractsState.order_id,
         },
         callback: function (response) {
-          $barCodeModalBody.find('iframe').removeClass('d-none').attr('src', response.result);
+          const iframe = document.createElement('iframe');
+          iframe.setAttribute('src', response.result);
+          iframe.setAttribute('frameborder', '0');
+          iframe.setAttribute('height', '650');
+          iframe.setAttribute('width', '100%');
+
+          $barCodeModalBody.appendChild(iframe);
         },
       });
 
