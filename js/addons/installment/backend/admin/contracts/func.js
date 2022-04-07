@@ -111,7 +111,12 @@
           order_id: adminContractsState.order_id,
         },
         callback: function (response) {
+          if (!response.result) {
+            return $barCodeModalBody.html(_.tr('empty'));
+          }
+
           const iframe = document.createElement('iframe');
+
           iframe.setAttribute('src', response.result);
           iframe.setAttribute('frameborder', '0');
           iframe.setAttribute('height', '650');
