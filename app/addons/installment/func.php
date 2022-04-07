@@ -58,7 +58,7 @@ function php_curl($url = '', $data = [], $method = 'GET', $token = null, $header
     if (filter_var($url, FILTER_VALIDATE_URL)) {
         $curl_options[CURLOPT_URL] = $url;
     } else {
-        $curl_options[CURLOPT_URL] = PAYMART_URL . $url;
+        $curl_options[CURLOPT_URL] = PAYMART_CABINET_URL . $url;
     }
     $curl_options[CURLOPT_RETURNTRANSFER] = true;
     $curl_options[CURLOPT_ENCODING] = '';
@@ -264,7 +264,6 @@ function fargoAuth()
         "username" => FARGO_USERNAME,
         "password" => FARGO_PASSWORD
     ];
-    fn_print_die($fargo_data_auth);
     $url = FARGO_URL . "/v1/customer/authenticate";
     $fargo_auth_res = php_curl($url, $fargo_data_auth, 'POST', '');
     return $fargo_auth_res->data->id_token;

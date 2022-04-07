@@ -33,11 +33,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if ($mode == "get_barcode") {
-
-
         $order_id = $_REQUEST['order_id'];
+        $fargo_data = db_get_row("select *  from ?:fargo_orders where paymart_contract_id=?i ", $order_id);
         $fargo_label_res = php_curl(
-            FARGO_URL . '/v1/customer/orders/airwaybill_mini?ids=&order_numbers=' . $order_id,
+            FARGO_URL . '/v1/customer/orders/airwaybill_mini?ids=&order_numbers=' . $fargo_data['fargo_order_id'],
             [],
             'GET',
             fargoAuth()
@@ -46,9 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             "fargo_contract_label" => $fargo_label_res->data->value
         ];
         db_query('UPDATE ?:fargo_orders SET ?u WHERE fargo_order_id = ?i', $data_label, $order_id);
-        $fargo_data = db_get_row("select *  from ?:fargo_orders where paymart_contract_id=?i ", $order_id
-        );
-
         Registry::get('ajax')->assign('result', $fargo_label_res->data->value);
         exit();
     }
