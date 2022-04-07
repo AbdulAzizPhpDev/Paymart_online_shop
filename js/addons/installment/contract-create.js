@@ -69,8 +69,8 @@ $(document).ready(function () {
         user_id: user_id,
       },
       success: function (response) {
-        $('.monthly-payment .text .price-month').html(response.data.price.total + ' сум');
-        $('.total-price .text .price').html(response.data.price.month + ' сум');
+        $('.total-price .text .price').html(response.data.price.total + ' сум');
+        $('.monthly-payment .text .price-month').html(response.data.price.month + ' сум');
         // $(".orange").html(response.data.price.total + ' сум')
       },
     });
