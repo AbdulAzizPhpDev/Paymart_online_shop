@@ -54,12 +54,12 @@
                 </tr>
             {/foreach}
             <tr class="total-price">
-                <td colspan="3">Итого</td>
-                <td></td>
-                <td></td>
-                <td>15%</td>
-                <td></td>
-                <td>{$order->partner_total|number_format:false:false:' '}</td>
+                <td colspan="7">Итого</td>
+                {if $is_admin}
+                    <td>{$order->contract->total|number_format:false:false:' '}</td>
+                {else}
+                    <td>{$order->partner_total|number_format:false:false:' '}</td>
+                {/if}
             </tr>
             </tbody>
             <tfoot>
