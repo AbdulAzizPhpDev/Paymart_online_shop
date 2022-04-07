@@ -19,9 +19,8 @@ const $select = $('.tashkent-regions');
 const $input = $('.not-tashkent-region');
 
 const otpState = {
-  baseUrl: 'https://cabinet.paymart.uz/api/v1',
+  baseUrl: $('.api_base_url').val(),
   setContract: 'installment_product.set_contracts',
-  api_token: Cookies.get('api_token'),
   buyerPhone: Cookies.get('buyer-phone'),
   timer: 60,
   interval: null,

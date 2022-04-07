@@ -1,7 +1,16 @@
 {script src="js/addons/installment/contract-create.js"}
 {script src="https://cdn.jsdelivr.net/npm/jquery-pinlogin@1.0.3/src/jquery.pinlogin.min.js"}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-pinlogin@1.0.3/src/jquery.pinlogin.css">
+
 {assign var=language_symbol value=$currencies[$smarty.const.CART_PRIMARY_CURRENCY].symbol}
+
+<input type="hidden" value="{$product_info['product_price']['price']}" id="price">
+<input type="hidden" value="{$product_quantity}" id="quantity">
+<input type="hidden" value="{$product_info['product_descriptions']['product']}" id="name_product">
+<input type="hidden" value="{$product_info['p_c_token']}" id="seller_token">
+<input type="hidden" value="{$product_info['p_c_id']}" id="seller_id">
+<input type="hidden" value="{$user['p_user_id']}" id="user_id">
+<input type="hidden" value="{$api_base_url}" class="api_base_url">
 
 <div class="contract-create-page container">
     <section class="back-button">
@@ -78,13 +87,6 @@
                 </tfoot>
             </table>
         </div>
-
-        <input type="hidden" value="{$product_info['product_price']['price']}" id="price">
-        <input type="hidden" value="{$product_quantity}" id="quantity">
-        <input type="hidden" value="{$product_info['product_descriptions']['product']}" id="name_product">
-        <input type="hidden" value="{$product_info['p_c_token']}" id="seller_token">
-        <input type="hidden" value="{$product_info['p_c_id']}" id="seller_id">
-        <input type="hidden" value="{$user['p_user_id']}" id="user_id">
     </section>
 
     <section class="calculate-price">
