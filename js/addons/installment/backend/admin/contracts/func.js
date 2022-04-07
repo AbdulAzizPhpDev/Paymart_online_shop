@@ -43,13 +43,15 @@
       $acceptModal.modal('show');
     },
     showTrackingContractModal: function () {
-      $trackingModalBody.html('');
+      const timeline = document.querySelector('.timeline');
+      timeline.innerHTML = '';
+
       adminContractsMethods.getParamsFromDom($(this));
       adminContractsMethods.trackingContract();
       $trackingModal.modal('show');
     },
     showBarCodeModal: function () {
-      $barCodeModalBody.html('');
+      $barCodeModalBody.find('iframe').addClass('d-none');
       adminContractsMethods.getParamsFromDom($(this));
       adminContractsMethods.getBarCode();
       $barCodeModal.modal('show');
@@ -109,8 +111,7 @@
           order_id: adminContractsState.order_id,
         },
         callback: function (response) {
-          $barCodeModalBody.html('');
-          $barCodeModalBody.find('iframe').attr('src', response.result);
+          $barCodeModalBody.find('iframe').removeClass('d-none').attr('src', response.result);
         },
       });
 
