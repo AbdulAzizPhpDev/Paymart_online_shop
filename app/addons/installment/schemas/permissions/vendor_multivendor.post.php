@@ -25,6 +25,9 @@ $schema['controllers']['installment_orders'] = [
         'change_status' => [
             'permissions' => true,
         ],
+        'upload_imei' => [
+            'permissions' => true,
+        ],
         'update' => [
             'permissions' => false,
         ],

@@ -195,7 +195,7 @@ myBtn.onclick = function () {
           //counter ended, do something here
           return;
         }
-        document.querySelector('.card-resend-sms-timer').innerHTML = otpState.timer;
+        // document.querySelector('.card-resend-sms-timer').innerHTML = otpState.timer;
       }
     },
   });

@@ -51,7 +51,7 @@
       $trackingModal.modal('show');
     },
     showBarCodeModal: function () {
-      $barCodeModalBody.html(_.tr('loading'));
+      $barCodeModalBody.html(_.tr('file_uploading_in_progress_please_wait'));
       adminContractsMethods.getParamsFromDom($(this));
       adminContractsMethods.getBarCode();
       $barCodeModal.modal('show');
@@ -104,7 +104,7 @@
       });
     },
     getBarCode: function () {
-      console.log('getting bar code url...');
+      // console.log('getting bar code url...');
       $.ceAjax('request', fn_url('installment_orders.get_barcode'), {
         method: 'POST',
         data: {
@@ -112,7 +112,7 @@
         },
         callback: function (response) {
           if (response.result === null) {
-            return $barCodeModalBody.html(_.tr('empty'));
+            return $barCodeModalBody.html(_.tr('nothing_found'));
           }
 
           const iframe = document.createElement('iframe');
