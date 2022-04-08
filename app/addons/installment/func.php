@@ -153,7 +153,7 @@ function createOrder($product, $quantity, $user, $params, $contract_id)
 
 function createFargoOrder($contract_id)
 {
-    $category = "";
+
     $order = db_get_row("select * from ?:orders as order_data 
                          INNER JOIN ?:order_details as order_detail ON order_data.order_id = order_detail.order_id   
                          where order_data.p_contract_id=?i", $contract_id);
@@ -164,6 +164,12 @@ function createFargoOrder($contract_id)
         INNER JOIN ?:product_descriptions as product_description ON product.product_id = product_description.product_id 
         WHERE product.product_id = ?i ', $order['product_id']);
     $user = db_get_row('select * from ?:users where user_id=?i', $order['user_id']);
+
+    $category = db_get_row('select category.category as name from ?:products_categories as product 
+                            inner join ?:category_descriptions as category on product.category_id = category.category_id and category.lang_code = ?s 
+                            where product.product_id = ?i', CART_LANGUAGE, $order['product_id']);
+
+    $category = $category['name'];
     $product_shipping_data = unserialize($order['fargo_address']);
     $neighborhood = [
         "name" => $product_shipping_data['neighborhood']

@@ -98,6 +98,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     }
 
+    if ($mode == "upload_imei") {
+
+        $data = [
+            "id" => $_REQUEST['contract_id'],
+            "act" => $_REQUEST['file'],
+        ];
+        $response = php_curl('/contracts/upload-imei', $data, 'POST', null, 1);
+        if ($response->status == "success") {
+            $errors = showErrors('success', $_REQUEST, "success");
+            Registry::get('ajax')->assign('result', $errors);
+            exit();
+        } else {
+            $errors = showErrors($data->response->message[0]->text, null, "error");
+            Registry::get('ajax')->assign('result', $errors);
+            exit();
+        }
+    }
 
 }
 
