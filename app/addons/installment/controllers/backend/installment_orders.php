@@ -92,14 +92,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 Registry::get('ajax')->assign('result', $errors);
                 exit();
             }
-
-
         }
-
     }
 
     if ($mode == "upload_imei") {
-
         $data = [
             "id" => $_REQUEST['contract_id'],
             "act" => $_REQUEST['file'],
