@@ -275,5 +275,14 @@ function fargoAuth()
     return $fargo_auth_res->data->id_token;
 }
 
+function createCurlFile($file)
+{
+    return new CURLFILE(
+        str_replace('\\', '/', $file['tmp_name']),
+        $file['type'],
+        $file['name'],
+    );
+}
+
 
 

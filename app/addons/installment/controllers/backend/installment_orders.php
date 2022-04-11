@@ -92,28 +92,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 Registry::get('ajax')->assign('result', $errors);
                 exit();
             }
-
-
         }
-
     }
 
     if ($mode == "upload_imei") {
-
-        $data = [
-            "id" => $_REQUEST['contract_id'],
-            "act" => $_REQUEST['file'],
-        ];
-        $response = php_curl('/contracts/upload-imei', $data, 'POST', null, 1);
-        if ($response->status == "success") {
-            $errors = showErrors('success', $_REQUEST, "success");
-            Registry::get('ajax')->assign('result', $errors);
-            exit();
-        } else {
-            $errors = showErrors($data->response->message[0]->text, null, "error");
-            Registry::get('ajax')->assign('result', $errors);
-            exit();
+        if ($auth['user_id']) {
+            $user = db_get_row('select p_c_token from ?:companies where company_id = ?i ', $auth['company_id']);
+            $file = $_FILES['file'];
+            $data = [
+                "id" => $_REQUEST['contract_id'],
+                "imei" => createCurlFile($file)
+            ];
+            $response = php_curl('/contracts/upload-imei', $data, 'POST', $user['p_c_token'], 1);
+            if ($response->status == "success") {
+                $errors = showErrors('success', $_REQUEST, "success");
+                Registry::get('ajax')->assign('result', $errors);
+                exit();
+            } else {
+                $errors = showErrors($data->response->message[0]->text, null, "error");
+                Registry::get('ajax')->assign('result', $errors);
+                exit();
+            }
         }
+
+        $errors = showErrors("auth", null, "error");
+        Registry::get('ajax')->assign('result', $errors);
+        exit();
     }
 
 }
