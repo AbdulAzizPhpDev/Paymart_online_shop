@@ -72,8 +72,7 @@
                         {/if}
                     {/if}
                 </td>
-                <td colspan="6"></td>
-                <td>
+                <td colspan="7">
                     {if $is_admin}
                         {if $order->contract->status == 1}
                             <button class="btn tracking-contract"
@@ -95,6 +94,11 @@
                                 Отменить договор
                             </button>
                         {elseif $order->contract->status == 1}
+                            {if $order->contract->imei_status == 0 || $order->contract->imei_status == 2}
+                                <button class="btn upload-act" data-contract-id="{$order->contract->id}">
+                                    Загрузить IMEI
+                                </button>
+                            {/if}
                             <button class="btn show-bar-code"
                                     data-order-id="{$order->id}">
                                 {__('yml2_offer_feature_common_barcode')}
@@ -108,6 +112,13 @@
                     {/if}
                 </td>
             </tr>
+            {if $order->contract->imei_status == 2 && $order->contract->imei_status != 5}
+                <tr>
+                    <td class="imei-error" colspan="8">
+                        {__('imei_fail')}
+                    </td>
+                </tr>
+            {/if}
             </tfoot>
         </table>
     </div>

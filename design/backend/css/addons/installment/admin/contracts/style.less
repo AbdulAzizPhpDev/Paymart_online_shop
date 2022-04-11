@@ -147,6 +147,16 @@
                 text-align: right;
                 padding-right: 0;
 
+                &.imei-error {
+                  text-align: center;
+                  background-color: rgba(248, 67, 67, 0.2);
+                  color: #F84343;
+                  font-weight: 400;
+                  -webkit-border-radius: 12px;
+                  -moz-border-radius: 12px;
+                  border-radius: 12px;
+                }
+
                 button {
                   border-radius: 8px;
                   background-color: @fail-paymart;
@@ -160,6 +170,11 @@
 
                   &.show-bar-code {
                     background-color: @dark-gray-paymart;
+                    color: @white-paymart;
+                  }
+
+                  &.upload-act {
+                    background-color: #FE346E;
                     color: @white-paymart;
                   }
                 }

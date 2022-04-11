@@ -3,6 +3,13 @@
   const $confirmCancel = $('.confirm-cancel-contract');
   const $cancelModal = $('.cancel-contract-modal');
 
+  // upload-act (vendor)
+  const $uploadActBtn = $('.upload-act');
+  const $confirmUploadAct = $('.confirm-upload-act');
+  const $uploadActModal = $('.upload-act-modal');
+  const $imeiUploader = $('#imei-uploader');
+  const $previewContainer = $('.imei-preview');
+
 // accept contract (vendor)
   const $acceptContractBtn = $('.accept-contract');
   const $confirmAccept = $('.confirm-accept-contract');
@@ -28,12 +35,23 @@
 
   const adminContractsState = {
     order_id: null,
+    contract_id: null,
     buyer_phone: null,
     page: pageNumber,
     status: null,
+    file: {
+      imei: null,
+    },
   };
 
   const adminContractsMethods = {
+    showUploadActModal: function (event) {
+      adminContractsMethods.getParamsFromDom($(this));
+      $previewContainer.css({
+        display: 'none',
+      });
+      $uploadActModal.modal('show');
+    },
     showCancelContractModal: function (event) {
       adminContractsMethods.getParamsFromDom($(this));
       $cancelModal.modal('show');
@@ -58,6 +76,43 @@
     },
     getParamsFromDom: function ($button) {
       adminContractsState.order_id = $button.data('order-id');
+      adminContractsState.contract_id = $button.data('contract-id');
+    },
+    uploadAct: function () {
+      console.log(`uploading... act ${adminContractsState.contract_id}`);
+      console.log(`uploading.. file ${adminContractsState.file.imei}`);
+
+      if (adminContractsState.file.imei === null) {
+        return alert('choose file');
+      }
+
+      $.ceAjax('request', fn_url('installment_orders.upload_imei'), {
+        method: 'POST',
+        data: {
+          contract_id: adminContractsState.contract_id,
+          file: adminContractsState.file.imei,
+        },
+        callback: function (response) {
+          window.location.reload();
+        },
+      });
+
+      $uploadActModal.modal('hide');
+    },
+    selectFile: function (event) {
+      const imei = event.target.files[0];
+      const preview = URL.createObjectURL(imei);
+
+      $previewContainer.css({
+        display: 'block',
+        background: `url("${preview}") center center`,
+        backgroundSize: 'cover',
+        width: 250,
+        height: 250,
+        marginBottom: 16,
+      });
+
+      adminContractsState.file.imei = imei;
     },
     cancelContract: function () {
       $.ceAjax('request', fn_url('installment_orders.change_status'), {
@@ -190,6 +245,14 @@
   };
 
   adminContractsMethods.initPagination();
+
+  // uploading contract (vendor)
+  $confirmUploadAct.on('click', adminContractsMethods.uploadAct);
+  $uploadActBtn.on('click', adminContractsMethods.showUploadActModal);
+  $imeiUploader.on('change', adminContractsMethods.selectFile);
+  $('.close-upload-act-modal').on('click', function () {
+    $uploadActModal.modal('hide');
+  });
 
 // cancelling contract (vendor)
   $confirmCancel.on('click', adminContractsMethods.cancelContract);

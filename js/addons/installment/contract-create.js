@@ -42,6 +42,10 @@ let seller_id = document.getElementById('seller_id').value;
 let user_id = document.getElementById('user_id').value;
 // setUrl = fn_url('installment_product.set_contracts');
 
+const printPricePretty = (price = 0) => {
+  return Intl.NumberFormat.format(price);
+}
+
 $(document).ready(function () {
   $('#selectedId').change(function () {
     var selectedOption = e.options[e.selectedIndex].value;
@@ -69,8 +73,8 @@ $(document).ready(function () {
         user_id: user_id,
       },
       success: function (response) {
-        $('.total-price .text .price').html(response.data.price.total + ' сум');
-        $('.monthly-payment .text .price-month').html(response.data.price.month + ' сум');
+        $('.total-price .text .price').html(printPricePretty(response.data.price.total) + ' сум');
+        $('.monthly-payment .text .price-month').html(printPricePretty(response.data.price.month) + ' сум');
         // $(".orange").html(response.data.price.total + ' сум')
       },
     });
