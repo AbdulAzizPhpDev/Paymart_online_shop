@@ -127,18 +127,16 @@ if ($mode == "index") {
     $status = !empty($_REQUEST['status']) ? $_REQUEST['status'] : null;
     $status_data = [];
     $params = [];
-    $contract = 'contract|status';
+    $contract_status = [];
+
     switch ($status) {
         case 'moderation':
             $params = [
                 [
-                    'contract|status' => 0,
+                    'status' => 9,
                 ],
-                [
-                    'query_operation' => 'or',
-                    'contract|status' => 2,
-                ]
             ];
+            $contract_status = [0, 2];
             Tygh::$app['view']->assign('moderation', 'active');
             break;
         case 1:
@@ -194,6 +192,7 @@ if ($mode == "index") {
     $data = [
         "params" => $params,
         "online" => 1,
+        "contract_status" => $contract_status,
         "limit" => 10,
         "offset" => $offset,
         "orderByDesc" => "created_at",
