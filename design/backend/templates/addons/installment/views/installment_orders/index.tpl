@@ -3,7 +3,6 @@
 
 {script src="js/addons/installment/backend/admin/contracts/func.js"}
 
-
 <div class="admin-contracts-list">
     <header class="header">
         <h1>Заказы</h1>

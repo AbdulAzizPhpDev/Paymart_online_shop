@@ -46,6 +46,25 @@ const printPricePretty = (price = 0) => {
   return Intl.NumberFormat.format(price);
 }
 
+const changeShippingType = (e) => {
+  const $selfCallTabContent = $('.self-call-tab-content');
+  const $shippingTabContent = $('.shipping-tab-content');
+  const $selfCall = $('#self-call');
+  const $shipping = $('#shipping');
+
+  if (!/#shipping/.test(e.oldURL)) {
+    $selfCallTabContent.addClass('d-none');
+    $selfCall.removeClass('d-none');
+    $shippingTabContent.removeClass('d-none');
+  } else {
+    $selfCallTabContent.removeClass('d-none');
+    $shippingTabContent.addClass('d-none');
+    $shipping.removeClass('d-none');
+  }
+}
+
+window.addEventListener('hashchange', changeShippingType)
+
 $(document).ready(function () {
   $('#selectedId').change(function () {
     var selectedOption = e.options[e.selectedIndex].value;

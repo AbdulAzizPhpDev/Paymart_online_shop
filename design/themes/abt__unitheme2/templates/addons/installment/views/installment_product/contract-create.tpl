@@ -1,7 +1,7 @@
 {script src="js/addons/installment/contract-create.js"}
 {script src="https://cdn.jsdelivr.net/npm/jquery-pinlogin@1.0.3/src/jquery.pinlogin.min.js"}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-pinlogin@1.0.3/src/jquery.pinlogin.css">
-
+{*{fn_print_die()}*}
 {assign var=language_symbol value=$currencies[$smarty.const.CART_PRIMARY_CURRENCY].symbol}
 
 <input type="hidden" value="{$product_info['product_price']['price']}" id="price">
@@ -125,46 +125,63 @@
     <section class="shipping-address">
         <h3>{__('address')}</h3>
 
-        <div class="row ty-m-none">
-            <div class="span5">
-                <p for="inputAddress">{__('country')}</p>
-                <input class="repeat-input" type="text" id="inputAddress" disabled value="Узбекистан">
-            </div>
-            <div class="span5">
-                <p for="formAddress2">{__('city')}</p>
-                <div class="input-paying__unique">
-                    <select name="formAddress2" id="formAddress2">
-                        {foreach $city as $key => $value}
-                            {if $value['city_id'] == 228171787}
-                                <option selected value="{$value['city_id']}">{$value['city_name']}</option>
-                            {else }
-                                <option value="{$value['city_id']}">{$value['city_name']}</option>
-                            {/if}
-                        {/foreach}
-                    </select>
-                </div>
-            </div>
-            <div class="span5">
-                <p for="formAddress3">{__('district')}</p>
-                <div class="input-paying__unique">
-                    <select name="formAddress3" id="formAddress3" class="tashkent-regions d-none">
-                    </select>
-                    <input type="text" placeholder="{__('district')}" class="not-tashkent-region">
-                </div>
-            </div>
+        <div class="ty-tabs clearfix">
+            <ul class="ty-tabs__list">
+                <li id="self-call" class="ty-tabs__item">
+                    <a class="ty-tabs__a" href="#self-call">Самовызов</a>
+                </li>
+                <li id="shipping" class="ty-tabs__item">
+                    <a class="ty-tabs__a" href="#shipping">Доставка</a>
+                </li>
+            </ul>
         </div>
-        <div class="row ty-m-none">
-            <div class="span5">
-                <p for="story">{__('apartment')} </p>
-                <input id="story" type="text">
+
+        <div class="self-call-tab-content">
+            <h3>{$product_info['state']} {$product_info['address']}</h3>
+        </div>
+
+        <div class="shipping-tab-content d-none">
+            <div class="row ty-m-none">
+                <div class="span5">
+                    <p for="inputAddress">{__('country')}</p>
+                    <input class="repeat-input" type="text" id="inputAddress" disabled value="Узбекистан">
+                </div>
+                <div class="span5">
+                    <p for="formAddress2">{__('city')}</p>
+                    <div class="input-paying__unique">
+                        <select name="formAddress2" id="formAddress2">
+                            {foreach $city as $key => $value}
+                                {if $value['city_id'] == 228171787}
+                                    <option selected value="{$value['city_id']}">{$value['city_name']}</option>
+                                {else }
+                                    <option value="{$value['city_id']}">{$value['city_name']}</option>
+                                {/if}
+                            {/foreach}
+                        </select>
+                    </div>
+                </div>
+                <div class="span5">
+                    <p for="formAddress3">{__('district')}</p>
+                    <div class="input-paying__unique">
+                        <select name="formAddress3" id="formAddress3" class="tashkent-regions d-none">
+                        </select>
+                        <input type="text" placeholder="{__('district')}" class="not-tashkent-region">
+                    </div>
+                </div>
             </div>
-            <div class="span5">
-                <p for="story2">{__('house')}</p>
-                <input id="story2" type="text">
-            </div>
-            <div class="span5">
-                <p for="story3">{__('street')}</p>
-                <input id="story3" type="text">
+            <div class="row ty-m-none">
+                <div class="span5">
+                    <p for="story">{__('apartment')} </p>
+                    <input id="story" type="text">
+                </div>
+                <div class="span5">
+                    <p for="story2">{__('house')}</p>
+                    <input id="story2" type="text">
+                </div>
+                <div class="span5">
+                    <p for="story3">{__('street')}</p>
+                    <input id="story3" type="text">
+                </div>
             </div>
         </div>
     </section>
@@ -175,21 +192,21 @@
         </button>
     </section>
 
-    {if ($notifier)}
-        <!-- Balance not enough to buy Modal -->
-        <div id="myModal5" class="modal5">
-            <div class="modal-content5">
-                <div class="modal-content5__item">
-                    <img src="/design/themes/abt__unitheme2/media/images/addons/installment/cancel.png" alt="">
-                    <h1 class="ty-mt-m">{__('text_customer_support')}</h1>
-                    <h3 class="modal-content5__item">{$customer_support_phone}</h3>
-                </div>
-                <a href="{$redirect_url|fn_url}" class="ty-btn ty-btn__secondary">
-                    {__('abt__ut2.light_menu.back_to_main')}
-                </a>
-            </div>
-        </div>
-    {/if}
+    {*    {if ($notifier)}*}
+    {*        <!-- Balance not enough to buy Modal -->*}
+    {*        <div id="myModal5" class="modal5">*}
+    {*            <div class="modal-content5">*}
+    {*                <div class="modal-content5__item">*}
+    {*                    <img src="/design/themes/abt__unitheme2/media/images/addons/installment/cancel.png" alt="">*}
+    {*                    <h1 class="ty-mt-m">{__('text_customer_support')}</h1>*}
+    {*                    <h3 class="modal-content5__item">{$customer_support_phone}</h3>*}
+    {*                </div>*}
+    {*                <a href="{$redirect_url|fn_url}" class="ty-btn ty-btn__secondary">*}
+    {*                    {__('abt__ut2.light_menu.back_to_main')}*}
+    {*                </a>*}
+    {*            </div>*}
+    {*        </div>*}
+    {*    {/if}*}
 
     {*<div class="container table-page">
         <div class="section-one">
