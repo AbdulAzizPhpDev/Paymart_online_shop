@@ -93,8 +93,8 @@
         <h3>{__('cost_calculation')}</h3>
 
         <div class="row ty-m-none">
-            <div class="span5">
-                <label for="cars">{__('choose_period')}:</label>
+            <p for="ccars">{__('choose_period')}:</p>
+            <div class="span5 ty-m-none">
                 <div class="input-paying">
                     <select name="selectName" id="selectedId">
                         {foreach $periods as $period => $item}
@@ -108,7 +108,10 @@
                      alt="Billing ico">
                 <div class="text">
                     <div class="title">{__('monthly_payment')}:</div>
-                    <div class="price-month">{$month|number_format:false:false:' '} {$currencies[$smarty.const.CART_PRIMARY_CURRENCY].symbol}</div>
+                    <div class="price-month">
+                        <span>{$month|number_format:false:false:' '}</span>
+                        {$currencies[$smarty.const.CART_PRIMARY_CURRENCY].symbol}
+                    </div>
                 </div>
             </div>
             <div class="span5 total-price">
@@ -116,7 +119,10 @@
                      alt="Billing ico">
                 <div class="text">
                     <div class="title">{__('total_with_markup')}:</div>
-                    <div class="price">{$total|number_format:false:false:' '} {$currencies[$smarty.const.CART_PRIMARY_CURRENCY].symbol}</div>
+                    <div class="price">
+                        <span>{$total|number_format:false:false:' '}</span>
+                        {$currencies[$smarty.const.CART_PRIMARY_CURRENCY].symbol}
+                    </div>
                 </div>
             </div>
         </div>

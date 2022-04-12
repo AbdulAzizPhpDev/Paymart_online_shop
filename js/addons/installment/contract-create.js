@@ -101,9 +101,8 @@ $(document).ready(function () {
         const total = new Intl.NumberFormat().format(response.data.price.total);
         const monthly = new Intl.NumberFormat().format(response.data.price.month)
 
-        $('.total-price .text .price').html(total + ' сум');
-        $('.monthly-payment .text .price-month').html(monthly + ' сум');
-        $(".orange").html(response.data.price.total + ' сум')
+        $('.total-price .text .price span').html(total);
+        $('.monthly-payment .text .price-month span').html(monthly);
       },
     });
   });

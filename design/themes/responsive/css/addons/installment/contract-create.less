@@ -127,7 +127,10 @@
     .monthly-payment, .total-price {
       display: flex;
       align-items: center;
-      margin-top: 14px;
+
+      @media screen and (max-width: @mobile) {
+        margin-top: 14px;
+      }
 
       .text {
         margin-left: 16px;
