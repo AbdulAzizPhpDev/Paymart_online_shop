@@ -41,31 +41,51 @@ let seller_token = document.getElementById('seller_token').value;
 let seller_id = document.getElementById('seller_id').value;
 let user_id = document.getElementById('user_id').value;
 // setUrl = fn_url('installment_product.set_contracts');
+const $selfCall = $('#self-call');
+const $shipping = $('#shipping');
+const $selfCallTabContent = $('.self-call-tab-content');
+const $shippingTabContent = $('.shipping-tab-content');
 
 const printPricePretty = (price = 0) => {
   return Intl.NumberFormat.format(price);
-}
+};
 
-const changeShippingType = (e) => {
-  const $selfCallTabContent = $('.self-call-tab-content');
-  const $shippingTabContent = $('.shipping-tab-content');
-  const $selfCall = $('#self-call');
-  const $shipping = $('#shipping');
-
-  if (!/#shipping/.test(e.oldURL)) {
-    $selfCallTabContent.addClass('d-none');
-    $selfCall.removeClass('d-none');
-    $shippingTabContent.removeClass('d-none');
-  } else {
-    $selfCallTabContent.removeClass('d-none');
-    $shippingTabContent.addClass('d-none');
-    $shipping.removeClass('d-none');
-  }
-}
-
-window.addEventListener('hashchange', changeShippingType)
+// const changeShippingType = (e) => {
+//
+//
+//   if (!/#shipping/.test(e.oldURL)) {
+//     // $selfCall.removeClass('d-none');
+//   } else {
+//     $selfCallTabContent.removeClass('d-none');
+//     // $shipping.removeClass('d-none');
+//   }
+// };
+//
+// window.addEventListener('hashchange', changeShippingType);
 
 $(document).ready(function () {
+  const $tabs = $('.address-tab-item');
+  $.each($tabs, function () {
+    $(this).on('click', function () {
+      if ($selfCall.hasClass('active')) {
+        console.log('self has active');
+
+        $selfCall.removeClass('active');
+        $selfCallTabContent.removeClass('d-none');
+
+        $shipping.addClass('active');
+        $shippingTabContent.addClass('d-none');
+      } else {
+        console.log('self has not active');
+        $selfCall.addClass('active');
+        $selfCallTabContent.addClass('d-none');
+
+        $shipping.removeClass('active');
+        $shippingTabContent.removeClass('d-none');
+      }
+    });
+  });
+
   $('#selectedId').change(function () {
     var selectedOption = e.options[e.selectedIndex].value;
     otpState.selectedFirst = selectedOption;
@@ -269,7 +289,7 @@ const confirmContract = () => {
       }
     },
   });
-}
+};
 
 $('#modal-sent').on('click', confirmContract);
 

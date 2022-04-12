@@ -127,20 +127,20 @@
 
         <div class="ty-tabs clearfix">
             <ul class="ty-tabs__list">
-                <li id="self-call" class="ty-tabs__item">
-                    <a class="ty-tabs__a" href="#self-call">Самовызов</a>
+                <li id="self-call" class="address-tab-item ty-tabs__item active">
+                    <a class="ty-tabs__a">{__('pickup')}</a>
                 </li>
-                <li id="shipping" class="ty-tabs__item">
-                    <a class="ty-tabs__a" href="#shipping">Доставка</a>
+                <li id="shipping" class="address-tab-item ty-tabs__item">
+                    <a class="ty-tabs__a">{__('shipping')}</a>
                 </li>
             </ul>
         </div>
 
-        <div class="self-call-tab-content">
+        <div class="self-call-tab-content d-none">
             <h3>{$product_info['state']} {$product_info['address']}</h3>
         </div>
 
-        <div class="shipping-tab-content d-none">
+        <div class="shipping-tab-content">
             <div class="row ty-m-none">
                 <div class="span5">
                     <p for="inputAddress">{__('country')}</p>
