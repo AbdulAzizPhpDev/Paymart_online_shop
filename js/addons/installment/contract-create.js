@@ -30,6 +30,7 @@ const otpState = {
   selectedFirstAdress3: null,
   contractId: null,
   cityModal: null,
+  addressType: 'self-call'
 };
 
 let urlLast = otpState.baseUrl + '/buyers/credit/add';
@@ -46,29 +47,13 @@ const $shipping = $('#shipping');
 const $selfCallTabContent = $('.self-call-tab-content');
 const $shippingTabContent = $('.shipping-tab-content');
 
-const printPricePretty = (price = 0) => {
-  return Intl.NumberFormat.format(price);
-};
-
-// const changeShippingType = (e) => {
-//
-//
-//   if (!/#shipping/.test(e.oldURL)) {
-//     // $selfCall.removeClass('d-none');
-//   } else {
-//     $selfCallTabContent.removeClass('d-none');
-//     // $shipping.removeClass('d-none');
-//   }
-// };
-//
-// window.addEventListener('hashchange', changeShippingType);
-
 $(document).ready(function () {
   const $tabs = $('.address-tab-item');
+
   $.each($tabs, function () {
     $(this).on('click', function () {
       if ($selfCall.hasClass('active')) {
-        console.log('self has active');
+        otpState.addressType = 'shipping'
 
         $selfCall.removeClass('active');
         $selfCallTabContent.removeClass('d-none');
@@ -76,7 +61,8 @@ $(document).ready(function () {
         $shipping.addClass('active');
         $shippingTabContent.addClass('d-none');
       } else {
-        console.log('self has not active');
+        otpState.addressType = 'self-call'
+
         $selfCall.addClass('active');
         $selfCallTabContent.addClass('d-none');
 
@@ -97,7 +83,7 @@ $(document).ready(function () {
         name: name_product,
       },
     ];
-    console.log(formattedProducts);
+
     $.ajax({
       type: 'POST',
       url: calculate,
@@ -112,9 +98,12 @@ $(document).ready(function () {
         user_id: user_id,
       },
       success: function (response) {
-        $('.total-price .text .price').html(printPricePretty(response.data.price.total) + ' сум');
-        $('.monthly-payment .text .price-month').html(printPricePretty(response.data.price.month) + ' сум');
-        // $(".orange").html(response.data.price.total + ' сум')
+        const total = new Intl.NumberFormat().format(response.data.price.total);
+        const monthly = new Intl.NumberFormat().format(response.data.price.month)
+
+        $('.total-price .text .price').html(total + ' сум');
+        $('.monthly-payment .text .price-month').html(monthly + ' сум');
+        $(".orange").html(response.data.price.total + ' сум')
       },
     });
   });
@@ -180,27 +169,31 @@ $(document).ready(function () {
 
 // When the user clicks on the button, open the modal
 myBtn.onclick = function () {
-  let valNullInputt = document.querySelector('.not-tashkent-region');
-  if (!$input.hasClass('d-none')) {
-    if (/^\s*$/g.test(valNullInputt.value) || valNullInputt.value.indexOf('\n') != -1) {
-      $('.not-tashkent-region').css('border', '1px solid red').focus();
+  if (otpState.addressType === 'self-call') {
+    let valNullInputt = document.querySelector('.not-tashkent-region');
+    if (!$input.hasClass('d-none')) {
+      if (/^\s*$/g.test(valNullInputt.value) || valNullInputt.value.indexOf('\n') != -1) {
+        $('.not-tashkent-region').css('border', '1px solid red').focus();
+        return;
+      }
+    }
+
+    var val = document.querySelector('#story2').value;
+    if (/^\s*$/g.test(val) || val.indexOf('\n') != -1) {
+      $('#story2').css('border', '1px solid red').focus();
+      return;
+    }
+    var val2 = document.querySelector('#story3').value;
+    if (/^\s*$/g.test(val2) || val2.indexOf('\n') != -1) {
+      $('#story3').css('border', '1px solid red').focus();
       return;
     }
   }
 
-  var val = document.querySelector('#story2').value;
-  if (/^\s*$/g.test(val) || val.indexOf('\n') != -1) {
-    $('#story2').css('border', '1px solid red').focus();
-    return;
-  }
-  var val2 = document.querySelector('#story3').value;
-  if (/^\s*$/g.test(val2) || val2.indexOf('\n') != -1) {
-    $('#story3').css('border', '1px solid red').focus();
-    return;
-  }
-
   let city = $('#formAddress2').val();
+
   otpState.cityModal = city;
+
   let region = (otpState.selectedFirstAdress3 == null) ? ((!$input.hasClass('d-none')) ? $input.val() : $select.val()) : otpState.selectedFirstAdress3;
   let txt = document.getElementsByTagName('textarea');
   let apartment = $('#story').val();
@@ -211,9 +204,11 @@ myBtn.onclick = function () {
     modal.style.display = 'none';
   };
 
+
   $.ceAjax('request', fn_url('installment_product.set_contracts'), {
     method: 'POST',
     data: {
+      address_type: otpState.addressType,
       limit: otpState.selectedFirst,
       city: city,
       region: region,

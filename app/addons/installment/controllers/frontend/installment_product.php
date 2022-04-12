@@ -436,9 +436,9 @@ if ($mode == "contract-create") {
 
     $product_text = "";
     $datas = null;
-    /*if (!$auth['user_id']) {
+    if (!$auth['user_id']) {
         return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
-    } else*/ {
+    } else {
 
         if (!isset(Tygh::$app['session']['product_info'])) {
             return array(CONTROLLER_STATUS_REDIRECT, fn_url());
@@ -500,13 +500,13 @@ if ($mode == "contract-create") {
                 $user = db_get_row('SELECT * FROM ?:users WHERE user_id = ?i', $auth['user_id']);
             }
         }
-//        checkUserFromPaymart($auth['user_id']);
-//        list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
-//        $user_step = checkInstallmentStep($auth['user_id']);
+        checkUserFromPaymart($auth['user_id']);
+        list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
+        $user_step = checkInstallmentStep($auth['user_id']);
 
-//        if ($mode_type !== $user_step) {
-//            return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
-//        }
+        if ($mode_type !== $user_step) {
+            return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
+        }
         $data = [
             "type" => "credit",
             "period" => $period,
