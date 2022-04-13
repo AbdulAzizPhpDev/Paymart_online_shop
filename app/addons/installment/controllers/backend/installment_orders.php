@@ -21,6 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                          INNER JOIN ?:order_details as order_detail ON order_data.order_id = order_detail.order_id
                          where order_data.p_contract_id=?i", $order_id);
 
+        $address = unserialize($order['fargo_address']);
+
         if (filter_var($contract_status, FILTER_VALIDATE_BOOLEAN)) {
 
             $order_data = [
@@ -33,7 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $confirm_res = php_curl('/buyers/partner-confirm', $data_confirm, "POST", $order['p_c_token'], 1);
             if ($confirm_res->status) {
-                createFargoOrder($order_id);
+                if ( isset($address['address_type']) && $address['address_type'] !== 'self') {
+                    createFargoOrder($order_id);
+                }
                 db_query("UPDATE ?:orders SET ?u WHERE p_contract_id=?i", $order_data, $order_id);
                 $errors = showErrors('success', $_REQUEST, "success");
                 Registry::get('ajax')->assign('result', $errors);

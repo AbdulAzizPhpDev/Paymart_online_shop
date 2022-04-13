@@ -271,11 +271,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($response->result->status == 1) {
             $params = [];
             db_query('UPDATE ?:products SET ?u WHERE product_id = ?i', $data, $product_id);
-            if ($_REQUEST['address_type'] === 'delivery') {
+            if ($_REQUEST['address_type'] === 'shipping') {
                 $params["apartment"] = $_REQUEST['apartment'];
                 $params["building"] = $_REQUEST['building'];
                 $params["street"] = $_REQUEST['street'];
-
+                $params['address_type'] = $_REQUEST['address_type'];
                 $neighborhood = [];
                 if ((int)$_REQUEST['region'] == 228171787) {
                     $address = db_get_row("select * from ?:fargo_countries where  city_id=?i ", $_REQUEST['city']);
@@ -289,7 +289,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $params["neighborhood"] = $_REQUEST['city'];
                 }
 
-            } elseif ($_REQUEST['address_type'] === 'self') {
+            } else {
                 $params['address_type'] = $_REQUEST['address_type'];
             }
             $product_shipping_data = unserialize($product_info['shipping_params']);
@@ -479,6 +479,7 @@ if ($mode == "contract-create") {
         $datas['product_descriptions'] = db_get_row('SELECT * FROM ?:product_descriptions 
                                        WHERE product_id = ?i', $product_id);
         $datas['product_price'] = db_get_row('SELECT * FROM ?:product_prices WHERE product_id = ?i', $product_id);
+        $datas['city_name'] = db_get_field('SELECT city_name FROM ?:fargo_countries WHERE city_id = ?i', $datas['city']);
 
         if (!empty($product_name)) {
             $datas['product_text'] = $product_name;
