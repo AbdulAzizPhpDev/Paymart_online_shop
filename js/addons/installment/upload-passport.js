@@ -27,6 +27,7 @@
       });
     },
     chooseFiles: function (event) {
+      $errorContainer.text('');
       const { updateFiles } = passportMethods;
       const files = event.target.files;
       const name = event.target.id;
@@ -69,7 +70,8 @@
         && passportState.files.hasOwnProperty('passport_selfie');
 
       if (!isValid) {
-        return passportMethods.renderErrors('Fields are valid');
+        const errorText = $(this).data('error-image-select');
+        return passportMethods.renderErrors(errorText);
       }
 
       const formData = new FormData();
@@ -98,7 +100,7 @@
           }
 
           if (response.result.status === 'error') {
-            passportMethods.renderErrors(result.response.message);
+            return passportMethods.renderErrors(result.response.message);
           }
 
           window.location.href = fn_url('installment_product.guarant');

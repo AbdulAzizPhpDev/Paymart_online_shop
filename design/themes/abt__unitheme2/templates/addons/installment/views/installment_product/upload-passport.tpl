@@ -47,7 +47,7 @@
                 <span>{__('authentication.passport.selfie')}</span>
             </label>
         </div>
-        {* TODO: Please don't delete this file input div. It is necesarry to display in mobile 4 blocks. *}
+        {* TODO: Please don't delete this file-input div. It is necesarry to display in mobile 4 blocks. *}
         <div class="file-input">
             <div class="preview passport_selfie">
                 <img src="/design/themes/responsive/media/images/passport/selfie.png" width="207" alt="">
@@ -63,7 +63,8 @@
         </div>
     </div>
 
-    <button class="ty-btn ty-btn__secondary" type="button" id="upload-passport-photos-btn">
+    <button class="ty-btn ty-btn__secondary" type="button" id="upload-passport-photos-btn"
+            data-error-image-select="{__('drop_images_select')}">
         {__("continue")}
     </button>
 

@@ -13,7 +13,7 @@
 
   const passportMethods = {
     renderErrors: function (errors) {
-      if (typeof errors !== 'string') {
+      if (typeof errors === 'string') {
         return $errorContainer.text(errors);
       }
 
@@ -28,6 +28,7 @@
       });
     },
     chooseFiles: function (event) {
+      $errorContainer.text('');
       const { updateFiles } = passportMethods;
       const files = event.target.files;
       const name = event.target.id;
@@ -70,14 +71,15 @@
       passportState.files[name] = file;
     },
 
-    upload: function () {
+    upload: function (e) {
       const isValid = passportState.files.hasOwnProperty('passport_first_page')
         && passportState.files.hasOwnProperty('passport_second_page')
         && passportState.files.hasOwnProperty('passport_with_address')
         && passportState.files.hasOwnProperty('passport_selfie');
 
       if (!isValid) {
-        return passportMethods.renderErrors('Fields are valid');
+        const errorText = $(this).data('error-image-select');
+        return passportMethods.renderErrors(errorText);
       }
 
       const formData = new FormData();

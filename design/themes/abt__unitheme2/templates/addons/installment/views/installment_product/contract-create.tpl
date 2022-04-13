@@ -134,10 +134,10 @@
         <div class="ty-tabs clearfix">
             <ul class="ty-tabs__list">
                 <li id="self-call" class="address-tab-item ty-tabs__item active">
-                    <a class="ty-tabs__a">{__('pickup')}</a>
+                    <a class="ty-tabs__a">{__('shipping')}</a>
                 </li>
                 <li id="shipping" class="address-tab-item ty-tabs__item">
-                    <a class="ty-tabs__a">{__('shipping')}</a>
+                    <a class="ty-tabs__a">{__('pickup')}</a>
                 </li>
             </ul>
         </div>

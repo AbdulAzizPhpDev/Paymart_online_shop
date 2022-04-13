@@ -53,7 +53,7 @@ $(document).ready(function () {
   $.each($tabs, function () {
     $(this).on('click', function () {
       if ($selfCall.hasClass('active')) {
-        otpState.addressType = 'shipping'
+        otpState.addressType = 'self'
 
         $selfCall.removeClass('active');
         $selfCallTabContent.removeClass('d-none');
@@ -61,7 +61,7 @@ $(document).ready(function () {
         $shipping.addClass('active');
         $shippingTabContent.addClass('d-none');
       } else {
-        otpState.addressType = 'self'
+        otpState.addressType = 'shipping'
 
         $selfCall.addClass('active');
         $selfCallTabContent.addClass('d-none');
