@@ -61,7 +61,7 @@ $(document).ready(function () {
         $shipping.addClass('active');
         $shippingTabContent.addClass('d-none');
       } else {
-        otpState.addressType = 'self-call'
+        otpState.addressType = 'self'
 
         $selfCall.addClass('active');
         $selfCallTabContent.addClass('d-none');
@@ -207,7 +207,6 @@ myBtn.onclick = function () {
   $.ceAjax('request', fn_url('installment_product.set_contracts'), {
     method: 'POST',
     data: {
-      address_type: otpState.addressType,
       limit: otpState.selectedFirst,
       city: city,
       region: region,
@@ -261,6 +260,7 @@ const confirmContract = () => {
   $.ceAjax('request', fn_url('installment_product.set_confirm_contract'), {
     method: 'POST',
     data: {
+      address_type: otpState.addressType,
       code: otpInputVal,
       contract_id: otpState.contractId,
       city: !($select).hasClass('d-none') ? $($select).val() : $($input).val(),

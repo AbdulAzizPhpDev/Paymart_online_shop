@@ -79,6 +79,7 @@
       });
 
       formData.append('step', '2');
+      // formData.append('passport_type', '6');
       formData.append('security_hash', _.security_hash);
       formData.append('is_ajax', '1');
 
