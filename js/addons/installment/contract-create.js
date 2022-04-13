@@ -30,7 +30,7 @@ const otpState = {
   selectedFirstAdress3: null,
   contractId: null,
   cityModal: null,
-  addressType: 'self-call'
+  addressType: 'self'
 };
 
 let urlLast = otpState.baseUrl + '/buyers/credit/add';
@@ -257,6 +257,7 @@ const confirmContract = () => {
   $(this).attr('disabled', true);
   let otpInputVal = $('.ty-login__input').val();
 
+
   $.ceAjax('request', fn_url('installment_product.set_confirm_contract'), {
     method: 'POST',
     data: {
@@ -268,6 +269,7 @@ const confirmContract = () => {
       apartment: apartment,
       building: building,
       street: street,
+      address_type: otpState.addressType,
     },
     callback: function (response) {
       console.log('response-first', response);
