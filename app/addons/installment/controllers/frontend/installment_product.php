@@ -268,27 +268,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $response = php_curl('/buyers/check-user-sms', $data_contract, 'POST', $user['api_key']);
 
-
         if ($response->result->status == 1) {
-
-
+            $params = [];
             db_query('UPDATE ?:products SET ?u WHERE product_id = ?i', $data, $product_id);
+            if ($_REQUEST['address_type'] === 'delivery') {
+                $params["apartment"] = $_REQUEST['apartment'];
+                $params["building"] = $_REQUEST['building'];
+                $params["street"] = $_REQUEST['street'];
 
-            $params["apartment"] = $_REQUEST['apartment'];
-            $params["building"] = $_REQUEST['building'];
-            $params["street"] = $_REQUEST['street'];
+                $neighborhood = [];
+                if ((int)$_REQUEST['region'] == 228171787) {
+                    $address = db_get_row("select * from ?:fargo_countries where  city_id=?i ", $_REQUEST['city']);
 
-            $neighborhood = [];
-            if ((int)$_REQUEST['region'] == 228171787) {
-                $address = db_get_row("select * from ?:fargo_countries where  city_id=?i ", $_REQUEST['city']);
-
-                $params["city_id"] = 228171787;
-                $params["neighborhood"] = $address['city_name'];
+                    $params["city_id"] = 228171787;
+                    $params["neighborhood"] = $address['city_name'];
 
 
-            } else {
-                $params["city_id"] = (int)$_REQUEST['region'];
-                $params["neighborhood"] = $_REQUEST['city'];
+                } else {
+                    $params["city_id"] = (int)$_REQUEST['region'];
+                    $params["neighborhood"] = $_REQUEST['city'];
+                }
+
+            } elseif ($_REQUEST['address_type'] === 'self') {
+                $params['address_type'] = $_REQUEST['address_type'];
             }
             $product_shipping_data = unserialize($product_info['shipping_params']);
             $params["shipping_params"] = $product_shipping_data;
