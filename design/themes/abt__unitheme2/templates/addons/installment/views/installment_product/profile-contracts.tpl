@@ -9,7 +9,8 @@
         </div>*}
         <div class="contracts">
             {foreach from=$contracts key=index item=contract}
-                <div class="cm-dialog-opener cm-dialog-auto-size contract-card" data-ca-target-id="tracking-contract-modal">
+                <div class="cm-dialog-opener cm-dialog-auto-size contract-card"
+                     data-ca-target-id="tracking-contract-modal" data-order-id="{$contract->order_id}">
                     <div class="header">
                         <div class="info">
                             <h3>{__('contract')} № {$contract->contract_id}</h3>

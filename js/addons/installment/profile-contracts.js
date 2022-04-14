@@ -7,9 +7,9 @@
 
   // const $contractNumber = $('.contract-number');
 
-  // const profileContractsState = {
-  //   order_id: null,
-  // };
+  const profileContractsState = {
+    order_id: null,
+  };
 
   const profileContractsMethods = {
     calculateProgress: function () {
