@@ -196,7 +196,7 @@ if ($mode == "index") {
     $data = [
         "params" => $params,
         "online" => 1,
-        "contract_status" => $contract_status,
+
         "limit" => 10,
         "offset" => $offset,
         "orderByDesc" => "created_at",
