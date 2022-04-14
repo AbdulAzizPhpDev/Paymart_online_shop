@@ -560,9 +560,18 @@ if ($mode == "contract-create") {
 
         $redirect_url = fn_url('products.view?product_id=' . $datas['product_price']['product_id']);
 
+        $company_address = $datas['city_name'] . ' '
+            . __('city') . ' '
+            . $datas['state'] . ' '
+            . $datas['address'];
+
+        $company_phone = $datas['phone'];
+
         Tygh::$app['view']->assign('city', $city);
         Tygh::$app['view']->assign('redirect_url', $redirect_url);
         Tygh::$app['view']->assign('api_base_url', PAYMART_CABINET_URL);
+        Tygh::$app['view']->assign('company_address', $company_address);
+        Tygh::$app['view']->assign('company_phone', $company_phone);
         Tygh::$app['view']->assign('total', $items->total);
         Tygh::$app['view']->assign('origin', $items->origin);
         Tygh::$app['view']->assign('month', $items->month);

@@ -176,17 +176,21 @@
             return $barCodeModalBody.html(_.tr('nothing_found'));
           }
 
+          if (response.status === 'self') {
+            return $barCodeModalBody.html(response.result);
+          }
+
           const iframe = document.createElement('iframe');
 
           iframe.setAttribute('src', response.result);
           iframe.setAttribute('frameborder', '0');
           iframe.setAttribute('height', '650');
           iframe.setAttribute('width', '100%');
+          iframe.style.overflowY = 'auto';
 
           $barCodeModalBody.html(iframe);
         },
       });
-
     },
     generateModalContent: function (trackingList = []) {
       const timeline = document.querySelector('.timeline');
