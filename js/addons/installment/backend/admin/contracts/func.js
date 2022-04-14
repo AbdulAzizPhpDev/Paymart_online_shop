@@ -103,17 +103,6 @@
         },
       });
 
-      // $.ceAjax('request', fn_url('installment_orders.upload_imei'), {
-      //     method: 'POST',
-      //     data: {
-      //         contract_id: adminContractsState.contract_id,
-      //         file: adminContractsState.file.imei,
-      //     },
-      //     callback: function (response) {
-      //         window.location.reload();
-      //     },
-      // });
-
       $uploadActModal.modal('hide');
     },
     selectFile: function (event) {

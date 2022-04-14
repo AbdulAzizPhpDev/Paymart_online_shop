@@ -62,8 +62,16 @@
             </div>
             <div class="modal-body bar-code-modal-body">
                 {__('empty')}
-{*                <iframe src="" frameborder="0" height="650" width="100%"></iframe>*}
-{*                <img src="https://img.icons8.com/ios/32/000000/truck.png" alt="bar-code">*}
+            </div>
+        </div>
+        {* Show Tracking Modal  *}
+        <div class="modal signin-modal tracking-contract-modal" style="display: none;">
+            <div class="modal-header">
+                <div><h3>{__('track_request_subj')}</h3></div>
+                <button class="close-tracking-contract-modal">&times;</button>
+            </div>
+            <div class="modal-body tracking-modal-body">
+                {include file="addons/installment/views/installment_orders/components/stepper.tpl"}
             </div>
         </div>
     {else}

@@ -131,7 +131,7 @@ if ($mode == "index") {
     $status = !empty($_REQUEST['status']) ? $_REQUEST['status'] : null;
     $status_data = [];
     $params = [];
-    $contract_status = [];
+    $contract_status = null;
 
     switch ($status) {
         case 'moderation':
@@ -207,7 +207,7 @@ if ($mode == "index") {
 
     Tygh::$app['view']->assign('paymart_orders', $order_res);
 
-
+//    fn_print_die($data);
 }
 
 if ($mode == 'vendor') {

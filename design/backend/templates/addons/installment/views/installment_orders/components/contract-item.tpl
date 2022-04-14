@@ -99,6 +99,11 @@
                                     Загрузить IMEI
                                 </button>
                             {/if}
+                            <button class="btn tracking-contract"
+                                    data-contract-id="{$order->contract->id}"
+                                    data-order-id="{$order->id}">
+                                {__('track_request_subj')}
+                            </button>
                             <button class="btn show-bar-code"
                                     data-order-id="{$order->id}">
                                 {__('yml2_offer_feature_common_barcode')}
