@@ -28,8 +28,8 @@ $schema['controllers']['installment_orders'] = [
         'upload_imei' => [
             'permissions' => true,
         ],
-        'update' => [
-            'permissions' => false,
+        'order_tracking' => [
+            'permissions' => true,
         ],
         'delete' => [
             'permissions' => false,
