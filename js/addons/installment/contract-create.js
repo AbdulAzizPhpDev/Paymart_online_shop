@@ -30,7 +30,7 @@ const otpState = {
   selectedFirstAdress3: null,
   contractId: null,
   cityModal: null,
-  addressType: 'self'
+  addressType: 'shipping'
 };
 
 let urlLast = otpState.baseUrl + '/buyers/credit/add';
@@ -168,7 +168,7 @@ $(document).ready(function () {
 
 // When the user clicks on the button, open the modal
 myBtn.onclick = function () {
-  if (otpState.addressType === 'self-call') {
+  if (otpState.addressType === 'shipping') {
     let valNullInputt = document.querySelector('.not-tashkent-region');
     if (!$input.hasClass('d-none')) {
       if (/^\s*$/g.test(valNullInputt.value) || valNullInputt.value.indexOf('\n') != -1) {
@@ -257,11 +257,9 @@ const confirmContract = () => {
   $(this).attr('disabled', true);
   let otpInputVal = $('.ty-login__input').val();
 
-
   $.ceAjax('request', fn_url('installment_product.set_confirm_contract'), {
     method: 'POST',
     data: {
-      address_type: otpState.addressType,
       code: otpInputVal,
       contract_id: otpState.contractId,
       city: !($select).hasClass('d-none') ? $($select).val() : $($input).val(),

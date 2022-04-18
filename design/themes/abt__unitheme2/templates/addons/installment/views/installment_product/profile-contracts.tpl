@@ -41,9 +41,7 @@
         {* Show Tracking Modal  *}
         <div class="hidden tracking-contract-modal" id="tracking-contract-modal" title="{__('track_my_order')}"
              data-tracking-title="{__('track_my_order')}">
-            <div class="tracking-modal-body">
-                <ul class="timeline">{__('empty')}</ul>
-            </div>
+            <div class="tracking-modal-body"></div>
         </div>
         {*        <div class="modal signin-modal tracking-contract-modal" style="display: none;">*}
         {*            <div class="modal-header">*}
