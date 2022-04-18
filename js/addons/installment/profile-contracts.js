@@ -54,7 +54,6 @@
           }
 
           const { result } = response;
-
           if (result.status === 'self') {
             const companyData = {
               address: result.address,
@@ -80,8 +79,8 @@
         companyAddress.textContent = companyInfo.address;
         companyPhone.textContent = companyInfo.phone;
 
-        $trackingModalBody.appendChild(companyAddress);
-        $trackingModalBody.appendChild(companyPhone);
+        $trackingModalBody.append(companyAddress);
+        $trackingModalBody.append(companyPhone);
 
         return;
       }
