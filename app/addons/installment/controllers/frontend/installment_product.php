@@ -218,10 +218,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ];
 
         $response = php_curl('/buyers/credit/add', $data, 'POST', $product_info['p_c_token']);
-        if (isset($response->result) && $response->result->status == 0) {
+        if (isset($response->result) && ($response->result->status == 0 || $response->status == "error")) {
 
             $errors = showErrors("user_has_indebtedness", [], "error");
-            Registry::get('ajax')->assign('result', $response);
+            Registry::get('ajax')->assign('result', $errors);
             exit();
         } elseif ($response->status == 1) {
             Registry::get('ajax')->assign('result', $response);
