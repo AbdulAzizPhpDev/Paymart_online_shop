@@ -153,7 +153,7 @@
                 </div>
                 <div>
                     <h3 class="ty-m-none">{$company_address}</h3>
-                    <p>{__('company_phone')}: +{$company_phone}</p>
+{*                    <p>{__('company_phone')}: +{$company_phone}</p>*}
                 </div>
             </div>
         </div>

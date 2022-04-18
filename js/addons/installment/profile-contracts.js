@@ -4,12 +4,13 @@
   // const $searchIcon = $('.search-icon');
   const $contractCards = $('.contract-card');
   const $trackingModal = $('.tracking-contract-modal');
+  const $trackingModalBody = $('.tracking-modal-body');
 
   // const $contractNumber = $('.contract-number');
 
-  const profileContractsState = {
-    order_id: null,
-  };
+  // const profileContractsState = {
+  //   order_id: null,
+  // };
 
   const profileContractsMethods = {
     calculateProgress: function () {
@@ -54,13 +55,36 @@
 
           const { result } = response;
 
-          profileContractsMethods.generateModalContent(result.list);
+          if (result.status === 'self') {
+            const companyData = {
+              address: result.address,
+              phone: result.phone,
+            };
+
+            return profileContractsMethods.generateModalContent({ companyInfo: companyData, isShipping: false });
+          }
+
+          profileContractsMethods.generateModalContent({ trackingList: result.list });
         },
       });
     },
-    generateModalContent: function (trackingList = []) {
+    generateModalContent: function ({ trackingList = [], companyInfo = {}, isShipping = true }) {
       const timeline = document.querySelector('.timeline');
       timeline.innerHTML = '';
+
+      if (!isShipping) {
+        timeline.remove();
+        const companyAddress = document.createElement('h3');
+        const companyPhone = document.createElement('p');
+
+        companyAddress.textContent = companyInfo.address;
+        companyPhone.textContent = companyInfo.phone;
+
+        $trackingModalBody.appendChild(companyAddress);
+        $trackingModalBody.appendChild(companyPhone);
+
+        return;
+      }
 
       trackingList.forEach(({ status, date }) => {
         const li = document.createElement('li');
