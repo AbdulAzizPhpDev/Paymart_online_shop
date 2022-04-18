@@ -10,6 +10,7 @@ if (!defined('BOOTSTRAP')) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
     if ($mode == "order_tracking") {
         $array_order['list'] = [];
         $order_id = $_REQUEST['order_id'];

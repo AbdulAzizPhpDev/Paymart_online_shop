@@ -26,6 +26,9 @@ if (!defined('BOOTSTRAP')) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
+
+
+
     if ($mode == 'send_sms') {
 
         $pattern = "/^998\d{9}$/";
@@ -112,7 +115,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             Tygh::$app['session']->regenerateID();
             fn_login_user(fn_get_session_data('user_info')['id'], true);
-//            fn_get_session_data('user_info');
             fn_delete_session_data('user_info');
             Registry::get('ajax')->assign('result', $response);
             exit();

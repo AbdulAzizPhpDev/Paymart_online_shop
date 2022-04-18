@@ -184,7 +184,7 @@
                     <a href="{$config.vendor_index|fn_url}" rel="nofollow" class="ty-btn ty-btn__primary"
                        target="_blank">{__("go_to_admin_panel")}</a>
                 {/if}
-                <a href="{fn_url('logout.logout')}" rel="nofollow"
+                <a href="{fn_url('auth.logout')}" rel="nofollow"
                    class="ty-btn {if $is_vendor_with_active_company}ty-btn__tertiary{else}ty-btn__primary{/if}">{__("sign_out")}</a>
             {else}
                 <a href="{if $runtime.controller == "auth" && $runtime.mode == "login_form"}{$config.current_url|fn_url}{else}{"auth.login_form?return_url=`$return_current_url`"|fn_url}{/if}"

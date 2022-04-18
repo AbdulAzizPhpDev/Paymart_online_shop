@@ -139,5 +139,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 if ($mode == "login_form") {
+    if ($auth['user_id'] && $auth['user_type'] === 'C') {
+        return array(CONTROLLER_STATUS_OK, fn_url('index.php'));
+    }
 
 }
