@@ -20,16 +20,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $address = unserialize($order_data['fargo_address']);
 
         if (empty($fargo_data) && $address['address_type'] === 'self') {
-            $datas = db_get_row('SELECT * FROM ?:companies WHERE company_id = ?i ', $order_data['company_id']);
-            $datas['city_name'] = db_get_field('SELECT city_name FROM ?:fargo_countries WHERE city_id = ?i', $datas['city']);
-            $company_address = $datas['city_name'] . ' '
+            $company_data = db_get_row('SELECT * FROM ?:companies WHERE company_id = ?i ', $order_data['company_id']);
+            $company_data['city_name'] = db_get_field('SELECT city_name FROM ?:fargo_countries WHERE city_id = ?i', $company_data['city']);
+            $company_address = $company_data['city_name'] . ' '
                 . __('city') . ' '
-                . $datas['state'] . ' '
-                . $datas['address'];
+                . $company_data['state'] . ' '
+                . $company_data['address'];
             $data = [
                 "status" => $address['address_type'],
                 "address" => $company_address,
-                "phone" => 89798798789,
+                "phone" => $company_data['phone'],
                 "text" => __('pickup')
             ];
 

@@ -233,7 +233,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
     }
-
     if ($mode == "set_confirm_contract") {
 
         $user = db_get_row('select * from ?:users 
@@ -308,6 +307,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit();
 
         }
+    }
+
+    if ($mode == 'bundle_products') {
+        fn_print_die($_REQUEST);
     }
 }
 
