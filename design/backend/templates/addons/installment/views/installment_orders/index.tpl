@@ -19,9 +19,7 @@
                 <div><h3>{__('track_request_subj')}</h3></div>
                 <button class="close-tracking-contract-modal">&times;</button>
             </div>
-            <div class="modal-body tracking-modal-body">
-                {include file="addons/installment/views/installment_orders/components/stepper.tpl"}
-            </div>
+            <div class="modal-body tracking-modal-body"></div>
         </div>
     {else}
         <h4>{__('empty')}</h4>
