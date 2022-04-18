@@ -66,7 +66,7 @@
             return profileContractsMethods.generateModalContent({ companyInfo: companyData, isShipping: false });
           }
 
-          profileContractsMethods.generateModalContent({ trackingList: result.list });
+          profileContractsMethods.generateModalContent({ trackingList: result.list.reverse() });
         },
       });
     },
