@@ -18,14 +18,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $fargo_data = db_get_row("select *  from ?:fargo_orders where paymart_contract_id=?i ", (int)$order_id);
         $order_data = db_get_row("select  fargo_address, timestamp  from ?:orders where p_contract_id=?i ", $order_id);
         $address = unserialize($order_data['fargo_address']);
+
         if (empty($fargo_data) && $address['address_type'] === 'self') {
             $data = [
-                "status" => __('pickup'),
-                "date" => date('Y-m-d\TH:i:s', $order_data['timestamp'])
+                "status" => $address['address_type'],
+                "address" => "test",
+                "phone"=>89798798789
             ];
 
             array_push($array_order['list'], $data);
-            Registry::get('ajax')->assign('result', $array_order);
+            Registry::get('ajax')->assign('result', $data);
             exit();
         }
         $fargo_order_id = $fargo_data['fargo_order_id'];
@@ -41,6 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ];
             array_push($array_order['list'], $data);
         }
+
 
         Registry::get('ajax')->assign('result', $array_order);
         exit();

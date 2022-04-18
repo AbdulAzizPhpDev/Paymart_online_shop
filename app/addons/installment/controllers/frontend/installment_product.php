@@ -591,7 +591,6 @@ if ($mode == "contract-create") {
 }
 
 if ($mode == 'profile-contracts') {
-
     if (!$auth['user_id']) {
         return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
     } else {
@@ -602,6 +601,7 @@ if ($mode == 'profile-contracts') {
         $result = $response;
         $payed_list = [];
         $payed_list_group_by_contract_id = [];
+
 
         foreach ($result->contracts as $key => $contract) {
             $result->contracts[$key]->status = InstallmentVar::Status[$contract->status];
