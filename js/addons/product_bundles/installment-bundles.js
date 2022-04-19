@@ -12,8 +12,8 @@
           total_price: discountedPrice,
         },
         callback: function (response) {
-          console.log(response);
-          // window.location.href = fn_url('installment_product.index');
+          // console.log(response);
+          window.location.href = fn_url('installment_product.index');
         },
       });
     },
