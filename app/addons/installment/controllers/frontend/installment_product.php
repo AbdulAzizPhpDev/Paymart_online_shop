@@ -310,12 +310,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if ($mode == 'bundle_products') {
+        fn_print_die($_REQUEST);
         if (true) {
             Tygh::$app['session']['product_info'] = array(
                 "type" => "bundle",
                 "bundle_id" => 1
         );
         }
+
+
+        $errors = showErrors('wrong_confirmation_code', [], "error");
+        Registry::get('ajax')->assign('result', $errors);
+        exit();
+
     }
 }
 

@@ -1,8 +1,9 @@
 {$obj_prefix = "pb_`$bundle.bundle_id`"}
 
-<form class="cm-ajax cm-ajax-full-render" action="{""|fn_url}" method="post" name="bundle_form_{$bundle.bundle_id}" enctype="multipart/form-data">
+<form class="cm-ajax cm-ajax-full-render" action="{""|fn_url}" method="post" name="bundle_form_{$bundle.bundle_id}"
+      enctype="multipart/form-data">
     <input type="hidden" name="result_ids" value="cart_status*,wish_list*,checkout*,account_info*">
-    <input type="hidden" name="redirect_url" value="{$config.current_url}" />
+    <input type="hidden" name="redirect_url" value="{$config.current_url}"/>
     {$product_bundle_options_class = "cm-reload-{$obj_prefix}{$bundle.product_id}_{$bundle.bundle_id}"}
 
     {if $bundle.products}
@@ -10,7 +11,7 @@
             {$product_bundle_options_class = "{$product_bundle_options_class} cm-reload-{$obj_prefix}{$_product.product_id}"}
         {/foreach}
     {/if}
-    
+
     {if $bundle.description && $settings.abt__device == "mobile"}
         <div class="ty-product-bundle__description">
             {$bundle.description nofilter}
@@ -32,21 +33,25 @@
                     {include file="addons/product_bundles/components/bundle_product.tpl" bundle=$bundle product=$_product}
                 {/if}
             {/foreach}
-        <!--{$target_id_div}--></div>
+            <!--{$target_id_div}--></div>
 
         {if !(!$auth.user_id && $settings.Checkout.allow_anonymous_shopping == "hide_price_and_add_to_cart")}
-            <span class="ty-product-bundle__plus chain-equally"><svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg" class="b5d8"><path fill-rule="evenodd" clip-rule="evenodd" d="M21 8a1 1 0 00-1-1H4a1 1 0 000 2h16a1 1 0 001-1zm0 8a1 1 0 00-1-1H4a1 1 0 100 2h16a1 1 0 001-1z" fill="currentColor"></path></svg></span>
-            
-            <div class="ty-product-bundle-price {$product_bundle_options_class}" id="pb_total_price_{$obj_prefix}_{$bundle.bundle_id}">
+            <span class="ty-product-bundle__plus chain-equally"><svg width="24" height="24" fill="none"
+                                                                     xmlns="http://www.w3.org/2000/svg" class="b5d8"><path
+                            fill-rule="evenodd" clip-rule="evenodd"
+                            d="M21 8a1 1 0 00-1-1H4a1 1 0 000 2h16a1 1 0 001-1zm0 8a1 1 0 00-1-1H4a1 1 0 100 2h16a1 1 0 001-1z"
+                            fill="currentColor"></path></svg></span>
+            <div class="ty-product-bundle-price {$product_bundle_options_class}"
+                 id="pb_total_price_{$obj_prefix}_{$bundle.bundle_id}">
                 {if $bundle.total_price != $bundle.discounted_price}
-                <div class="ty-product-bundle-price__old">
-                    <span class="ty-product-bundle-price__title">{__("product_bundles.total_list_price")}</span>
-                    <span class="chain-old-line ty-strike">{include file="common/price.tpl" value=$bundle.total_price}</span>
-                </div>
-                <div class="ty-checkout-summary__order_discount">
-                    <span class="ty-product-bundle-price__title">{__("product_bundles.order_discount")}</span>
-                    {include file="common/price.tpl" value=$bundle.total_price - $bundle.discounted_price}
-                </div>
+                    <div class="ty-product-bundle-price__old">
+                        <span class="ty-product-bundle-price__title">{__("product_bundles.total_list_price")}</span>
+                        <span class="chain-old-line ty-strike">{include file="common/price.tpl" value=$bundle.total_price}</span>
+                    </div>
+                    <div class="ty-checkout-summary__order_discount">
+                        <span class="ty-product-bundle-price__title">{__("product_bundles.order_discount")}</span>
+                        {include file="common/price.tpl" value=$bundle.total_price - $bundle.discounted_price}
+                    </div>
                 {/if}
                 <div class="ty-product-bundle-price__new">
                     <span class="ty-product-bundle-price__title">{__("product_bundles.price_for_all")}</span>
@@ -54,11 +59,14 @@
                 </div>
                 {if !(!$auth.user_id && $settings.Checkout.allow_anonymous_shopping == "hide_add_to_cart_button")}
                     installment button here
-                    <div width="100%" class="buttons-container cm-ty-product-bundle-submit" id="wrap_chain_button_{$bundle.bundle_id}">
-                        {include file="buttons/button.tpl" but_text=__("product_bundles.add_all_to_cart") but_id="bundle_button_`$bundle.bundle_id`" but_meta="ty-btn__primary ty-btn__add-to-cart cm-dialog-closer" but_icon="ut2-icon-outline-cart" but_name="dispatch[checkout.add]" but_role="action" obj_id=$obj_id}
+                    <div width="100%" class="buttons-container cm-ty-product-bundle-submit"
+                         id="wrap_chain_button_{$bundle.bundle_id}">
+
+                        {include file="buttons/button.tpl" but_text=__("installment") but_meta="ty-btn__primary installment-bundle-btn"}
+
                     </div>
                 {/if}
-            <!--pb_total_price_{$obj_prefix}_{$bundle.bundle_id}--></div>
+                <!--pb_total_price_{$obj_prefix}_{$bundle.bundle_id}--></div>
         {else}
             <p>{__("product_bundles.sign_in_to_view_price")}</p>
         {/if}
