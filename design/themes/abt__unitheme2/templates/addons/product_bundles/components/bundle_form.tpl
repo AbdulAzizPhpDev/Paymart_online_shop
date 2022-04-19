@@ -1,4 +1,5 @@
 {$obj_prefix = "pb_`$bundle.bundle_id`"}
+
 {script src="js/addons/product_bundles/installment-bundles.js"}
 
 <form class="cm-ajax cm-ajax-full-render" action="{""|fn_url}" method="post" name="bundle_form_{$bundle.bundle_id}" enctype="multipart/form-data">
