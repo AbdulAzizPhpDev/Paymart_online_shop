@@ -53,6 +53,7 @@
                     {include file="common/price.tpl" value=$bundle.discounted_price}
                 </div>
                 {if !(!$auth.user_id && $settings.Checkout.allow_anonymous_shopping == "hide_add_to_cart_button")}
+                    installment button here
                     <div width="100%" class="buttons-container cm-ty-product-bundle-submit" id="wrap_chain_button_{$bundle.bundle_id}">
                         {include file="buttons/button.tpl" but_text=__("product_bundles.add_all_to_cart") but_id="bundle_button_`$bundle.bundle_id`" but_meta="ty-btn__primary ty-btn__add-to-cart cm-dialog-closer" but_icon="ut2-icon-outline-cart" but_name="dispatch[checkout.add]" but_role="action" obj_id=$obj_id}
                     </div>
