@@ -56,6 +56,7 @@
                     <input type="hidden" value="{$bundle.discounted_price}" class="bundle-discounted-price">
                 </div>
                 {if !(!$auth.user_id && $settings.Checkout.allow_anonymous_shopping == "hide_add_to_cart_button")}
+                    installment button here
                     <div width="100%" class="buttons-container cm-ty-product-bundle-submit" id="wrap_chain_button_{$bundle.bundle_id}">
                         {include file="buttons/button.tpl" but_text=__("installment") but_meta="ty-btn__primary installment-bundle-btn"}
                     </div>
