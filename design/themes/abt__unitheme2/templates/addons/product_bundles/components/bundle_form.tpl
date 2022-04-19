@@ -4,7 +4,10 @@
 <form class="cm-ajax cm-ajax-full-render" action="{""|fn_url}" method="post" name="bundle_form_{$bundle.bundle_id}"
       enctype="multipart/form-data">
     <input type="hidden" name="result_ids" value="cart_status*,wish_list*,checkout*,account_info*">
-    <input type="hidden" name="redirect_url" value="{$config.current_url}"/>
+    <input type="hidden" name="redirect_url" value="{$config.current_url}" />
+    <input type="hidden" value="{$bundle.bundle_id}" class="installment-bundle-id">
+    <input type="hidden" value="{$bundle.discounted_price}" class="bundle-discounted-price">
+
     {$product_bundle_options_class = "cm-reload-{$obj_prefix}{$bundle.product_id}_{$bundle.bundle_id}"}
 
     {if $bundle.products}
@@ -59,7 +62,6 @@
                     {include file="common/price.tpl" value=$bundle.discounted_price}
                 </div>
                 {if !(!$auth.user_id && $settings.Checkout.allow_anonymous_shopping == "hide_add_to_cart_button")}
-                    installment button here
                     <div width="100%" class="buttons-container cm-ty-product-bundle-submit"
                          id="wrap_chain_button_{$bundle.bundle_id}">
 
