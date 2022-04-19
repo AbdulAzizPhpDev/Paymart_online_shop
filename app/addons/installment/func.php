@@ -284,5 +284,12 @@ function createCurlFile($file)
     );
 }
 
+function test()
+{
+    static $var = 0;
+    $var++;
+    return $var;
+}
+
 
 
