@@ -314,8 +314,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (true) {
             Tygh::$app['session']['product_info'] = array(
                 "type" => "bundle",
-                "bundle_id" => 1
-        );
+                "bundle_id" => 1,
+
+            );
         }
 
 
