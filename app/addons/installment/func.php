@@ -284,6 +284,33 @@ function createCurlFile($file)
     );
 }
 
+function getProductInfo($product_id, $fields): array
+{
+    $data = [];
+    $field_string = implode(',', $fields);
+
+    $data['product'] = db_get_row("SELECT $field_string FROM ?:products WHERE product_id =?i", $product_id);
+    $data['price'] = db_get_row("SELECT * FROM ?:product_prices WHERE product_id =?i", $product_id);
+    $data['descriptions'] = db_get_field("SELECT product FROM ?:product_descriptions WHERE product_id =?i", $product_id);
+
+
+    return $data;
+}
+
+function calculatePriceProduct($product, $type, $modifier, $amount): int
+{
+    $price = $product['price']['price'] * $amount;
+    if ($modifier != 0) {
+        if ($type === 'by_percentage') {
+            $price -= $price * $modifier / 100;
+        } else {
+            $price -= $modifier;
+        }
+    }
+
+    return $price;
+}
+
 function test()
 {
     static $var = 0;

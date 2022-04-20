@@ -310,20 +310,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     if ($mode == 'bundle_products') {
-        fn_print_die($_REQUEST);
-        if (true) {
+
+        if (isset($_REQUEST['bundle_id']) && !empty($_REQUEST['bundle_id'])) {
             Tygh::$app['session']['product_info'] = array(
-                "type" => "bundle",
-                "bundle_id" => 1,
+                "type" => "multiple",
+                "bundle_id" => $_REQUEST['bundle_id'],
+                "total_price" => $_REQUEST['total_price'],
 
             );
+            $errors = showErrors('success', [], "success");
+            Registry::get('ajax')->assign('result', $errors);
+            exit();
         }
-
-
-        $errors = showErrors('wrong_confirmation_code', [], "error");
+        $errors = showErrors('sever_error', [], "error");
         Registry::get('ajax')->assign('result', $errors);
         exit();
-
     }
 }
 
@@ -341,7 +342,8 @@ if ($mode == 'get_qty') {
         'product_qty' => $qty,
         'period' => $period,
         'product_name' => $product_name,
-        'company_id' => $company_id
+        'company_id' => $company_id,
+        'type' => 'single',
     );
 //    fn_set_session_data('product_id', $product_id, 7);
 //    fn_set_session_data('product_id', $qty, 7);
@@ -451,32 +453,153 @@ if ($mode == "await") {
 }
 
 if ($mode == "contract-create") {
-
+    $period = 12;
     $product_text = "";
-    $datas = null;
+    $calculator_data = [];
+    $session_data = null;
+    $products = null;
+    $company = null;
+    $user = db_get_row('SELECT * FROM ?:users WHERE user_id = ?i', $auth['user_id']);
+    $field = [
+        'product_id',
+        'company_id'
+    ];
+    $periods = [
+        6 => [
+            'name' => 6 . ' ' . __('ab__dotd.countdown.simple.months'),
+            'selected' => null
+        ],
+        9 => [
+            'name' => 9 . ' ' . __('ab__dotd.countdown.simple.months'),
+            'selected' => null
+        ],
+        12 => [
+            'name' => 12 . ' ' . __('ab__dotd.countdown.simple.months'),
+            'selected' => null
+        ],
+    ];
+
+
     if (!$auth['user_id']) {
         return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
     } else {
-
         if (!isset(Tygh::$app['session']['product_info'])) {
             return array(CONTROLLER_STATUS_REDIRECT, fn_url());
         }
+        $session_data = Tygh::$app['session']['product_info'];
 
-        $product_id = Tygh::$app['session']['product_info']['product_id'];
+        if ($session_data['type'] == "single") {
+//            [product_id] => 255
+//    [product_qty] => 1
+//    [period] => 12
+//    [product_name] =>
+//    [company_id] =>
+//    [type] => single
 
-        $product_quantity = Tygh::$app['session']['product_info']['product_qty'];
-        $period = Tygh::$app['session']['product_info']['period'];
-        $product_name = Tygh::$app['session']['product_info']['product_name'];
-        $company_id = Tygh::$app['session']['product_info']['company_id'];
-        if (!empty($company_id)) {
-            $datas = db_get_row('SELECT * FROM ?:companies 
+
+            if (!empty($company_id)) {
+                $datas = db_get_row('SELECT * FROM ?:companies 
                              WHERE company_id = ?i ', $company_id);
-        } else {
+            } else {
 
-            $datas = db_get_row('SELECT * FROM ?:products as product
+                $datas = db_get_row('SELECT * FROM ?:products as product
                              INNER JOIN ?:companies as company ON product.company_id = company.company_id
                              WHERE product.product_id = ?i ', $product_id);
+            }
+
+            if (!empty($product_name)) {
+                $datas['product_text'] = $product_name;
+            } else {
+                if (isset(Tygh::$app['session']['test_xxx'])) {
+                    $datas['product_text'] = Tygh::$app['session']['test_xxx']['variation_name'];
+                } else {
+                    $datas['product_text'] = $datas['product_descriptions']['product'];
+                }
+            }
+
+
+        } elseif ($session_data['type'] == "multiple") {
+            $bundle_data = db_get_row('SELECT * FROM ?:product_bundles WHERE bundle_id =?i', $session_data['bundle_id']);
+            $bundle_products = unserialize($bundle_data['products']);
+            $company = db_get_row("SELECT * FROM ?:companies WHERE company_id =?i", $bundle_data['company_id']);
+            $calculator_data = [
+                $company['p_c_id'] => []
+            ];
+            foreach ($bundle_products as $key => $product) {
+
+                $get_product = getProductInfo($product['product_id'], $field);
+                $price = calculatePriceProduct($get_product, $product['modifier_type'], $product['modifier'], $product['amount']);
+                $data = [
+                    "price" => $price,
+                    "amount" => $product['amount'],
+                    "name" => $get_product['descriptions']
+                ];
+                $calculator_data[$company['p_c_id']][] = $data;
+            }
+
+
+        } else {
+
         }
+
+        $data = [
+            "type" => "credit",
+            "period" => $period,
+            "products" => $calculator_data,
+            "partner_id" => $company["p_c_id"],
+            "user_id" => $user['p_user_id']
+
+        ];
+        /*  $data = [
+              "type" => "credit",
+              "period" => $period,
+              "products" => [
+                  $datas["p_c_id"] => [
+                      [
+                          "price" => $datas['product_price']['price'],
+                          "amount" => $product_quantity,
+                          "name" => $product_text
+                      ]
+                  ]
+              ],
+              "partner_id" => $datas["p_c_id"],
+              "user_id" => $user['p_user_id']
+
+          ];*/
+
+        $response = php_curl('/order/calculate', $data, 'POST', $company['p_c_token']);
+        fn_print_die($response);
+//        $id = (int)$datas["p_c_id"];
+//
+//        $items = $response->data->orders->$id->price;
+//
+//        $city = db_get_array('select * from ?:fargo_countries
+//                              where parent_city_id=?i ORDER BY city_name ASC', 0);
+
+
+        switch ($period) {
+            case 6:
+            case 9:
+            case 12:
+                $periods[$period]['selected'] = 'selected';
+                break;
+        }
+//        fn_print_die("test");
+//        $product_id = Tygh::$app['session']['product_info']['product_id'];
+//
+//        $product_quantity = Tygh::$app['session']['product_info']['product_qty'];
+//        $period = Tygh::$app['session']['product_info']['period'];
+//        $product_name = Tygh::$app['session']['product_info']['product_name'];
+//        $company_id = Tygh::$app['session']['product_info']['company_id'];
+//        if (!empty($company_id)) {
+//            $datas = db_get_row('SELECT * FROM ?:companies
+//                             WHERE company_id = ?i ', $company_id);
+//        } else {
+//
+//            $datas = db_get_row('SELECT * FROM ?:products as product
+//                             INNER JOIN ?:companies as company ON product.company_id = company.company_id
+//                             WHERE product.product_id = ?i ', $product_id);
+//        }
 //        fn_print_die($datas);
 //        $product_feature_values = db_get_array("
 //        select pfvd.variant from ?:product_features_values as pfv
@@ -492,23 +615,11 @@ if ($mode == "contract-create") {
 //            }
 //
 //        }
-        $datas['product_descriptions'] = db_get_row('SELECT * FROM ?:product_descriptions 
-                                       WHERE product_id = ?i', $product_id);
-        $datas['product_price'] = db_get_row('SELECT * FROM ?:product_prices WHERE product_id = ?i', $product_id);
-        $datas['city_name'] = db_get_field('SELECT city_name FROM ?:fargo_countries WHERE city_id = ?i', $datas['city']);
+//        $datas['product_descriptions'] = db_get_row('SELECT * FROM ?:product_descriptions
+//                                       WHERE product_id = ?i', $product_id);
+//        $datas['product_price'] = db_get_row('SELECT * FROM ?:product_prices WHERE product_id = ?i', $product_id);
+//        $datas['city_name'] = db_get_field('SELECT city_name FROM ?:fargo_countries WHERE city_id = ?i', $datas['city']);
 
-        if (!empty($product_name)) {
-            $datas['product_text'] = $product_name;
-        } else {
-            if (isset(Tygh::$app['session']['test_xxx'])) {
-                $datas['product_text'] = Tygh::$app['session']['test_xxx']['variation_name'];
-            } else {
-                $datas['product_text'] = $datas['product_descriptions']['product'];
-            }
-        }
-
-
-        $user = db_get_row('SELECT * FROM ?:users WHERE user_id = ?i', $auth['user_id']);
 
         if (empty($user['firstname']) && empty($user['lastname'])) {
             $response = php_curl('/buyer/detail', [], 'GET', $user['api_key']);
@@ -526,53 +637,7 @@ if ($mode == "contract-create") {
         if ($mode_type !== $user_step) {
             return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
         }
-        $data = [
-            "type" => "credit",
-            "period" => $period,
-            "products" => [
-                $datas["p_c_id"] => [
-                    [
-                        "price" => $datas['product_price']['price'],
-                        "amount" => $product_quantity,
-                        "name" => $product_text
-                    ]
-                ]
-            ],
-            "partner_id" => $datas["p_c_id"],
-            "user_id" => $user['p_user_id']
 
-        ];
-
-        $response = php_curl('/order/calculate', $data, 'POST', $datas['p_c_token']);
-
-        $id = (int)$datas["p_c_id"];
-
-        $items = $response->data->orders->$id->price;
-
-        $city = db_get_array('select * from ?:fargo_countries 
-                              where parent_city_id=?i ORDER BY city_name ASC', 0);
-
-        $periods = [
-            6 => [
-                'name' => 6 . ' ' . __('ab__dotd.countdown.simple.months'),
-                'selected' => null
-            ],
-            9 => [
-                'name' => 9 . ' ' . __('ab__dotd.countdown.simple.months'),
-                'selected' => null
-            ],
-            12 => [
-                'name' => 12 . ' ' . __('ab__dotd.countdown.simple.months'),
-                'selected' => null
-            ],
-        ];
-        switch ($period) {
-            case 6:
-            case 9:
-            case 12:
-                $periods[$period]['selected'] = 'selected';
-                break;
-        }
 
         $redirect_url = fn_url('products.view?product_id=' . $datas['product_price']['product_id']);
 
