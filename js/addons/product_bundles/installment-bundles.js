@@ -14,6 +14,14 @@
           total_price: totalPrice,
         },
         callback: function (response) {
+          if (!response.hasOwnProperty('result')) {
+            return console.error('has not property result in response !');
+          }
+
+          if (response.result.status === 'error') {
+            return console.error(response.result.text);
+          }
+
           window.location.href = fn_url('installment_product.index');
         },
       });
