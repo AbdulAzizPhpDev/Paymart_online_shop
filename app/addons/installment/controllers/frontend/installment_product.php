@@ -643,28 +643,19 @@ if ($mode == "contract-create") {
 
 //        $redirect_url = fn_url('products.view?product_id=' . $datas['product_price']['product_id']);
         $redirect_url = fn_url('/');
-        $company['city_name'] = db_get_field('SELECT city_name FROM ?:fargo_countries WHERE city_id = ?i', $company['city']);
-        $company_address = $company['city_name'] . ' '
-            . __('city') . ' '
-            . $company['state'] . ' '
-            . $company['address'];
+        $city_name = db_get_field('SELECT city_name FROM ?:fargo_countries WHERE city_id = ?i', $company['city']);
+        $company['full_address'] = $city_name . ' ' . __('city') . ' ' . $company['state'] . ' ' . $company['address'];
 
-fn_print_die($products);
         Tygh::$app['view']->assign('city', $city);
         Tygh::$app['view']->assign('redirect_url', $redirect_url);
         Tygh::$app['view']->assign('api_base_url', PAYMART_CABINET_URL);
-        Tygh::$app['view']->assign('company_address', $company_address);
-//        Tygh::$app['view']->assign('total', $items->total);
-//        Tygh::$app['view']->assign('origin', $items->origin);
+        Tygh::$app['view']->assign('company', $company);
         Tygh::$app['view']->assign('calculator', $calculator_res_data);
         Tygh::$app['view']->assign('periods', $periods);
-//        Tygh::$app['view']->assign('deposit', $items->deposit);
         Tygh::$app['view']->assign('products', $products);
         Tygh::$app['view']->assign('total_price', $total_price);
         Tygh::$app['view']->assign('total_products', $total_products);
         Tygh::$app['view']->assign('customer_support_phone', CUSTOMER_SUPPORT_PHONE);
-
-//        Tygh::$app['view']->assign('product_quantity', $product_quantity);
         Tygh::$app['view']->assign('user', $user);
 
         if ((int)$user['i_limit'] < $total_price) {
