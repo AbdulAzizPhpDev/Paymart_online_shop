@@ -297,9 +297,9 @@ function getProductInfo($product_id, $fields): array
     return $data;
 }
 
-function calculatePriceProduct($product, $type, $modifier, $amount): int
+function calculatePriceProduct($product, $type, $modifier): int
 {
-    $price = $product['price']['price'] * $amount;
+    $price = $product['price']['price'];
     if ($modifier != 0) {
         if ($type === 'by_percentage') {
             $price -= $price * $modifier / 100;
