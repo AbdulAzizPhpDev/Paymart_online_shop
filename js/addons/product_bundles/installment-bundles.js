@@ -13,9 +13,7 @@
         },
         callback: function (response) {
 
-          console.log(response);
-
-          // window.location.href = fn_url('installment_product.index');
+                  window.location.href = fn_url('installment_product.index');
         },
       });
     },
