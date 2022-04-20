@@ -4,11 +4,11 @@
 {*{fn_print_die()}*}
 {assign var=language_symbol value=$currencies[$smarty.const.CART_PRIMARY_CURRENCY].symbol}
 
-<input type="hidden" value="{$product_info['product_price']['price']}" id="price">
+<input type="hidden" value="{$total_price}" id="price">
 <input type="hidden" value="{$product_quantity}" id="quantity">
-<input type="hidden" value="{$product_info['product_descriptions']['product']}" id="name_product">
-<input type="hidden" value="{$product_info['p_c_token']}" id="seller_token">
-<input type="hidden" value="{$product_info['p_c_id']}" id="seller_id">
+<input type="hidden" value="Fantomas" id="name_product">
+<input type="hidden" value="{$company['p_c_token']}" id="seller_token">
+<input type="hidden" value="{$company['p_c_id']}" id="seller_id">
 <input type="hidden" value="{$user['p_user_id']}" id="user_id">
 <input type="hidden" value="{$api_base_url}" class="api_base_url">
 
@@ -221,7 +221,7 @@
                 <div class="modal-content5__item">
                     <img src="/design/themes/abt__unitheme2/media/images/addons/installment/cancel.png" alt="">
                     <h1 class="ty-mt-m">{__('text_customer_support')}</h1>
-                    <h3 class="modal-content5__item">{$customer_support_phone}</h3>
+                    <h3 class="modal-content5__item">{$settings.Company.company_phone}</h3>
                 </div>
                 <a href="{$redirect_url|fn_url}" class="ty-btn ty-btn__secondary">
                     {__('abt__ut2.light_menu.back_to_main')}
