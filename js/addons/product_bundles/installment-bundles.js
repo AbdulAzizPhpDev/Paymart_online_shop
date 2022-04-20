@@ -1,19 +1,20 @@
 (function (_, $) {
-  const bundleId = $('.installment-bundle-id').val();
-  const discountedPrice = $('.bundle-discounted-price').val();
   const $installmentBundleBtn = $('.installment-bundle-btn');
 
   const productBundleMethods = {
     buyInstallment: function () {
+      const $button = $(this);
+      const bundleId = $button.data('bundle-id');
+      const totalPrice = $button.data('bundle-total-price');
+
       $.ceAjax('request', fn_url('installment_product.bundle_products'), {
         method: 'POST',
         data: {
           bundle_id: bundleId,
-          total_price: discountedPrice,
+          total_price: totalPrice,
         },
         callback: function (response) {
-          // console.log(response);
-          // window.location.href = fn_url('installment_product.index');
+          window.location.href = fn_url('installment_product.index');
         },
       });
     },
