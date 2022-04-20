@@ -453,6 +453,25 @@ if ($mode == "await") {
 }
 
 if ($mode == "contract-create") {
+    $user = db_get_row('SELECT * FROM ?:users WHERE user_id = ?i', $auth['user_id']);
+    if (empty($user['firstname']) && empty($user['lastname'])) {
+        $response = php_curl('/buyer/detail', [], 'GET', $user['api_key']);
+        if ($response->status == "success") {
+            $user_data['firstname'] = $response->data->name;
+            $user_data['lastname'] = $response->data->surname;
+            db_query('UPDATE ?:users SET ?u WHERE user_id = ?i', $user_data, $auth['user_id']);
+            $user = db_get_row('SELECT * FROM ?:users WHERE user_id = ?i', $auth['user_id']);
+        }
+    }
+    checkUserFromPaymart($auth['user_id']);
+    list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
+    $user_step = checkInstallmentStep($auth['user_id']);
+
+    if ($mode_type !== $user_step) {
+        return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
+    }
+
+
     $period = 12;
     $product_text = "";
     $calculator_data = [];
@@ -462,7 +481,7 @@ if ($mode == "contract-create") {
     $company = null;
     $total_products = 0;
     $total_price = 0;
-    $user = db_get_row('SELECT * FROM ?:users WHERE user_id = ?i', $auth['user_id']);
+    $city = db_get_array('SELECT * FROM ?:fargo_countries WHERE parent_city_id=?i ORDER BY city_name ASC', 0);
     $field = [
         'product_id',
         'company_id'
@@ -490,40 +509,53 @@ if ($mode == "contract-create") {
             return array(CONTROLLER_STATUS_REDIRECT, fn_url());
         }
         $session_data = Tygh::$app['session']['product_info'];
-
+        $period = $session_data['period'] ?? 12;
         if ($session_data['type'] == "single") {
-//            [product_id] => 255
-//    [product_qty] => 1
-//    [period] => 12
-//    [product_name] =>
-//    [company_id] =>
-//    [type] => single
-
-
-            if (!empty($company_id)) {
-                $datas = db_get_row('SELECT * FROM ?:companies 
-                             WHERE company_id = ?i ', $company_id);
+            if (!empty($session_data['company_id'])) {
+                $company = db_get_row('SELECT * FROM ?:companies WHERE company_id = ?i ', $session_data['company_id']);
             } else {
-
-                $datas = db_get_row('SELECT * FROM ?:products as product
+                $company = db_get_row('SELECT * FROM ?:products as product
                              INNER JOIN ?:companies as company ON product.company_id = company.company_id
-                             WHERE product.product_id = ?i ', $product_id);
+                             WHERE product.product_id = ?i ', $session_data['product_id']);
             }
 
-            if (!empty($product_name)) {
-                $datas['product_text'] = $product_name;
+            $get_product = getProductInfo($session_data['product_id'], $field);
+            if (!empty($session_data['product_name'])) {
+                $product_text = $session_data['product_name'];
             } else {
                 if (isset(Tygh::$app['session']['test_xxx'])) {
-                    $datas['product_text'] = Tygh::$app['session']['test_xxx']['variation_name'];
+                    $product_text = Tygh::$app['session']['test_xxx']['variation_name'];
                 } else {
-                    $datas['product_text'] = $datas['product_descriptions']['product'];
+                    $product_text = $get_product['product'];
                 }
             }
 
+            $calculator_data = [
+                $company['p_c_id'] => []
+            ];
+
+            $products[] = [
+                "product_id" => $get_product['product']['product_id'],
+                "name" => $product_text,
+                "total_price" => $get_product['price']['price'] * $session_data['product_qty'],
+                "price" => $get_product['price']['price'],
+                "amount" => $session_data['product_qty'],
+            ];
+
+            $data = [
+                "price" => $get_product['price']['price'] * $session_data['product_qty'],
+                "amount" => $session_data['product_qty'],
+                "name" => $product_text
+            ];
+            $total_products = $data['amount'];
+            $total_price = $data['price'];
+
+            $calculator_data[$company['p_c_id']][] = $data;
 
         } elseif ($session_data['type'] == "multiple") {
             $total_price = $session_data['total_price'];
             $bundle_data = db_get_row('SELECT * FROM ?:product_bundles WHERE bundle_id =?i', $session_data['bundle_id']);
+
             $bundle_products = unserialize($bundle_data['products']);
             $company = db_get_row("SELECT * FROM ?:companies WHERE company_id =?i", $bundle_data['company_id']);
             $calculator_data = [
@@ -547,10 +579,8 @@ if ($mode == "contract-create") {
                 ];
                 $calculator_data[$company['p_c_id']][] = $data;
             }
-
-
         } else {
-
+            return array(CONTROLLER_STATUS_REDIRECT, '/');
         }
 
         $data = [
@@ -561,32 +591,10 @@ if ($mode == "contract-create") {
             "user_id" => $user['p_user_id']
 
         ];
-        /*  $data = [
-              "type" => "credit",
-              "period" => $period,
-              "products" => [
-                  $datas["p_c_id"] => [
-                      [
-                          "price" => $datas['product_price']['price'],
-                          "amount" => $product_quantity,
-                          "name" => $product_text
-                      ]
-                  ]
-              ],
-              "partner_id" => $datas["p_c_id"],
-              "user_id" => $user['p_user_id']
-
-          ];*/
-
         $response = php_curl('/order/calculate', $data, 'POST', $company['p_c_token']);
         $calculator_res_data = $response->data->price;
-//        $id = (int)$datas["p_c_id"];
-//        $items = $response->data->orders->$id->price;
-        $city = db_get_array('select * from ?:fargo_countries
-                              where parent_city_id=?i ORDER BY city_name ASC', 0);
 
 
-//        fn_print_die("test");
 //        $product_id = Tygh::$app['session']['product_info']['product_id'];
 //
 //        $product_quantity = Tygh::$app['session']['product_info']['product_qty'];
@@ -617,31 +625,11 @@ if ($mode == "contract-create") {
 //            }
 //
 //        }
-//        $datas['product_descriptions'] = db_get_row('SELECT * FROM ?:product_descriptions
-//                                       WHERE product_id = ?i', $product_id);
+
 //        $datas['product_price'] = db_get_row('SELECT * FROM ?:product_prices WHERE product_id = ?i', $product_id);
 //        $datas['city_name'] = db_get_field('SELECT city_name FROM ?:fargo_countries WHERE city_id = ?i', $datas['city']);
 
 
-        if (empty($user['firstname']) && empty($user['lastname'])) {
-            $response = php_curl('/buyer/detail', [], 'GET', $user['api_key']);
-            if ($response->status == "success") {
-                $user_data['firstname'] = $response->data->name;
-                $user_data['lastname'] = $response->data->surname;
-                db_query('UPDATE ?:users SET ?u WHERE user_id = ?i', $user_data, $auth['user_id']);
-                $user = db_get_row('SELECT * FROM ?:users WHERE user_id = ?i', $auth['user_id']);
-            }
-        }
-        checkUserFromPaymart($auth['user_id']);
-        list($controller, $mode_type) = explode('.', $_REQUEST['dispatch']);
-        $user_step = checkInstallmentStep($auth['user_id']);
-
-        if ($mode_type !== $user_step) {
-            return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.' . $user_step);
-        }
-
-
-//        $redirect_url = fn_url('products.view?product_id=' . $datas['product_price']['product_id']);
         $redirect_url = fn_url('/');
         $city_name = db_get_field('SELECT city_name FROM ?:fargo_countries WHERE city_id = ?i', $company['city']);
         $company['full_address'] = $city_name . ' ' . __('city') . ' ' . $company['state'] . ' ' . $company['address'];
