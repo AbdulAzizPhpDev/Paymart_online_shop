@@ -456,9 +456,12 @@ if ($mode == "contract-create") {
     $period = 12;
     $product_text = "";
     $calculator_data = [];
+    $calculator_res_data = null;
     $session_data = null;
-    $products = null;
+    $products = [];
     $company = null;
+    $total_products = 0;
+    $total_price = 0;
     $user = db_get_row('SELECT * FROM ?:users WHERE user_id = ?i', $auth['user_id']);
     $field = [
         'product_id',
@@ -478,7 +481,7 @@ if ($mode == "contract-create") {
             'selected' => null
         ],
     ];
-
+    $periods[$period]['selected'] = 'selected';
 
     if (!$auth['user_id']) {
         return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
@@ -519,6 +522,7 @@ if ($mode == "contract-create") {
 
 
         } elseif ($session_data['type'] == "multiple") {
+            $total_price = $session_data['total_price'];
             $bundle_data = db_get_row('SELECT * FROM ?:product_bundles WHERE bundle_id =?i', $session_data['bundle_id']);
             $bundle_products = unserialize($bundle_data['products']);
             $company = db_get_row("SELECT * FROM ?:companies WHERE company_id =?i", $bundle_data['company_id']);
@@ -526,11 +530,18 @@ if ($mode == "contract-create") {
                 $company['p_c_id'] => []
             ];
             foreach ($bundle_products as $key => $product) {
-
+                $total_products += $product['amount'];
                 $get_product = getProductInfo($product['product_id'], $field);
-                $price = calculatePriceProduct($get_product, $product['modifier_type'], $product['modifier'], $product['amount']);
-                $data = [
+                $price = calculatePriceProduct($get_product, $product['modifier_type'], $product['modifier']);
+                $products[] = [
+                    "product_id" => $get_product['product']['product_id'],
+                    "name" => $get_product['descriptions'],
+                    "total_price" => $price * $product['amount'],
                     "price" => $price,
+                    "amount" => $product['amount'],
+                ];
+                $data = [
+                    "price" => $price * $product['amount'],
                     "amount" => $product['amount'],
                     "name" => $get_product['descriptions']
                 ];
@@ -568,22 +579,13 @@ if ($mode == "contract-create") {
           ];*/
 
         $response = php_curl('/order/calculate', $data, 'POST', $company['p_c_token']);
-        fn_print_die($response);
+        $calculator_res_data = $response->data->price;
 //        $id = (int)$datas["p_c_id"];
-//
 //        $items = $response->data->orders->$id->price;
-//
-//        $city = db_get_array('select * from ?:fargo_countries
-//                              where parent_city_id=?i ORDER BY city_name ASC', 0);
+        $city = db_get_array('select * from ?:fargo_countries
+                              where parent_city_id=?i ORDER BY city_name ASC', 0);
 
 
-        switch ($period) {
-            case 6:
-            case 9:
-            case 12:
-                $periods[$period]['selected'] = 'selected';
-                break;
-        }
 //        fn_print_die("test");
 //        $product_id = Tygh::$app['session']['product_info']['product_id'];
 //
@@ -639,31 +641,33 @@ if ($mode == "contract-create") {
         }
 
 
-        $redirect_url = fn_url('products.view?product_id=' . $datas['product_price']['product_id']);
-
-        $company_address = $datas['city_name'] . ' '
+//        $redirect_url = fn_url('products.view?product_id=' . $datas['product_price']['product_id']);
+        $redirect_url = fn_url('/');
+        $company['city_name'] = db_get_field('SELECT city_name FROM ?:fargo_countries WHERE city_id = ?i', $company['city']);
+        $company_address = $company['city_name'] . ' '
             . __('city') . ' '
-            . $datas['state'] . ' '
-            . $datas['address'];
+            . $company['state'] . ' '
+            . $company['address'];
 
-        $company_phone = $datas['phone'];
-
+fn_print_die($products);
         Tygh::$app['view']->assign('city', $city);
         Tygh::$app['view']->assign('redirect_url', $redirect_url);
         Tygh::$app['view']->assign('api_base_url', PAYMART_CABINET_URL);
         Tygh::$app['view']->assign('company_address', $company_address);
-        Tygh::$app['view']->assign('company_phone', $company_phone);
-        Tygh::$app['view']->assign('total', $items->total);
-        Tygh::$app['view']->assign('origin', $items->origin);
-        Tygh::$app['view']->assign('month', $items->month);
+//        Tygh::$app['view']->assign('total', $items->total);
+//        Tygh::$app['view']->assign('origin', $items->origin);
+        Tygh::$app['view']->assign('calculator', $calculator_res_data);
         Tygh::$app['view']->assign('periods', $periods);
-        Tygh::$app['view']->assign('deposit', $items->deposit);
-        Tygh::$app['view']->assign('product_info', $datas);
+//        Tygh::$app['view']->assign('deposit', $items->deposit);
+        Tygh::$app['view']->assign('products', $products);
+        Tygh::$app['view']->assign('total_price', $total_price);
+        Tygh::$app['view']->assign('total_products', $total_products);
         Tygh::$app['view']->assign('customer_support_phone', CUSTOMER_SUPPORT_PHONE);
 
-        Tygh::$app['view']->assign('product_quantity', $product_quantity);
+//        Tygh::$app['view']->assign('product_quantity', $product_quantity);
         Tygh::$app['view']->assign('user', $user);
-        if ((int)$user['i_limit'] < $product_quantity * (int)$datas['product_price']['price']) {
+
+        if ((int)$user['i_limit'] < $total_price) {
             Tygh::$app['view']->assign('notifier', true);
         } else {
             Tygh::$app['view']->assign('notifier', false);
