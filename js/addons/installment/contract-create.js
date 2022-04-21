@@ -214,26 +214,26 @@ myBtn.onclick = function () {
       building: building,
       street: street,
     },
-    // callback: function (response) {
-    //   otpState.contractId = response.result.paymart_client.contract_id;
-    //   modal.style.display = 'block';
-    //
-    //   $('.resend-sms-card').css('display', 'block');
-    //   var counter = setInterval(timer, 1000); //1000 will  run it every 1 second
-    //   function timer() {
-    //     otpState.timer = otpState.timer - 1;
-    //     if (otpState.timer <= 0) {
-    //       clearInterval(counter);
-    //       $('#modal-sent').attr('disabled', false);
-    //       $('.resend-sms-card').css('display', 'none');
-    //       $('.resend-sms-card__ok').css('display', 'block');
-    //       $('.modal-error').css('display', 'none');
-    //       //counter ended, do something here
-    //       return;
-    //     }
-    //     // document.querySelector('.card-resend-sms-timer').innerHTML = otpState.timer;
-    //   }
-    // },
+    callback: function (response) {
+      otpState.contractId = response.result.paymart_client.contract_id;
+      modal.style.display = 'block';
+
+      $('.resend-sms-card').css('display', 'block');
+      var counter = setInterval(timer, 1000); //1000 will  run it every 1 second
+      function timer() {
+        otpState.timer = otpState.timer - 1;
+        if (otpState.timer <= 0) {
+          clearInterval(counter);
+          $('#modal-sent').attr('disabled', false);
+          $('.resend-sms-card').css('display', 'none');
+          $('.resend-sms-card__ok').css('display', 'block');
+          $('.modal-error').css('display', 'none');
+          //counter ended, do something here
+          return;
+        }
+        // document.querySelector('.card-resend-sms-timer').innerHTML = otpState.timer;
+      }
+    },
   });
 };
 
@@ -269,19 +269,19 @@ const confirmContract = () => {
       street: street,
       address_type: otpState.addressType,
     },
-    // callback: function (response) {
-    //   console.log('response-first', response);
-    //   if (response.result.status === 'success') {
-    //     window.location.href = fn_url('installment_product.profile-contracts');
-    //     console.log('shut second success');
-    //   } else {
-    //     spanError.text(response.result.response.message).css({
-    //       display: 'block',
-    //       color: 'red',
-    //     });
-    //     $('#modal-sent').attr('disabled', true);
-    //   }
-    // },
+    callback: function (response) {
+      console.log('response-first', response);
+      if (response.result.status === 'success') {
+        window.location.href = fn_url('installment_product.profile-contracts');
+        console.log('shut second success');
+      } else {
+        spanError.text(response.result.response.message).css({
+          display: 'block',
+          color: 'red',
+        });
+        $('#modal-sent').attr('disabled', true);
+      }
+    },
   });
 };
 
