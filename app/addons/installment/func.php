@@ -288,11 +288,17 @@ function getProductInfo($product_id, $fields): array
 {
     $data = [];
     $field_string = implode(',', $fields);
-
     $data['product'] = db_get_row("SELECT $field_string FROM ?:products WHERE product_id =?i", $product_id);
     $data['price'] = db_get_row("SELECT * FROM ?:product_prices WHERE product_id =?i", $product_id);
-    $data['descriptions'] = db_get_field("SELECT product FROM ?:product_descriptions WHERE product_id =?i", $product_id);
-
+    $name = db_get_field("SELECT product FROM ?:product_descriptions WHERE product_id =?i", $product_id);
+    $product_feature_values = db_get_fields("SELECT pfvd.variant FROM ?:product_features_values AS pfv
+        INNER JOIN ?:product_feature_variant_descriptions AS pfvd 
+        ON pfvd.variant_id = pfv.variant_id AND pfvd.lang_code = 'ru'
+        WHERE pfv.product_id=?i AND pfv.lang_code=?s AND pfv.variant_id!=0 ", $product_id, CART_LANGUAGE);
+    if (!empty($product_feature_values)) {
+        $name .= " (" . implode(',', $product_feature_values) . " )";
+    }
+    $data['descriptions'] = $name;
 
     return $data;
 }
