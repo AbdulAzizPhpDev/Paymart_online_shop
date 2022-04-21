@@ -20,8 +20,8 @@
 <input class="company-id-for-calculate-price" type="hidden" value="{$p_company_id}">
 <input class="product-price-for-calculate-price" type="hidden" value="{$product.price}">
 <input class="vendor-token" type="hidden" value="{$p_company_token}">
-{fn_print_die($api_base_url)}
 <input class="api_base_url" type="hidden" value="{$api_base_url}">
+
 {*<div style="color:#ff7643;"><span style="font-size: 45px; font-weight: bold">12</span><span style="font-size: 20px;">месяцев</span></div>*}
 
 <div class="ut2-pb ty-product-block ut2-three-columns ty-product-detail{if $settings.abt__ut2.products.view.show_sticky_add_to_cart[$settings.abt__device] == 'Y' && !in_array($product.zero_price_action, ["P","A"]) && $product.price > 0 && $product.amount > 0 && $is_add_to_cart_mv} sticky_add_to_cart{/if}">

@@ -97,7 +97,7 @@
       ];
 
       $.ajax({
-        url: PAYMART_API_BASE_URL + 'order/marketplace-calculate',
+        url: PAYMART_API_BASE_URL + '/order/marketplace-calculate',
         method: 'POST',
         data: {
           type: 'credit',
