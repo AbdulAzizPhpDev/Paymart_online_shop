@@ -269,19 +269,19 @@ const confirmContract = () => {
       street: street,
       address_type: otpState.addressType,
     },
-    callback: function (response) {
-      console.log('response-first', response);
-      if (response.result.status === 'success') {
-        window.location.href = fn_url('installment_product.profile-contracts');
-        console.log('shut second success');
-      } else {
-        spanError.text(response.result.response.message).css({
-          display: 'block',
-          color: 'red',
-        });
-        $('#modal-sent').attr('disabled', true);
-      }
-    },
+    // callback: function (response) {
+    //   console.log('response-first', response);
+    //   if (response.result.status === 'success') {
+    //     window.location.href = fn_url('installment_product.profile-contracts');
+    //     console.log('shut second success');
+    //   } else {
+    //     spanError.text(response.result.response.message).css({
+    //       display: 'block',
+    //       color: 'red',
+    //     });
+    //     $('#modal-sent').attr('disabled', true);
+    //   }
+    // },
   });
 };
 

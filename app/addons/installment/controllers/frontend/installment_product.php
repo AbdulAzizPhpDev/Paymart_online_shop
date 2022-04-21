@@ -198,13 +198,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ];
 
         $response = php_curl('/buyers/credit/add', $data, 'POST', $company['p_c_token']);
-        fn_print_die($response);
         if (isset($response->result) && ($response->result->status == 0 || $response->status == "error")) {
-
             $errors = showErrors("user_has_indebtedness", [], "error");
             Registry::get('ajax')->assign('result', $errors);
             exit();
         } elseif ($response->status == 1) {
+
             Registry::get('ajax')->assign('result', $response);
             exit();
         } else {
@@ -219,15 +218,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit();
         }
         $user = db_get_row('select * from ?:users where user_id=?i', $auth['user_id']);
-
-        $product_id = Tygh::$app['session']['product_info']['product_id'];
-        $product_amount = (int)Tygh::$app['session']['product_info']['product_qty'];
-
-        $product_info = db_get_row('SELECT *,product_description.product as product_name FROM ?:products as product 
-        INNER JOIN ?:companies as company ON product.company_id = company.company_id 
-        INNER JOIN ?:product_prices as product_price ON product.product_id = product_price.product_id 
-        INNER JOIN ?:product_descriptions as product_description ON product.product_id = product_description.product_id 
-        WHERE product.product_id = ?i ', $product_id);
+        $company = Tygh::$app['session']['installment_data']['company'];
+        $products_data = Tygh::$app['session']['installment_data']['products'];
 
         $product_quantity = (int)$product_info['amount'] - $product_amount;
 
@@ -482,7 +474,7 @@ if ($mode == "contract-create") {
             'selected' => null
         ],
     ];
-    $periods[$period]['selected'] = 'selected';
+
 
     if (!$auth['user_id']) {
         return array(CONTROLLER_STATUS_REDIRECT, 'installment_product.index');
@@ -492,6 +484,7 @@ if ($mode == "contract-create") {
         }
         $session_data = Tygh::$app['session']['product_info'];
         $period = $session_data['period'] ?? 12;
+        $periods[$period]['selected'] = 'selected';
         if ($session_data['type'] == "single") {
             if (!empty($session_data['company_id'])) {
                 $company = db_get_row('SELECT * FROM ?:companies WHERE company_id = ?i ', $session_data['company_id']);
