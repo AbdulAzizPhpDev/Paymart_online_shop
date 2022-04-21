@@ -5,7 +5,7 @@
 {assign var=language_symbol value=$currencies[$smarty.const.CART_PRIMARY_CURRENCY].symbol}
 
 <input type="hidden" value="{$total_price}" id="price">
-<input type="hidden" value="{$total_products}" id="quantity">
+<input type="hidden" value="1" id="quantity">
 <input type="hidden" value="Fantomas" id="name_product">
 <input type="hidden" value="{$company['p_c_token']}" id="seller_token">
 <input type="hidden" value="{$company['p_c_id']}" id="seller_id">
