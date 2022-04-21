@@ -27,4 +27,5 @@ if ($mode == 'view' || $mode == 'quick_view') {
         "product_id" => $product['product_id'],
     ];
     Tygh::$app['view']->assign('company_info', $company_info);
+    Tygh::$app['view']->assign('api_base_url', PAYMART_CABINET_API_URL);
 }
