@@ -174,50 +174,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
     }
     if ($mode == 'set_contracts') {
-
         if (!$auth['user_id']) {
             Registry::get('ajax')->assign('result', showErrors('user_not_authorized'));
             exit();
         }
-
-        $product_info = db_get_row('SELECT *,product_description.product as product_name FROM ?:products as product 
-        INNER JOIN ?:companies as company ON product.company_id = company.company_id 
-        INNER JOIN ?:product_prices as product_price ON product.product_id = product_price.product_id 
-        INNER JOIN ?:product_descriptions as product_description ON product.product_id = product_description.product_id 
-        WHERE product.product_id = ?i ', Tygh::$app['session']['product_info']['product_id']);
-
         $user = db_get_row('select * from ?:users where user_id=?i', $auth['user_id']);
-
-
-        $product_feature_values = db_get_array("
-        select pfvd.variant from ?:product_features_values as pfv
-        INNER JOIN ?:product_feature_variant_descriptions as pfvd ON pfvd.variant_id = pfv.variant_id and
-         pfvd.lang_code = 'ru'
-        where pfv.product_id=?i and pfv.lang_code=?s and pfv.variant_id!=0",
-            $product_info['product_id'], CART_LANGUAGE);
-
-        foreach ($product_feature_values as $value) {
-            if (!empty($value['variant'])) {
-                $product_text .= $value['variant'] . ' ';
-            }
-
+        $products = [];
+        $company = Tygh::$app['session']['installment_data']['company'];
+        $products_data = Tygh::$app['session']['installment_data']['products'];
+        foreach ($products_data as $key => $product) {
+            $data = [
+                "price" => $product['price'],
+                "amount" => $product['amount'],
+                "name" => $product['name']
+            ];
+            $products[] = $data;
         }
-        $datas['product_text'] = $product_text;
-
         $data = [
-            'products' => [
-                [
-                    "name" => $product_info['product_name'] . '; ' . $product_text,
-                    "amount" => (int)Tygh::$app['session']['product_info']['product_qty'],
-                    "price" => (int)$product_info['price']
-                ]
-            ],
+            'products' => $products,
             "limit" => $_REQUEST['limit'],
             "buyer_phone" => $user['phone'],
             "online" => 1
         ];
 
-        $response = php_curl('/buyers/credit/add', $data, 'POST', $product_info['p_c_token']);
+        $response = php_curl('/buyers/credit/add', $data, 'POST', $company['p_c_token']);
+        fn_print_die($response);
         if (isset($response->result) && ($response->result->status == 0 || $response->status == "error")) {
 
             $errors = showErrors("user_has_indebtedness", [], "error");
@@ -231,12 +212,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             Registry::get('ajax')->assign('result', $response);
             exit();
         }
-
     }
     if ($mode == "set_confirm_contract") {
-
-        $user = db_get_row('select * from ?:users 
-                            where user_id=?i', $auth['user_id']);
+        if (!$auth['user_id']) {
+            Registry::get('ajax')->assign('result', showErrors('user_not_authorized'));
+            exit();
+        }
+        $user = db_get_row('select * from ?:users where user_id=?i', $auth['user_id']);
 
         $product_id = Tygh::$app['session']['product_info']['product_id'];
         $product_amount = (int)Tygh::$app['session']['product_info']['product_qty'];
@@ -520,14 +502,12 @@ if ($mode == "contract-create") {
             }
 
             $get_product = getProductInfo($session_data['product_id'], $field);
+            $total_products = $session_data['product_qty'];
+            $total_price = $get_product['price']['price'] * $total_products;
             if (!empty($session_data['product_name'])) {
                 $product_text = $session_data['product_name'];
             } else {
-                if (isset(Tygh::$app['session']['test_xxx'])) {
-                    $product_text = Tygh::$app['session']['test_xxx']['variation_name'];
-                } else {
-                    $product_text = $get_product['product'];
-                }
+                $product_text = Tygh::$app['session']['test_xxx']['variation_name'] ?? $get_product['descriptions'];
             }
 
             $calculator_data = [
@@ -542,8 +522,13 @@ if ($mode == "contract-create") {
                 "amount" => $session_data['product_qty'],
             ];
 
+            Tygh::$app['session']['installment_data']['products'] = $products;
+            Tygh::$app['session']['installment_data']['company'] = $company;
+            Tygh::$app['session']['installment_data']['total_price'] = $total_price;
+            Tygh::$app['session']['installment_data']['total_quantity'] = $total_products;
+
             $data = [
-                "price" => $get_product['price']['price'] * $session_data['product_qty'],
+                "price" => $get_product['price']['price'],
                 "amount" => $session_data['product_qty'],
                 "name" => $product_text
             ];
@@ -573,12 +558,18 @@ if ($mode == "contract-create") {
                     "amount" => $product['amount'],
                 ];
                 $data = [
-                    "price" => $price * $product['amount'],
+                    "price" => $price,
                     "amount" => $product['amount'],
                     "name" => $get_product['descriptions']
                 ];
                 $calculator_data[$company['p_c_id']][] = $data;
             }
+
+            Tygh::$app['session']['installment_data']['products'] = $products;
+            Tygh::$app['session']['installment_data']['company'] = $company;
+            Tygh::$app['session']['installment_data']['total_price'] = $total_price;
+            Tygh::$app['session']['installment_data']['total_quantity'] = $total_products;
+
         } else {
             return array(CONTROLLER_STATUS_REDIRECT, '/');
         }
