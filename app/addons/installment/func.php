@@ -109,9 +109,8 @@ function showErrors($text, $data = [], $status = "error"): array
 }
 
 
-function createOrder($product, $quantity, $user, $params, $contract_id)
+function createOrder($products, $user, $company, $params, $contract_id, $total_price, $total_amount)
 {
-
     $ip = fn_get_ip();
     $order['ip_address'] = fn_ip_to_db($ip['host']);
     $order['timestamp'] = TIME;
@@ -119,7 +118,9 @@ function createOrder($product, $quantity, $user, $params, $contract_id)
     $order['lang_code'] = isset($user_lang) && !empty($user_lang) ? $user_lang : CART_LANGUAGE;
     $order['status'] = STATUS_INCOMPLETED_ORDER;
     $order['is_parent_order'] = 'N';
-    $order['company_id'] = $product['company_id'];
+    $order['issuer_id'] = 1;
+    $order['total'] = $total_price;
+    $order['company_id'] = $company['company_id'];
 
     $order['user_id'] = $user['user_id'];
     $order['phone'] = $user['phone'];
@@ -134,59 +135,79 @@ function createOrder($product, $quantity, $user, $params, $contract_id)
         $order['fargo_address'] = serialize($params);
         $order['p_contract_id'] = $contract_id;
     }
-
     $order_id = db_query("INSERT INTO ?:orders ?e", $order);
+    $test = [];
+//    foreach ($products as $key => $product) {
+//     $test[] = $product;
+//    }
+//    fn_print_die($test);
+    foreach ($products as $key => $product) {
+        $order_details = [];
+        $order_details['item_id'] = rand(111111111, 999999999);
+        $order_details['order_id'] = $order_id;
+        $order_details['product_id'] = $product['product_id'];
+        $order_details['price'] = $product['price'];
+        $order_details['product_code'] = "AA$order_id" . $product['price'] . $product['product_id'];
+        $order_details['amount'] = $product['amount'];
+        $product['is_edp'] = "N";
+        $order_details['extra'] = serialize($product);
 
-    $order_details['order_id'] = $order_id;
-    $order_details['item_id '] = TIME;
-    $order_details['product_id'] = $product['product_id'];
-    $order_details['price'] = $product['price'];
-    $order_details['product_code'] = $product['product_code'];
-    $order_details['amount'] = $quantity;
-    $order_details['extra'] = serialize($product);
 
-    db_query("INSERT INTO ?:order_details ?e", $order_details);
+        (db_query("INSERT INTO ?:order_details ?e", $order_details));;
+    }
+
 
     return true;
 
 }
 
-function createFargoOrder($contract_id)
+function createFargoOrder($order, $user_address)
 {
+    $box_width = 0;
+    $box_height = 0;
+    $box_length = 0;
 
-    $order = db_get_row("select * from ?:orders as order_data 
-                         INNER JOIN ?:order_details as order_detail ON order_data.order_id = order_detail.order_id   
-                         where order_data.p_contract_id=?i", $contract_id);
-
-    $product_info = db_get_row('SELECT *,product_description.product as product_name FROM ?:products as product 
-        INNER JOIN ?:companies as company ON product.company_id = company.company_id 
-        INNER JOIN ?:product_prices as product_price ON product.product_id = product_price.product_id 
-        INNER JOIN ?:product_descriptions as product_description ON product.product_id = product_description.product_id 
-        WHERE product.product_id = ?i ', $order['product_id']);
+    $product_ids = [];
+    $total_weight = 0;
+    $total_amount = 0;
+    foreach ($user_address['shipping_params'] as $product_id => $product) {
+        $box_width += $product['box_width'];
+        $box_height += $product['box_height'];
+        $box_length += $product['box_length'];
+        $product_ids[] = $product_id;
+        $data = db_get_row("SELECT order_detail.amount AS amount,product.weight AS weight FROM ?:order_details AS order_detail
+                       INNER JOIN ?:products AS product ON order_detail.product_id = product.product_id 
+                       WHERE order_detail.order_id =?i AND order_detail.product_id= ?i", $order['order_id'], $product_id);
+        $total_weight += $data['weight'] * $data['amount'];
+        $total_amount += $data['amount'];
+    }
+    $category_name = null;
     $user = db_get_row('select * from ?:users where user_id=?i', $order['user_id']);
+    $category_names = db_get_array('select category.category as name from ?:products_categories as product 
+                            inner join ?:category_descriptions as category on product.category_id = category.category_id and product.link_type="M"  and category.lang_code = ?s 
+                            where product.product_id IN (?a)', CART_LANGUAGE, $product_ids);
 
-    $category = db_get_row('select category.category as name from ?:products_categories as product 
-                            inner join ?:category_descriptions as category on product.category_id = category.category_id and category.lang_code = ?s 
-                            where product.product_id = ?i', CART_LANGUAGE, $order['product_id']);
+    foreach ($category_names as $name) {
+        $category_name .= ' ' . $name['name'];
+    }
 
-    $category = $category['name'];
-    $product_shipping_data = unserialize($order['fargo_address']);
+    $product_shipping_data = $user_address['address'];
     $neighborhood = [
         "name" => $product_shipping_data['neighborhood']
     ];
     $fargo_data = [
         "sender_data" => fn_fargo_uz_sender_recipient_data(
             "residential",
-            $product_info['company'],
-            $product_info['city'],
+            $order['company'],
+            $order['city'],
             234,
-            '+' . $product_info['phone'],
+            '+' . $order['phone'],
             null,
-            $product_info['address'],
+            $order['address'],
             null,
             null,
             null,
-            ["name" => $product_info['state']]
+            ["name" => $order['state']]
 
         ),
         "recipient_data" => fn_fargo_uz_sender_recipient_data(
@@ -204,10 +225,10 @@ function createFargoOrder($contract_id)
 
         ),
         "dimensions" => fn_fargo_uz_dimensions(
-            $product_info['weight'],
-            $product_shipping_data['shipping_params']['box_width'],
-            $product_shipping_data['shipping_params']['box_height'],
-            $product_shipping_data['shipping_params']['box_length'],
+            ($total_weight > 1) ? round($total_weight) : 1,
+            $box_width,
+            $box_height,
+            $box_length,
             1,
             true),
         "package_type" => [
@@ -219,7 +240,7 @@ function createFargoOrder($contract_id)
         "recipient_not_available" => "do_not_deliver",
         "payment_type" => "credit_balance",
         "payer" => "sender",
-        "note" => "$category - НУЖНО ПОДПИСАТЬ АКТ И ВЕРНУТЬ ОТПРАВИТЕЛЮ"
+        "note" => "$category_name - НУЖНО ПОДПИСАТЬ АКТ И ВЕРНУТЬ ОТПРАВИТЕЛЮ"
     ];
 
     $fargo_data_auth = [

@@ -10,16 +10,16 @@ if (!defined('BOOTSTRAP')) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if ($mode == "change_status") {
 
+    if ($mode == "change_status") {
+        $errors = [];
         $order_id = $_REQUEST['order_id'];
         $contract_status = $_REQUEST['status'];
         $order_data = null;
 
-        $order = db_get_row("select *,order_data.phone as user_phone from ?:orders as order_data 
+        $order = db_get_row("SELECT *,order_data.phone as user_phone from ?:orders as order_data 
                          INNER JOIN ?:companies as company ON order_data.company_id = company.company_id   
-                         INNER JOIN ?:order_details as order_detail ON order_data.order_id = order_detail.order_id
-                         where order_data.p_contract_id=?i", $order_id);
+                         WHERE order_data.p_contract_id=?i", $order_id);
 
         $address = unserialize($order['fargo_address']);
 
@@ -28,22 +28,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $order_data = [
                 "status" => OrderStatuses::INCOMPLETED
             ];
+
             $data_confirm = [
                 "contract_id" => (int)$order['p_contract_id'],
                 "online" => 1
             ];
 
             $confirm_res = php_curl('/buyers/partner-confirm', $data_confirm, "POST", $order['p_c_token'], 1);
+
             if ($confirm_res->status) {
-                if ( isset($address['address_type']) && $address['address_type'] !== 'self') {
-                    createFargoOrder($order_id);
+
+                if (isset($address['address']['address_type']) && $address['address']['address_type'] !== 'self') {
+                    createFargoOrder($order, $address);
                 }
+
                 db_query("UPDATE ?:orders SET ?u WHERE p_contract_id=?i", $order_data, $order_id);
+
                 $errors = showErrors('success', $_REQUEST, "success");
-                Registry::get('ajax')->assign('result', $errors);
-                exit();
+
+            } else {
+
+                $errors = showErrors('error', [], "error");
+
             }
-            $errors = showErrors('error', [], "error");
             Registry::get('ajax')->assign('result', $errors);
             exit();
 
@@ -63,39 +70,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 db_query("UPDATE ?:orders SET ?u WHERE p_contract_id=?i", $order_data, $order_id);
 
-                $product = db_get_row('select * from ?:products where product_id=?i', $order['product_id']);
-                $product_data = [
-                    'amount' => (int)$product['amount'] + (int)$order['amount']
-                ];
-                db_query('UPDATE ?:products SET ?u WHERE product_id = ?i', $product_data, $product['product_id']);
+                foreach ($address['shipping_params'] as $product_id => $product) {
+
+                    $data = db_get_row("SELECT order_detail.amount AS amount,product.weight AS weight,product.amount AS product_amount  FROM ?:order_details AS order_detail
+                       INNER JOIN ?:products AS product ON order_detail.product_id = product.product_id 
+                       WHERE order_detail.order_id =?i AND order_detail.product_id= ?i", $order['order_id'], $product_id);
+                    $product_data = [
+                        'amount' => (int)$data['amount'] + (int)$data['product_amount']
+                    ];
+                    db_query('UPDATE ?:products SET ?u WHERE product_id = ?i', $product_data, $product_id);
+                }
 
             } else {
+
                 $errors = showErrors('error', $contract_cancel_res, "error");
                 Registry::get('ajax')->assign('result', $errors);
                 exit();
             }
-
             $fargo_data = db_get_row("select *  from ?:fargo_orders where paymart_contract_id=?i ", (int)$order_id);
-
             if (empty($fargo_data)) {
-
                 $errors = showErrors('success', $_REQUEST, "success");
-                Registry::get('ajax')->assign('result', $errors);
-                exit();
             } else {
                 $fargo_order_id = $fargo_data['fargo_contract_id'];
                 $url = FARGO_URL . "/v1/customer/order/$fargo_order_id/status?status=cancelled";
                 $cancel_order = php_curl($url, [], "PUT", fargoAuth());
-
                 if ($cancel_order->status == "success") {
                     $errors = showErrors('success', $_REQUEST, "success");
-                    Registry::get('ajax')->assign('result', $errors);
-                    exit();
+                } else {
+                    $errors = showErrors('error', $cancel_order);
                 }
-                $errors = showErrors('error', $cancel_order, "error");
-                Registry::get('ajax')->assign('result', $errors);
-                exit();
             }
+            Registry::get('ajax')->assign('result', $errors);
+            exit();
         }
     }
 

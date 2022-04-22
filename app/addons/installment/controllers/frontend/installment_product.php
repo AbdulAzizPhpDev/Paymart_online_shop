@@ -212,6 +212,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit();
         }
     }
+
+
     if ($mode == "set_confirm_contract") {
         if (!$auth['user_id']) {
             Registry::get('ajax')->assign('result', showErrors('user_not_authorized'));
@@ -220,63 +222,66 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $user = db_get_row('select * from ?:users where user_id=?i', $auth['user_id']);
         $company = Tygh::$app['session']['installment_data']['company'];
         $products_data = Tygh::$app['session']['installment_data']['products'];
-
-        $product_quantity = (int)$product_info['amount'] - $product_amount;
-
-        if ($product_quantity < 0) {
-            $errors = showErrors('product_is_not_exist');
-            Registry::get('ajax')->assign('result', $errors);
-            exit();
-        }
-
-        $data = [
-            'amount' => $product_quantity
-        ];
-
+        $total_amount = Tygh::$app['session']['installment_data']['total_quantity'];
+        $total_price = Tygh::$app['session']['installment_data']['total_price'];
+        $check_quantity = false;
+        $params = [];
         $data_contract = [
             "contract_id" => $_REQUEST['contract_id'],
             "code" => $_REQUEST['code'],
             "phone" => $user['phone']
         ];
-
         $response = php_curl('/buyers/check-user-sms', $data_contract, 'POST', $user['api_key']);
-
         if ($response->result->status == 1) {
-            $params = [];
-            db_query('UPDATE ?:products SET ?u WHERE product_id = ?i', $data, $product_id);
+            foreach ($products_data as $product) {
+                $product_data = db_get_row('SELECT amount,shipping_params FROM ?:products WHERE product_id = ?i', $product['product_id']);
+                $product_quantity = $product_data['amount'] - $product['amount'];
+                $data = [
+                    'amount' => $product_quantity
+                ];
+                $params["shipping_params"][$product['product_id']] = unserialize($product_data['shipping_params']);
+                db_query('UPDATE ?:products SET ?u WHERE product_id = ?i', $data, $product['product_id']);
+            }
+
+
+//        if ($product_quantity < 0) {
+//            $errors = showErrors('product_is_not_exist');
+//            Registry::get('ajax')->assign('result', $errors);
+//            exit();
+//        }
+
             if ($_REQUEST['address_type'] === 'shipping') {
-                $params["apartment"] = $_REQUEST['apartment'];
-                $params["building"] = $_REQUEST['building'];
-                $params["street"] = $_REQUEST['street'];
-                $params['address_type'] = $_REQUEST['address_type'];
+                $params['address']["apartment"] = $_REQUEST['apartment'];
+                $params['address']["building"] = $_REQUEST['building'];
+                $params['address']["street"] = $_REQUEST['street'];
+                $params['address']['address_type'] = $_REQUEST['address_type'];
                 $neighborhood = [];
                 if ((int)$_REQUEST['region'] == 228171787) {
                     $address = db_get_row("select * from ?:fargo_countries where  city_id=?i ", $_REQUEST['city']);
 
-                    $params["city_id"] = 228171787;
-                    $params["neighborhood"] = $address['city_name'];
+                    $params['address']["city_id"] = 228171787;
+                    $params['address']["neighborhood"] = $address['city_name'];
 
 
                 } else {
-                    $params["city_id"] = (int)$_REQUEST['region'];
-                    $params["neighborhood"] = $_REQUEST['city'];
+                    $params['address']["city_id"] = (int)$_REQUEST['region'];
+                    $params['address']["neighborhood"] = $_REQUEST['city'];
                 }
 
             } else {
-                $params['address_type'] = $_REQUEST['address_type'];
+                $params['address']['address_type'] = $_REQUEST['address_type'];
             }
-            $product_shipping_data = unserialize($product_info['shipping_params']);
-            $params["shipping_params"] = $product_shipping_data;
-
-            $data = createOrder($product_info, $product_amount, $user, $params, $_REQUEST['contract_id']);
+            $data = createOrder($products_data, $user, $company, $params, $_REQUEST['contract_id'], $total_price, $total_amount);
             unset(Tygh::$app['session']['product_info']);
+            unset(Tygh::$app['session']['installment_data']);
+
             $errors = showErrors('contract_create_successfully', [], "success");
             Registry::get('ajax')->assign('result', $errors);
             exit();
 
         } else {
 
-            $errors = showErrors('wrong_confirmation_code', [], "error");
+            $errors = showErrors('wrong_confirmation_code');
             Registry::get('ajax')->assign('result', $errors);
             exit();
 
