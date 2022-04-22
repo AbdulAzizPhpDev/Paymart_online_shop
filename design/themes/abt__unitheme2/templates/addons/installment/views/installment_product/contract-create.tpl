@@ -72,9 +72,7 @@
                 <tbody>
                 {foreach $products as $product }
                     <tr>
-                        <td>
-                            {$product['name']}
-                        </td>
+                        <td>{$product['name']}</td>
                         <td>{$product['amount']}</td>
                         <td>{($product['price'])|number_format:false:false:' '}</td>
                         <td>{($product['total_price'])|number_format:false:false:' '}</td>
@@ -280,6 +278,7 @@
         </div>
     </div>
 </div>
+
 <script>
     $('#card-pin-wrapper').pinlogin({
         placeholder: '*',
@@ -295,6 +294,5 @@
             $('#modal-sent').click();
             $('.pinlogin-field').attr('disable');
         },
-
     });
 </script>
