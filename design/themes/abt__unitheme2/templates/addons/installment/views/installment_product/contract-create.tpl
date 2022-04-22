@@ -5,7 +5,7 @@
 {assign var=language_symbol value=$currencies[$smarty.const.CART_PRIMARY_CURRENCY].symbol}
 
 <input type="hidden" value="{$total_price}" id="price">
-<input type="hidden" value="{$total_products}" id="quantity">
+<input type="hidden" value="1" id="quantity">
 <input type="hidden" value="Fantomas" id="name_product">
 <input type="hidden" value="{$company['p_c_token']}" id="seller_token">
 <input type="hidden" value="{$company['p_c_id']}" id="seller_id">
@@ -72,9 +72,7 @@
                 <tbody>
                 {foreach $products as $product }
                     <tr>
-                        <td>
-                            {$product['name']}
-                        </td>
+                        <td>{$product['name']}</td>
                         <td>{$product['amount']}</td>
                         <td>{($product['price'])|number_format:false:false:' '}</td>
                         <td>{($product['total_price'])|number_format:false:false:' '}</td>
@@ -280,6 +278,7 @@
         </div>
     </div>
 </div>
+
 <script>
     $('#card-pin-wrapper').pinlogin({
         placeholder: '*',
@@ -295,6 +294,5 @@
             $('#modal-sent').click();
             $('.pinlogin-field').attr('disable');
         },
-
     });
 </script>

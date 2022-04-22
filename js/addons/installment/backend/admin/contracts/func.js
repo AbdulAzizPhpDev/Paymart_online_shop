@@ -171,7 +171,7 @@
             return adminContractsMethods.generateModalContent({ companyInfo: companyData, isShipping: false });
           }
 
-          adminContractsMethods.generateModalContent(result.list.reverse());
+          adminContractsMethods.generateModalContent({ trackingList: result.list.reverse() });
         },
       });
     },
@@ -203,9 +203,9 @@
         },
       });
     },
-      generateModalContent: function ({ trackingList = [], companyInfo = {}, isShipping = true }) {
-        if (!isShipping) {
-          const selfContent = `
+    generateModalContent: function ({ trackingList = [], companyInfo = {}, isShipping = true }) {
+      if (!isShipping) {
+        const selfContent = `
           <h1>${companyInfo.title}</h1>
           
           <div style="display: flex; align-items: center;">
@@ -227,25 +227,25 @@
           </div>
         `;
 
-          return $trackingModalBody.append(selfContent);
-        }
+        return $trackingModalBody.append(selfContent);
+      }
 
-        const timeline = document.createElement('ul');
-        timeline.classList.add('timeline');
+      const timeline = document.createElement('ul');
+      timeline.classList.add('timeline');
 
-        trackingList.forEach(({ status, date }) => {
-          const li = document.createElement('li');
-          const eventDate = new Date(date);
+      trackingList.forEach(({ status, date }) => {
+        const li = document.createElement('li');
+        const eventDate = new Date(date);
 
-          li.classList.add('event');
-          li.setAttribute('data-date', eventDate.toLocaleString());
-          li.innerHTML = `<h3>${status}</h3>`;
+        li.classList.add('event');
+        li.setAttribute('data-date', eventDate.toLocaleString());
+        li.innerHTML = `<h3>${status}</h3>`;
 
-          timeline.appendChild(li);
-        });
+        timeline.appendChild(li);
+      });
 
-        $trackingModalBody.append(timeline);
-      },
+      $trackingModalBody.append(timeline);
+    },
     onChangeTabs: function () {
       const status = $(this).data('status');
       const params = new URLSearchParams(document.location.search);
