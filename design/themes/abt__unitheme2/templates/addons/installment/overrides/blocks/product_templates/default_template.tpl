@@ -13,10 +13,12 @@
 {/if}
 
 <input class="product-id-for-calculate" type="hidden" value="{$product.product_id}">
+<input class="variation-name-for-calculate" type="hidden" value="{$product.variation_name}">
 <input class="product-name-for-calculate" type="hidden" value="{$product.product}">
 <input class="company-id-for-calculate-price" type="hidden" value="{$p_company_id}">
 <input class="product-price-for-calculate-price" type="hidden" value="{$product.price}">
 <input class="vendor-token" type="hidden" value="{$p_company_token}">
+<input class="api_base_url" type="hidden" value="{$api_base_url}">
 
 <div class="ut2-pb ty-product-block ty-product-detail{if $settings.abt__ut2.products.view.show_sticky_add_to_cart[$settings.abt__device] == 'Y' && !in_array($product.zero_price_action, ["P","A"]) && $product.price > 0 && $product.amount > 0 && $is_add_to_cart_mv} sticky_add_to_cart{/if}">
     {* {hook name="products:main_info_title"} *}
