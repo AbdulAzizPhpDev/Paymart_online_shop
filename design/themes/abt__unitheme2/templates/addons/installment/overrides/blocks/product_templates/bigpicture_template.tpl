@@ -16,10 +16,12 @@
 {/if}
 
 <input class="product-id-for-calculate" type="hidden" value="{$product.product_id}">
+<input class="variation-name-for-calculate" type="hidden" value="{$product.variation_name}">
 <input class="product-name-for-calculate" type="hidden" value="{$product.product}">
 <input class="company-id-for-calculate-price" type="hidden" value="{$p_company_id}">
 <input class="product-price-for-calculate-price" type="hidden" value="{$product.price}">
 <input class="vendor-token" type="hidden" value="{$p_company_token}">
+<input class="api_base_url" type="hidden" value="{$api_base_url}">
 
 
 {*<p style="color:#ff7643; font-size: 35px;"><span style="font-size: 40px;">12</span> месяцев</p>*}
