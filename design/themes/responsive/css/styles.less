@@ -3521,6 +3521,9 @@ input.ty-select-block__input {
     border: 1px solid darken(@base, 34%);
     background: #fff;
     text-align: left;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
 }
 .ty-dropdown-box__content-rounded() when (@rounded_corners = true) {
     .ty-dropdown-box__content {
@@ -3549,16 +3552,25 @@ input.ty-select-block__input {
 .ty-dropdown-box__content-rounded();
 
 .ty-dropdown-box__content .ty-dropdown-box__item {
-    display: block;
-    margin-bottom: 0px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
     padding: 7px 14px;
+
+    span {
+        margin-right: 8px;
+    }
+
+    a {
+        color: #000;
+    }
 }
 .ty-dropdown-box__content .ty-dropdown-box__item:hover {
-    background: @links;
-    color: white;
+    //background: @links;
+    //color: white;
+
     a {
-        display: block;
-        color: white;
+        color: #FF7643;
     }
 }
 .ty-dropdown-box__content .ty-account-info__orders {
