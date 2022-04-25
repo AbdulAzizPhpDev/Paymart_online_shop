@@ -94,8 +94,8 @@
                     {__('vendor_payouts.current_balance_text')}
                 </li>
                 <li class="ty-account-info__item ty-dropdown-box__item user-balance">
-                    <span class="balance-number">23 040 000</span>
-                    <span class="balance-symbol">{$currencies.$primary_currency.symbol nofilter}</span>
+                    <span class="balance-number">{$user_info.i_limit|default:0}</span>
+                    <span class="balance-symbol">{$currencies[$smarty.const.CART_PRIMARY_CURRENCY].symbol}</span>
                 </li>
                 <hr>
                 {if $user_info.firstname || $user_info.lastname}
