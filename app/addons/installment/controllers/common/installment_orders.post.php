@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $order_data = db_get_row("select  fargo_address, timestamp,company_id  from ?:orders where p_contract_id=?i ", $order_id);
         $address = unserialize($order_data['fargo_address']);
 
-        if (empty($fargo_data) && $address['address_type'] === 'self') {
+        if (empty($fargo_data) && $address['address']['address_type'] === 'self') {
             $company_data = db_get_row('SELECT * FROM ?:companies WHERE company_id = ?i ', $order_data['company_id']);
             $company_data['city_name'] = db_get_field('SELECT city_name FROM ?:fargo_countries WHERE city_id = ?i', $company_data['city']);
             $company_address = $company_data['city_name'] . ' '
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 . $company_data['state'] . ' '
                 . $company_data['address'];
             $data = [
-                "status" => $address['address_type'],
+                "status" => $address['address']['address_type'],
                 "address" => $company_address,
                 "phone" => $company_data['phone'],
                 "text" => __('pickup')
@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $fargo_data = db_get_row("select *  from ?:fargo_orders where paymart_contract_id=?i ", $order_id);
         $order_data = db_get_field("select  fargo_address from ?:orders where p_contract_id=?i ", $order_id);
         $address = unserialize($order_data);
-        if (empty($fargo_data) && $address['address_type'] === 'self') {
+        if (empty($fargo_data) && $address['address']['address_type'] === 'self') {
             Registry::get('ajax')->assign('result', __('pickup'));
             Registry::get('ajax')->assign('status', 'self');
             exit();
