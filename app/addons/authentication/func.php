@@ -115,7 +115,7 @@ function fn_authentication_get_profile_fields_post($location, $_auth, $lang_code
 
 function fn_authentication_get_user_short_info_pre($user_id, &$fields, $condition, $join, $group_by)
 {
-    array_push($fields,'api_key','i_step');
+    array_push($fields, 'api_key', 'i_step', 'i_limit');
 }
 
 
