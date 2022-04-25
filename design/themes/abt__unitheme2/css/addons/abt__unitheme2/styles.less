@@ -161,7 +161,7 @@ img, .ut2-a__bg-banner, .ut2-blog__recent-posts--img {
 .ui-dialog .buttons-container,
 .notification-content-extended,
 .notification-content-extended h1 {
-    .rounded_corners(0);
+    .rounded_corners(8px);
 }
 .ty-product-notification__buttons {
 	background: lighten(@base, 3%);
@@ -281,9 +281,10 @@ div.ui-dialog {
     		align-items: center;
             padding: 0 @header-b-height 0 @pd;
             height: @header-b-height;
-            background: @menu;
+            background: white;
             border: 0 none;
             z-index: 1;
+            color: #000;
 
             .bg_color() when (@menu = #ffffff) {
     			background: lighten(@base, 3%);
@@ -295,7 +296,7 @@ div.ui-dialog {
             font-family: @headings_font;
             font-weight: @headings_font_weight;
             font-size: 20px;
-            color: @menu_links;
+            color: #000;
 
             .uppercase() when (@abt__ut2_general_use_titles_uppercase = true) {
     			text-transform: uppercase;
@@ -333,7 +334,7 @@ div.ui-dialog {
 	        content: "\e921";
 	        font-size: 24px;
 	        .opacity(75);
-	        color: @menu_links;
+	        color: #000;
 	        speak: none;
 	        -webkit-font-smoothing: subpixel-antialiased;
 	    }
@@ -727,7 +728,21 @@ div.ui-dialog {
 	}
 	&__content {
 		min-width: 280px;
-	    border-radius: 0;
+	    border-radius: 8px;
+
+        ul {
+          li {
+            &.user-balance {
+              color: #FF7643;
+
+              .balance-number {
+                font-weight: 900;
+                font-size: 24px;
+                line-height: 28px;
+              }
+            }
+          }
+        }
 
 		@media screen and (max-width: 576px) {
 		    min-width: 280px;
