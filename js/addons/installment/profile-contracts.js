@@ -6,6 +6,10 @@
   const $trackingModal = $('.tracking-contract-modal');
   const $trackingModalBody = $('.tracking-modal-body');
 
+  const $causeCancelModal = $('.cause-cancel-contract-modal');
+  const $causeCancelModalBody = $('.cause-cancel-modal-body');
+
+
   // const $contractNumber = $('.contract-number');
 
   // const profileContractsState = {
@@ -35,12 +39,27 @@
       $(this).on('click', profileContractsMethods.showTrackingModal);
     },
     showTrackingModal: function (e) {
-      e.preventDefault();
-      const orderId = $(this).data('order-id');
-      const modalTitle = $trackingModal.data('tracking-title');
+      if (e.target.localName === 'span') {
+        const orderId = $(this).find('span.cancelling-order').data('order-id');
+        const modalTitle = $causeCancelModal.data('cause-cancel-title');
 
-      $trackingModal.attr('title', modalTitle);
-      profileContractsMethods.trackingContract(orderId);
+        $causeCancelModal.attr('title', modalTitle);
+
+        profileContractsMethods.cancellingOrder(orderId);
+      } else if (e.target.localName === 'img') {
+        const orderId = $(this).find('img').data('order-id');
+        const modalTitle = $trackingModal.data('tracking-title');
+
+        $trackingModal.attr('title', modalTitle);
+
+        profileContractsMethods.trackingContract(orderId);
+      }
+    },
+    cancellingOrder: function (order_id) {
+      $causeCancelModalBody.html('');
+
+      $causeCancelModalBody.append(order_id);
+      // console.log(`cancelling order with id ${order_id}`);
     },
     trackingContract: function (order_id) {
       $trackingModalBody.html('');
