@@ -9,8 +9,7 @@
         </div>*}
         <div class="contracts">
             {foreach from=$contracts key=index item=contract}
-                <div class="cm-dialog-opener cm-dialog-auto-size contract-card"
-                     data-ca-target-id="tracking-contract-modal" data-order-id="{$contract->order_id}">
+                <div class="contract-card">
                     <div class="header">
                         <div class="info">
                             <h3>{__('contract')} № {$contract->contract_id}</h3>
@@ -28,9 +27,20 @@
                         <div class="payment">
                             <span class="sum">{$contract->monthly_payment}</span><span class="currency">Cум</span>
                         </div>
-                        {if $contract->status == 'active'}
-                            <img src="https://img.icons8.com/ios/32/000000/truck.png" />
-                        {/if}
+                        <div style="display: flex;align-items: center;">
+                            <img class="cm-dialog-opener cm-dialog-auto-size"
+                                 src="https://img.icons8.com/ios/32/000000/truck.png"
+                                 data-ca-target-id="tracking-contract-modal"
+                                 data-order-id="{$contract->order_id}"
+                            />
+                            <span style="font-size: 18px; margin-left: 16px;"
+                                  class="cm-dialog-opener cm-dialog-auto-size cancelling-order"
+                                  data-ca-target-id="cause-cancel-contract-modal"
+                                  data-order-id="{$contract->order_id}"
+                            >
+                                &times;
+                            </span>
+                        </div>
                     </div>
 
                     <div class="progress active" data-percentage="{$group_by[$contract->contract_id]}"></div>
@@ -42,6 +52,10 @@
         <div class="hidden tracking-contract-modal" id="tracking-contract-modal" title="{__('track_my_order')}"
              data-tracking-title="{__('track_my_order')}">
             <div class="tracking-modal-body" style="overflow-y: auto"></div>
+        </div>
+        <div class="hidden cause-cancel-contract-modal" id="cause-cancel-contract-modal" title="Причина отказа"
+             data-cause-cancel-title="Причина отказа">
+            <div class="cause-cancel-modal-body" style="overflow-y: auto"></div>
         </div>
         {*        <div class="modal signin-modal tracking-contract-modal" style="display: none;">*}
         {*            <div class="modal-header">*}
