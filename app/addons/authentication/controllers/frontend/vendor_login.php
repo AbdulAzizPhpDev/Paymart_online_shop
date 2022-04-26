@@ -60,6 +60,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 "company_description" => $check_user_res->company_description
                             ];
                             db_query('INSERT INTO ?:company_descriptions ?e', $data_des);
+
+                            $logo_data_1 = [
+                                "type" => "theme",
+                                "company_id" => $company_id,
+                                "layout_id" => 0
+                            ];
+                            $logo_data_2 = [
+                                "type" => "mail",
+                                "company_id" => $company_id,
+                                "layout_id" => 0
+                            ];
+
+                            db_query('INSERT INTO ?:logos ?e', $logo_data_1);
+
+                            db_query('INSERT INTO ?:logos ?e', $logo_data_2);
+
                             //$user_data = db_get_row('select * from ?:users where p_user_id=?i ', $check_user_res->data->user_id);
 
                             $user_detail = php_curl('/buyer/detail', [], 'GET', $check_user_res->user_token);
@@ -77,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                             $ekey = fn_generate_ekey($user_id, 'U', SECONDS_IN_DAY);
 
-                            $url = "http://paymart.uz/vendor.php?dispatch=auth.ekey_login&ekey=$ekey&company_id=$company_id";
+                            $url = fn_url("vendor.php?dispatch=auth.ekey_login&ekey=$ekey&company_id=$company_id");
 
                             $res = [
                                 'result' => $check_pass_res,
@@ -94,8 +110,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                             db_query('UPDATE ?:companies SET ?u WHERE company_id = ?i', $data_u, $check['company_id']);
                             $user_data = db_get_row('select * from ?:users where user_type="V" and company_id=?i ', $check['company_id']);
+                            $check_logos = db_get_row("SELECT * FROM ?:logos where company_id = ?i", $check['company_id']);
+                            if (empty($check_logos)) {
+                                $logo_data_1 = [
+                                    "type" => "theme",
+                                    "company_id" => $check['company_id'],
+                                    "layout_id" => 0
+                                ];
+                                $logo_data_2 = [
+                                    "type" => "mail",
+                                    "company_id" => $check['company_id'],
+                                    "layout_id" => 0
+                                ];
 
+                                db_query('INSERT INTO ?:logos ?e', $logo_data_1);
 
+                                db_query('INSERT INTO ?:logos ?e', $logo_data_2);
+                            }
                             if (empty($user_data['p_user_id']) || $user_data['p_user_id'] == 0) {
 
                                 $user_detail = php_curl('/buyer/detail', [], 'GET', $check_user_res->user_token);
@@ -116,7 +147,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             }
                             $ekey = fn_generate_ekey($user_data['user_id'], 'U', SECONDS_IN_DAY);
                             $vendor_id = $check['company_id'];
-                            $url = "http://paymart.uz/vendor.php?dispatch=auth.ekey_login&ekey=$ekey&company_id=$vendor_id";
+                            $url = fn_url("vendor.php?dispatch=auth.ekey_login&ekey=$ekey&company_id=$company_id");
                             $res = [
                                 'result' => $check_pass_res,
                                 'url' => $url

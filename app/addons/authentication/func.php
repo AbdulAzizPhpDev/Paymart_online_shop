@@ -62,9 +62,6 @@ function createEmail()
         createEmail();
     }
 
-//    $first_name = ucfirst(str_shuffle(substr($string, $first_part, rand(10, strlen($string)))));
-//    $last_name = ucfirst(substr($string, $first_part, rand(10, strlen($string))));
-
     return array(
         $email
     );

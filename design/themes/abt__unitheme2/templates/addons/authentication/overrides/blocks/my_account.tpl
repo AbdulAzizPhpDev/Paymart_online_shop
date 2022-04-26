@@ -71,7 +71,6 @@
 {*    <!--account_info_{$block.snapping_id}--></div>*}
 
 {** block-description:my_account **}
-
 <div class="ty-dropdown-box" id="account_info_{$block.snapping_id}">
     <div id="sw_dropdown_{$block.block_id}" class="ty-dropdown-box__title cm-combination">
         <div>
@@ -94,7 +93,7 @@
                     {__('vendor_payouts.current_balance_text')}
                 </li>
                 <li class="ty-account-info__item ty-dropdown-box__item user-balance">
-                    <span class="balance-number">23 040 000</span>
+                    <span class="balance-number">{$user_info.i_limit}</span>
                     <span class="balance-symbol">{$currencies.$primary_currency.symbol nofilter}</span>
                 </li>
                 <hr>
