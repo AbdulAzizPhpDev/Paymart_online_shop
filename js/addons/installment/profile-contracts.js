@@ -17,6 +17,7 @@
     order_id: null,
     photo: null,
     selected: [],
+    returningStatus: 'change',
   };
 
   const profileContractsMethods = {
@@ -188,40 +189,44 @@
     },
     selectProduct: function (event) {
       const { selected } = profileContractsState;
+      const productId = $(this).val();
 
       if ($(this).is(':checked')) {
-        const productId = $(this).val();
+        const item = selected.find(element => element == productId);
 
-        selected.push(productId);
+        if (!item) {
+          selected.push(productId);
+        }
+
       } else {
-        const productId = $(this).val();
-
-        selected.filter(product_id => product_id !== productId)
+        selected.splice(selected.indexOf(productId), 1);
       }
     },
     returnProduct: function () {
-      // const formData = new FormData();
-      // const causeText = $('textarea#cause-text').val();
-      //
-      // formData.append('contract_id', profileContractsState.order_id);
-      // formData.append('text', causeText);
-      // formData.append('product_ids', profileContractsState.selected);
-      // formData.append('image', profileContractsState.photo);
-      //
-      // console.log(causeText);
-      console.log(profileContractsState.photo);
+      const formData = new FormData();
+      const causeText = $('textarea#cause-text').val();
 
-      // $.ceAjax('request', fn_url('returned_product.upload'), {
-      //   method: 'POST',
-      //   data: formData,
-      //   processData: false,
-      //   contentType: false,
-      //   // callback: function (response) {
-      //   //   if (!response.hasOwnProperty('result')) {
-      //   //     return console.error('error');
-      //   //   }
-      //   // },
-      // });
+      formData.append('contract_id', profileContractsState.order_id);
+      formData.append('text', causeText);
+      formData.append('product_ids', profileContractsState.selected);
+      formData.append('image', profileContractsState.photo);
+      formData.append('status', profileContractsState.returningStatus);
+
+      $.ajax({
+        url: fn_url('returned_product.upload'),
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+          if (!response.hasOwnProperty('result')) {
+            return console.error('error');
+          }
+        },
+        error: function (error) {
+          console.error(error.message);
+        }
+      });
     },
   };
 
