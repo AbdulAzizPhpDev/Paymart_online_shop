@@ -10,6 +10,21 @@ if (!defined('BOOTSTRAP')) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($mode == 'upload') {
+        $file = $_FILES;
+fn_print_die($_REQUEST);
+        if (!empty($file['path']) && is_uploaded_file($file['path'])) {
+            $file_path = sprintf('sess_data/returned-products/%s', \Tygh\Tools\SecurityHelper::sanitizeFileName(urldecode($file['name'])));
+            list(, $file['path']) = Storage::instance('custom_files')->put($file_path, array(
+                'file' => $file['path']
+            ));
+
+            if ($file['path'] === null) {
+                $file = null;
+            }
+        }
+
+fn_print_die($file);
+
 
     }
 
