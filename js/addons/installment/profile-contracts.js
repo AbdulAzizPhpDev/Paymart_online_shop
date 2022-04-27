@@ -9,8 +9,7 @@
   const $causeCancelModal = $('.cause-cancel-contract-modal');
   const $causeCancelModalBody = $('.cause-cancel-modal-body');
 
-
-  // const $contractNumber = $('.contract-number');
+  const $products = $('.bought-products ul.products');
 
   // const profileContractsState = {
   //   order_id: null,
@@ -39,27 +38,65 @@
       $(this).on('click', profileContractsMethods.showTrackingModal);
     },
     showTrackingModal: function (e) {
+      const { cancellingOrder, trackingContract } = profileContractsMethods;
+
       if (e.target.localName === 'span') {
         const orderId = $(this).find('span.cancelling-order').data('order-id');
         const modalTitle = $causeCancelModal.data('cause-cancel-title');
 
         $causeCancelModal.attr('title', modalTitle);
 
-        profileContractsMethods.cancellingOrder(orderId);
+        cancellingOrder(orderId);
+
       } else if (e.target.localName === 'img') {
+
         const orderId = $(this).find('img').data('order-id');
         const modalTitle = $trackingModal.data('tracking-title');
 
         $trackingModal.attr('title', modalTitle);
 
-        profileContractsMethods.trackingContract(orderId);
+        trackingContract(orderId);
       }
     },
     cancellingOrder: function (order_id) {
-      $causeCancelModalBody.html('');
+      $products.html('');
 
-      $causeCancelModalBody.append(order_id);
-      // console.log(`cancelling order with id ${order_id}`);
+      $.ceAjax('request', fn_url('returned_product.manage'), {
+        method: 'GET',
+        data: {
+          order_id,
+        },
+        callback: function (response) {
+          if (!response.hasOwnProperty('result')) {
+            return console.error('error');
+          }
+
+          const { generateProducts } = profileContractsMethods;
+
+          const fakeProducts = [
+            { id: 1, name: 'Product 1' },
+            { id: 2, name: 'Product 2' },
+            { id: 3, name: 'Product 3' },
+          ];
+
+          generateProducts(fakeProducts);
+        },
+      });
+    },
+    generateProducts: function (products = []) {
+      for (let product of products) {
+        const li = document.createElement('li');
+        li.style.display = 'flex';
+        li.style.justifyContent = 'space-between';
+        li.style.alignItems = 'center';
+
+        li.innerHTML = `
+          <span>${product.name}</span>
+          <input type="checkbox" value="${product.id}">
+        `;
+
+        $products.append(li);
+      }
     },
     trackingContract: function (order_id) {
       $trackingModalBody.html('');
@@ -139,7 +176,4 @@
   // $searchIcon.on('click', profileContractsMethods.searchContract);
   // $searchInput.on('keyup', profileContractsMethods.searchContract);
 
-  // $('.close-tracking-contract-modal').on('click', function () {
-  //   $trackingModal.modal('hide');
-  // });
 })(Tygh, Tygh.$);

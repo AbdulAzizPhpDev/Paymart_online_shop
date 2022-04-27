@@ -55,7 +55,39 @@
         </div>
         <div class="hidden cause-cancel-contract-modal" id="cause-cancel-contract-modal" title="Причина отказа"
              data-cause-cancel-title="Причина отказа">
-            <div class="cause-cancel-modal-body" style="overflow-y: auto"></div>
+            <div class="cause-cancel-modal-body" style="overflow-y: auto">
+                <section class="bought-products">
+                    <h3 class="ty-m-none">{__('abt__ut2.export.actions.products')}</h3>
+
+                    <ul class="ty-mtb-xs products"></ul>
+                </section>
+
+                <section class="ty-mt-m">
+                    <h3 class="ty-m-none">{__('return_registration')}</h3>
+
+                    <div class="installment-periods ty-control-group">
+                        <input class="ty-product-options__radio" value="change" type="radio" name="period" id="change-product" checked>
+                        <label class="ty-product-options__radio--label"
+                               for="change-product">Замена товара</label>
+
+                        <input class="ty-product-options__radio" value="return" type="radio" name="period" id="return-product">
+                        <label class="ty-product-options__radio--label"
+                               for="return-product">Возврат денег</label>
+                    </div>
+                </section>
+
+                <section class="ty-mt-m">
+                    <h3 class="ty-m-none">{__('theme_editor.upload_image')}</h3>
+                    <input type="file"> <br><br>
+                </section>
+
+                <section class="ty-mt-s">
+                    <h3 class="ty-m-none" for="cause-text">{__('description')}</h3>
+                    <textarea id="cause-text" cols="30" rows="10"></textarea>
+                </section>
+
+                <button class="ty-btn ty-btn__primary ty-mt-m">{__('send')}</button>
+            </div>
         </div>
         {*        <div class="modal signin-modal tracking-contract-modal" style="display: none;">*}
         {*            <div class="modal-header">*}
