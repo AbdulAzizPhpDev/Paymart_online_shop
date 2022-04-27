@@ -631,9 +631,9 @@ if ($mode == 'profile-contracts') {
             $payed_list_group_by_contract_id[$item] = count($value);
         };
 
-        $contracts = array_reverse(array_filter($result->contracts, function ($contract, $key) {
+        $contracts = array_filter($result->contracts, function ($contract, $key) {
             return $contract->status == 'active';
-        }, ARRAY_FILTER_USE_BOTH));
+        }, ARRAY_FILTER_USE_BOTH);
 
         $city = db_get_row('select * from ?:fargo_countries where parent_city_id=?i', 0);
         Tygh::$app['view']->assign('city', $city);
