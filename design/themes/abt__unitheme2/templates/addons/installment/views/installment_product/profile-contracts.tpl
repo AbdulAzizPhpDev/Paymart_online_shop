@@ -78,7 +78,7 @@
 
                 <section class="ty-mt-m">
                     <h3 class="ty-m-none">{__('theme_editor.upload_image')}</h3>
-                    <input type="file"> <br><br>
+                    <input class="product-photo-uploader" type="file" accept="image/*"> <br><br>
                 </section>
 
                 <section class="ty-mt-s">
@@ -86,7 +86,7 @@
                     <textarea id="cause-text" cols="30" rows="10"></textarea>
                 </section>
 
-                <button class="ty-btn ty-btn__primary ty-mt-m">{__('send')}</button>
+                <button class="ty-btn ty-btn__primary ty-mt-m return-product-btn">{__('send')}</button>
             </div>
         </div>
         {*        <div class="modal signin-modal tracking-contract-modal" style="display: none;">*}

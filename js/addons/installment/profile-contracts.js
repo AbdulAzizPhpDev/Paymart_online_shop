@@ -10,10 +10,14 @@
   const $causeCancelModalBody = $('.cause-cancel-modal-body');
 
   const $products = $('.bought-products ul.products');
+  const $returnProductBtn = $('.return-product-btn');
+  const $photoUploader = $('.product-photo-uploader');
 
-  // const profileContractsState = {
-  //   order_id: null,
-  // };
+  const profileContractsState = {
+    order_id: null,
+    photo: null,
+    selected: [],
+  };
 
   const profileContractsMethods = {
     calculateProgress: function () {
@@ -48,6 +52,8 @@
 
         cancellingOrder(orderId);
 
+        profileContractsState.order_id = orderId;
+
       } else if (e.target.localName === 'img') {
 
         const orderId = $(this).find('img').data('order-id');
@@ -56,15 +62,20 @@
         $trackingModal.attr('title', modalTitle);
 
         trackingContract(orderId);
+
+        profileContractsState.order_id = orderId;
+
       }
     },
     cancellingOrder: function (order_id) {
       $products.html('');
+      $('textarea#cause-text').val('');
 
       $.ceAjax('request', fn_url('returned_product.manage'), {
         method: 'GET',
         data: {
-          order_id,
+          contract_id: order_id,
+          security_hash: _.security_hash,
         },
         callback: function (response) {
           if (!response.hasOwnProperty('result')) {
@@ -73,13 +84,12 @@
 
           const { generateProducts } = profileContractsMethods;
 
-          const fakeProducts = [
-            { id: 1, name: 'Product 1' },
-            { id: 2, name: 'Product 2' },
-            { id: 3, name: 'Product 3' },
-          ];
+          generateProducts(response.result.data);
 
-          generateProducts(fakeProducts);
+          const $selectedProducts = $('.selected-products');
+          $.each($selectedProducts, function (index, checkbox) {
+            $(checkbox).on('change', profileContractsMethods.selectProduct)
+          });
         },
       });
     },
@@ -91,8 +101,11 @@
         li.style.alignItems = 'center';
 
         li.innerHTML = `
-          <span>${product.name}</span>
-          <input type="checkbox" value="${product.id}">
+          <span>${product.name} x ${product.amount}</span>
+          <div>
+            <span style="color: #ea5920; font-weight: bold; margin-right: 8px;">${product.price}</span>
+            <input class="selected-products" type="checkbox" value="${product.product_id}">
+          </div>
         `;
 
         $products.append(li);
@@ -169,10 +182,54 @@
 
       $trackingModalBody.append(timeline);
     },
+    selectPhoto: function (event) {
+      const files = event.target.files;
+      profileContractsState.photo = files[0];
+    },
+    selectProduct: function (event) {
+      const { selected } = profileContractsState;
+
+      if ($(this).is(':checked')) {
+        const productId = $(this).val();
+
+        selected.push(productId);
+      } else {
+        const productId = $(this).val();
+
+        selected.filter(product_id => product_id !== productId)
+      }
+    },
+    returnProduct: function () {
+      // const formData = new FormData();
+      // const causeText = $('textarea#cause-text').val();
+      //
+      // formData.append('contract_id', profileContractsState.order_id);
+      // formData.append('text', causeText);
+      // formData.append('product_ids', profileContractsState.selected);
+      // formData.append('image', profileContractsState.photo);
+      //
+      // console.log(causeText);
+      console.log(profileContractsState.photo);
+
+      // $.ceAjax('request', fn_url('returned_product.upload'), {
+      //   method: 'POST',
+      //   data: formData,
+      //   processData: false,
+      //   contentType: false,
+      //   // callback: function (response) {
+      //   //   if (!response.hasOwnProperty('result')) {
+      //   //     return console.error('error');
+      //   //   }
+      //   // },
+      // });
+    },
   };
 
   $percentageActive.each(profileContractsMethods.calculateProgress);
   $contractCards.each(profileContractsMethods.handleCard);
+  $returnProductBtn.on('click', profileContractsMethods.returnProduct);
+  $photoUploader.on('change', profileContractsMethods.selectPhoto);
+
   // $searchIcon.on('click', profileContractsMethods.searchContract);
   // $searchInput.on('keyup', profileContractsMethods.searchContract);
 
