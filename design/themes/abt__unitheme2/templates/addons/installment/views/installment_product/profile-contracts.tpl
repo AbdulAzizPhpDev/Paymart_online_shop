@@ -59,20 +59,20 @@
                 <section class="bought-products">
                     <h3 class="ty-m-none">{__('abt__ut2.export.actions.products')}</h3>
 
-                    <ul class="ty-mtb-xs products"></ul>
+                    <ul class="ty-mtb-xs products" style="max-width: 600px"></ul>
                 </section>
 
                 <section class="ty-mt-m">
                     <h3 class="ty-m-none">{__('return_registration')}</h3>
 
                     <div class="installment-periods ty-control-group">
-                        <input class="ty-product-options__radio" value="change" type="radio" name="period" id="change" checked>
+                        <input class="ty-product-options__radio" value="change" type="radio" name="period" id="exchange_product" checked>
                         <label class="ty-product-options__radio--label"
-                               for="change">Замена товара</label>
+                               for="exchange_product">Замена товара</label>
 
-                        <input class="ty-product-options__radio" value="return" type="radio" name="period" id="return">
+                        <input class="ty-product-options__radio" value="return" type="radio" name="period" id="refund">
                         <label class="ty-product-options__radio--label"
-                               for="return">Возврат денег</label>
+                               for="refund">Возврат денег</label>
                     </div>
                 </section>
 

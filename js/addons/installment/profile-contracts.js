@@ -18,7 +18,7 @@
     order_id: null,
     photo: null,
     selected: [],
-    returningStatus: 'change',
+    returningStatus: 'refund',
   };
 
   const profileContractsMethods = {
@@ -113,7 +113,7 @@
         li.style.alignItems = 'center';
 
         li.innerHTML = `
-          <span>${product.name} x ${product.amount}</span>
+          <span style="max-width: 80%">${product.name} x ${product.amount}</span>
           <div>
             <span style="color: #ea5920; font-weight: bold; margin-right: 8px;">${product.price}</span>
             <input class="selected-products" type="checkbox" value="${product.product_id}">

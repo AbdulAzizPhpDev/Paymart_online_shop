@@ -16,7 +16,7 @@
     <h1>{__('authentication.await.title')}</h1>
     <span>{__('authentication.await.subtitle')}</span>
 
-    <button class="ty-btn ty-btn__secondary" type="button" id="await-btn">
+    <button class="ty-btn ty-btn__primary" type="button" id="await-btn">
         {__('authentication.await.show_status')}
     </button>
 

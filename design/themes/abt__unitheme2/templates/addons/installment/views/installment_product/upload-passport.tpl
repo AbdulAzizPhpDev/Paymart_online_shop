@@ -63,7 +63,7 @@
         </div>
     </div>
 
-    <button class="ty-btn ty-btn__secondary" type="button" id="upload-passport-photos-btn"
+    <button class="ty-btn ty-btn__primary" type="button" id="upload-passport-photos-btn"
             data-error-image-select="{__('drop_images_select')}">
         {__("continue")}
     </button>
