@@ -12,6 +12,7 @@
   const $products = $('.bought-products ul.products');
   const $returnProductBtn = $('.return-product-btn');
   const $photoUploader = $('.product-photo-uploader');
+  const $causeTextarea = $('textarea#cause-text');
 
   const profileContractsState = {
     order_id: null,
@@ -42,6 +43,16 @@
     handleCard: function () {
       $(this).on('click', profileContractsMethods.showTrackingModal);
     },
+    radioHandler: function () {
+      const $radios = $('.installment-periods input[type="radio"]');
+
+      $.each($radios, function (index, radio) {
+        $(radio).on('change', function (event) {
+          console.log(event.target.id);
+          profileContractsState.returningStatus = event.target.id;
+        });
+      });
+    },
     showTrackingModal: function (e) {
       const { cancellingOrder, trackingContract } = profileContractsMethods;
 
@@ -70,7 +81,7 @@
     },
     cancellingOrder: function (order_id) {
       $products.html('');
-      $('textarea#cause-text').val('');
+      $causeTextarea.val('');
 
       $.ceAjax('request', fn_url('returned_product.manage'), {
         method: 'GET',
@@ -89,7 +100,7 @@
 
           const $selectedProducts = $('.selected-products');
           $.each($selectedProducts, function (index, checkbox) {
-            $(checkbox).on('change', profileContractsMethods.selectProduct)
+            $(checkbox).on('change', profileContractsMethods.selectProduct);
           });
         },
       });
@@ -203,8 +214,9 @@
       }
     },
     returnProduct: function () {
+      const { resetState } = profileContractsMethods;
       const formData = new FormData();
-      const causeText = $('textarea#cause-text').val();
+      const causeText = $causeTextarea.val();
 
       formData.append('contract_id', profileContractsState.order_id);
       formData.append('text', causeText);
@@ -221,15 +233,26 @@
         success: function (response) {
           console.log(response)
           if (!response.hasOwnProperty('result')) {
-            return console.error('error');
+            resetState();
+            return console.error('error inside response has not result !');
           }
         },
         error: function (error) {
+          resetState();
           console.error(error.message);
-        }
+        },
       });
     },
+    resetState: function () {
+      $causeTextarea.val('');
+      profileContractsState.order_id = null;
+      profileContractsState.selected = [];
+      profileContractsState.photo = null;
+      profileContractsState.returningStatus = 'change';
+    }
   };
+
+  profileContractsMethods.radioHandler();
 
   $percentageActive.each(profileContractsMethods.calculateProgress);
   $contractCards.each(profileContractsMethods.handleCard);

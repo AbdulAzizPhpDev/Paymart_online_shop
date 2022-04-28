@@ -66,13 +66,13 @@
                     <h3 class="ty-m-none">{__('return_registration')}</h3>
 
                     <div class="installment-periods ty-control-group">
-                        <input class="ty-product-options__radio" value="change" type="radio" name="period" id="change-product" checked>
+                        <input class="ty-product-options__radio" value="change" type="radio" name="period" id="change" checked>
                         <label class="ty-product-options__radio--label"
-                               for="change-product">Замена товара</label>
+                               for="change">Замена товара</label>
 
-                        <input class="ty-product-options__radio" value="return" type="radio" name="period" id="return-product">
+                        <input class="ty-product-options__radio" value="return" type="radio" name="period" id="return">
                         <label class="ty-product-options__radio--label"
-                               for="return-product">Возврат денег</label>
+                               for="return">Возврат денег</label>
                     </div>
                 </section>
 
