@@ -42,11 +42,11 @@
             <p class="ty-error-text"></p>
 
             <button type="submit" id="confirmCodeBtn" style="width: 100%"
-                    class="ty-btn ty-btn__secondary auth-confirm-btn">
+                    class="ty-btn ty-btn__primary auth-confirm-btn">
                 {__("continue")}
             </button>
 
-            <button type="button" style="width: 100%" class="ty-btn ty-btn__primary auth-change-phone-number">
+            <button type="button" style="width: 100%" class="ty-btn ty-btn__secondary auth-change-phone-number">
                 {__("text_change_number")}
             </button>
         </div>
