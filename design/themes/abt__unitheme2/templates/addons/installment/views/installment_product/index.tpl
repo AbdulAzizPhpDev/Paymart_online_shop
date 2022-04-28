@@ -32,7 +32,7 @@
                 </label>
             </div>
 
-            <button class="ty-btn ty-btn__secondary" type="button" disabled id="installmentSendSMSBtn">
+            <button class="ty-btn ty-btn__primary" type="button" disabled id="installmentSendSMSBtn">
                 {__('continue')}
             </button>
         </div>
@@ -52,7 +52,7 @@
                 {__('authentication.text_resend_sms', ['[n]' => '<span class="phone-timer">60</span>'])}
             </p>
 
-            <button class="ty-btn ty-btn__secondary" type="button" id="installmentConfirmCodeBtn">
+            <button class="ty-btn ty-btn__primary" type="button" id="installmentConfirmCodeBtn">
                 {__("continue")}
             </button>
 

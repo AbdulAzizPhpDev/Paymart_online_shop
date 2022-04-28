@@ -25,7 +25,7 @@
         </div>
     </div>
 
-    <button class="ty-btn ty-btn__secondary" type="button" id="add-guarant-btn">
+    <button class="ty-btn ty-btn__primary" type="button" id="add-guarant-btn">
         {__('continue')}
     </button>
 

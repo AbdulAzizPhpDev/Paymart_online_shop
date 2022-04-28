@@ -1,30 +1,95 @@
 (function (_, $) {
-    const $percentageActive = $('.progress.active');
-    // const $searchInput = $('.search-contracts');
-    // const $searchIcon = $('.search-icon');
-    const $contractCards = $('.contract-card');
-    const $trackingModal = $('.tracking-contract-modal');
-    const $trackingModalBody = $('.tracking-modal-body');
 
-    const $causeCancelModal = $('.cause-cancel-contract-modal');
-    const $causeCancelModalBody = $('.cause-cancel-modal-body');
+  const $percentageActive = $('.progress.active');
+  // const $searchInput = $('.search-contracts');
+  // const $searchIcon = $('.search-icon');
+  const $contractCards = $('.contract-card');
+  const $trackingModal = $('.tracking-contract-modal');
+  const $trackingModalBody = $('.tracking-modal-body');
 
-    const $products = $('.bought-products ul.products');
-    const $returnProductBtn = $('.return-product-btn');
-    const $photoUploader = $('.product-photo-uploader');
-    const $causeTextarea = $('textarea#cause-text');
+  const $causeCancelModal = $('.cause-cancel-contract-modal');
+  const $causeCancelModalBody = $('.cause-cancel-modal-body');
 
-    const profileContractsState = {
-        order_id: null,
-        photo: null,
-        selected: [],
-        returningStatus: 'change',
-    };
+  const $products = $('.bought-products ul.products');
+  const $returnProductBtn = $('.return-product-btn');
+  const $photoUploader = $('.product-photo-uploader');
+  const $causeTextarea = $('textarea#cause-text');
 
-    const profileContractsMethods = {
-        calculateProgress: function () {
-            const percentage = Number($(this).data('percentage')) * 10 || 0;
-            $(this).css('width', `${percentage / 12}%`);
+  const profileContractsState = {
+    order_id: null,
+    photo: null,
+    selected: [],
+    returningStatus: 'refund',
+  };
+
+  const profileContractsMethods = {
+    calculateProgress: function () {
+      const percentage = Number($(this).data('percentage')) * 10 || 0;
+      $(this).css('width', `${percentage / 12}%`);
+    },
+    // searchContract: function (event) {
+    //   const searchValue = $searchInput.val();
+    //
+    //   switch (true) {
+    //     case event.keyCode === 13 :
+    //       console.log('searching with enter ...', searchValue);
+    //       $searchInput.val('');
+    //       break;
+    //     case event.handleObj.type === 'click':
+    //       console.log('searching with mouse event', searchValue);
+    //       $searchInput.val('');
+    //       break;
+    //   }
+    // },
+    handleCard: function () {
+      $(this).on('click', profileContractsMethods.showTrackingModal);
+    },
+    radioHandler: function () {
+      const $radios = $('.installment-periods input[type="radio"]');
+
+      $.each($radios, function (index, radio) {
+        $(radio).on('change', function (event) {
+          console.log(event.target.id);
+          profileContractsState.returningStatus = event.target.id;
+        });
+      });
+    },
+    showTrackingModal: function (e) {
+      const { cancellingOrder, trackingContract } = profileContractsMethods;
+
+      if (e.target.localName === 'span') {
+        const orderId = $(this).find('span.cancelling-order').data('order-id');
+        const modalTitle = $causeCancelModal.data('cause-cancel-title');
+
+        $causeCancelModal.attr('title', modalTitle);
+
+        cancellingOrder(orderId);
+
+        profileContractsState.order_id = orderId;
+
+      } else if (e.target.localName === 'img') {
+
+        const orderId = $(this).find('img').data('order-id');
+        const modalTitle = $trackingModal.data('tracking-title');
+
+        $trackingModal.attr('title', modalTitle);
+
+        trackingContract(orderId);
+
+        profileContractsState.order_id = orderId;
+
+      }
+    },
+    cancellingOrder: function (order_id) {
+      $products.html('');
+      $causeTextarea.val('');
+
+      $.ceAjax('request', fn_url('returned_product.manage'), {
+        method: 'GET',
+        data: {
+          contract_id: order_id,
+          security_hash: _.security_hash,
+
         },
         // searchContract: function (event) {
         //   const searchValue = $searchInput.val();
@@ -79,41 +144,17 @@
 
             }
         },
-        cancellingOrder: function (order_id) {
-            $products.html('');
-            $causeTextarea.val('');
+      });
+    },
+    generateProducts: function (products = []) {
+      for (let product of products) {
+        const li = document.createElement('li');
+        li.style.display = 'flex';
+        li.style.justifyContent = 'space-between';
+        li.style.alignItems = 'center';
 
-            $.ceAjax('request', fn_url('returned_product.manage'), {
-                method: 'GET',
-                data: {
-                    contract_id: order_id,
-                    security_hash: _.security_hash,
-                },
-                callback: function (response) {
-                    if (!response.hasOwnProperty('result')) {
-                        return console.error('error');
-                    }
-
-                    const {generateProducts} = profileContractsMethods;
-
-                    generateProducts(response.result.data);
-
-                    const $selectedProducts = $('.selected-products');
-                    $.each($selectedProducts, function (index, checkbox) {
-                        $(checkbox).on('change', profileContractsMethods.selectProduct);
-                    });
-                },
-            });
-        },
-        generateProducts: function (products = []) {
-            for (let product of products) {
-                const li = document.createElement('li');
-                li.style.display = 'flex';
-                li.style.justifyContent = 'space-between';
-                li.style.alignItems = 'center';
-
-                li.innerHTML = `
-          <span>${product.name} x ${product.amount}</span>
+        li.innerHTML = `
+          <span style="max-width: 80%">${product.name} x ${product.amount}</span>
           <div>
             <span style="color: #ea5920; font-weight: bold; margin-right: 8px;">${product.price}</span>
             <input class="selected-products" type="checkbox" value="${product.product_id}">
