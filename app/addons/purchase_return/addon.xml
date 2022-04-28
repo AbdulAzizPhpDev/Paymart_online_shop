@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<addon scheme="3.0">
+    <id>purchase_return</id>
+    <version>1.0</version>
+    <priority>1</priority>
+    <position>150</position>
+    <status>active</status>
+    <default_language>en</default_language>
+
+    <queries>
+        <item for="install">
+            CREATE TABLE IF NOT EXISTS ?:returned_products (
+            id int(11) unsigned NOT NULL AUTO_INCREMENT,
+            order_id int(11) unsigned NOT NULL,
+            contract_id int(11) unsigned NOT NULL DEFAULT 0,
+            status varchar(32) NULL DEFAULT 'change_p',
+            products text NULL,
+            description text NULL,
+            image text NULL,
+            timestamp int(11) unsigned NOT NULL default '0',
+            PRIMARY KEY (id)
+            ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+        </item>
+    </queries>
+    <!--    <settings>-->
+    <!--        <sections>-->
+    <!--            <section id="general">-->
+    <!--                <items>-->
+    <!--                    <item id="sales_account">-->
+    <!--                        <type>input</type>-->
+    <!--                        <default_value/>-->
+    <!--                    </item>-->
+    <!--                    <item id="currency">-->
+    <!--                        <type>selectbox</type>-->
+    <!--                        <default_value></default_value>-->
+    <!--                    </item>-->
+
+
+    <!--                </items>-->
+    <!--            </section>-->
+    <!--        </sections>-->
+    <!--    </settings>-->
+    <functions>
+        <!--        <item for="install">fn_myob_set_default_settings</item>-->
+    </functions>
+</addon>

@@ -219,6 +219,7 @@
         processData: false,
         contentType: false,
         success: function (response) {
+          console.log(response)
           if (!response.hasOwnProperty('result')) {
             return console.error('error');
           }
