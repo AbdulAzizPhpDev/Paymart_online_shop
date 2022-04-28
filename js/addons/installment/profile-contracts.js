@@ -1,118 +1,118 @@
 (function (_, $) {
-  const $percentageActive = $('.progress.active');
-  // const $searchInput = $('.search-contracts');
-  // const $searchIcon = $('.search-icon');
-  const $contractCards = $('.contract-card');
-  const $trackingModal = $('.tracking-contract-modal');
-  const $trackingModalBody = $('.tracking-modal-body');
+    const $percentageActive = $('.progress.active');
+    // const $searchInput = $('.search-contracts');
+    // const $searchIcon = $('.search-icon');
+    const $contractCards = $('.contract-card');
+    const $trackingModal = $('.tracking-contract-modal');
+    const $trackingModalBody = $('.tracking-modal-body');
 
-  const $causeCancelModal = $('.cause-cancel-contract-modal');
-  const $causeCancelModalBody = $('.cause-cancel-modal-body');
+    const $causeCancelModal = $('.cause-cancel-contract-modal');
+    const $causeCancelModalBody = $('.cause-cancel-modal-body');
 
-  const $products = $('.bought-products ul.products');
-  const $returnProductBtn = $('.return-product-btn');
-  const $photoUploader = $('.product-photo-uploader');
-  const $causeTextarea = $('textarea#cause-text');
+    const $products = $('.bought-products ul.products');
+    const $returnProductBtn = $('.return-product-btn');
+    const $photoUploader = $('.product-photo-uploader');
+    const $causeTextarea = $('textarea#cause-text');
 
-  const profileContractsState = {
-    order_id: null,
-    photo: null,
-    selected: [],
-    returningStatus: 'change',
-  };
+    const profileContractsState = {
+        order_id: null,
+        photo: null,
+        selected: [],
+        returningStatus: 'change',
+    };
 
-  const profileContractsMethods = {
-    calculateProgress: function () {
-      const percentage = Number($(this).data('percentage')) * 10 || 0;
-      $(this).css('width', `${percentage / 12}%`);
-    },
-    // searchContract: function (event) {
-    //   const searchValue = $searchInput.val();
-    //
-    //   switch (true) {
-    //     case event.keyCode === 13 :
-    //       console.log('searching with enter ...', searchValue);
-    //       $searchInput.val('');
-    //       break;
-    //     case event.handleObj.type === 'click':
-    //       console.log('searching with mouse event', searchValue);
-    //       $searchInput.val('');
-    //       break;
-    //   }
-    // },
-    handleCard: function () {
-      $(this).on('click', profileContractsMethods.showTrackingModal);
-    },
-    radioHandler: function () {
-      const $radios = $('.installment-periods input[type="radio"]');
-
-      $.each($radios, function (index, radio) {
-        $(radio).on('change', function (event) {
-          console.log(event.target.id);
-          profileContractsState.returningStatus = event.target.id;
-        });
-      });
-    },
-    showTrackingModal: function (e) {
-      const { cancellingOrder, trackingContract } = profileContractsMethods;
-
-      if (e.target.localName === 'span') {
-        const orderId = $(this).find('span.cancelling-order').data('order-id');
-        const modalTitle = $causeCancelModal.data('cause-cancel-title');
-
-        $causeCancelModal.attr('title', modalTitle);
-
-        cancellingOrder(orderId);
-
-        profileContractsState.order_id = orderId;
-
-      } else if (e.target.localName === 'img') {
-
-        const orderId = $(this).find('img').data('order-id');
-        const modalTitle = $trackingModal.data('tracking-title');
-
-        $trackingModal.attr('title', modalTitle);
-
-        trackingContract(orderId);
-
-        profileContractsState.order_id = orderId;
-
-      }
-    },
-    cancellingOrder: function (order_id) {
-      $products.html('');
-      $causeTextarea.val('');
-
-      $.ceAjax('request', fn_url('returned_product.manage'), {
-        method: 'GET',
-        data: {
-          contract_id: order_id,
-          security_hash: _.security_hash,
+    const profileContractsMethods = {
+        calculateProgress: function () {
+            const percentage = Number($(this).data('percentage')) * 10 || 0;
+            $(this).css('width', `${percentage / 12}%`);
         },
-        callback: function (response) {
-          if (!response.hasOwnProperty('result')) {
-            return console.error('error');
-          }
-
-          const { generateProducts } = profileContractsMethods;
-
-          generateProducts(response.result.data);
-
-          const $selectedProducts = $('.selected-products');
-          $.each($selectedProducts, function (index, checkbox) {
-            $(checkbox).on('change', profileContractsMethods.selectProduct);
-          });
+        // searchContract: function (event) {
+        //   const searchValue = $searchInput.val();
+        //
+        //   switch (true) {
+        //     case event.keyCode === 13 :
+        //       console.log('searching with enter ...', searchValue);
+        //       $searchInput.val('');
+        //       break;
+        //     case event.handleObj.type === 'click':
+        //       console.log('searching with mouse event', searchValue);
+        //       $searchInput.val('');
+        //       break;
+        //   }
+        // },
+        handleCard: function () {
+            $(this).on('click', profileContractsMethods.showTrackingModal);
         },
-      });
-    },
-    generateProducts: function (products = []) {
-      for (let product of products) {
-        const li = document.createElement('li');
-        li.style.display = 'flex';
-        li.style.justifyContent = 'space-between';
-        li.style.alignItems = 'center';
+        radioHandler: function () {
+            const $radios = $('.installment-periods input[type="radio"]');
 
-        li.innerHTML = `
+            $.each($radios, function (index, radio) {
+                $(radio).on('change', function (event) {
+                    console.log(event.target.id);
+                    profileContractsState.returningStatus = event.target.id;
+                });
+            });
+        },
+        showTrackingModal: function (e) {
+            const {cancellingOrder, trackingContract} = profileContractsMethods;
+
+            if (e.target.localName === 'span') {
+                const orderId = $(this).find('span.cancelling-order').data('order-id');
+                const modalTitle = $causeCancelModal.data('cause-cancel-title');
+
+                $causeCancelModal.attr('title', modalTitle);
+
+                cancellingOrder(orderId);
+
+                profileContractsState.order_id = orderId;
+
+            } else if (e.target.localName === 'img') {
+
+                const orderId = $(this).find('img').data('order-id');
+                const modalTitle = $trackingModal.data('tracking-title');
+
+                $trackingModal.attr('title', modalTitle);
+
+                trackingContract(orderId);
+
+                profileContractsState.order_id = orderId;
+
+            }
+        },
+        cancellingOrder: function (order_id) {
+            $products.html('');
+            $causeTextarea.val('');
+
+            $.ceAjax('request', fn_url('returned_product.manage'), {
+                method: 'GET',
+                data: {
+                    contract_id: order_id,
+                    security_hash: _.security_hash,
+                },
+                callback: function (response) {
+                    if (!response.hasOwnProperty('result')) {
+                        return console.error('error');
+                    }
+
+                    const {generateProducts} = profileContractsMethods;
+
+                    generateProducts(response.result.data);
+
+                    const $selectedProducts = $('.selected-products');
+                    $.each($selectedProducts, function (index, checkbox) {
+                        $(checkbox).on('change', profileContractsMethods.selectProduct);
+                    });
+                },
+            });
+        },
+        generateProducts: function (products = []) {
+            for (let product of products) {
+                const li = document.createElement('li');
+                li.style.display = 'flex';
+                li.style.justifyContent = 'space-between';
+                li.style.alignItems = 'center';
+
+                li.innerHTML = `
           <span>${product.name} x ${product.amount}</span>
           <div>
             <span style="color: #ea5920; font-weight: bold; margin-right: 8px;">${product.price}</span>
@@ -120,40 +120,43 @@
           </div>
         `;
 
-        $products.append(li);
-      }
-    },
-    trackingContract: function (order_id) {
-      $trackingModalBody.html('');
-
-      $.ceAjax('request', fn_url('installment_orders.order_tracking'), {
-        method: 'POST',
-        data: {
-          order_id,
+                $products.append(li);
+            }
         },
-        callback: function (response) {
-          if (!response.hasOwnProperty('result')) {
-            return document.querySelector('.timeline').innerText = _.tr('empty');
-          }
+        trackingContract: function (order_id) {
+            $trackingModalBody.html('');
 
-          const { result } = response;
-          if (result.status === 'self') {
-            const companyData = {
-              address: result.address,
-              phone: result.phone,
-              title: result.text,
-            };
+            $.ceAjax('request', fn_url('installment_orders.order_tracking'), {
+                method: 'POST',
+                data: {
+                    order_id,
+                },
+                callback: function (response) {
+                    if (!response.hasOwnProperty('result')) {
+                        return document.querySelector('.timeline').innerText = _.tr('empty');
+                    }
 
-            return profileContractsMethods.generateModalContent({ companyInfo: companyData, isShipping: false });
-          }
+                    const {result} = response;
+                    if (result.status === 'self') {
+                        const companyData = {
+                            address: result.address,
+                            phone: result.phone,
+                            title: result.text,
+                        };
 
-          profileContractsMethods.generateModalContent({ trackingList: result.list.reverse() });
+                        return profileContractsMethods.generateModalContent({
+                            companyInfo: companyData,
+                            isShipping: false
+                        });
+                    }
+
+                    profileContractsMethods.generateModalContent({trackingList: result.list.reverse()});
+                },
+            });
         },
-      });
-    },
-    generateModalContent: function ({ trackingList = [], companyInfo = {}, isShipping = true }) {
-      if (!isShipping) {
-        const selfContent = `
+        generateModalContent: function ({trackingList = [], companyInfo = {}, isShipping = true}) {
+            if (!isShipping) {
+                const selfContent = `
           <h1>${companyInfo.title}</h1>
           
           <div style="display: flex; align-items: center;">
@@ -175,91 +178,91 @@
           </div>
         `;
 
-        return $trackingModalBody.append(selfContent);
-      }
+                return $trackingModalBody.append(selfContent);
+            }
 
-      const timeline = document.createElement('ul');
-      timeline.classList.add('timeline');
+            const timeline = document.createElement('ul');
+            timeline.classList.add('timeline');
 
-      trackingList.forEach(({ status, date }) => {
-        const li = document.createElement('li');
-        const eventDate = new Date(date);
+            trackingList.forEach(({status, date}) => {
+                const li = document.createElement('li');
+                const eventDate = new Date(date);
 
-        li.classList.add('event');
-        li.setAttribute('data-date', eventDate.toLocaleString());
-        li.innerHTML = `<h3>${status}</h3>`;
+                li.classList.add('event');
+                li.setAttribute('data-date', eventDate.toLocaleString());
+                li.innerHTML = `<h3>${status}</h3>`;
 
-        timeline.appendChild(li);
-      });
+                timeline.appendChild(li);
+            });
 
-      $trackingModalBody.append(timeline);
-    },
-    selectPhoto: function (event) {
-      const files = event.target.files;
-      profileContractsState.photo = files[0];
-    },
-    selectProduct: function (event) {
-      const { selected } = profileContractsState;
-      const productId = $(this).val();
+            $trackingModalBody.append(timeline);
+        },
+        selectPhoto: function (event) {
+            const files = event.target.files;
+            profileContractsState.photo = files[0];
+        },
+        selectProduct: function (event) {
+            const {selected} = profileContractsState;
+            const productId = $(this).val();
 
-      if ($(this).is(':checked')) {
-        const item = selected.find(element => element == productId);
+            if ($(this).is(':checked')) {
+                const item = selected.find(element => element == productId);
 
-        if (!item) {
-          selected.push(productId);
+                if (!item) {
+                    selected.push(productId);
+                }
+
+            } else {
+                selected.splice(selected.indexOf(productId), 1);
+            }
+        },
+        returnProduct: function () {
+            const {resetState} = profileContractsMethods;
+            const formData = new FormData();
+            const causeText = $causeTextarea.val();
+
+            formData.append('contract_id', profileContractsState.order_id);
+            formData.append('text', causeText);
+            formData.append('product_ids', profileContractsState.selected);
+            formData.append('image', profileContractsState.photo);
+            formData.append('status', profileContractsState.returningStatus);
+
+            $.ajax({
+                url: fn_url('returned_product.upload'),
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    console.log(response)
+                    if (!response.hasOwnProperty('result')) {
+                        resetState();
+                        return console.error('error inside response has not result !');
+                    }
+                },
+                error: function (error) {
+                    resetState();
+                    console.error(error.message);
+                },
+            });
+        },
+        resetState: function () {
+            $causeTextarea.val('');
+            profileContractsState.order_id = null;
+            profileContractsState.selected = [];
+            profileContractsState.photo = null;
+            profileContractsState.returningStatus = 'refund';
         }
+    };
 
-      } else {
-        selected.splice(selected.indexOf(productId), 1);
-      }
-    },
-    returnProduct: function () {
-      const { resetState } = profileContractsMethods;
-      const formData = new FormData();
-      const causeText = $causeTextarea.val();
+    profileContractsMethods.radioHandler();
 
-      formData.append('contract_id', profileContractsState.order_id);
-      formData.append('text', causeText);
-      formData.append('product_ids', profileContractsState.selected);
-      formData.append('image', profileContractsState.photo);
-      formData.append('status', profileContractsState.returningStatus);
+    $percentageActive.each(profileContractsMethods.calculateProgress);
+    $contractCards.each(profileContractsMethods.handleCard);
+    $returnProductBtn.on('click', profileContractsMethods.returnProduct);
+    $photoUploader.on('change', profileContractsMethods.selectPhoto);
 
-      $.ajax({
-        url: fn_url('returned_product.upload'),
-        type: 'POST',
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function (response) {
-          console.log(response)
-          if (!response.hasOwnProperty('result')) {
-            resetState();
-            return console.error('error inside response has not result !');
-          }
-        },
-        error: function (error) {
-          resetState();
-          console.error(error.message);
-        },
-      });
-    },
-    resetState: function () {
-      $causeTextarea.val('');
-      profileContractsState.order_id = null;
-      profileContractsState.selected = [];
-      profileContractsState.photo = null;
-      profileContractsState.returningStatus = 'change';
-    }
-  };
-
-  profileContractsMethods.radioHandler();
-
-  $percentageActive.each(profileContractsMethods.calculateProgress);
-  $contractCards.each(profileContractsMethods.handleCard);
-  $returnProductBtn.on('click', profileContractsMethods.returnProduct);
-  $photoUploader.on('change', profileContractsMethods.selectPhoto);
-
-  // $searchIcon.on('click', profileContractsMethods.searchContract);
-  // $searchInput.on('keyup', profileContractsMethods.searchContract);
+    // $searchIcon.on('click', profileContractsMethods.searchContract);
+    // $searchInput.on('keyup', profileContractsMethods.searchContract);
 
 })(Tygh, Tygh.$);
