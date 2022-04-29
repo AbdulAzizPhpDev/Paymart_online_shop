@@ -22,14 +22,14 @@
         <table class="table table-middle table--relative table-responsive">
             <thead>
             <tr>
+                <th scope="col">Фото товара</th>
                 <th scope="col">Наименование</th>
-                <th scope="col">Ед.изм</th>
                 <th scope="col">Кол-во</th>
                 <th scope="col">Цена</th>
                 <th scope="col">Сумма</th>
-                <th scope="col">НДС%</th>
-                <th scope="col">Сумма НДС</th>
-                <th scope="col">Всего с НДС</th>
+{*                <th scope="col">НДС%</th>*}
+{*                <th scope="col">Сумма НДС</th>*}
+{*                <th scope="col">Всего с НДС</th>*}
             </tr>
             </thead>
             <tbody>
@@ -62,9 +62,27 @@
                 {/if}
             </tr>
             </tbody>
-{*            <tfoot>*}
-{*            <tr></tr>*}
-{*            </tfoot>*}
+            <tfoot>
+            <tr>
+                <td>
+                    <button class="btn tracking-contract"
+                            data-contract-id="{$order->contract->id}"
+                            data-order-id="{$order->id}">
+                        {__('track_request_subj')}
+                    </button>
+                    <button class="btn tracking-contract"
+                            data-contract-id="{$order->contract->id}"
+                            data-order-id="{$order->id}">
+                        {__('track_request_subj')}
+                    </button>
+                    <button class="btn tracking-contract"
+                            data-contract-id="{$order->contract->id}"
+                            data-order-id="{$order->id}">
+                        {__('track_request_subj')}
+                    </button>
+                </td>
+            </tr>
+            </tfoot>
         </table>
     </div>
 </div>

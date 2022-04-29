@@ -54,26 +54,6 @@
                 <button class="btn confirm-accept-contract">{__('yes')}</button>
             </div>
         </div>
-        {* Show Bar Code Modal  *}
-        <div class="modal signin-modal bar-code-modal" style="display: none;">
-            <div class="modal-header">
-                <div><h3>{__('yml2_offer_feature_common_barcode')}</h3></div>
-                <button class="close-bar-code-modal">&times;</button>
-            </div>
-            <div class="modal-body bar-code-modal-body">
-                {__('empty')}
-            </div>
-        </div>
-        {* Show Tracking Modal  *}
-        <div class="modal signin-modal tracking-contract-modal" style="display: none;">
-            <div class="modal-header">
-                <div><h3>{__('track_request_subj')}</h3></div>
-                <button class="close-tracking-contract-modal">&times;</button>
-            </div>
-            <div class="modal-body tracking-modal-body" style="overflow-y: auto">
-                {include file="addons/installment/views/installment_orders/components/stepper.tpl"}
-            </div>
-        </div>
     {else}
         <h4>Пусто</h4>
     {/if}
