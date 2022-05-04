@@ -1,60 +1,44 @@
 {script src="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.min.js"}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.css" />
 
-{script src="js/addons/installment/backend/admin/contracts/func.js"}
+{script src="js/addons/installment/backend/admin/contracts/return.js"}
 {*{fn_print_die($paymart_orders)}*}
 <div class="admin-contracts-list">
     <header class="header">
         <h1>Возврат</h1>
     </header>
 {*    {include file="addons/installment/views/installment_orders/components/statuses-tab.tpl"}*}
-    {if !empty($return_orders)}
-        {foreach from=$paymart_orders->data item=order}
-            {include file="addons/installment/views/installment_orders/components/return-contract-item.tpl" order=$order is_admin=false}
-        {/foreach}
+{*    {if !empty($return_orders)}*}
+{*        {foreach from=$paymart_orders->data item=order}*}
+{*            {include file="addons/installment/views/installment_orders/components/return-contract-item.tpl" order=$order is_admin=false}*}
+            {include file="addons/installment/views/installment_orders/components/return-contract-item.tpl"}
+{*        {/foreach}*}
         <div class="pagination-contracts" data-contracts-count="{$paymart_orders->response->total}"></div>
         {* Modal - Upload Act *}
-        <div class="modal signin-modal upload-act-modal" style="display: none">
+        <div class="modal signin-modal return-cancel-modal" style="display: none">
             <div class="modal-header">
-                <h3>Загрузить акт</h3>
+                <h3>Отклонить запрос</h3>
             </div>
-            <div class="modal-body" style="display: flex; flex-direction: column; align-items: center">
-                <div class="imei-preview"></div>
-                <input id="imei-uploader" type="file" hidden accept=".jpeg, .jpg, png">
-                <label for="imei-uploader" style="display: flex; align-items: center;">
-                    <svg style="margin-right: 8px;" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 9.016V14.984M9.016 12H14.984M18.332 21.332H5.66797C4.01097 21.332 2.66797 19.989 2.66797 18.332V5.66797C2.66797 4.01097 4.01097 2.66797 5.66797 2.66797H18.332C19.989 2.66797 21.332 4.01097 21.332 5.66797V18.332C21.332 19.989 19.989 21.332 18.332 21.332Z"
-                              stroke="#FF7643" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                    {__('insert_image')}
-                </label>
+            <div class="modal-body">
+                <p>Описание</p>
+                <textarea rows="5"></textarea>
             </div>
             <div class="modal-footer">
-                <button class="btn close-upload-act-modal">{__('false')}</button>
-                <button class="btn confirm-upload-act">{__('upload_file')}</button>
-            </div>
-        </div>
-        {* Modal - Cancel Contract  *}
-        <div class="modal signin-modal cancel-contract-modal" style="display: none">
-            <div class="modal-header">
-                <h3>Отменить договор</h3>
-            </div>
-            <div class="modal-footer">
-                <button class="btn close-cancel-contract-modal">{__('false')}</button>
-                <button class="btn confirm-cancel-contract">{__('yes')}</button>
+                <button class="btn confirm-return-cancel">{__('save')}</button>
+                <button class="btn close-return-cancel">{__('close')}</button>
             </div>
         </div>
         {* Modal - Accept Contract  *}
-        <div class="modal signin-modal accept-contract-modal" style="display: none">
+        <div class="modal signin-modal return-accept-modal" style="display: none">
             <div class="modal-header">
-                <h3>Принять договор</h3>
+                <h3>Принять запрос</h3>
             </div>
             <div class="modal-footer">
-                <button class="btn close-accept-contract-modal">{__('false')}</button>
-                <button class="btn confirm-accept-contract">{__('yes')}</button>
+                <button class="btn confirm-accept-return">{__('yes')}</button>
+                <button class="btn close-accept-return">{__('false')}</button>
             </div>
         </div>
-    {else}
-        <h4>Пусто</h4>
-    {/if}
+{*    {else}*}
+{*        <h4>Пусто</h4>*}
+{*    {/if}*}
 </div>
