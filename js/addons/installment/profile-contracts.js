@@ -219,8 +219,21 @@
     },
     returnProduct: function () {
       const { resetState } = profileContractsMethods;
-      const formData = new FormData();
       const causeText = $causeTextarea.val();
+
+      if (profileContractsState.selected.length === 0) {
+        return alert('Выберите продукт!');
+      }
+
+      if (causeText === '') {
+        return alert('Напишите что нибудь');
+      }
+
+      if (profileContractsState.photo === null) {
+        return alert('Выберите фото')
+      }
+
+      const formData = new FormData();
 
       formData.append('contract_id', profileContractsState.order_id);
       formData.append('text', causeText);
