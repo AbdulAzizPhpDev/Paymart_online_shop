@@ -76,11 +76,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                             db_query('INSERT INTO ?:logos ?e', $logo_data_2);
 
-                            //$user_data = db_get_row('select * from ?:users where p_user_id=?i ', $check_user_res->data->user_id);
-
                             $user_detail = php_curl('/buyer/detail', [], 'GET', $check_user_res->user_token);
+
                             if ($user_detail->status == "success") {
-                                $user_id = create_user(999999999, $user_detail->data->name, $user_detail->data->surname, $_REQUEST['password'], 'V', $company_id, $email);
+                                $user_id = create_user(999999999999,
+                                    $user_detail->data->name,
+                                    $user_detail->data->surname,
+                                    $_REQUEST['password'],
+                                    'V',
+                                    $company_id,
+                                    $email);
+
                                 $data_u = [
                                     'api_key' => $check_user_res->user_token,
                                     'p_user_id' => $user_detail->data->id
@@ -104,13 +110,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             exit();
 
                         } else {
+
                             $data_u = [
                                 'company' => $check_user_res->company_name
                             ];
 
                             db_query('UPDATE ?:companies SET ?u WHERE company_id = ?i', $data_u, $check['company_id']);
+
                             $user_data = db_get_row('select * from ?:users where user_type="V" and company_id=?i ', $check['company_id']);
+
                             $check_logos = db_get_row("SELECT * FROM ?:logos where company_id = ?i", $check['company_id']);
+
                             if (empty($check_logos)) {
                                 $logo_data_1 = [
                                     "type" => "theme",
@@ -127,27 +137,51 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                                 db_query('INSERT INTO ?:logos ?e', $logo_data_2);
                             }
-                            if (empty($user_data['p_user_id']) || $user_data['p_user_id'] == 0) {
 
-                                $user_detail = php_curl('/buyer/detail', [], 'GET', $check_user_res->user_token);
+                            $user_detail = php_curl('/buyer/detail', [], 'GET', $check_user_res->user_token);
+
+                            $vendor_id = $check['company_id'];
+
+                            if (empty($user_data)) {
 
                                 if ($user_detail->status == "success") {
+                                    list($email) = createEmail();
+                                    $user_id = create_user(999999999999,
+                                        $user_detail->data->name,
+                                        $user_detail->data->surname,
+                                        $_REQUEST['password'],
+                                        'V',
+                                        $vendor_id,
+                                        $email);
 
                                     $data_u = [
+                                        'api_key' => $check_user_res->user_token,
                                         'p_user_id' => $user_detail->data->id
                                     ];
-                                    db_query('UPDATE ?:users SET ?u WHERE user_id = ?i', $data_u, $user_data['user_id']);
+
+                                    db_query('UPDATE ?:users SET ?u WHERE user_id = ?i', $data_u, $user_id);
+
                                 }
 
+                            } else {
+
+                                $data_u = [
+                                    'api_key' => $check_user_res->user_token,
+                                    'p_user_id' => $user_detail->data->id
+                                ];
+
+                                db_query('UPDATE ?:users SET ?u WHERE user_id = ?i', $data_u, $user_data['user_id']);
                             }
+
                             if (empty($user_data)) {
                                 $error = showErrors('vendor_id_empty');
                                 Registry::get('ajax')->assign('result', $error);
                                 exit();
                             }
+
                             $ekey = fn_generate_ekey($user_data['user_id'], 'U', SECONDS_IN_DAY);
-                            $vendor_id = $check['company_id'];
-                            $url = fn_url("vendor.php?dispatch=auth.ekey_login&ekey=$ekey&company_id=$company_id");
+
+                            $url = fn_url("vendor.php?dispatch=auth.ekey_login&ekey=$ekey&company_id=$vendor_id");
                             $res = [
                                 'result' => $check_pass_res,
                                 'url' => $url
@@ -169,6 +203,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
     }
 }
+
 if ($mode == "login_form") {
     if ($auth['user_id'] && $auth['user_type'] === 'C') {
         return array(CONTROLLER_STATUS_OK, fn_url('index.php'));

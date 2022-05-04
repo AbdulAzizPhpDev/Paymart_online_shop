@@ -26,9 +26,6 @@ if (!defined('BOOTSTRAP')) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-
-
-
     if ($mode == 'send_sms') {
 
         $pattern = "/^998\d{9}$/";
@@ -105,21 +102,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $response = php_curl('/login/auth', $data, 'POST', null);
 
         if ($response->status == "success") {
+
             $user_info['api_key'] = $response->data->access_token;
+
             $user_info['p_user_id'] = $response->data->user_id;
+
             $user_db = db_get_row('SELECT * FROM ?:users WHERE phone = ?s', $_REQUEST['phone']);
+
             if (isset($user_db['i_step'])) {
                 $user_info['i_step'] = $response->data->user_status;
             }
+
             db_query('UPDATE ?:users SET ?u WHERE user_id = ?i', $user_info, (int)fn_get_session_data('user_info')['id']);
 
             Tygh::$app['session']->regenerateID();
+
             fn_login_user(fn_get_session_data('user_info')['id'], true);
+
             fn_delete_session_data('user_info');
+
             Registry::get('ajax')->assign('result', $response);
+
             exit();
         }
         Registry::get('ajax')->assign('result', $response);
+
         exit();
 
 

@@ -12,12 +12,6 @@
  * "copyright.txt" FILE PROVIDED WITH THIS DISTRIBUTION PACKAGE.            *
  ****************************************************************************/
 
-$schema['controllers']['installment_orders'] = [
-    'modes' => [
-        'vendor' => [
-            'permissions' => false,
-        ],
-    ],
-];
+defined('BOOTSTRAP') or die('Access denied');
 
 return [];
