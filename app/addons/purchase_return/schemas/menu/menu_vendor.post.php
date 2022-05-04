@@ -12,19 +12,18 @@
  * "copyright.txt" FILE PROVIDED WITH THIS DISTRIBUTION PACKAGE.            *
  ****************************************************************************/
 
-use Tygh\Development;
+use Tygh\Enum\ObjectStatuses;
 use Tygh\Registry;
-use Tygh\Helpdesk;
-use Tygh\Tools\Url;
 
-if (!defined('BOOTSTRAP')) {
-    die('Access denied');
-}
+defined('BOOTSTRAP') or die('Access denied');
 
-if ($mode == 'logout') {
+/** @var array $schema */
 
-    fn_user_logout($auth);
 
-    return array(CONTROLLER_STATUS_OK, fn_url('/'));
-}
+    $schema['central']['orders']['items']['return_requests'] = [
+        'href' => 'returned_product.manage',
+        'position' => 200,
+    ];
 
+
+return $schema;

@@ -11,7 +11,10 @@ if (!defined('BOOTSTRAP')) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($mode == 'upload') {
+
+fn_print_die($_FILES);
         if (!isset($_FILES['image'])) {
+
             Registry::get('ajax')->assign('result', showErrors('success', [], 'success'));
             exit();
         }
@@ -63,7 +66,7 @@ if ($mode == 'manage') {
                           WHERE order_data.p_contract_id = ?i  ", $_REQUEST['contract_id']);
     if (!empty($order_items)) {
         foreach ($order_items as $item) {
-            $products[] = @unserialize($item['extra']);
+            $products[] = unserialize($item['extra']);
         }
         Registry::get('ajax')->assign('result', showErrors("success", $products, "success"));
         exit();
