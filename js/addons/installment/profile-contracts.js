@@ -89,60 +89,20 @@
         data: {
           contract_id: order_id,
           security_hash: _.security_hash,
-
         },
-        // searchContract: function (event) {
-        //   const searchValue = $searchInput.val();
-        //
-        //   switch (true) {
-        //     case event.keyCode === 13 :
-        //       console.log('searching with enter ...', searchValue);
-        //       $searchInput.val('');
-        //       break;
-        //     case event.handleObj.type === 'click':
-        //       console.log('searching with mouse event', searchValue);
-        //       $searchInput.val('');
-        //       break;
-        //   }
-        // },
-        handleCard: function () {
-            $(this).on('click', profileContractsMethods.showTrackingModal);
-        },
-        radioHandler: function () {
-            const $radios = $('.installment-periods input[type="radio"]');
+        callback: function (response) {
+          if (!response.hasOwnProperty('result')) {
+            return console.error('error');
+          }
 
-            $.each($radios, function (index, radio) {
-                $(radio).on('change', function (event) {
-                    console.log(event.target.id);
-                    profileContractsState.returningStatus = event.target.id;
-                });
-            });
-        },
-        showTrackingModal: function (e) {
-            const {cancellingOrder, trackingContract} = profileContractsMethods;
+          const { generateProducts } = profileContractsMethods;
 
-            if (e.target.localName === 'span') {
-                const orderId = $(this).find('span.cancelling-order').data('order-id');
-                const modalTitle = $causeCancelModal.data('cause-cancel-title');
+          generateProducts(response.result.data);
 
-                $causeCancelModal.attr('title', modalTitle);
-
-                cancellingOrder(orderId);
-
-                profileContractsState.order_id = orderId;
-
-            } else if (e.target.localName === 'img') {
-
-                const orderId = $(this).find('img').data('order-id');
-                const modalTitle = $trackingModal.data('tracking-title');
-
-                $trackingModal.attr('title', modalTitle);
-
-                trackingContract(orderId);
-
-                profileContractsState.order_id = orderId;
-
-            }
+          const $selectedProducts = $('.selected-products');
+          $.each($selectedProducts, function (index, checkbox) {
+            $(checkbox).on('change', profileContractsMethods.selectProduct);
+          });
         },
       });
     },
@@ -161,43 +121,43 @@
           </div>
         `;
 
-                $products.append(li);
-            }
+        $products.append(li);
+      }
+    },
+    trackingContract: function (order_id) {
+      $trackingModalBody.html('');
+
+      $.ceAjax('request', fn_url('installment_orders.order_tracking'), {
+        method: 'POST',
+        data: {
+          order_id,
         },
-        trackingContract: function (order_id) {
-            $trackingModalBody.html('');
+        callback: function (response) {
+          if (!response.hasOwnProperty('result')) {
+            return document.querySelector('.timeline').innerText = _.tr('empty');
+          }
 
-            $.ceAjax('request', fn_url('installment_orders.order_tracking'), {
-                method: 'POST',
-                data: {
-                    order_id,
-                },
-                callback: function (response) {
-                    if (!response.hasOwnProperty('result')) {
-                        return document.querySelector('.timeline').innerText = _.tr('empty');
-                    }
+          const { result } = response;
+          if (result.status === 'self') {
+            const companyData = {
+              address: result.address,
+              phone: result.phone,
+              title: result.text,
+            };
 
-                    const {result} = response;
-                    if (result.status === 'self') {
-                        const companyData = {
-                            address: result.address,
-                            phone: result.phone,
-                            title: result.text,
-                        };
-
-                        return profileContractsMethods.generateModalContent({
-                            companyInfo: companyData,
-                            isShipping: false
-                        });
-                    }
-
-                    profileContractsMethods.generateModalContent({trackingList: result.list.reverse()});
-                },
+            return profileContractsMethods.generateModalContent({
+              companyInfo: companyData,
+              isShipping: false,
             });
+          }
+
+          profileContractsMethods.generateModalContent({ trackingList: result.list.reverse() });
         },
-        generateModalContent: function ({trackingList = [], companyInfo = {}, isShipping = true}) {
-            if (!isShipping) {
-                const selfContent = `
+      });
+    },
+    generateModalContent: function ({ trackingList = [], companyInfo = {}, isShipping = true }) {
+      if (!isShipping) {
+        const selfContent = `
           <h1>${companyInfo.title}</h1>
           
           <div style="display: flex; align-items: center;">
@@ -219,91 +179,91 @@
           </div>
         `;
 
-                return $trackingModalBody.append(selfContent);
-            }
+        return $trackingModalBody.append(selfContent);
+      }
 
-            const timeline = document.createElement('ul');
-            timeline.classList.add('timeline');
+      const timeline = document.createElement('ul');
+      timeline.classList.add('timeline');
 
-            trackingList.forEach(({status, date}) => {
-                const li = document.createElement('li');
-                const eventDate = new Date(date);
+      trackingList.forEach(({ status, date }) => {
+        const li = document.createElement('li');
+        const eventDate = new Date(date);
 
-                li.classList.add('event');
-                li.setAttribute('data-date', eventDate.toLocaleString());
-                li.innerHTML = `<h3>${status}</h3>`;
+        li.classList.add('event');
+        li.setAttribute('data-date', eventDate.toLocaleString());
+        li.innerHTML = `<h3>${status}</h3>`;
 
-                timeline.appendChild(li);
-            });
+        timeline.appendChild(li);
+      });
 
-            $trackingModalBody.append(timeline);
-        },
-        selectPhoto: function (event) {
-            const files = event.target.files;
-            profileContractsState.photo = files[0];
-        },
-        selectProduct: function (event) {
-            const {selected} = profileContractsState;
-            const productId = $(this).val();
+      $trackingModalBody.append(timeline);
+    },
+    selectPhoto: function (event) {
+      const files = event.target.files;
+      profileContractsState.photo = files[0];
+    },
+    selectProduct: function (event) {
+      const { selected } = profileContractsState;
+      const productId = $(this).val();
 
-            if ($(this).is(':checked')) {
-                const item = selected.find(element => element == productId);
+      if ($(this).is(':checked')) {
+        const item = selected.find(element => element == productId);
 
-                if (!item) {
-                    selected.push(productId);
-                }
-
-            } else {
-                selected.splice(selected.indexOf(productId), 1);
-            }
-        },
-        returnProduct: function () {
-            const {resetState} = profileContractsMethods;
-            const formData = new FormData();
-            const causeText = $causeTextarea.val();
-
-            formData.append('contract_id', profileContractsState.order_id);
-            formData.append('text', causeText);
-            formData.append('product_ids', profileContractsState.selected);
-            formData.append('image', profileContractsState.photo);
-            formData.append('status', profileContractsState.returningStatus);
-
-            $.ajax({
-                url: fn_url('returned_product.upload'),
-                type: 'POST',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (response) {
-                    console.log(response)
-                    if (!response.hasOwnProperty('result')) {
-                        resetState();
-                        return console.error('error inside response has not result !');
-                    }
-                },
-                error: function (error) {
-                    resetState();
-                    console.error(error.message);
-                },
-            });
-        },
-        resetState: function () {
-            $causeTextarea.val('');
-            profileContractsState.order_id = null;
-            profileContractsState.selected = [];
-            profileContractsState.photo = null;
-            profileContractsState.returningStatus = 'refund';
+        if (!item) {
+          selected.push(productId);
         }
-    };
 
-    profileContractsMethods.radioHandler();
+      } else {
+        selected.splice(selected.indexOf(productId), 1);
+      }
+    },
+    returnProduct: function () {
+      const { resetState } = profileContractsMethods;
+      const formData = new FormData();
+      const causeText = $causeTextarea.val();
 
-    $percentageActive.each(profileContractsMethods.calculateProgress);
-    $contractCards.each(profileContractsMethods.handleCard);
-    $returnProductBtn.on('click', profileContractsMethods.returnProduct);
-    $photoUploader.on('change', profileContractsMethods.selectPhoto);
+      formData.append('contract_id', profileContractsState.order_id);
+      formData.append('text', causeText);
+      formData.append('product_ids', profileContractsState.selected);
+      formData.append('image', profileContractsState.photo);
+      formData.append('status', profileContractsState.returningStatus);
 
-    // $searchIcon.on('click', profileContractsMethods.searchContract);
-    // $searchInput.on('keyup', profileContractsMethods.searchContract);
+      $.ajax({
+        url: fn_url('returned_product.upload'),
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+          console.log(response);
+          if (!response.hasOwnProperty('result')) {
+            resetState();
+            return console.error('error inside response has not result !');
+          }
+        },
+        error: function (error) {
+          resetState();
+          console.error(error.message);
+        },
+      });
+    },
+    resetState: function () {
+      $causeTextarea.val('');
+      profileContractsState.order_id = null;
+      profileContractsState.selected = [];
+      profileContractsState.photo = null;
+      profileContractsState.returningStatus = 'refund';
+    },
+  };
+
+  profileContractsMethods.radioHandler();
+
+  $percentageActive.each(profileContractsMethods.calculateProgress);
+  $contractCards.each(profileContractsMethods.handleCard);
+  $returnProductBtn.on('click', profileContractsMethods.returnProduct);
+  $photoUploader.on('change', profileContractsMethods.selectPhoto);
+
+  // $searchIcon.on('click', profileContractsMethods.searchContract);
+  // $searchInput.on('keyup', profileContractsMethods.searchContract);
 
 })(Tygh, Tygh.$);
