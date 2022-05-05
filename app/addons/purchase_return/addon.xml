@@ -40,9 +40,9 @@
             PRIMARY KEY (description_id)
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
         </item>
-        <item for="uninstall">DROP TABLE IF EXISTS ?:returned_products;</item>
-        <item for="uninstall">DROP TABLE IF EXISTS ?:returned_product_images;</item>
-        <item for="uninstall">DROP TABLE IF EXISTS ?:returned_product_descriptions;</item>
+<!--        <item for="uninstall">DROP TABLE IF EXISTS ?:returned_products;</item>-->
+<!--        <item for="uninstall">DROP TABLE IF EXISTS ?:returned_product_images;</item>-->
+<!--        <item for="uninstall">DROP TABLE IF EXISTS ?:returned_product_descriptions;</item>-->
     </queries>
     <!--    <settings>-->
     <!--        <sections>-->

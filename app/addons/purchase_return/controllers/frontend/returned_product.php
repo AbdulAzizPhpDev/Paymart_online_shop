@@ -11,25 +11,48 @@ if (!defined('BOOTSTRAP')) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($mode == 'upload') {
-
-fn_print_die($_FILES);
-        if (!isset($_FILES['image'])) {
-
+        $status = 0;
+        if (!isset($_FILES['images'])) {
             Registry::get('ajax')->assign('result', showErrors('success', [], 'success'));
             exit();
         }
-        $file = $_FILES['image'];
-        $file['path'] = fn_array_multimerge([], $file['tmp_name'], 'path');
+
+        $images[] = $_FILES['image'];
+fn_print_die($images);
+        foreach ($images as $image) {
+            $is_image = fn_get_image_extension($image['type']);
+            if (!$is_image) {
+                $status++;
+            }
+        }
+fn_print_die($status);
+        if ($status > 0) {
+            Registry::get('ajax')->assign('result', showErrors('incorrect_image_type'));
+            exit();
+        }
+
+        $files = $_FILES['images'];
         $order = db_get_row("SELECT * FROM ?:orders  WHERE p_contract_id = ?i  ", $_REQUEST['contract_id']);
-        $format = 'sess_data/' . $order['order_id'] . '/%s';
-        $products = json_encode($_REQUEST['product_ids']);
         $file_path = null;
+        $products = json_encode($_REQUEST['product_ids']);
+
+        foreach ($files as $product_id => $image) {
+            $image['path'] = fn_array_multimerge([], $image['tmp_name'], 'path');
+            $format = 'sess_data/' . $order['order_id'] . '/%s';
+            $file_path = sprintf($format, \Tygh\Tools\SecurityHelper::sanitizeFileName(urldecode($image['name'])));
+            list(, $image['path']) = Storage::instance('custom_files')->put($file_path, array(
+                'file' => $image['path']
+            ));
+            $data = [
+                "order_id" => $order['order_id'],
+                "product_id" => $product_id,
+                "path" => $file_path
+            ];
+            db_query(" insert into ?:returned_product_images ?e", $data);
+        }
 
         if (!empty($file['path']) && is_uploaded_file($file['path'])) {
-            $file_path = sprintf($format, \Tygh\Tools\SecurityHelper::sanitizeFileName(urldecode($file['name'])));
-            list(, $file['path']) = Storage::instance('custom_files')->put($file_path, array(
-                'file' => $file['path']
-            ));
+
             $status = "exchange_product";
             $status = "refund";
             $date = [

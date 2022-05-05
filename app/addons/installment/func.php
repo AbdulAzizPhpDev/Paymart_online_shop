@@ -58,7 +58,7 @@ function php_curl($url = '', $data = [], $method = 'GET', $token = null, $header
     if (filter_var($url, FILTER_VALIDATE_URL)) {
         $curl_options[CURLOPT_URL] = $url;
     } else {
-        $curl_options[CURLOPT_URL] = PAYMART_CABINET_URL . $url;
+        $curl_options[CURLOPT_URL] = PAYMART_CABINET_API_URL . $url;
     }
     $curl_options[CURLOPT_RETURNTRANSFER] = true;
     $curl_options[CURLOPT_ENCODING] = '';
