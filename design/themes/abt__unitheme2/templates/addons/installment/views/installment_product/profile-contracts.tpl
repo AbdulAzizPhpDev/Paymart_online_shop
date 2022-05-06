@@ -33,13 +33,14 @@
                                  data-ca-target-id="tracking-contract-modal"
                                  data-order-id="{$contract->order_id}"
                             />
-                            <span style="font-size: 18px; margin-left: 16px;"
-                                  class="cm-dialog-opener cm-dialog-auto-size cancelling-order"
-                                  data-ca-target-id="cause-cancel-contract-modal"
-                                  data-order-id="{$contract->order_id}"
-                            >
-                                &times;
-                            </span>
+                            {if !$contract->return_status}
+                                <span style="font-size: 18px; margin-left: 16px;"
+                                      class="cm-dialog-opener cm-dialog-auto-size cancelling-order"
+                                      data-ca-target-id="cause-cancel-contract-modal"
+                                      data-order-id="{$contract->order_id}"
+                                      data-uploader-label="{__('theme_editor.upload_image')}"
+                                >&times;</span>
+                            {/if}
                         </div>
                     </div>
 
@@ -66,7 +67,8 @@
                     <h3 class="ty-m-none">{__('return_registration')}</h3>
 
                     <div class="installment-periods ty-control-group">
-                        <input class="ty-product-options__radio" value="change" type="radio" name="period" id="exchange_product" checked>
+                        <input class="ty-product-options__radio" value="change" type="radio" name="period"
+                               id="exchange_product" checked>
                         <label class="ty-product-options__radio--label"
                                for="exchange_product">Замена товара</label>
 
@@ -76,10 +78,10 @@
                     </div>
                 </section>
 
-                <section class="ty-mt-m">
-                    <h3 class="ty-m-none">{__('theme_editor.upload_image')}</h3>
-                    <input class="product-photo-uploader" type="file" accept="image/*"> <br><br>
-                </section>
+                {*                <section class="ty-mt-m">*}
+                {*                    <h3 class="ty-m-none">{__('theme_editor.upload_image')}</h3>*}
+                {*                    <input class="product-photo-uploader" type="file" accept="image/*"> <br><br>*}
+                {*                </section>*}
 
                 <section class="ty-mt-s">
                     <h3 class="ty-m-none" for="cause-text">{__('description')}</h3>

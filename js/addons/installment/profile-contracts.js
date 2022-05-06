@@ -12,13 +12,14 @@
 
   const $products = $('.bought-products ul.products');
   const $returnProductBtn = $('.return-product-btn');
-  const $photoUploader = $('.product-photo-uploader');
   const $causeTextarea = $('textarea#cause-text');
 
   const profileContractsState = {
     order_id: null,
     photo: null,
+    photos: [],
     selected: [],
+    product_id: null,
     returningStatus: 'refund',
   };
 
@@ -59,11 +60,12 @@
 
       if (e.target.localName === 'span') {
         const orderId = $(this).find('span.cancelling-order').data('order-id');
+        const uploaderLabel = $(this).find('span.cancelling-order').data('uploader-label');
         const modalTitle = $causeCancelModal.data('cause-cancel-title');
 
         $causeCancelModal.attr('title', modalTitle);
 
-        cancellingOrder(orderId);
+        cancellingOrder(orderId, uploaderLabel);
 
         profileContractsState.order_id = orderId;
 
@@ -80,45 +82,55 @@
 
       }
     },
-    cancellingOrder: function (order_id) {
+    cancellingOrder: function (order_id, uploaderLabel) {
       $products.html('');
       $causeTextarea.val('');
 
       $.ceAjax('request', fn_url('returned_product.manage'), {
-        method: 'GET',
+        method: 'get',
         data: {
           contract_id: order_id,
-          security_hash: _.security_hash,
         },
         callback: function (response) {
+          console.log(response);
           if (!response.hasOwnProperty('result')) {
             return console.error('error');
           }
 
           const { generateProducts } = profileContractsMethods;
 
-          generateProducts(response.result.data);
+          generateProducts(response.result.data, uploaderLabel);
 
           const $selectedProducts = $('.selected-products');
+          const $photoUploader = $(`.product-photo-uploader`);
+
           $.each($selectedProducts, function (index, checkbox) {
             $(checkbox).on('change', profileContractsMethods.selectProduct);
+          });
+
+          $.each($photoUploader, function (index, fileInput) {
+            $(fileInput).on('change', profileContractsMethods.selectPhoto);
           });
         },
       });
     },
-    generateProducts: function (products = []) {
+    generateProducts: function (products = [], uploaderLabel = '') {
       for (let product of products) {
         const li = document.createElement('li');
-        li.style.display = 'flex';
-        li.style.justifyContent = 'space-between';
-        li.style.alignItems = 'center';
 
         li.innerHTML = `
-          <span style="max-width: 80%">${product.name} x ${product.amount}</span>
-          <div>
-            <span style="color: #ea5920; font-weight: bold; margin-right: 8px;">${product.price}</span>
-            <input class="selected-products" type="checkbox" value="${product.product_id}">
+          <div style="display: flex;justify-content: space-between;align-items: center;">
+            <span style="max-width: 80%">${product.name} x ${product.amount}</span>
+            <div>
+              <span style="color: #ea5920; font-weight: bold; margin-right: 8px;">${product.price}</span>
+              <input class="selected-products" type="checkbox" value="${product.product_id}">
+            </div> 
           </div>
+          <div class="image-uploader-container-${product.product_id} ty-mt-s" style="display: none;">
+            <h3 class="ty-m-none">${uploaderLabel}</h3>
+            <input class="product-photo-uploader" data-product-id="${product.product_id}" type="file" accept="image/*">
+          </div>
+          <hr/>
         `;
 
         $products.append(li);
@@ -200,32 +212,60 @@
     },
     selectPhoto: function (event) {
       const files = event.target.files;
+      const file = files[0];
+      const productId = $(this).data('product-id');
+
       profileContractsState.photo = files[0];
+      let { selected } = profileContractsState;
+
+      selected.map(item => {
+        if (Number(item.product_id) === productId) {
+          item.image = file;
+        }
+      });
+
     },
     selectProduct: function (event) {
       const { selected } = profileContractsState;
       const productId = $(this).val();
+      const $photoUploaderContainer = $(`.image-uploader-container-${productId}`);
 
       if ($(this).is(':checked')) {
         const item = selected.find(element => element == productId);
+        $photoUploaderContainer.css('display', 'block');
 
         if (!item) {
-          selected.push(productId);
+          selected.push({ product_id: productId, image: profileContractsState.photo });
         }
 
       } else {
         selected.splice(selected.indexOf(productId), 1);
+        $photoUploaderContainer.css('display', 'none');
       }
     },
     returnProduct: function () {
       const { resetState } = profileContractsMethods;
-      const formData = new FormData();
       const causeText = $causeTextarea.val();
+
+      if (profileContractsState.selected.length === 0) {
+        return alert('Выберите продукт!');
+      }
+
+      if (causeText === '') {
+        return alert('Напишите что нибудь');
+      }
+
+      if (profileContractsState.photo === null) {
+        return alert('Выберите фото');
+      }
+
+
+      const formData = new FormData();
 
       formData.append('contract_id', profileContractsState.order_id);
       formData.append('text', causeText);
       formData.append('product_ids', profileContractsState.selected);
-      formData.append('image', profileContractsState.photo);
+      formData.append('images', profileContractsState.photo);
       formData.append('status', profileContractsState.returningStatus);
 
       $.ajax({
@@ -261,7 +301,7 @@
   $percentageActive.each(profileContractsMethods.calculateProgress);
   $contractCards.each(profileContractsMethods.handleCard);
   $returnProductBtn.on('click', profileContractsMethods.returnProduct);
-  $photoUploader.on('change', profileContractsMethods.selectPhoto);
+
 
   // $searchIcon.on('click', profileContractsMethods.searchContract);
   // $searchInput.on('keyup', profileContractsMethods.searchContract);
