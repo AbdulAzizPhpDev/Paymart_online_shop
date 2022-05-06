@@ -13,6 +13,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($mode == 'returns') {
         fn_print_die($mode);
     }
+    if ($mode == 'response') {
+
+    }
 
 }
 
