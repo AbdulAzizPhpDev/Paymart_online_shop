@@ -136,9 +136,6 @@ if ($mode == 'manage') {
 
     $returns = null;
     $data = [];
-//    inner join ?:returned_product_descriptions as description on product.order_id = description.order_id
-//                                 inner join ?:returned_product_images as images on product.order_id = images.order_id
-//                                 group by product.order_id
     if ($auth['user_type'] == "A") {
         $quantity = db_get_row("select COUNT(order_id) as number from ?:returned_products");
         $returns = db_get_array("select *  from ?:returned_products");
@@ -150,7 +147,7 @@ if ($mode == 'manage') {
             $data[$item['order_id']]['description'] = db_get_array("select * from ?:returned_product_descriptions where order_id = ?i ", $item['order_id']);
             $data[$item['order_id']]['image'] = db_get_array("select * from ?:returned_product_images where order_id = ?i ", $item['order_id']);
         }
-fn_print_die($data);
+
 
     } else {
 
@@ -166,7 +163,7 @@ fn_print_die($data);
             $data[$item['order_id']]['description'] = db_get_array("select * from ?:returned_product_descriptions where order_id = ?i ", $item['order_id']);
             $data[$item['order_id']]['image'] = db_get_array("select * from ?:returned_product_images where order_id = ?i ", $item['order_id']);
         }
-        fn_print_die($data);
+
     }
     Tygh::$app['view']->assign('returned_products', $data);
 
