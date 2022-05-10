@@ -128,7 +128,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
 
-
     }
 
 }
@@ -141,10 +140,10 @@ if ($mode == 'manage') {
         $returns = db_get_array("select * from ?:returned_products order by status asc ");
     } else {
         $company_id = db_get_fields("select company_id from ?:users where user_id = ?i", $auth['user_id']);
-        $returns = db_get_array("select * from ?:returned_products where company_id = ?i", $company_id);
+        $returns = db_get_array("select * from ?:returned_products where vendor_id = ?i", $company_id);
     }
+    Tygh::$app['view']->assign('returned_products', $returns);
 
-    fn_print_die($returns);
 
 }
 
