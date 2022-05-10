@@ -11,7 +11,7 @@ if (!defined('BOOTSTRAP')) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($mode == 'upload') {
-        fn_print_die($_REQUEST['product_ids'], $_FILES);
+        fn_print_die($_REQUEST['images'], $_FILES, $_POST);
         if (empty($_REQUEST['product_ids'])) {
             Registry::get('ajax')->assign('result', showErrors('product_not_selected'));
             exit();
