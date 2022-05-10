@@ -31,7 +31,7 @@
         <item for="install">
             CREATE TABLE IF NOT EXISTS ?:fargo_price_list (
             city_id mediumint unsigned NOT NULL,
-            price int(11) DEFAULT 0
+            price int(11) DEFAULT 0k
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
         </item>
         <item for="uninstall">DROP TABLE IF EXISTS `?:fargo_countries`</item>

@@ -13,15 +13,36 @@
             id int(11) unsigned NOT NULL AUTO_INCREMENT,
             order_id int(11) unsigned NOT NULL,
             contract_id int(11) unsigned NOT NULL DEFAULT 0,
+            vendor_id int(11) unsigned NOT NULL DEFAULT 0,
             type varchar(32) NULL DEFAULT 'exchange_product',
             status varchar(32) NULL DEFAULT 'active',
             products text NULL,
-            description text NULL,
-            image text NULL,
             timestamp int(11) unsigned NOT NULL default '0',
             PRIMARY KEY (id)
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
         </item>
+        <item for="install">
+            CREATE TABLE IF NOT EXISTS ?:returned_product_images (
+            image_id int(11) unsigned NOT NULL AUTO_INCREMENT,
+            order_id int(11) unsigned NOT NULL,
+            product_id int(11) unsigned NOT NULL DEFAULT 0,
+            path text NULL,
+            PRIMARY KEY (image_id)
+            ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+        </item>
+        <item for="install">
+            CREATE TABLE IF NOT EXISTS ?:returned_product_descriptions (
+            description_id int(11) unsigned NOT NULL AUTO_INCREMENT,
+            `from` int(11) unsigned NOT NULL DEFAULT 0,
+            `to` int(11) unsigned NOT NULL DEFAULT 0,
+            order_id int(11) unsigned NOT NULL DEFAULT 0,
+            description text NULL,
+            PRIMARY KEY (description_id)
+            ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+        </item>
+<!--        <item for="uninstall">DROP TABLE IF EXISTS ?:returned_products;</item>-->
+<!--        <item for="uninstall">DROP TABLE IF EXISTS ?:returned_product_images;</item>-->
+<!--        <item for="uninstall">DROP TABLE IF EXISTS ?:returned_product_descriptions;</item>-->
     </queries>
     <!--    <settings>-->
     <!--        <sections>-->
@@ -45,3 +66,4 @@
         <!--        <item for="install">fn_myob_set_default_settings</item>-->
     </functions>
 </addon>
+

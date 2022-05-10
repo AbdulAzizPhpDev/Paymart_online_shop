@@ -426,7 +426,7 @@ if ($mode == "await") {
 
         $user = db_get_row('select * from ?:users where user_id = ?s', $auth['user_id']);
         Tygh::$app['view']->assign('user_api_token', $user['api_key']);
-        Tygh::$app['view']->assign('api_base_url', PAYMART_CABINET_URL);
+        Tygh::$app['view']->assign('api_base_url', PAYMART_CABINET_API_URL);
 
     }
 }
@@ -588,7 +588,7 @@ if ($mode == "contract-create") {
 
         Tygh::$app['view']->assign('city', $city);
         Tygh::$app['view']->assign('redirect_url', $redirect_url);
-        Tygh::$app['view']->assign('api_base_url', PAYMART_CABINET_URL);
+        Tygh::$app['view']->assign('api_base_url', PAYMART_CABINET_API_URL);
         Tygh::$app['view']->assign('company', $company);
         Tygh::$app['view']->assign('calculator', $calculator_res_data);
         Tygh::$app['view']->assign('periods', $periods);
