@@ -258,7 +258,7 @@
       const { selected: images } = profileContractsState;
 
       formData.append('contract_id', profileContractsState.order_id);
-      formData.append('text', causeText);
+      formData.append('text', causeText.toString().trim());
 
       images.forEach(({ product_id, image }) => {
         formData.append(product_id, image);
