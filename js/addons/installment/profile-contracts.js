@@ -20,7 +20,7 @@
     photos: [],
     selected: [],
     product_id: null,
-    returningStatus: 'refund',
+    returningStatus: 'exchange_product',
   };
 
   const profileContractsMethods = {
@@ -258,7 +258,7 @@
       const { selected: images } = profileContractsState;
 
       formData.append('contract_id', profileContractsState.order_id);
-      formData.append('text', causeText);
+      formData.append('text', causeText.toString().trim());
 
       images.forEach(({ product_id, image }) => {
         formData.append(product_id, image);
@@ -273,7 +273,6 @@
         processData: false,
         contentType: false,
         success: function (response) {
-          console.log(response);
           if (!response.hasOwnProperty('result')) {
             resetState();
             return console.error('error inside response has not result !');
