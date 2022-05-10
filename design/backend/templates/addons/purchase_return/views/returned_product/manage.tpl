@@ -11,7 +11,7 @@
 {*    {if !empty($return_orders)}*}
 {*        {foreach from=$paymart_orders->data item=order}*}
 {*            {include file="addons/installment/views/installment_orders/components/return-contract-item.tpl" order=$order is_admin=false}*}
-            {include file="addons/installment/views/installment_orders/components/return-contract-item.tpl"}
+            {include file="addons/purchase_return/views/returned_product/components/return-contract-item.tpl"}
 {*        {/foreach}*}
         <div class="pagination-contracts" data-contracts-count="{$paymart_orders->response->total}"></div>
         {* Modal - Upload Act *}
