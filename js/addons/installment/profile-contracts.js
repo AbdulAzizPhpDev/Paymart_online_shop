@@ -234,7 +234,7 @@
         $photoUploaderContainer.css('display', 'block');
 
         if (!item) {
-          selected.push({ product_id: productId, image: profileContractsState.photo });
+          selected.push({ product_id: productId, image: JSON.stringify(profileContractsState.photo) });
         }
 
       } else {
@@ -254,17 +254,16 @@
         return alert('Напишите что нибудь');
       }
 
-      if (profileContractsState.selected.length === 0) {
-        return alert('Выберите фото');
-      }
-
-
       const formData = new FormData();
+      const { selected: images } = profileContractsState;
 
       formData.append('contract_id', profileContractsState.order_id);
       formData.append('text', causeText);
-      // formData.append('product_ids', profileContractsState.selected);
-      formData.append('images', profileContractsState.selected);
+
+      images.forEach(({ product_id, image }) => {
+        formData.append(product_id, image);
+      });
+
       formData.append('status', profileContractsState.returningStatus);
 
       $.ajax({
