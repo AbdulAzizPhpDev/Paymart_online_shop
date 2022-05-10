@@ -170,17 +170,17 @@ function createFargoOrder($order, $user_address)
     $product_ids = [];
     $total_weight = 0;
     $total_amount = 0;
-    foreach ($user_address['shipping_params'] as $product_id => $product) {
-        $box_width += $product['box_width'];
-        $box_height += $product['box_height'];
-        $box_length += $product['box_length'];
-        $product_ids[] = $product_id;
-        $data = db_get_row("SELECT order_detail.amount AS amount,product.weight AS weight FROM ?:order_details AS order_detail
-                       INNER JOIN ?:products AS product ON order_detail.product_id = product.product_id 
-                       WHERE order_detail.order_id =?i AND order_detail.product_id= ?i", $order['order_id'], $product_id);
-        $total_weight += $data['weight'] * $data['amount'];
-        $total_amount += $data['amount'];
-    }
+        foreach ($user_address['shipping_params'] as $product_id => $product) {
+            $box_width += $product['box_width'];
+            $box_height += $product['box_height'];
+            $box_length += $product['box_length'];
+            $product_ids[] = $product_id;
+            $data = db_get_row("SELECT order_detail.amount AS amount,product.weight AS weight FROM ?:order_details AS order_detail
+                           INNER JOIN ?:products AS product ON order_detail.product_id = product.product_id 
+                           WHERE order_detail.order_id =?i AND order_detail.product_id= ?i", $order['order_id'], $product_id);
+            $total_weight += $data['weight'] * $data['amount'];
+            $total_amount += $data['amount'];
+        }
     $category_name = null;
     $user = db_get_row('select * from ?:users where user_id=?i', $order['user_id']);
     $category_names = db_get_array('select category.category as name from ?:products_categories as product 
