@@ -75,26 +75,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             db_query(" insert into ?:returned_product_images ?e", $data);
         }
 
-//        if (!empty($file['path']) && is_uploaded_file($file['path'])) {
-//
-////            $status = "exchange_product";
-////            $status = "refund";
-////            $date = [
-////                "order_id" => $order['order_id'],
-////                "contract_id" => $_REQUEST['contract_id'],
-////                "status" => $_REQUEST['status'],
-////                "products" => $products,
-////                "description" => $_REQUEST['text'],
-////                "image" => $file_path,
-////                "timestamp" => 132165,
-////            ];
-////            $r_p = db_query("insert into ?:returned_products ?e", $date);
-////            Registry::get('ajax')->assign('result', showErrors('success', [], 'success'));
-////            exit();
-//        } else {
-//            Registry::get('ajax')->assign('result', showErrors(__('empty')));
-//            exit();
-//        }
+        if (!empty($file['path']) && is_uploaded_file($file['path'])) {
+
+
+            $date = [
+                "order_id" => $order['order_id'],
+                "contract_id" => $_REQUEST['contract_id'],
+                "type" => $_REQUEST['status'],
+                "products" => $products,
+                "status" => $products,
+                "description" => $_REQUEST['text'],
+                "image" => $file_path,
+                "timestamp" => 132165,
+            ];
+            $r_p = db_query("insert into ?:returned_products ?e", $date);
+            Registry::get('ajax')->assign('result', showErrors('success', [], 'success'));
+            exit();
+        } else {
+            Registry::get('ajax')->assign('result', showErrors(__('empty')));
+            exit();
+        }
 
     }
 
