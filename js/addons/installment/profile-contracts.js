@@ -20,7 +20,7 @@
     photos: [],
     selected: [],
     product_id: null,
-    returningStatus: 'refund',
+    returningStatus: 'exchange_product',
   };
 
   const profileContractsMethods = {
@@ -273,7 +273,6 @@
         processData: false,
         contentType: false,
         success: function (response) {
-          console.log(response);
           if (!response.hasOwnProperty('result')) {
             resetState();
             return console.error('error inside response has not result !');
