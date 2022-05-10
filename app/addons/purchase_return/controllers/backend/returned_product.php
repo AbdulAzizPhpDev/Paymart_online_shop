@@ -128,7 +128,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
 
-
     }
 
 }
@@ -136,15 +135,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 if ($mode == 'manage') {
 
     $returns = null;
-
+    $data = [];
     if ($auth['user_type'] == "A") {
-        $returns = db_get_array("select * from ?:returned_products order by status asc ");
-    } else {
-        $company_id = db_get_fields("select company_id from ?:users where user_id = ?i", $auth['user_id']);
-        $returns = db_get_array("select * from ?:returned_products where company_id = ?i", $company_id);
-    }
+        $quantity = db_get_row("select COUNT(order_id) as number from ?:returned_products");
+        $returns = db_get_array("select *  from ?:returned_products");
 
-    fn_print_die($returns);
+
+        foreach ($returns as $item) {
+            $data['quantity'] = $quantity['number'];
+            $data[$item['order_id']] = $item;
+            $data[$item['order_id']]['description'] = db_get_array("select * from ?:returned_product_descriptions where order_id = ?i ", $item['order_id']);
+            $data[$item['order_id']]['image'] = db_get_array("select * from ?:returned_product_images where order_id = ?i ", $item['order_id']);
+        }
+
+
+    } else {
+
+        $company_id = db_get_fields("select company_id from ?:users where user_id = ?i", $auth['user_id']);
+
+        $quantity = db_get_row("select COUNT(order_id) as number from ?:returned_products  where vendor_id = ?i", $company_id);
+        $returns = db_get_array("select *  from ?:returned_products where vendor_id = ?i", $company_id);
+
+
+        foreach ($returns as $item) {
+            $data['quantity'] = $quantity['number'];
+            $data[$item['order_id']] = $item;
+            $data[$item['order_id']]['description'] = db_get_array("select * from ?:returned_product_descriptions where order_id = ?i ", $item['order_id']);
+            $data[$item['order_id']]['image'] = db_get_array("select * from ?:returned_product_images where order_id = ?i ", $item['order_id']);
+        }
+
+    }
+    Tygh::$app['view']->assign('returned_products', $data);
+
 
 }
 

@@ -11,19 +11,25 @@ if (!defined('BOOTSTRAP')) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($mode == 'upload') {
-        fn_print_die($_REQUEST, $_FILES);
-        if (empty($_REQUEST['product_ids'])) {
-            Registry::get('ajax')->assign('result', showErrors('product_not_selected'));
-            exit();
-        }
+
+        $products = [];
         if (empty($_REQUEST['text'])) {
             Registry::get('ajax')->assign('result', showErrors('empty_description'));
             exit();
         }
+
         if (empty($_REQUEST['contract_id'])) {
             Registry::get('ajax')->assign('result', showErrors('contract_id_not_set'));
             exit();
         }
+
+        if (empty($_FILES)) {
+            Registry::get('ajax')->assign('result', showErrors('success', [], 'success'));
+            exit();
+        }
+
+        $images = $_FILES;
+
         $order = db_get_row("SELECT * FROM ?:orders  WHERE p_contract_id = ?i  ", $_REQUEST['contract_id']);
 
         $description = [
@@ -37,12 +43,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $status = 0;
 
-        if (!isset($_FILES['images'])) {
-            Registry::get('ajax')->assign('result', showErrors('success', [], 'success'));
-            exit();
-        }
-
-        $images[] = $_FILES['images'];
 
         foreach ($images as $image) {
             $is_image = fn_get_image_extension($image['type']);
@@ -56,17 +56,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit();
         }
 
-        $files = $_FILES['images'];
         $file_path = null;
-        $products = json_encode($_REQUEST['product_ids']);
 
-        foreach ($files as $product_id => $image) {
+        foreach ($images as $product_id => $image) {
             $image['path'] = fn_array_multimerge([], $image['tmp_name'], 'path');
             $format = 'sess_data/' . $order['order_id'] . '/%s';
             $file_path = sprintf($format, \Tygh\Tools\SecurityHelper::sanitizeFileName(urldecode($image['name'])));
             list(, $image['path']) = Storage::instance('custom_files')->put($file_path, array(
                 'file' => $image['path']
             ));
+            $products[] = $product_id;
             $data = [
                 "order_id" => $order['order_id'],
                 "product_id" => $product_id,
@@ -75,27 +74,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             db_query(" insert into ?:returned_product_images ?e", $data);
         }
 
-//        if (!empty($file['path']) && is_uploaded_file($file['path'])) {
-//
-////            $status = "exchange_product";
-////            $status = "refund";
-////            $date = [
-////                "order_id" => $order['order_id'],
-////                "contract_id" => $_REQUEST['contract_id'],
-////                "status" => $_REQUEST['status'],
-////                "products" => $products,
-////                "description" => $_REQUEST['text'],
-////                "image" => $file_path,
-////                "timestamp" => 132165,
-////            ];
-////            $r_p = db_query("insert into ?:returned_products ?e", $date);
-////            Registry::get('ajax')->assign('result', showErrors('success', [], 'success'));
-////            exit();
-//        } else {
-//            Registry::get('ajax')->assign('result', showErrors(__('empty')));
-//            exit();
-//        }
-
+        $date = [
+            "order_id" => $order['order_id'],
+            "contract_id" => $_REQUEST['contract_id'],
+            "vendor_id" => $order['company_id'],
+            "type" => $_REQUEST['status'],
+            "status" => "processing",
+            "products" => @serialize($products),
+            "timestamp" => round(microtime(true)),
+        ];
+        $r_p = db_query("insert into ?:returned_products ?e", $date);
+        Registry::get('ajax')->assign('result', showErrors('success', [], 'success'));
+        exit();
     }
 
 }
