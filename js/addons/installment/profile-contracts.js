@@ -92,7 +92,6 @@
           contract_id: order_id,
         },
         callback: function (response) {
-          console.log(response);
           if (!response.hasOwnProperty('result')) {
             return console.error('error');
           }
@@ -255,7 +254,7 @@
         return alert('Напишите что нибудь');
       }
 
-      if (profileContractsState.photo === null) {
+      if (profileContractsState.selected.length === 0) {
         return alert('Выберите фото');
       }
 
@@ -264,8 +263,8 @@
 
       formData.append('contract_id', profileContractsState.order_id);
       formData.append('text', causeText);
-      formData.append('product_ids', profileContractsState.selected);
-      formData.append('images', profileContractsState.photo);
+      // formData.append('product_ids', profileContractsState.selected);
+      formData.append('images', profileContractsState.selected);
       formData.append('status', profileContractsState.returningStatus);
 
       $.ajax({

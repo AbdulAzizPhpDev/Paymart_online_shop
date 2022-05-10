@@ -27,7 +27,8 @@
                 <th scope="col">Кол-во</th>
                 <th scope="col">Цена</th>
                 <th scope="col">Сумма</th>
-                <th scope="col">Текст</th>
+                <th scope="col">Клиент</th>
+                <th scope="col">Вендор</th>
                 {*                <th scope="col">Сумма НДС</th>*}
                 {*                <th scope="col">Всего с НДС</th>*}
             </tr>
@@ -48,6 +49,10 @@
                     debitis nostrum, porro sequi? Architecto aspernatur, consequuntur culpa, esse illum, magnam minus
                     non omnis quia sit suscipit tenetur?
                 </td>
+                <td rowspan="3">Lorem ipsum dolor sit amet, consectetur adipisicing elit. A atque autem consequatur
+                    debitis nostrum, porro sequi? Architecto aspernatur, consequuntur culpa, esse illum, magnam minus
+                    non omnis quia sit suscipit tenetur?
+                </td>
             </tr>
             <tr>
                 <td>
@@ -60,7 +65,6 @@
                 <td>1</td>
                 <td>15200</td>
                 <td style="border-right: 1px solid rgba(0,0,0,0.12)">25400</td>
-                {*                <td></td>*}
             </tr>
             {*{foreach from=$order->products item=product}
                 <tr>
@@ -95,7 +99,7 @@
             </tbody>
             <tfoot>
             <tr>
-                <td colspan="6"></td>
+                <td colspan="7"></td>
             </tr>
             </tfoot>
         </table>
