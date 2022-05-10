@@ -143,9 +143,10 @@ if ($mode == 'manage') {
 
         foreach ($returns as $item) {
             $data['quantity'] = $quantity['number'];
-            $data[$item['order_id']] = $item;
-            $data[$item['order_id']]['description'] = db_get_array("select * from ?:returned_product_descriptions where order_id = ?i ", $item['order_id']);
-            $data[$item['order_id']]['image'] = db_get_array("select * from ?:returned_product_images where order_id = ?i ", $item['order_id']);
+
+            $data['data'][$item['order_id']] = $item;
+            $data['data'][$item['order_id']]['description'] = db_get_array("select * from ?:returned_product_descriptions where order_id = ?i ", $item['order_id']);
+            $data['data'][$item['order_id']]['image'] = db_get_array("select * from ?:returned_product_images where order_id = ?i ", $item['order_id']);
         }
 
 
@@ -159,9 +160,9 @@ if ($mode == 'manage') {
 
         foreach ($returns as $item) {
             $data['quantity'] = $quantity['number'];
-            $data[$item['order_id']] = $item;
-            $data[$item['order_id']]['description'] = db_get_array("select * from ?:returned_product_descriptions where order_id = ?i ", $item['order_id']);
-            $data[$item['order_id']]['image'] = db_get_array("select * from ?:returned_product_images where order_id = ?i ", $item['order_id']);
+            $data['data'][$item['order_id']] = $item;
+            $data['data'][$item['order_id']]['description'] = db_get_array("select * from ?:returned_product_descriptions where order_id = ?i ", $item['order_id']);
+            $data['data'][$item['order_id']]['image'] = db_get_array("select * from ?:returned_product_images where order_id = ?i ", $item['order_id']);
         }
 
     }
