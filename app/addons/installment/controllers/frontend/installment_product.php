@@ -635,6 +635,9 @@ if ($mode == 'profile-contracts') {
             return $contract->status == 'active';
         }, ARRAY_FILTER_USE_BOTH);
 
+
+//        fn_print_die($contracts);
+
         $city = db_get_row('select * from ?:fargo_countries where parent_city_id=?i', 0);
         Tygh::$app['view']->assign('city', $city);
         Tygh::$app['view']->assign('contracts', $contracts);
