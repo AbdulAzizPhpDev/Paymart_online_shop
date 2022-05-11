@@ -117,3 +117,5 @@ function fn_authentication_get_user_short_info_pre($user_id, &$fields, $conditio
 
 
 
+
+

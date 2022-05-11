@@ -142,11 +142,39 @@ if ($mode == 'manage') {
 
 
         foreach ($returns as $item) {
-            $data['quantity'] = $quantity['number'];
+            $order_info = fn_get_order_info($item['order_id'], false, false);
 
+            $data['quantity'] = $quantity['number'];
             $data['data'][$item['order_id']] = $item;
-            $data['data'][$item['order_id']]['description'] = db_get_array("select * from ?:returned_product_descriptions where order_id = ?i ", $item['order_id']);
-            $data['data'][$item['order_id']]['image'] = db_get_array("select * from ?:returned_product_images where order_id = ?i ", $item['order_id']);
+            $data['data'][$item['order_id']]['user'] = db_get_row("select * from ?:users where user_id = ?i ", $order_info['user_id']);
+
+            $data['data'][$item['order_id']]['company'] = db_get_row("select * from ?:companies where company_id = ?i ", $item['vendor_id']);
+
+            $data['data'][$item['order_id']]['description']['user'] = db_get_row("select * from ?:returned_product_descriptions 
+                                                                                    where order_id = ?i and `from` = ?i ", $item['order_id'], $order_info['user_id']);
+
+            $data['data'][$item['order_id']]['description']['vendor'] = db_get_row("select * from ?:returned_product_descriptions 
+                                                                                      where order_id = ?i and `from` = ?i ", $item['order_id'], $item['vendor_id']);
+
+
+            $images = db_get_array("select * from ?:returned_product_images where order_id = ?i ", $item['order_id']);
+            foreach ($images as $image) {
+                $field = [
+                    'product_id',
+                    'company_id'
+                ];
+                $product_info = getProductInfo($image['product_id'], $field);
+
+                $new_array = [
+                    'image' => $image['path'],
+                    'name' => $product_info['descriptions'],
+                    'price' => $product_info['price']['price'],
+                    'quantity' => db_get_field("select amount from ?:order_details where order_id = ?i and product_id = ?i", $item['order_id'], $image['product_id'])
+                ];
+
+                $data['data'][$item['order_id']]['product_data'][$image['product_id']] = $new_array;
+
+            }
         }
 
 
@@ -155,17 +183,48 @@ if ($mode == 'manage') {
         $company_id = db_get_fields("select company_id from ?:users where user_id = ?i", $auth['user_id']);
 
         $quantity = db_get_row("select COUNT(order_id) as number from ?:returned_products  where vendor_id = ?i", $company_id);
+
         $returns = db_get_array("select *  from ?:returned_products where vendor_id = ?i", $company_id);
 
 
         foreach ($returns as $item) {
+            $order_info = fn_get_order_info($item['order_id'], false, false);
+
             $data['quantity'] = $quantity['number'];
+
             $data['data'][$item['order_id']] = $item;
-            $data['data'][$item['order_id']]['description'] = db_get_array("select * from ?:returned_product_descriptions where order_id = ?i ", $item['order_id']);
-            $data['data'][$item['order_id']]['image'] = db_get_array("select * from ?:returned_product_images where order_id = ?i ", $item['order_id']);
+
+            $data['data'][$item['order_id']]['user'] = db_get_row("select * from ?:users where user_id = ?i ", $order_info['user_id']);
+
+            $data['data'][$item['order_id']]['description']['user'] = db_get_row("select * from ?:returned_product_descriptions 
+                                                                                  where order_id = ?i and `from` = ?i ", $item['order_id'], $order_info['user_id']);
+
+            $data['data'][$item['order_id']]['description']['vendor'] = db_get_row("select * from ?:returned_product_descriptions 
+                                                                                    where order_id = ?i and `from` = ?i ", $item['order_id'], $item['vendor_id']);
+
+            $images = db_get_array("select * from ?:returned_product_images where order_id = ?i ", $item['order_id']);
+
+            foreach ($images as $image) {
+                $field = [
+                    'product_id',
+                    'company_id'
+                ];
+                $product_info = getProductInfo($image['product_id'], $field);
+
+                $new_array = [
+                    'image' => $image['path'],
+                    'name' => $product_info['descriptions'],
+                    'price' => $product_info['price']['price'],
+                    'quantity' => db_get_field("select amount from ?:order_details where order_id = ?i and product_id = ?i", $item['order_id'], $image['product_id'])
+                ];
+
+                $data['data'][$item['order_id']]['product_data'][$image['product_id']] = $new_array;
+
+            }
         }
 
     }
+    fn_print_die($data);
     Tygh::$app['view']->assign('returned_products', $data);
 
 
