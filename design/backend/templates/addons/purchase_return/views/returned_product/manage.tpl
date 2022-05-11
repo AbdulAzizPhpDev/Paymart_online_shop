@@ -2,14 +2,14 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.css" />
 
 {script src="js/addons/installment/backend/admin/contracts/return.js"}
-{fn_print_die($returned_products)}
+{*{fn_print_die($returned_products['data'])}*}
 <div class="admin-contracts-list">
     <header class="header">
         <h1>Возврат</h1>
     </header>
 {*    {include file="addons/installment/views/installment_orders/components/statuses-tab.tpl"}*}
     {if !empty($returned_products['data'])}
-        {foreach $returned_products['data'] as $order_id => $order}
+        {foreach $returned_products['data'] as $order}
 {*            {include file="addons/installment/views/installment_orders/components/return-contract-item.tpl" order=$order is_admin=false}*}
             {include file="addons/purchase_return/views/returned_product/components/return-contract-item.tpl" order=$order}
         {/foreach}

@@ -224,7 +224,7 @@ if ($mode == 'manage') {
         }
 
     }
-    fn_print_die($data);
+//    fn_print_die($data);
     Tygh::$app['view']->assign('returned_products', $data);
 
 
