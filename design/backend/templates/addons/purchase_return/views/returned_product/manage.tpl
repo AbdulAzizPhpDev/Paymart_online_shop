@@ -2,18 +2,18 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.4/pagination.css" />
 
 {script src="js/addons/installment/backend/admin/contracts/return.js"}
-{*{fn_print_die($returned_products)}*}
+{*{fn_print_die($returned_products['data'])}*}
 <div class="admin-contracts-list">
     <header class="header">
         <h1>Возврат</h1>
     </header>
 {*    {include file="addons/installment/views/installment_orders/components/statuses-tab.tpl"}*}
-{*    {if !empty($return_orders)}*}
-{*        {foreach from=$paymart_orders->data item=order}*}
+    {if !empty($returned_products['data'])}
+        {foreach $returned_products['data'] as $order}
 {*            {include file="addons/installment/views/installment_orders/components/return-contract-item.tpl" order=$order is_admin=false}*}
-            {include file="addons/purchase_return/views/returned_product/components/return-contract-item.tpl"}
-{*        {/foreach}*}
-        <div class="pagination-contracts" data-contracts-count="{$paymart_orders->response->total}"></div>
+            {include file="addons/purchase_return/views/returned_product/components/return-contract-item.tpl" order=$order}
+        {/foreach}
+        <div class="pagination-contracts" data-contracts-count="{$returned_products['quantity']}"></div>
         {* Modal - Upload Act *}
         <div class="modal signin-modal return-cancel-modal" style="display: none">
             <div class="modal-header">
@@ -38,7 +38,7 @@
                 <button class="btn close-accept-return">{__('false')}</button>
             </div>
         </div>
-{*    {else}*}
-{*        <h4>Пусто</h4>*}
-{*    {/if}*}
+    {else}
+        <h4>Пусто</h4>
+    {/if}
 </div>

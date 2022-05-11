@@ -17,7 +17,8 @@
 
   const adminContractsState = {
     order_id: null,
-    contract_id: null,
+    user_id: null,
+    company_id: null,
     page: pageNumber,
     status: null,
     file: {
@@ -36,17 +37,45 @@
     },
     getParamsFromDom: function ($button) {
       adminContractsState.order_id = $button.data('order-id');
-      adminContractsState.contract_id = $button.data('contract-id');
+      adminContractsState.user_id = $button.data('user-id');
+      adminContractsState.company_id = $button.data('company-id');
     },
     returnCancel: function () {
+      const { company_id, order_id, user_id } = adminContractsState;
       const description = $cancelTextarea.val();
 
-      console.log('cancelling.... ' + description);
+      $.ceAjax('request', fn_url('returned_products.response'), {
+        method: 'POST',
+        data: {
+          company_id,
+          order_id,
+          user_id,
+          description,
+          status: 'canceled',
+        },
+        callback: function (response) {
+          console.log(response);
+        },
+      });
 
       $cancelModal.modal('hide');
     },
     returnAccept: function () {
-      console.log('accepting...');
+      const { company_id, order_id, user_id } = adminContractsState;
+
+      $.ceAjax('request', fn_url('returned_products.response'), {
+        method: 'POST',
+        data: {
+          company_id,
+          order_id,
+          user_id,
+          status: 'accepted',
+        },
+        callback: function (response) {
+          console.log(response);
+        },
+      });
+
       $acceptModal.modal('hide');
     },
     /*onChangeTabs: function () {

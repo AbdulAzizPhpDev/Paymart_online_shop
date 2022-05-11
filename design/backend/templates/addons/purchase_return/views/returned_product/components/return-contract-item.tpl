@@ -2,20 +2,24 @@
     <div class="head">
         <div class="info">
             <div class="contract-info">
-                <h3>Договор клиента № 13{* {$order->contract->id}*}</h3>
-                <p>от {*{$order->contract->created_at}*} 13.04.2022</p>
+                <h3>Договор клиента № {$order['contract_id']}</h3>
+                <p>от {$order['timestamp']|date_format}</p>
             </div>
-            <div class="buyer-info">
-                {if $order->buyer->name != null}
-                    <h3>{$order->buyer->surname} {$order->buyer->name} {$order->buyer->patronymic}</h3>
+            <div class="contract-info">
+                {if $order['user']['firstname'] != null}
+                    <h3>{$order['user']['firstname']} {$order['user']['lastname']}</h3>
                 {else}
                     <h3>Robert Fox (Test name)</h3>
                 {/if}
-                <p>Тел: {*{$order->buyer->phone}*}+998 99 819-88-24</p>
+                <p>Тел: {$order['user']['phone']}</p>
+            </div>
+            <div class="contract-info">
+                <h3>{$order['company']['company']}</h3>
+                <p>{$order['company']['state']} {$order['company']['address']}</p>
             </div>
         </div>
-        <div class="status status-active{*{$order->contract->status}*}">
-            {*{$order->contract->status_caption}*} Выполняется
+        <div class="status status-{$order['status']}">
+            {$order['status']}
         </div>
     </div>
     <div class="products-table">
@@ -27,95 +31,65 @@
                 <th scope="col">Кол-во</th>
                 <th scope="col">Цена</th>
                 <th scope="col">Сумма</th>
-                <th scope="col">Клиент</th>
-                <th scope="col">Вендор</th>
-                {*                <th scope="col">Сумма НДС</th>*}
-                {*                <th scope="col">Всего с НДС</th>*}
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>
-                    <img src="https://www.creditasia.uz/upload/iblock/956/smartfon-samsung-galaxy-s21-sm-g991b-ds-128gb-violet-1.jpg"
-                         alt=""
-                         width="80"
-                    >
-                </td>
-                <td>Смартфон SAMSUNG Galaxy S21 SM-G991B/DS (128GB) Violet</td>
-                <td>2</td>
-                <td>25000</td>
-                <td>50000</td>
-                <td rowspan="3">Lorem ipsum dolor sit amet, consectetur adipisicing elit. A atque autem consequatur
-                    debitis nostrum, porro sequi? Architecto aspernatur, consequuntur culpa, esse illum, magnam minus
-                    non omnis quia sit suscipit tenetur?
-                </td>
-                <td rowspan="3">Lorem ipsum dolor sit amet, consectetur adipisicing elit. A atque autem consequatur
-                    debitis nostrum, porro sequi? Architecto aspernatur, consequuntur culpa, esse illum, magnam minus
-                    non omnis quia sit suscipit tenetur?
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <img src="https://www.creditasia.uz/upload/iblock/5f7/noutbuk-asus-e410ma-211-tbsb-90nb0q15-m04710.jpg  "
-                         alt=""
-                         width="80"
-                    >
-                </td>
-                <td>Ноутбук ASUS E410MA-211.TBSB (90NB0Q15-M04710)</td>
-                <td>1</td>
-                <td>15200</td>
-                <td style="border-right: 1px solid rgba(0,0,0,0.12)">25400</td>
-            </tr>
-            {*{foreach from=$order->products item=product}
+            {foreach $order['product_data'] as $product_id => $product}
                 <tr>
-                    <td>{$product->name}</td>
-                    <td>Шт</td>
-                    <td>{$product->amount}</td>
-                    {if $is_admin}
-                        <td>{$product->price}</td>
-                        <td>{($product->price * $product->amount) - ((($product->price * $product->amount) / 100) * 15 )}</td>
-                        <td>15%</td>
-                        <td>{((($product->price * $product->amount) / 100) * 15 )}</td>
-                        <td>{$product->price * $product->amount}</td>
-                    {else}
-                        <td>{$product->price_discount}</td>
-                        <td>{($product->price_discount * $product->amount) - ((($product->price_discount * $product->amount) / 100) * 15 )}</td>
-                        <td>15%</td>
-                        <td>{((($product->price_discount * $product->amount) / 100) * 15 )}</td>
-                        <td>{$product->price_discount * $product->amount}</td>
-                    {/if}
+                    <td>
+                        <img src="/var/custom_files/{$product['image']}" alt="" width="80">
+                    </td>
+                    <td>{$product['name']}</td>
+                    <td>{$product['quantity']}</td>
+                    <td>{$product['price']}</td>
+                    <td>{$product['quantity'] * $product['price']}</td>
                 </tr>
-            {/foreach}*}
+            {/foreach}
             <tr class="total-price">
                 <td colspan="4">Итого</td>
-                <td style="border-right: 1px solid rgba(0,0,0,0.12)">75400</td>
-                {*                <td></td>*}
-                {*                {if $is_admin}*}
-                {*                    <td>{$order->contract->total|number_format:false:false:' '}</td>*}
-                {*                {else}*}
-                {*                    <td>{$order->partner_total|number_format:false:false:' '}</td>*}
-                {*                {/if}*}
+                <td>75400</td>
             </tr>
             </tbody>
             <tfoot>
             <tr>
-                <td colspan="7"></td>
+                <td colspan="5"></td>
             </tr>
             </tfoot>
         </table>
+
+        {if !empty($order['description'])}
+            <section class="comments">
+                <h3 style="margin-bottom: 0;">Комментарии</h3>
+                <dl style="margin: 0;">
+                    {if !empty($order['description']['user'])}
+                        <dt>Клиент</dt>
+                        <dd>{$order['description']['user']['description']}</dd>
+                    {/if}
+                    {if !empty($order['description']['vendor'])}
+                        <dt>Вендор</dt>
+                        <dd>{$order['description']['vendor']['description']}</dd>
+                    {/if}
+                </dl>
+            </section>
+        {/if}
+
         <div style="text-align: right;">
-            <button class="btn return-accept-btn" data-contract-id="23" data-order-id="12">
+            <button
+                    class="btn return-accept-btn"
+                    data-user-id="{$order['user']['user_id']}"
+                    data-order-id="{$order['order_id']}"
+                    data-company-id="{$order['company']['company_id']}"
+            >
                 {__('accept')}
             </button>
-            <button class="btn return-cancel-btn" data-contract-id="32" data-order-id="21">
+            <button
+                    class="btn return-cancel-btn"
+                    data-user-id="{$order['user']['user_id']}"
+                    data-order-id="{$order['order_id']}"
+                    data-company-id="{$order['company']['company_id']}"
+            >
                 {__('decline')}
             </button>
-            {*            <button class="btn tracking-contract"*}
-            {*                    data-contract-id="23"*}
-            {*                    data-order-id="12"*}
-            {*            >*}
-            {*                {__('accept')}*}
-            {*            </button>*}
         </div>
     </div>
 </div>
