@@ -34,12 +34,14 @@
                                  data-order-id="{$contract->order_id}"
                             />
                             {if !$contract->return_status}
-                                <span style="font-size: 18px; margin-left: 16px;"
+                                <span style="font-size: 18px; margin-left: 16px; color: red;"
                                       class="cm-dialog-opener cm-dialog-auto-size cancelling-order"
                                       data-ca-target-id="cause-cancel-contract-modal"
                                       data-order-id="{$contract->order_id}"
                                       data-uploader-label="{__('theme_editor.upload_image')}"
-                                >&times;</span>
+                                >&olarr;</span>
+                            {else}
+                                <div style="font-size: 18px; margin-left: 16px; color: green">&checkmark;</div>
                             {/if}
                         </div>
                     </div>
