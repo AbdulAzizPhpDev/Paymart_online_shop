@@ -322,7 +322,4 @@ if ($mode == 'vendor') {
     Tygh::$app['view']->assign('paymart_orders', $order_res);
 }
 
-if ($mode == 'return') {
-
-}
 
