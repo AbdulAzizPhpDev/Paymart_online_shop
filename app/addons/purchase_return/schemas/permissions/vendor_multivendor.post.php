@@ -22,6 +22,9 @@ $schema['controllers']['returned_product'] = [
         'manage' => [
             'permissions' => true,
         ],
+        'response' => [
+            'permissions' => true,
+        ],
     ],
 ];
 

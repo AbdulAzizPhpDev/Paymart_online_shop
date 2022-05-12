@@ -44,7 +44,7 @@
       const { company_id, order_id, user_id } = adminContractsState;
       const description = $cancelTextarea.val();
 
-      $.ceAjax('request', fn_url('returned_products.response'), {
+      $.ceAjax('request', fn_url('returned_product.response'), {
         method: 'POST',
         data: {
           company_id,
@@ -63,7 +63,7 @@
     returnAccept: function () {
       const { company_id, order_id, user_id } = adminContractsState;
 
-      $.ceAjax('request', fn_url('returned_products.response'), {
+      $.ceAjax('request', fn_url('returned_product.response'), {
         method: 'POST',
         data: {
           company_id,

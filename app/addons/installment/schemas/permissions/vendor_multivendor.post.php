@@ -55,12 +55,15 @@ $schema['controllers']['installment'] = [
         'view' => [
             'permissions' => true,
         ],
+
         'update' => [
             'permissions' => false,
         ],
+
         'delete' => [
             'permissions' => false,
         ],
+
         'm_delete' => [
             'permissions' => false,
         ],
