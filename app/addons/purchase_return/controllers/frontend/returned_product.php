@@ -101,6 +101,7 @@ if ($mode == 'manage') {
     $order_items = db_get_array("SELECT * FROM ?:orders AS order_data
                           INNER JOIN ?:order_details AS order_detail ON order_data.order_id = order_detail.order_id  
                           WHERE order_data.p_contract_id = ?i  ", $_REQUEST['contract_id']);
+
     if (!empty($order_items)) {
         foreach ($order_items as $item) {
             $products[] = unserialize($item['extra']);

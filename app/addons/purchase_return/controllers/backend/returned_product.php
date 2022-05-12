@@ -13,7 +13,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($mode == 'returns') {
         fn_print_die($mode);
     }
+
+
     if ($mode == 'response') {
+
+
 
         $contract_id = 64722;
         $category_name = '';
