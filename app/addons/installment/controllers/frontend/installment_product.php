@@ -627,13 +627,30 @@ if ($mode == 'profile-contracts') {
                 }
             }
         }
+
         foreach ($payed_list as $item => $value) {
             $payed_list_group_by_contract_id[$item] = count($value);
         };
 
-        $contracts = array_filter($result->contracts, function ($contract, $key) {
-            return $contract->status == 'active';
-        }, ARRAY_FILTER_USE_BOTH);
+//        $contracts = array_filter($result->contracts, function ($contract, $key) {
+//            return $contract->status == 'active';
+//        }, ARRAY_FILTER_USE_BOTH);
+
+        foreach ($result->contracts as $item) {
+
+            if ($item->status == 'active') {
+                $check = db_get_row("select * from ?:returned_products where contract_id = ?i and status='processing' ", $item->order_id);
+                if ($check)
+                    $item->return_status = true;
+                else
+                    $item->return_status = false;
+
+                $contracts[] = $item;
+            }
+//
+        }
+
+        fn_print_die($contracts);
 
 
 //        fn_print_die($contracts);
