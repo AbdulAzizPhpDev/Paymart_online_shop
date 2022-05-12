@@ -74,22 +74,33 @@
         {/if}
 
         <div style="text-align: right;">
-            <button
-                    class="btn return-accept-btn"
-                    data-user-id="{$order['user']['user_id']}"
-                    data-order-id="{$order['order_id']}"
-                    data-company-id="{$order['company']['company_id']}"
-            >
-                {__('accept')}
-            </button>
-            <button
-                    class="btn return-cancel-btn"
-                    data-user-id="{$order['user']['user_id']}"
-                    data-order-id="{$order['order_id']}"
-                    data-company-id="{$order['company']['company_id']}"
-            >
-                {__('decline')}
-            </button>
+            {if ($order['status'] == 'processing')}
+                <button
+                        class="btn return-accept-btn"
+                        data-user-id="{$order['user']['user_id']}"
+                        data-order-id="{$order['order_id']}"
+                        data-company-id="{$order['company']['company_id']}"
+                >
+                    {__('accept')}
+                </button>
+                <button
+                        class="btn return-cancel-btn"
+                        data-user-id="{$order['user']['user_id']}"
+                        data-order-id="{$order['order_id']}"
+                        data-company-id="{$order['company']['company_id']}"
+                >
+                    {__('decline')}
+                </button>
+            {else}
+                <button
+                        class="btn reset-btn"
+                        data-user-id="{$order['user']['user_id']}"
+                        data-order-id="{$order['order_id']}"
+                        data-company-id="{$order['company']['company_id']}"
+                >
+                    {__('decline')}
+                </button>
+            {/if}
         </div>
     </div>
 </div>

@@ -17,6 +17,7 @@ var selectedMonth = e.options[e.selectedIndex].value;
 
 const $select = $('.tashkent-regions');
 const $input = $('.not-tashkent-region');
+const $alertContainer = $('.delivery-date-container');
 
 const otpState = {
   baseUrl: $('.api_base_url').val(),
@@ -141,6 +142,12 @@ $(document).ready(function () {
         city_id: selectedOptionAdress,
       },
       callback: function (response) {
+        if ($alertContainer.hasClass('d-none')) {
+          $alertContainer.removeClass('d-none');
+        }
+
+        $alertContainer.text('delivery date 14');
+
         if (response.result == null) {
           $input.removeClass('d-none').focus();
           $select.addClass('d-none');

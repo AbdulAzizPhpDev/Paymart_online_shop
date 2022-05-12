@@ -7984,10 +7984,13 @@ Alerts & Notifications
     cursor: pointer;
 }
 
-.alert-success, .alert-warning, .alert-error {
+.alert-success, .alert-warning, .alert-error, .alert-info {
     position: relative;
     margin: 7px 0 7px 0;
     border: 1px solid;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
     font-size: 100%;
     opacity: 0.96;
 }
@@ -7996,8 +7999,14 @@ Alerts & Notifications
     background: #d0eaae;
     color: #496e16;
 }
+.alert-info {
+    border-color: #bce8f1;
+    background: #d9edf7;
+    color: #31708f;
+}
+
 .alert-success .close {
-    color: #8bc045;
+    color: inherit;
 }
 .alert-warning {
     border-color: #f39c12;

@@ -160,6 +160,8 @@
             </div>
         </div>
 
+        <div class="alert alert-info delivery-date-container d-none" style="padding: 10px 16px;" role="alert"></div>
+
         <div class="shipping-tab-content">
             <div class="row ty-m-none">
                 <div class="span5">
