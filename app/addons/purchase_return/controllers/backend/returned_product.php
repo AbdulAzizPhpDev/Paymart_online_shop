@@ -159,7 +159,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         } else {
             $order_id = $_REQUEST['order_id'];
-
             $order_check = db_get_row("select * from ?:returned_products  where order_id = ?i ", $order_id);
 
 

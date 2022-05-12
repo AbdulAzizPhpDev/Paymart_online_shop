@@ -40,7 +40,7 @@
       adminContractsState.user_id = $button.data('user-id');
       adminContractsState.company_id = $button.data('company-id');
     },
-    returnCancel: function () {
+    cancel: function () {
       const { company_id, order_id, user_id } = adminContractsState;
       const description = $cancelTextarea.val();
 
@@ -60,7 +60,7 @@
 
       $cancelModal.modal('hide');
     },
-    returnAccept: function () {
+    accept: function () {
       const { company_id, order_id, user_id } = adminContractsState;
 
       $.ceAjax('request', fn_url('returned_product.response'), {
@@ -129,13 +129,13 @@
   // adminContractsMethods.initPagination();
 
   $showCancelModalBtn.on('click', adminContractsMethods.showCancelModal);
-  $confirmCancelBtn.on('click', adminContractsMethods.returnCancel);
+  $confirmCancelBtn.on('click', adminContractsMethods.cancel);
   $closeCancelModalBtn.on('click', function () {
     $cancelModal.modal('hide');
   });
 
   $showAcceptModalBtn.on('click', adminContractsMethods.showAcceptModal);
-  $confirmAcceptBtn.on('click', adminContractsMethods.returnAccept);
+  $confirmAcceptBtn.on('click', adminContractsMethods.accept);
   $('.close-accept-return').on('click', function () {
     $acceptModal.modal('hide');
   });
