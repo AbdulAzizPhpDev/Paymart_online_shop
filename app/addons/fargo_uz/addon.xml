@@ -14,6 +14,7 @@
             parent_city_id int(11) unsigned NOT NULL DEFAULT 0,
             country_name varchar(32) NOT NULL DEFAULT 'Uzbekistan',
             city_name varchar(32) NOT NULL,
+            extra_days smallint unsigned NOT NULL DEFAULT 0,
             PRIMARY KEY (id)
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
         </item>
@@ -31,12 +32,23 @@
         <item for="install">
             CREATE TABLE IF NOT EXISTS ?:fargo_price_list (
             city_id mediumint unsigned NOT NULL,
-            price int(11) DEFAULT 0k
+            price int(11) DEFAULT 0
             ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
         </item>
+        <item for="install">
+            CREATE TABLE IF NOT EXISTS ?:fargo_deliver_time (
+            id int unsigned NOT NULL AUTO_INCREMENT,
+            `from` int(11) DEFAULT 0,
+            `to` int(11) DEFAULT 0,
+            days smallint unsigned NOT NULL DEFAULT 0,
+            PRIMARY KEY (id)
+            ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+        </item>
+
         <item for="uninstall">DROP TABLE IF EXISTS `?:fargo_countries`</item>
         <item for="uninstall">DROP TABLE IF EXISTS `?:fargo_orders`</item>
         <item for="uninstall">DROP TABLE IF EXISTS `?:fargo_price_list`</item>
+        <item for="uninstall">DROP TABLE IF EXISTS `?:fargo_deliver_time`</item>
     </queries>
     <functions>
         <item for="install">fn_fargo_uz_install</item>
