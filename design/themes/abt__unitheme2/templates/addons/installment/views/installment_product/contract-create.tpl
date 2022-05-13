@@ -185,9 +185,8 @@
                 <div class="span5">
                     <p for="formAddress3">{__('district')}</p>
                     <div class="input-paying__unique">
-                        <select name="formAddress3" id="formAddress3" class="tashkent-regions d-none">
-                        </select>
-                        <input type="text" placeholder="{__('district')}" class="not-tashkent-region">
+                        <select name="formAddress3" id="formAddress3" class="tashkent-regions"></select>
+{*                        <input type="text" placeholder="{__('district')}" class="not-tashkent-region">*}
                     </div>
                 </div>
             </div>

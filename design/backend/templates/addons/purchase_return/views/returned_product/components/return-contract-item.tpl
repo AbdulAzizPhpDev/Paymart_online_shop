@@ -98,7 +98,7 @@
                         data-order-id="{$order['order_id']}"
                         data-company-id="{$order['company']['company_id']}"
                 >
-                    {__('decline')}
+                    Reset
                 </button>
             {/if}
         </div>
