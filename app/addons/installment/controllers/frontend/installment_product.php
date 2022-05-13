@@ -584,6 +584,7 @@ if ($mode == "contract-create") {
         $calculator_res_data = $response->data->price;
         $redirect_url = fn_url('/');
         $city_name = db_get_field('SELECT city_name FROM ?:fargo_countries WHERE city_id = ?i', $company['city']);
+
         $company['full_address'] = $city_name . ' ' . __('city') . ' ' . $company['state'] . ' ' . $company['address'];
 
         Tygh::$app['view']->assign('city', $city);
