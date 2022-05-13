@@ -635,7 +635,7 @@ if ($mode == 'profile-contracts') {
         foreach ($result->contracts as $item) {
 
             if ($item->status == 'active') {
-                $check = db_get_row("select * from ?:returned_products where contract_id = ?i and status='processing' ", $item->order_id);
+                $check = db_get_row("select * from ?:returned_products where contract_id = ?i ", $item->order_id);
                 if ($check)
                     $item->return_status = true;
                 else
