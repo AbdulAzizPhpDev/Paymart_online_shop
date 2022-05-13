@@ -31,7 +31,7 @@ const otpState = {
   selectedFirstAdress3: null,
   contractId: null,
   cityModal: null,
-  addressType: 'shipping'
+  addressType: 'shipping',
 };
 
 let urlLast = otpState.baseUrl + '/buyers/credit/add';
@@ -54,7 +54,7 @@ $(document).ready(function () {
   $.each($tabs, function () {
     $(this).on('click', function () {
       if ($selfCall.hasClass('active')) {
-        otpState.addressType = 'self'
+        otpState.addressType = 'self';
 
         $selfCall.removeClass('active');
         $selfCallTabContent.removeClass('d-none');
@@ -62,7 +62,7 @@ $(document).ready(function () {
         $shipping.addClass('active');
         $shippingTabContent.addClass('d-none');
       } else {
-        otpState.addressType = 'shipping'
+        otpState.addressType = 'shipping';
 
         $selfCall.addClass('active');
         $selfCallTabContent.addClass('d-none');
@@ -100,7 +100,7 @@ $(document).ready(function () {
       },
       success: function (response) {
         const total = new Intl.NumberFormat().format(response.data.price.total);
-        const monthly = new Intl.NumberFormat().format(response.data.price.month)
+        const monthly = new Intl.NumberFormat().format(response.data.price.month);
 
         $('.total-price .text .price span').html(total);
         $('.monthly-payment .text .price-month span').html(monthly);
@@ -132,6 +132,8 @@ $(document).ready(function () {
       }
     },
   });
+
+  let days = 1;
   $('#formAddress2').change(function () {
     var selectedOptionAdress = formAdress.options[formAdress.selectedIndex].value;
     otpState.selectedFirstAdress = selectedOptionAdress;
@@ -146,20 +148,26 @@ $(document).ready(function () {
           $alertContainer.removeClass('d-none');
         }
 
-        $alertContainer.text('delivery date 14');
+        $alertContainer.text(`delivery date ${days++}`);
 
-        if (response.result == null) {
-          $input.removeClass('d-none').focus();
-          $select.addClass('d-none');
-        } else {
-          $select.removeClass('d-none');
-          $($select).empty();
-          $input.addClass('d-none');
-          response.result.forEach(number => {
-            const option = `<option value="${number.city_id}" selected>${number.city_name}</option>`;
-            $select.append(option);
-          });
+        // if (response.result == null) {
+        //   $input.removeClass('d-none').focus();
+        //   $select.addClass('d-none');
+        // } else {
+        // $select.removeClass('d-none');
+        // $input.addClass('d-none');
+        if (!response.hasOwnProperty('result') || response.result === null) {
+          console.error('result does not exist');
+          return false;
         }
+
+        $($select).empty();
+
+        response.result.forEach(number => {
+          const option = `<option value="${number.city_id}" selected>${number.city_name}</option>`;
+          $select.append(option);
+        });
+        // }
       },
     });
   });

@@ -39,12 +39,23 @@
                                       data-ca-target-id="cause-cancel-contract-modal"
                                       data-order-id="{$contract->order_id}"
                                       data-uploader-label="{__('theme_editor.upload_image')}"
-                                >&olarr;</span>
+                                >&olarr; Возврат</span>
                             {else}
                                 <div style="font-size: 18px; margin-left: 16px; color: green">&checkmark;</div>
                             {/if}
                         </div>
                     </div>
+
+                    {if $contract->return_status}
+                        <div class="header ty-mt-l ty-mb-s">
+                            <div class="info">
+                                <h3>Возврат № 2</h3>
+                            </div>
+                            <div class="status-container">
+                                <span class="status-card status_moderation">Processing</span>
+                            </div>
+                        </div>
+                    {/if}
 
                     <div class="progress active" data-percentage="{$group_by[$contract->contract_id]}"></div>
                     <div class="progress inactive"></div>
