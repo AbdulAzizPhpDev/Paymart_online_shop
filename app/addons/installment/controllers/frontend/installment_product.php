@@ -583,9 +583,10 @@ if ($mode == "contract-create") {
 
         $company_p_i = db_get_field('select parent_city_id from ?:fargo_countries where city_id=?i ', $company['city']);
 
-        $city = db_get_array('SELECT * FROM ?:fargo_countries as country  inner join ?:fargo_deliver_time as d_time 
-                              on country.id = d_time.to and d_time.from = ?i
-                              WHERE country.parent_city_id=?i ORDER BY country.city_name ASC', $company_p_i, 0);
+        $city = db_get_array('SELECT *,country.id as id, d_time.id as deliver_id FROM ?:fargo_countries as country  
+                              inner join ?:fargo_deliver_time as d_time 
+                              on country.id = d_time.to  and d_time.from = ?i
+                              WHERE country.parent_city_id=?i ORDER BY country.city_name ASC',$company_p_i, 0);
 
 
         $response = php_curl('/order/calculate', $data, 'POST', $company['p_c_token']);
