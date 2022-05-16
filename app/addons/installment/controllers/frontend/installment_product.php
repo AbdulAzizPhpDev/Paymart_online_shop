@@ -586,7 +586,7 @@ if ($mode == "contract-create") {
         $city = db_get_array('SELECT *,country.id as id, d_time.id as deliver_id FROM ?:fargo_countries as country  
                               inner join ?:fargo_deliver_time as d_time 
                               on country.id = d_time.to  and d_time.from = ?i
-                              WHERE country.parent_city_id=?i ORDER BY country.city_name ASC',$company_p_i, 0);
+                              WHERE country.parent_city_id=?i ORDER BY country.city_name ASC', $company_p_i, 0);
 
 
         $response = php_curl('/order/calculate', $data, 'POST', $company['p_c_token']);
@@ -627,6 +627,7 @@ if ($mode == 'profile-contracts') {
         $result = $response;
         $payed_list = [];
         $payed_list_group_by_contract_id = [];
+        $contracts = null;
 
 
         foreach ($result->contracts as $key => $contract) {
@@ -646,18 +647,22 @@ if ($mode == 'profile-contracts') {
 
             if ($item->status == 'active') {
                 $check = db_get_row("select * from ?:returned_products where contract_id = ?i ", $item->order_id);
-                if ($check)
+                if ($check) {
+                    $item->descriptions['user'] = db_get_field(" select `description` from ?:returned_product_descriptions 
+                                                               where `from` = ?i and `to`=?i", $auth['user_id'], $check['vendor_id']);
+
+                    $item->descriptions['vendor'] = db_get_field(" select `description` from ?:returned_product_descriptions 
+                                                               where `from` = ?i and `to`=?i", $check['vendor_id'], $auth['user_id']);
                     $item->return_status = true;
-                else
+                } else {
+
                     $item->return_status = false;
+                }
 
                 $contracts[] = $item;
             }
         }
-
-
-        $city = db_get_row('select * from ?:fargo_countries where parent_city_id=?i', 0);
-        Tygh::$app['view']->assign('city', $city);
+        fn_print_die($contracts);
         Tygh::$app['view']->assign('contracts', $contracts);
         Tygh::$app['view']->assign('group_by', $payed_list_group_by_contract_id);
         Tygh::$app['view']->assign('user_api_token', $user['api_key']);
