@@ -18,6 +18,7 @@ var selectedMonth = e.options[e.selectedIndex].value;
 const $select = $('.tashkent-regions');
 const $input = $('.not-tashkent-region');
 const $alertContainer = $('.delivery-date-container');
+let deliveryDays = 0;
 
 const otpState = {
   baseUrl: $('.api_base_url').val(),
@@ -133,11 +134,12 @@ $(document).ready(function () {
     },
   });
 
-  let days = 1;
   $('#formAddress2').change(function () {
     var selectedOptionAdress = formAdress.options[formAdress.selectedIndex].value;
     otpState.selectedFirstAdress = selectedOptionAdress;
-    console.log(selectedOptionAdress);
+
+    deliveryDays = $(formAdress.options[formAdress.selectedIndex]).data('delivery-days');
+
     $.ceAjax('request', fn_url('get_city.city'), {
       method: 'post',
       data: {
@@ -148,7 +150,7 @@ $(document).ready(function () {
           $alertContainer.removeClass('d-none');
         }
 
-        $alertContainer.text(`delivery date ${days++}`);
+        $alertContainer.text(`delivery date without extra ${deliveryDays}`);
 
         // if (response.result == null) {
         //   $input.removeClass('d-none').focus();
@@ -164,7 +166,7 @@ $(document).ready(function () {
         $($select).empty();
 
         response.result.forEach(number => {
-          const option = `<option value="${number.city_id}" selected>${number.city_name}</option>`;
+          const option = `<option value="${number.city_id}" data-extra-days="${number.extra_days}" selected>${number.city_name}</option>`;
           $select.append(option);
         });
         // }
@@ -177,6 +179,9 @@ $(document).ready(function () {
   $($select).change(function () {
     var selectedOptionAdress3 = formAdress3.options[formAdress3.selectedIndex].value;
     otpState.selectedFirstAdress3 = selectedOptionAdress3;
+    const extraDays = $(formAdress3.options[formAdress3.selectedIndex]).data('extra-days');
+    const totalDays = deliveryDays + extraDays;
+    $alertContainer.text(`delivery date with ${totalDays}`);
   });
 });
 

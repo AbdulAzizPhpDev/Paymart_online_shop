@@ -1,7 +1,7 @@
 {script src="js/addons/installment/contract-create.js"}
 {script src="https://cdn.jsdelivr.net/npm/jquery-pinlogin@1.0.3/src/jquery.pinlogin.min.js"}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-pinlogin@1.0.3/src/jquery.pinlogin.css">
-{*{fn_print_die()}*}
+{*{fn_print_die($city)}*}
 {assign var=language_symbol value=$currencies[$smarty.const.CART_PRIMARY_CURRENCY].symbol}
 
 <input type="hidden" value="{$total_price}" id="price">
@@ -173,7 +173,7 @@
                     <div class="input-paying__unique">
                         <select name="formAddress2" id="formAddress2">
                             {foreach $city as $key => $value}
-                                <option value="{$value['id']}">{$value['city_name']}</option>
+                                <option value="{$value['id']}" data-delivery-days="{$value['days']}">{$value['city_name']}</option>
                             {/foreach}
                         </select>
                     </div>
