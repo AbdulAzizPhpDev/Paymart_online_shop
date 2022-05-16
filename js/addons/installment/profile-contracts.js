@@ -57,7 +57,7 @@
     },
     showTrackingModal: function (e) {
       const { cancellingOrder, trackingContract } = profileContractsMethods;
-
+      console.log(e.target);
       if (e.target.localName === 'span') {
         const orderId = $(this).find('span.cancelling-order').data('order-id');
         const uploaderLabel = $(this).find('span.cancelling-order').data('uploader-label');
@@ -80,6 +80,8 @@
 
         profileContractsState.order_id = orderId;
 
+      } else if (e.target.localName === 'h5') {
+        $(this).find('dl').slideToggle( "fast");
       }
     },
     cancellingOrder: function (order_id, uploaderLabel) {
@@ -276,6 +278,10 @@
           if (!response.hasOwnProperty('result')) {
             resetState();
             return console.error('error inside response has not result !');
+          }
+
+          if (response.result.status === 'success') {
+            window.location.reload();
           }
         },
         error: function (error) {

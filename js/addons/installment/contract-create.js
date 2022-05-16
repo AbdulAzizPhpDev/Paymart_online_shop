@@ -2,13 +2,9 @@
 var modal = document.getElementById('myModal');
 var modal1 = document.getElementById('myModal1');
 
-// Get the button that opens the modal
 var myBtn = document.getElementById('myBtn');
-
-// Get the <span> element that closes the modal
 var span = document.getElementsByClassName('close')[0];
 
-let valueConfirm = $('.confirm-contract').val();
 let e = document.getElementById('selectedId');
 let formAdress = document.getElementById('formAddress2');
 let formAdress3 = document.getElementById('formAddress3');
@@ -18,7 +14,9 @@ var selectedMonth = e.options[e.selectedIndex].value;
 const $select = $('.tashkent-regions');
 const $input = $('.not-tashkent-region');
 const $alertContainer = $('.delivery-date-container');
-let deliveryDays = 0;
+const $deliveryDateContainer = $('.delivery-date__days');
+let deliveryDays = 2;
+let totalDeliveryDays = 0;
 
 const otpState = {
   baseUrl: $('.api_base_url').val(),
@@ -35,7 +33,6 @@ const otpState = {
   addressType: 'shipping',
 };
 
-let urlLast = otpState.baseUrl + '/buyers/credit/add';
 let calculate = otpState.baseUrl + '/order/calculate';
 let price = document.getElementById('price').value;
 let quantity = document.getElementById('quantity').value;
@@ -43,7 +40,6 @@ let name_product = document.getElementById('name_product').value;
 let seller_token = document.getElementById('seller_token').value;
 let seller_id = document.getElementById('seller_id').value;
 let user_id = document.getElementById('user_id').value;
-// setUrl = fn_url('installment_product.set_contracts');
 const $selfCall = $('#self-call');
 const $shipping = $('#shipping');
 const $selfCallTabContent = $('.self-call-tab-content');
@@ -62,6 +58,7 @@ $(document).ready(function () {
 
         $shipping.addClass('active');
         $shippingTabContent.addClass('d-none');
+
       } else {
         otpState.addressType = 'shipping';
 
@@ -112,8 +109,25 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
+
+  Date.prototype.addDays = function (days) {
+    const date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
+  };
+
+  const calculateDeliveryDate = (deliveryDay, extraDay = 0) => {
+    const now = new Date();
+    const deliveryDate = now.addDays(deliveryDay + extraDay);
+    totalDeliveryDays = deliveryDate + extraDay;
+    const extraDeliveryDate = deliveryDate.addDays(2).toLocaleDateString();
+    const labelDelivery = `${deliveryDate.toLocaleDateString()} - ${extraDeliveryDate}`;
+
+    $deliveryDateContainer.text(labelDelivery);
+  };
+
   let selectedOptionAdress = $('#formAddress2 :selected').val();
-  // let selectedOptionAdress = select.options[select.selectedIndex].value;
+
   $.ceAjax('request', fn_url('get_city.city'), {
     method: 'post',
     data: {
@@ -126,8 +140,11 @@ $(document).ready(function () {
       } else {
         $select.removeClass('d-none');
         $input.addClass('d-none');
+
+        calculateDeliveryDate(deliveryDays, 0);
+
         response.result.forEach(number => {
-          const option = `<option value="${number.city_id}" selected>${number.city_name}</option>`;
+          const option = `<option value="${number.city_id}" data-extra-days="${number.extra_days}">${number.city_name}</option>`;
           $select.append(option);
         });
       }
@@ -137,8 +154,6 @@ $(document).ready(function () {
   $('#formAddress2').change(function () {
     var selectedOptionAdress = formAdress.options[formAdress.selectedIndex].value;
     otpState.selectedFirstAdress = selectedOptionAdress;
-
-    deliveryDays = $(formAdress.options[formAdress.selectedIndex]).data('delivery-days');
 
     $.ceAjax('request', fn_url('get_city.city'), {
       method: 'post',
@@ -150,52 +165,51 @@ $(document).ready(function () {
           $alertContainer.removeClass('d-none');
         }
 
-        $alertContainer.text(`delivery date without extra ${deliveryDays}`);
-
-        // if (response.result == null) {
-        //   $input.removeClass('d-none').focus();
-        //   $select.addClass('d-none');
-        // } else {
-        // $select.removeClass('d-none');
-        // $input.addClass('d-none');
         if (!response.hasOwnProperty('result') || response.result === null) {
           console.error('result does not exist');
           return false;
         }
 
+        deliveryDays = $(formAdress.options[formAdress.selectedIndex]).data('delivery-days') + Number(response.result[0].extra_days);
+
+        calculateDeliveryDate(deliveryDays, 0);
+
         $($select).empty();
 
         response.result.forEach(number => {
-          const option = `<option value="${number.city_id}" data-extra-days="${number.extra_days}" selected>${number.city_name}</option>`;
+          const option = `<option value="${number.city_id}" data-extra-days="${number.extra_days}">${number.city_name}</option>`;
           $select.append(option);
         });
         // }
       },
     });
   });
-});
 
-$(document).ready(function () {
   $($select).change(function () {
     var selectedOptionAdress3 = formAdress3.options[formAdress3.selectedIndex].value;
     otpState.selectedFirstAdress3 = selectedOptionAdress3;
+
     const extraDays = $(formAdress3.options[formAdress3.selectedIndex]).data('extra-days');
-    const totalDays = deliveryDays + extraDays;
-    $alertContainer.text(`delivery date with ${totalDays}`);
+
+    if ($alertContainer.hasClass('d-none')) {
+      $alertContainer.removeClass('d-none');
+    }
+
+    calculateDeliveryDate(deliveryDays, extraDays);
+
   });
 });
-
 
 // When the user clicks on the button, open the modal
 myBtn.onclick = function () {
   if (otpState.addressType === 'shipping') {
-    let valNullInputt = document.querySelector('.not-tashkent-region');
-    if (!$input.hasClass('d-none')) {
-      if (/^\s*$/g.test(valNullInputt.value) || valNullInputt.value.indexOf('\n') != -1) {
-        $('.not-tashkent-region').css('border', '1px solid red').focus();
-        return;
-      }
-    }
+    // let valNullInputt = document.querySelector('.not-tashkent-region');
+    // if (!$input.hasClass('d-none')) {
+    //   if (/^\s*$/g.test(valNullInputt.value) || valNullInputt.value.indexOf('\n') != -1) {
+    //     $('.not-tashkent-region').css('border', '1px solid red').focus();
+    //     return;
+    //   }
+    // }
 
     var val = document.querySelector('#story2').value;
     if (/^\s*$/g.test(val) || val.indexOf('\n') != -1) {
@@ -288,6 +302,7 @@ const confirmContract = () => {
       building: building,
       street: street,
       address_type: otpState.addressType,
+      delivery_day: totalDeliveryDays,
     },
     callback: function (response) {
       console.log('response-first', response);
