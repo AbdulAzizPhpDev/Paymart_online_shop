@@ -16,6 +16,7 @@ const $input = $('.not-tashkent-region');
 const $alertContainer = $('.delivery-date-container');
 const $deliveryDateContainer = $('.delivery-date__days');
 let deliveryDays = 2;
+let totalDeliveryDays = 0;
 
 const otpState = {
   baseUrl: $('.api_base_url').val(),
@@ -57,6 +58,7 @@ $(document).ready(function () {
 
         $shipping.addClass('active');
         $shippingTabContent.addClass('d-none');
+
       } else {
         otpState.addressType = 'shipping';
 
@@ -116,11 +118,10 @@ $(document).ready(function () {
 
   const calculateDeliveryDate = (deliveryDay, extraDay = 0) => {
     const now = new Date();
-    const deliveryDate = now.addDays(deliveryDay).toLocaleDateString();
-    const extraDeliveryDate = now.addDays(deliveryDay + extraDay).toLocaleDateString();
-    const totalDeliveryDays = extraDay !== 0 ? `- ${extraDeliveryDate}` : '';
-
-    const labelDelivery = deliveryDate + `${totalDeliveryDays}`;
+    const deliveryDate = now.addDays(deliveryDay + extraDay);
+    totalDeliveryDays = deliveryDate + extraDay;
+    const extraDeliveryDate = deliveryDate.addDays(2).toLocaleDateString();
+    const labelDelivery = `${deliveryDate.toLocaleDateString()} - ${extraDeliveryDate}`;
 
     $deliveryDateContainer.text(labelDelivery);
   };
@@ -143,7 +144,7 @@ $(document).ready(function () {
         calculateDeliveryDate(deliveryDays, 0);
 
         response.result.forEach(number => {
-          const option = `<option value="${number.city_id}" data-extra-days="${number.extra_days}" selected>${number.city_name}</option>`;
+          const option = `<option value="${number.city_id}" data-extra-days="${number.extra_days}">${number.city_name}</option>`;
           $select.append(option);
         });
       }
@@ -153,8 +154,6 @@ $(document).ready(function () {
   $('#formAddress2').change(function () {
     var selectedOptionAdress = formAdress.options[formAdress.selectedIndex].value;
     otpState.selectedFirstAdress = selectedOptionAdress;
-
-    deliveryDays = $(formAdress.options[formAdress.selectedIndex]).data('delivery-days');
 
     $.ceAjax('request', fn_url('get_city.city'), {
       method: 'post',
@@ -166,17 +165,19 @@ $(document).ready(function () {
           $alertContainer.removeClass('d-none');
         }
 
-        calculateDeliveryDate(deliveryDays, 0);
-
         if (!response.hasOwnProperty('result') || response.result === null) {
           console.error('result does not exist');
           return false;
         }
 
+        deliveryDays = $(formAdress.options[formAdress.selectedIndex]).data('delivery-days') + Number(response.result[0].extra_days);
+
+        calculateDeliveryDate(deliveryDays, 0);
+
         $($select).empty();
 
         response.result.forEach(number => {
-          const option = `<option value="${number.city_id}" data-extra-days="${number.extra_days}" selected>${number.city_name}</option>`;
+          const option = `<option value="${number.city_id}" data-extra-days="${number.extra_days}">${number.city_name}</option>`;
           $select.append(option);
         });
         // }
@@ -202,13 +203,13 @@ $(document).ready(function () {
 // When the user clicks on the button, open the modal
 myBtn.onclick = function () {
   if (otpState.addressType === 'shipping') {
-    let valNullInputt = document.querySelector('.not-tashkent-region');
-    if (!$input.hasClass('d-none')) {
-      if (/^\s*$/g.test(valNullInputt.value) || valNullInputt.value.indexOf('\n') != -1) {
-        $('.not-tashkent-region').css('border', '1px solid red').focus();
-        return;
-      }
-    }
+    // let valNullInputt = document.querySelector('.not-tashkent-region');
+    // if (!$input.hasClass('d-none')) {
+    //   if (/^\s*$/g.test(valNullInputt.value) || valNullInputt.value.indexOf('\n') != -1) {
+    //     $('.not-tashkent-region').css('border', '1px solid red').focus();
+    //     return;
+    //   }
+    // }
 
     var val = document.querySelector('#story2').value;
     if (/^\s*$/g.test(val) || val.indexOf('\n') != -1) {
@@ -301,6 +302,7 @@ const confirmContract = () => {
       building: building,
       street: street,
       address_type: otpState.addressType,
+      delivery_day: totalDeliveryDays,
     },
     callback: function (response) {
       console.log('response-first', response);
