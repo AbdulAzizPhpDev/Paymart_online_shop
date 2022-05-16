@@ -460,7 +460,7 @@ if ($mode == "contract-create") {
     $company = null;
     $total_products = 0;
     $total_price = 0;
-    $city = db_get_array('SELECT * FROM ?:fargo_countries WHERE parent_city_id=?i ORDER BY city_name ASC', 0);
+
     $field = [
         'product_id',
         'company_id'
@@ -580,6 +580,14 @@ if ($mode == "contract-create") {
             "user_id" => $user['p_user_id']
 
         ];
+
+        $company_p_i = db_get_field('select parent_city_id from ?:fargo_countries where city_id=?i ', $company['city']);
+
+        $city = db_get_array('SELECT * FROM ?:fargo_countries as country  inner join ?:fargo_deliver_time as d_time 
+                              on country.id = d_time.to and d_time.from = ?i
+                              WHERE country.parent_city_id=?i ORDER BY country.city_name ASC', $company_p_i, 0);
+
+
         $response = php_curl('/order/calculate', $data, 'POST', $company['p_c_token']);
         $calculator_res_data = $response->data->price;
         $redirect_url = fn_url('/');
