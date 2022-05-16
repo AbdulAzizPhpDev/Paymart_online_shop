@@ -114,11 +114,13 @@ $(document).ready(function () {
     return date;
   };
 
-  const calculateDeliveryDate = (deliveryDay) => {
+  const calculateDeliveryDate = (deliveryDay, extraDay = 0) => {
     const now = new Date();
-    const deliveryDate = now.addDays(deliveryDay);
+    const deliveryDate = now.addDays(deliveryDay).toLocaleDateString();
+    const extraDeliveryDate = now.addDays(deliveryDay + extraDay).toLocaleDateString();
+    const totalDeliveryDays = extraDay !== 0 ? `- ${extraDeliveryDate}` : '';
 
-    const labelDelivery = `${now.toLocaleDateString()} - ${deliveryDate.toLocaleDateString()}`;
+    const labelDelivery = deliveryDate + `${totalDeliveryDays}`;
 
     $deliveryDateContainer.text(labelDelivery);
   };
@@ -138,7 +140,7 @@ $(document).ready(function () {
         $select.removeClass('d-none');
         $input.addClass('d-none');
 
-        calculateDeliveryDate(deliveryDays);
+        calculateDeliveryDate(deliveryDays, 0);
 
         response.result.forEach(number => {
           const option = `<option value="${number.city_id}" data-extra-days="${number.extra_days}" selected>${number.city_name}</option>`;
@@ -164,7 +166,7 @@ $(document).ready(function () {
           $alertContainer.removeClass('d-none');
         }
 
-        calculateDeliveryDate(deliveryDays);
+        calculateDeliveryDate(deliveryDays, 0);
 
         if (!response.hasOwnProperty('result') || response.result === null) {
           console.error('result does not exist');
@@ -187,13 +189,12 @@ $(document).ready(function () {
     otpState.selectedFirstAdress3 = selectedOptionAdress3;
 
     const extraDays = $(formAdress3.options[formAdress3.selectedIndex]).data('extra-days');
-    const totalDays = deliveryDays + extraDays;
 
     if ($alertContainer.hasClass('d-none')) {
       $alertContainer.removeClass('d-none');
     }
 
-    calculateDeliveryDate(totalDays);
+    calculateDeliveryDate(deliveryDays, extraDays);
 
   });
 });
