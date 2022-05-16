@@ -2,13 +2,9 @@
 var modal = document.getElementById('myModal');
 var modal1 = document.getElementById('myModal1');
 
-// Get the button that opens the modal
 var myBtn = document.getElementById('myBtn');
-
-// Get the <span> element that closes the modal
 var span = document.getElementsByClassName('close')[0];
 
-let valueConfirm = $('.confirm-contract').val();
 let e = document.getElementById('selectedId');
 let formAdress = document.getElementById('formAddress2');
 let formAdress3 = document.getElementById('formAddress3');
@@ -18,7 +14,8 @@ var selectedMonth = e.options[e.selectedIndex].value;
 const $select = $('.tashkent-regions');
 const $input = $('.not-tashkent-region');
 const $alertContainer = $('.delivery-date-container');
-let deliveryDays = 0;
+const $deliveryDateContainer = $('.delivery-date__days');
+let deliveryDays = 2;
 
 const otpState = {
   baseUrl: $('.api_base_url').val(),
@@ -35,7 +32,6 @@ const otpState = {
   addressType: 'shipping',
 };
 
-let urlLast = otpState.baseUrl + '/buyers/credit/add';
 let calculate = otpState.baseUrl + '/order/calculate';
 let price = document.getElementById('price').value;
 let quantity = document.getElementById('quantity').value;
@@ -43,7 +39,6 @@ let name_product = document.getElementById('name_product').value;
 let seller_token = document.getElementById('seller_token').value;
 let seller_id = document.getElementById('seller_id').value;
 let user_id = document.getElementById('user_id').value;
-// setUrl = fn_url('installment_product.set_contracts');
 const $selfCall = $('#self-call');
 const $shipping = $('#shipping');
 const $selfCallTabContent = $('.self-call-tab-content');
@@ -112,8 +107,24 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
+
+  Date.prototype.addDays = function (days) {
+    const date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
+  };
+
+  const calculateDeliveryDate = (deliveryDay) => {
+    const now = new Date();
+    const deliveryDate = now.addDays(deliveryDay);
+
+    const labelDelivery = `${now.toLocaleDateString()} - ${deliveryDate.toLocaleDateString()}`;
+
+    $deliveryDateContainer.text(labelDelivery);
+  };
+
   let selectedOptionAdress = $('#formAddress2 :selected').val();
-  // let selectedOptionAdress = select.options[select.selectedIndex].value;
+
   $.ceAjax('request', fn_url('get_city.city'), {
     method: 'post',
     data: {
@@ -126,8 +137,11 @@ $(document).ready(function () {
       } else {
         $select.removeClass('d-none');
         $input.addClass('d-none');
+
+        calculateDeliveryDate(deliveryDays);
+
         response.result.forEach(number => {
-          const option = `<option value="${number.city_id}" selected>${number.city_name}</option>`;
+          const option = `<option value="${number.city_id}" data-extra-days="${number.extra_days}" selected>${number.city_name}</option>`;
           $select.append(option);
         });
       }
@@ -150,14 +164,8 @@ $(document).ready(function () {
           $alertContainer.removeClass('d-none');
         }
 
-        $alertContainer.text(`delivery date without extra ${deliveryDays}`);
+        calculateDeliveryDate(deliveryDays);
 
-        // if (response.result == null) {
-        //   $input.removeClass('d-none').focus();
-        //   $select.addClass('d-none');
-        // } else {
-        // $select.removeClass('d-none');
-        // $input.addClass('d-none');
         if (!response.hasOwnProperty('result') || response.result === null) {
           console.error('result does not exist');
           return false;
@@ -173,18 +181,22 @@ $(document).ready(function () {
       },
     });
   });
-});
 
-$(document).ready(function () {
   $($select).change(function () {
     var selectedOptionAdress3 = formAdress3.options[formAdress3.selectedIndex].value;
     otpState.selectedFirstAdress3 = selectedOptionAdress3;
+
     const extraDays = $(formAdress3.options[formAdress3.selectedIndex]).data('extra-days');
     const totalDays = deliveryDays + extraDays;
-    $alertContainer.text(`delivery date with ${totalDays}`);
+
+    if ($alertContainer.hasClass('d-none')) {
+      $alertContainer.removeClass('d-none');
+    }
+
+    calculateDeliveryDate(totalDays);
+
   });
 });
-
 
 // When the user clicks on the button, open the modal
 myBtn.onclick = function () {
