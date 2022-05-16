@@ -23,6 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
 
             $text = "";
+
             $company_id = 0;
 
             if ($auth['user_type'] == "A") {
@@ -81,6 +82,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                     $total_weight += $data['weight'] * $data['amount'];
                     $total_amount += $data['amount'];
+
+                    product_check_status($product_id, $data['amount']);
+
                 }
 
                 $category_names = db_get_array('select category.category as name from ?:products_categories as product 
