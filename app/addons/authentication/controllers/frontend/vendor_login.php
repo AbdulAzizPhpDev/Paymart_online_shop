@@ -182,6 +182,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             $ekey = fn_generate_ekey($user_data['user_id'], 'U', SECONDS_IN_DAY);
 
                             $url = fn_url("vendor.php?dispatch=auth.ekey_login&ekey=$ekey&company_id=$vendor_id");
+
                             $res = [
                                 'result' => $check_pass_res,
                                 'url' => $url

@@ -171,6 +171,7 @@
                     <p for="inputAddress">{__('country')}</p>
                     <input class="repeat-input" type="text" id="inputAddress" disabled value="Узбекистан">
                 </div>
+
                 <div class="span5">
                     <p for="formAddress2">{__('city')}</p>
                     <div class="input-paying__unique">

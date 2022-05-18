@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<addon scheme="3.0" edition_type="ROOT,ULT:VENDOR">
+    <!-- Add-on identifier. It must be equal to the catalog name in which the add-on resides -->
+    <id>demons</id>
+    <name>Demons Paymart</name>
+    <!-- Add-on version -->
+    <version>1.0</version>
+    <description>Демоны для работы paymart
+    </description>
+
+    <default_language>en</default_language>
+    <priority>1</priority>
+    <position>150</position>
+
+    <status>active</status>
+
+    <authors>
+        <author>
+            <name>Paymart</name>
+            <email>info@paymart.uz</email>
+        </author>
+    </authors>
+    <queries>
+
+        <item for="install" editions="ULTIMATE,MULTIVENDOR">
+            ALTER TABLE `?:categories` ADD COLUMN IF NOT EXISTS product_amount INT NULL DEFAULT 0;
+        </item>
+
+    </queries>
+
+    <functions>
+        <item for="install">categories_hide</item>
+    </functions>
+
+</addon>
+

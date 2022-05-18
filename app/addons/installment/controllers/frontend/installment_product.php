@@ -583,7 +583,8 @@ if ($mode == "contract-create") {
 
         $company_p_i = db_get_field('select parent_city_id from ?:fargo_countries where city_id=?i ', $company['city']);
 
-        $city = db_get_array('SELECT *,country.id as id, d_time.id as deliver_id FROM ?:fargo_countries as country  
+
+        $city = db_get_array('SELECT distinct(city_name),country.id as id, days FROM ?:fargo_countries as country  
                               inner join ?:fargo_deliver_time as d_time 
                               on country.id = d_time.to  and d_time.from = ?i
                               WHERE country.parent_city_id=?i ORDER BY country.city_name ASC', $company_p_i, 0);
@@ -657,16 +658,19 @@ if ($mode == 'profile-contracts') {
 
                     $item->descriptions['vendor'] = db_get_field(" select `description` from ?:returned_product_descriptions 
                                                                where `from` = ?i and `to`=?i", $check['vendor_id'], $auth['user_id']);
+
                     $item->return_status = true;
+
                 } else {
 
                     $item->return_status = false;
+
                 }
 
                 $contracts[] = $item;
             }
         }
-//        fn_print_die($contracts);
+
         Tygh::$app['view']->assign('contracts', $contracts);
         Tygh::$app['view']->assign('group_by', $payed_list_group_by_contract_id);
         Tygh::$app['view']->assign('user_api_token', $user['api_key']);
