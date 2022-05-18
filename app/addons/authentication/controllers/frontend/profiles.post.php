@@ -103,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if ($response->status == "success") {
 
-            $user_info['api_key'] = $response->data->access_token;
+            $user_info['api_key'] = $response->data->api_token;
 
             $user_info['p_user_id'] = $response->data->user_id;
 
