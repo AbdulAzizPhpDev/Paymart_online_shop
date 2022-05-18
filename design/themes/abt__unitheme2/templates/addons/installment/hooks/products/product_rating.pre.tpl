@@ -1,0 +1,1 @@
+<p>installment price: 2582000</p>
