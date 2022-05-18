@@ -624,11 +624,15 @@ if ($mode == 'profile-contracts') {
         $user = db_get_row('SELECT * FROM ?:users WHERE user_id = ?i', $auth['user_id']);
         $response = php_curl('/buyer/contracts', [], 'GET', $user['api_key']);
 
+        if ($response->status == 'error') {
+            Tygh::$app['view']->assign('contracts', $contract['errors'] = showErrors($response->response->message));
+            return false;
+        }
+
         $result = $response;
         $payed_list = [];
         $payed_list_group_by_contract_id = [];
         $contracts = null;
-
 
         foreach ($result->contracts as $key => $contract) {
             $result->contracts[$key]->status = InstallmentVar::Status[$contract->status];
