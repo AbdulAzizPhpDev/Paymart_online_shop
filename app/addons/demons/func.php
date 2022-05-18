@@ -96,16 +96,31 @@ function fn_demons_update_product_pre(&$product_data, $product_id, $lang_code, $
 function product_check_status($product_id, $amount, $type = true)
 {
     //получение текущего количество
-    $cur_amount = db_get_field("SELECT amount FROM ?:products where product_id = " . $product_id);
+    $cur_amount = db_get_field("SELECT amount FROM ?:products where product_id = ?i", $product_id);
     //обновляем количество
-    $new_amount = $type == true ? $cur_amount + $amount : $cur_amount - $amount;
+    $new_amount = ($type == true) ? ($cur_amount + $amount) : ($cur_amount - $amount);
     //меняем статус
     $status = $new_amount > 0 ? 'A' : 'H';
     //получение текущего количество
-    db_query("update ?:products set amount = " . $new_amount . ", status = '" . $status . "' where product_id = " . $product_id);
+
+    $data = [
+        "amount" => $new_amount,
+        "status" => $status
+    ];
+
+    db_query("update ?:products set ?u where product_id = ?i", $data, $product_id);
+
     //если продукт не остался обновляем статус категорий
+
     if ($new_amount == 0) categories_hide($product_id);
 
+}
+
+function fn_demons_gather_additional_product_data_post(&$product, $auth, $params)
+{
+    $precent = $product['price'] / 100 * 44;
+    $new_price = round(($product['price'] + $precent) / 12);
+    $product['installment'] = $new_price;
 }
 
 

@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (filter_var($contract_status, FILTER_VALIDATE_BOOLEAN)) {
 
             $order_data = [
-                "status" => OrderStatuses::INCOMPLETED
+                "status" => OrderStatuses::PAID
             ];
 
             $data_confirm = [
