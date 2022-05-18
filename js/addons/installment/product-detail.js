@@ -177,6 +177,7 @@
       getProductPrice(product.price, event.target.value);
     },
     radioHandler: function () {
+      $('.hard-code-installment-price').css('display', 'none');
       const $radios = $('.installment-periods input[type="radio"]');
 
       $.each($radios, function (index, radio) {
