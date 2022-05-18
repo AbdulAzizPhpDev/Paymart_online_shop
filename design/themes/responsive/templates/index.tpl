@@ -42,10 +42,6 @@ $auth.user_type === "UserTypes::ADMIN"|enum
         class="{if $pb_is_bottom_panel_open}bp-panel-active{/if}"
 >
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
-    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
-
-
     {capture name="page_title"}
         {hook name="index:title"}
         {if $page_title}

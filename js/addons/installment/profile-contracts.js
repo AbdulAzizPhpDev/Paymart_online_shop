@@ -81,7 +81,7 @@
         profileContractsState.order_id = orderId;
 
       } else if (e.target.localName === 'h5') {
-        $(this).find('dl').slideToggle( "fast");
+        $(this).find('dl').slideToggle('fast');
       }
     },
     cancellingOrder: function (order_id, uploaderLabel) {
@@ -277,12 +277,16 @@
         success: function (response) {
           if (!response.hasOwnProperty('result')) {
             resetState();
-            return console.error('error inside response has not result !');
+            console.error('error inside response has not result !');
+            return false;
           }
 
-          if (response.result.status === 'success') {
-            window.location.reload();
+          if (response.result.status === 'error') {
+            console.error('result status is error');
+            return false;
           }
+          
+          window.location.reload();
         },
         error: function (error) {
           resetState();
