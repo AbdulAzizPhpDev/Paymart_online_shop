@@ -121,6 +121,7 @@ function fn_demons_gather_additional_product_data_post(&$product, $auth, $params
     $precent = $product['price'] / 100 * 44;
     $new_price = round(($product['price'] + $precent) / 12);
     $product['installment'] = $new_price;
-}
 
+
+}
 
