@@ -5,7 +5,13 @@
                 <h3>Договор клиента № {$order->contract->id}</h3>
                 <p>от {$order->contract->created_at}</p>
             </div>
-            <div class="buyer-info">
+            {if (!empty($order->company))}
+                <div class="contract-info">
+                    <h3>{$order->company['company']}</h3>
+                    <p>{$order->company['address']}</p>
+                </div>
+            {/if}
+            <div class="contract-info">
                 {if $order->buyer->name != null}
                     <h3>{$order->buyer->surname} {$order->buyer->name} {$order->buyer->patronymic}</h3>
                 {else}
