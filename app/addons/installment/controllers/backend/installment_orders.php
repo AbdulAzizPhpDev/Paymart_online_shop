@@ -206,11 +206,16 @@ if ($mode == "index") {
         "limit" => 10,
         "offset" => $offset,
         "orderByDesc" => "created_at",
-        "api_token" => "76d66c5a5356104a8fc6784e007d9c33"
+        "api_token" => "0621eee19912e71a4992d663184344a1"
     ];
 
     $order_res = php_curl('/orders/list', $data, 'POST', null);
 
+    foreach ($order_res->data as $index => $order) {
+        $order->company = db_get_row("select * from ?:companies where p_c_id = ?i ", $order->company_id);
+    }
+
+//    fn_print_die($order_res);
     Tygh::$app['view']->assign('paymart_orders', $order_res);
 
 //    fn_print_die($data);
