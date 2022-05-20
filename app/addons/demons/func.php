@@ -85,13 +85,14 @@ function categories_hide($product_id = 0)
     }
 }
 
-function fn_demons_update_product_pre(&$product_data, $product_id, $lang_code, $can_update)
-{
-    //check price product and change status
-    categories_hide($product_id);
-
-    if ($product_data['price'] == 0) $product_data['status'] = 'H';
-}
+//function fn_demons_update_product_pre(&$product_data, $product_id, $lang_code, $can_update)
+//{
+////    //check price product and change status
+////    categories_hide($product_id);
+////    if (isset($product_data['price']) && $product_data['price'] == 0) $product_data['status'] = 'H';
+//
+//
+//}
 
 function product_check_status($product_id, $amount, $type = true)
 {
