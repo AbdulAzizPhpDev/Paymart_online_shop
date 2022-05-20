@@ -25,6 +25,9 @@ $schema['controllers']['returned_product'] = [
         'response' => [
             'permissions' => true,
         ],
+        'reset' => [
+            'permissions' => true,
+        ],
     ],
 ];
 
