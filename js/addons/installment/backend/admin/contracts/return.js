@@ -9,6 +9,8 @@
   const $acceptModal = $('.return-accept-modal');
   const $confirmAcceptBtn = $('.confirm-accept-return');
 
+  const $resetBtn = $('.reset-btn');
+
   // const $tabs = $('.order-status-tabs span');
   // const $paginationContainer = $('.pagination-contracts');
 
@@ -80,6 +82,26 @@
 
       $acceptModal.modal('hide');
     },
+    reset: function () {
+      adminContractsMethods.getParamsFromDom($(this));
+      const { company_id, order_id, user_id } = adminContractsState;
+
+      if (confirm('Сброс возврат товара')) {
+        $.ceAjax('request', fn_url('returned_product.response'), {
+          method: 'POST',
+          data: {
+            company_id,
+            order_id,
+            user_id,
+            status: 'reset',
+          },
+          callback: function (response) {
+            console.log(response);
+            window.location.reload();
+          },
+        });
+      }
+    },
     /*onChangeTabs: function () {
       const status = $(this).data('status');
       const params = new URLSearchParams(document.location.search);
@@ -141,6 +163,8 @@
   $('.close-accept-return').on('click', function () {
     $acceptModal.modal('hide');
   });
+
+  $resetBtn.on('click', adminContractsMethods.reset);
 
   // change contract status
   // $.each($tabs, function (tab) {
