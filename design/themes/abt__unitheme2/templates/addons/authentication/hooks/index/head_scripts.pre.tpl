@@ -24,3 +24,5 @@ fbq('track', 'PageView');
                src="https://www.facebook.com/tr?id=670219187416870&ev=PageView&noscript=1"
     /></noscript>
 <!-- End Meta Pixel Code -->
+
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
