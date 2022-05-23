@@ -251,7 +251,7 @@ myBtn.onclick = function () {
       street: street,
     },
     callback: function (response) {
-      otpState.contractId = response.result.paymart_client.contract_id;
+      otpState.contractId = response.result.data.contract_id;
       modal.style.display = 'block';
 
       $('.resend-sms-card').css('display', 'block');
