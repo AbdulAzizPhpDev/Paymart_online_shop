@@ -334,11 +334,10 @@ if ($mode == 'get_qty') {
     );
 //    fn_set_session_data('product_id', $product_id, 7);
 //    fn_set_session_data('product_id', $qty, 7);
-
-    Registry::get('ajax')->assign('result', [
-        'status' => 'success',
+    $data = [
         'redirect_to' => 'installment_product.index'
-    ]);
+    ];
+    Registry::get('ajax')->assign('result', showErrors('success'), $data, 'success');
 }
 
 if ($mode == 'index') {
