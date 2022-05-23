@@ -309,8 +309,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 if ($mode == 'get_qty') {
 
-    $qty = $_REQUEST['qty'] ?? 1;
     $product_id = $_REQUEST['product_id'];
+    $qty = $_REQUEST['qty'] ?? 1;
+    $product = db_get_row("select * from ?:products where product_id = ?i", $product_id);
+
+    if (($product['amount'] - $qty) < 0) {
+        Registry::get('ajax')->assign('result', showErrors('product_not_exit'));
+        exit();
+    }
+
+
     $period = $_REQUEST['period'];
     $product_name = $_REQUEST['variation_name'];
     $company_id = $_REQUEST['company_id'];

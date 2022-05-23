@@ -201,7 +201,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         $order_id = $_REQUEST['order_id'];
 
-        $images = db_get_array("select * from :?returned_product_images where order_id = ?i", $order_id);
+        $images = db_get_array("select * from ?:returned_product_images where order_id = ?i", $order_id);
 
         db_query("delete from ?:returned_products where order_id = ?i", $order_id);
         db_query("delete from ?:returned_product_descriptions where order_id = ?i", $order_id);
