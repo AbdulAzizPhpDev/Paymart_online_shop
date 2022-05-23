@@ -35,20 +35,22 @@
                                      data-order-id="{$contract->order_id}"
                                      style="cursor: pointer;"
                                 />
-                                {if !$contract->return_status || $contract->delivery_time_status == 'open'}
-                                    <span style="font-size: 18px; margin-left: 16px; color: red; cursor: pointer"
-                                          class="cm-dialog-opener cm-dialog-auto-size cancelling-order"
-                                          data-ca-target-id="cause-cancel-contract-modal"
-                                          data-order-id="{$contract->order_id}"
-                                          data-uploader-label="{__('theme_editor.upload_image')}"
-                                    >&olarr; Возврат</span>
-                                {else}
-                                    <div style="font-size: 18px; margin-left: 16px; color: green">&checkmark;</div>
+                                {if ($contract->delivery_time_status == 'open')}
+                                    {if !$contract->return_status}
+                                        <span style="font-size: 18px; margin-left: 16px; color: red; cursor: pointer"
+                                              class="cm-dialog-opener cm-dialog-auto-size cancelling-order"
+                                              data-ca-target-id="cause-cancel-contract-modal"
+                                              data-order-id="{$contract->order_id}"
+                                              data-uploader-label="{__('theme_editor.upload_image')}"
+                                        >&olarr; Возврат</span>
+                                    {else}
+                                        <div style="font-size: 18px; margin-left: 16px; color: green">&checkmark;</div>
+                                    {/if}
                                 {/if}
                             </div>
                         </div>
 
-                        {if $contract->return_status || $contract->delivery_time_status == 'open'}
+                        {if $contract->return_status}
                             <div class="header ty-mt-l ty-mb-s">
                                 <div class="info">
                                     <h3>Возврат № 2</h3>
@@ -58,7 +60,9 @@
                                 </div>
                             </div>
                             <div class="show-comments">
-                                <h5 style="cursor: pointer">Показать комментарии <span class="comment-icon">&downarrow;</span></h5>
+                                <h5 style="cursor: pointer">Показать комментарии <span
+                                            class="comment-icon">&downarrow;</span>
+                                </h5>
                                 <dl class="return-comments" style="margin: 0; display: none">
                                     {if !empty($contract->descriptions['user'])}
                                         <dt><strong>Клиент</strong></dt>
