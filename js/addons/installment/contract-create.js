@@ -28,6 +28,7 @@ const otpState = {
   selectedFirst: selectedMonth,
   selectedFirstAdress: selectedMonth,
   selectedFirstAdress3: null,
+  city_name: null,
   contractId: null,
   cityModal: null,
   addressType: 'shipping',
@@ -188,6 +189,7 @@ $(document).ready(function () {
   $($select).change(function () {
     var selectedOptionAdress3 = formAdress3.options[formAdress3.selectedIndex].value;
     otpState.selectedFirstAdress3 = selectedOptionAdress3;
+    otpState.city_name = $(formAdress3.options[formAdress3.selectedIndex]).html();
 
     const extraDays = $(formAdress3.options[formAdress3.selectedIndex]).data('extra-days');
 
@@ -249,6 +251,18 @@ myBtn.onclick = function () {
       street: street,
     },
     callback: function (response) {
+      if (response.result.status === 'error') {
+
+        $.ceNotification('show', {
+          type: 'E',
+          title: _.tr('error'),
+          message: response.result.response.message,
+          message_state: 'I'
+        });
+
+        return false;
+      }
+
       otpState.contractId = response.result.data.contract_id;
       modal.style.display = 'block';
 
@@ -296,7 +310,8 @@ const confirmContract = () => {
     data: {
       code: otpInputVal,
       contract_id: otpState.contractId,
-      city: !($select).hasClass('d-none') ? $($select).val() : $($input).val(),
+      city_id: otpState.selectedFirstAdress3,
+      city_name: otpState.city_name,
       region: region,
       apartment: apartment,
       building: building,
