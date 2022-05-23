@@ -39,6 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         $check = db_get_row('select * from ?:companies where p_c_id=?i ', $_REQUEST['id']);
 
                         if (!$check) {
+
                             list($email) = createEmail();
                             $data = [
                                 "lang_code" => "ru",
@@ -142,6 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                             $vendor_id = $check['company_id'];
 
+
                             if (empty($user_data)) {
 
                                 if ($user_detail->status == "success") {
@@ -164,7 +166,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 }
 
                             } else {
-
                                 $data_u = [
                                     'api_key' => $check_user_res->user_token,
                                     'p_user_id' => $user_detail->data->id

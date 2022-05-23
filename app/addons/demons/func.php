@@ -89,8 +89,8 @@ function fn_demons_update_product_pre(&$product_data, $product_id, $lang_code, $
 {
     //check price product and change status
     categories_hide($product_id);
+    if (isset($product_data['price']) && $product_data['price'] == 0) $product_data['status'] = 'H';
 
-    if ($product_data['price'] == 0) $product_data['status'] = 'H';
 }
 
 function product_check_status($product_id, $amount, $type = true)

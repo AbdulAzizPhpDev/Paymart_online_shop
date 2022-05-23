@@ -87,7 +87,7 @@
       const { company_id, order_id, user_id } = adminContractsState;
 
       if (confirm('Сброс возврат товара')) {
-        $.ceAjax('request', fn_url('returned_product.response'), {
+        $.ceAjax('request', fn_url('returned_product.reset'), {
           method: 'POST',
           data: {
             company_id,
@@ -96,8 +96,8 @@
             status: 'reset',
           },
           callback: function (response) {
-            console.log(response);
-            window.location.reload();
+
+            // window.location.reload();
           },
         });
       }

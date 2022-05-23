@@ -211,11 +211,11 @@ if ($mode == "index") {
 
     $order_res = php_curl('/orders/list', $data, 'POST', null);
 
+
     foreach ($order_res->data as $index => $order) {
         $order->company = db_get_row("select * from ?:companies where p_c_id = ?i ", $order->company_id);
     }
 
-//    fn_print_die($order_res);
     Tygh::$app['view']->assign('paymart_orders', $order_res);
 
 //    fn_print_die($data);
