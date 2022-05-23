@@ -21,6 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     "partner_id" => $_REQUEST['id'],
                     "role" => "partner"
                 ];
+
                 $check_user_res = php_curl('/login/validate-form', $data, 'POST', null);
 
                 if ($check_user_res->status == "success") {
@@ -113,7 +114,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         } else {
 
                             $data_u = [
-                                'company' => $check_user_res->company_name
+                                'company' => $check_user_res->company_name,
+                                'p_c_token' => $check_user_res->user_token
                             ];
 
                             db_query('UPDATE ?:companies SET ?u WHERE company_id = ?i', $data_u, $check['company_id']);

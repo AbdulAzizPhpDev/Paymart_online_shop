@@ -219,7 +219,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
     if ($mode == "set_confirm_contract") {
-
+           fn_print_die($_REQUEST);
         if (!$auth['user_id']) {
             Registry::get('ajax')->assign('result', showErrors('user_not_authorized'));
             exit();
