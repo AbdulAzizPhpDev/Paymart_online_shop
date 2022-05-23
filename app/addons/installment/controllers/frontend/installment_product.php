@@ -198,6 +198,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ];
 
         $response = php_curl('/buyers/credit/add', $data, 'POST', $company['p_c_token']);
+        fn_print_die($response);
         if (isset($response->result) && ($response->result->status == 0 || $response->status == "error")) {
             $errors = showErrors("user_has_indebtedness", [], "error");
             Registry::get('ajax')->assign('result', $errors);
