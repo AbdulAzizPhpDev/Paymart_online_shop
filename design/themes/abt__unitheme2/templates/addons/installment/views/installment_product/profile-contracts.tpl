@@ -35,7 +35,7 @@
                                      data-order-id="{$contract->order_id}"
                                      style="cursor: pointer;"
                                 />
-                                {if !$contract->return_status}
+                                {if !$contract->return_status || $contract->}
                                     <span style="font-size: 18px; margin-left: 16px; color: red; cursor: pointer"
                                           class="cm-dialog-opener cm-dialog-auto-size cancelling-order"
                                           data-ca-target-id="cause-cancel-contract-modal"
