@@ -251,6 +251,18 @@ myBtn.onclick = function () {
       street: street,
     },
     callback: function (response) {
+      if (response.result.status === 'error') {
+
+        $.ceNotification('show', {
+          type: 'E',
+          title: _.tr('error'),
+          message: response.result.response.message,
+          message_state: 'I'
+        });
+
+        return false;
+      }
+
       otpState.contractId = response.result.data.contract_id;
       modal.style.display = 'block';
 
