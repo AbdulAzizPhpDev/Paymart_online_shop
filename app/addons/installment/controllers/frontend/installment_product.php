@@ -318,11 +318,9 @@ if ($mode == 'get_qty') {
         exit();
     }
 
-
     $period = $_REQUEST['period'];
     $product_name = $_REQUEST['variation_name'];
     $company_id = $_REQUEST['company_id'];
-
 
     Tygh::$app['session']['product_info'] = array(
         'product_id' => $product_id,
@@ -332,12 +330,13 @@ if ($mode == 'get_qty') {
         'company_id' => $company_id,
         'type' => 'single',
     );
-//    fn_set_session_data('product_id', $product_id, 7);
-//    fn_set_session_data('product_id', $qty, 7);
+
     $data = [
         'redirect_to' => 'installment_product.index'
     ];
-    Registry::get('ajax')->assign('result', showErrors('success'), $data, 'success');
+
+    Registry::get('ajax')->assign('result', showErrors('success', $data, 'success'));
+    exit();
 }
 
 if ($mode == 'index') {
