@@ -174,14 +174,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
     }
     if ($mode == 'set_contracts') {
+
         if (!$auth['user_id']) {
             Registry::get('ajax')->assign('result', showErrors('user_not_authorized'));
             exit();
         }
+
         $user = db_get_row('select * from ?:users where user_id=?i', $auth['user_id']);
+
         $products = [];
+
         $company = Tygh::$app['session']['installment_data']['company'];
+
         $products_data = Tygh::$app['session']['installment_data']['products'];
+
         foreach ($products_data as $key => $product) {
             $data = [
                 "price" => $product['price'],
@@ -198,41 +204,46 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ];
 
         $response = php_curl('/buyers/credit/add', $data, 'POST', $company['p_c_token']);
-        fn_print_die($response);
-        if (isset($response->result) && ($response->result->status == 0 || $response->status == "error")) {
-            $errors = showErrors("user_has_indebtedness", [], "error");
-            Registry::get('ajax')->assign('result', $errors);
+
+        if (isset($response->result) && $response->status == "error") {
+            Registry::get('ajax')->assign('result', showErrors("service_error"));
             exit();
         } elseif ($response->status == 1) {
-
-            Registry::get('ajax')->assign('result', $response);
+            Registry::get('ajax')->assign('result', showErrors('success', $response->paymart_client), 'success');
             exit();
         } else {
-            $errors = showErrors("error", [], "error");
-            Registry::get('ajax')->assign('result', $response);
+            Registry::get('ajax')->assign('result', showErrors("service_error"));
             exit();
         }
     }
 
 
     if ($mode == "set_confirm_contract") {
+
         if (!$auth['user_id']) {
             Registry::get('ajax')->assign('result', showErrors('user_not_authorized'));
             exit();
         }
+
         $user = db_get_row('select * from ?:users where user_id=?i', $auth['user_id']);
+
         $company = Tygh::$app['session']['installment_data']['company'];
         $products_data = Tygh::$app['session']['installment_data']['products'];
         $total_amount = Tygh::$app['session']['installment_data']['total_quantity'];
         $total_price = Tygh::$app['session']['installment_data']['total_price'];
+
         $check_quantity = false;
+
         $params = [];
+
         $data_contract = [
             "contract_id" => $_REQUEST['contract_id'],
             "code" => $_REQUEST['code'],
             "phone" => $user['phone']
         ];
+
         $response = php_curl('/buyers/check-user-sms', $data_contract, 'POST', $user['api_key']);
+
         if ($response->result->status == 1) {
             foreach ($products_data as $product) {
                 $product_data = db_get_row('SELECT amount,shipping_params FROM ?:products WHERE product_id = ?i', $product['product_id']);
@@ -244,35 +255,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 db_query('UPDATE ?:products SET ?u WHERE product_id = ?i', $data, $product['product_id']);
             }
 
-
-//        if ($product_quantity < 0) {
-//            $errors = showErrors('product_is_not_exist');
-//            Registry::get('ajax')->assign('result', $errors);
-//            exit();
-//        }
-
             if ($_REQUEST['address_type'] === 'shipping') {
+
                 $params['address']["apartment"] = $_REQUEST['apartment'];
                 $params['address']["building"] = $_REQUEST['building'];
                 $params['address']["street"] = $_REQUEST['street'];
                 $params['address']['address_type'] = $_REQUEST['address_type'];
+
                 $neighborhood = [];
+
                 if ((int)$_REQUEST['region'] == 228171787) {
+
                     $address = db_get_row("select * from ?:fargo_countries where  city_id=?i ", $_REQUEST['city']);
 
                     $params['address']["city_id"] = 228171787;
                     $params['address']["neighborhood"] = $address['city_name'];
 
-
                 } else {
+
                     $params['address']["city_id"] = (int)$_REQUEST['region'];
                     $params['address']["neighborhood"] = $_REQUEST['city'];
+
                 }
 
             } else {
+
                 $params['address']['address_type'] = $_REQUEST['address_type'];
+
             }
             $data = createOrder($products_data, $user, $company, $params, $_REQUEST['contract_id'], $total_price, $total_amount);
+
             unset(Tygh::$app['session']['product_info']);
             unset(Tygh::$app['session']['installment_data']);
 
@@ -292,18 +304,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($mode == 'bundle_products') {
 
         if (isset($_REQUEST['bundle_id']) && !empty($_REQUEST['bundle_id'])) {
+
             Tygh::$app['session']['product_info'] = array(
                 "type" => "multiple",
                 "bundle_id" => $_REQUEST['bundle_id'],
                 "total_price" => $_REQUEST['total_price'],
 
             );
+
             $errors = showErrors('success', [], "success");
             Registry::get('ajax')->assign('result', $errors);
             exit();
+
         }
-        $errors = showErrors('sever_error', [], "error");
-        Registry::get('ajax')->assign('result', $errors);
+
+        Registry::get('ajax')->assign('result', showErrors('service_error'));
         exit();
     }
 }
