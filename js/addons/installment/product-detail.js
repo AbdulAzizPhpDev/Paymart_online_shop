@@ -66,14 +66,27 @@
           qty,
           period,
           company_id,
-          variation_name: variationName
+          variation_name: variationName,
         },
         callback: function (response) {
-          if (response.result) {
-            window.location.href = fn_url(response.result.redirect_to);
-          } else {
+
+          if (!response.hasOwnProperty('result')) {
             document.write(response);
+            return false;
           }
+
+          if (response.result.status === 'error') {
+            $.ceNotification('show', {
+              type: 'E',
+              title: _.tr('error'),
+              message: response.result.errors[0],
+              message_state: 'I',
+            });
+
+            return false;
+          }
+
+          window.location.href = fn_url(response.result.data.redirect_to);
         },
       });
     },
@@ -197,7 +210,7 @@
       }
     },
     printPricePretty: function (price = 0) {
-      return Intl.NumberFormat().format(price)
+      return Intl.NumberFormat().format(price);
     },
   };
 

@@ -92,14 +92,16 @@
                     {__('decline')}
                 </button>
             {else}
-                <button
-                        class="btn reset-btn"
-                        data-user-id="{$order['user']['user_id']}"
-                        data-order-id="{$order['order_id']}"
-                        data-company-id="{$order['company']['company_id']}"
-                >
-                    Reset
-                </button>
+                {if (fn_is_admin_account_type())}
+                    <button
+                            class="btn reset-btn"
+                            data-user-id="{$order['user']['user_id']}"
+                            data-order-id="{$order['order_id']}"
+                            data-company-id="{$order['company']['company_id']}"
+                    >
+                        Reset
+                    </button>
+                {/if}
             {/if}
         </div>
     </div>
