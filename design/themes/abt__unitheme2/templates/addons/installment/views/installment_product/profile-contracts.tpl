@@ -58,7 +58,7 @@
                                 </div>
                             </div>
                             <div class="show-comments">
-                                <h5 style="cursor: pointer">Показать комментарии &downarrow;</h5>
+                                <h5 style="cursor: pointer">Показать комментарии <span class="comment-icon">&downarrow;</span></h5>
                                 <dl class="return-comments" style="margin: 0; display: none">
                                     {if !empty($contract->descriptions['user'])}
                                         <dt><strong>Клиент</strong></dt>

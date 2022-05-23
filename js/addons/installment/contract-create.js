@@ -119,7 +119,7 @@ $(document).ready(function () {
   const calculateDeliveryDate = (deliveryDay, extraDay = 0) => {
     const now = new Date();
     const deliveryDate = now.addDays(deliveryDay + extraDay);
-    totalDeliveryDays = deliveryDate + extraDay;
+    totalDeliveryDays = deliveryDay + extraDay;
     const extraDeliveryDate = deliveryDate.addDays(2).toLocaleDateString();
     const labelDelivery = `${deliveryDate.toLocaleDateString()} - ${extraDeliveryDate}`;
 
