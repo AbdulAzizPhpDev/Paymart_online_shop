@@ -40,6 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 if (isset($address['address']['address_type']) && $address['address']['address_type'] !== 'self') {
                     createFargoOrder($order, $address);
+
                 }
 
                 db_query("UPDATE ?:orders SET ?u WHERE p_contract_id=?i", $order_data, $order_id);
@@ -75,10 +76,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $data = db_get_row("SELECT order_detail.amount AS amount,product.weight AS weight,product.amount AS product_amount  FROM ?:order_details AS order_detail
                        INNER JOIN ?:products AS product ON order_detail.product_id = product.product_id 
                        WHERE order_detail.order_id =?i AND order_detail.product_id= ?i", $order['order_id'], $product_id);
-                    $product_data = [
-                        'amount' => (int)$data['amount'] + (int)$data['product_amount']
-                    ];
-                    db_query('UPDATE ?:products SET ?u WHERE product_id = ?i', $product_data, $product_id);
+
+                    product_check_status($product_id, (int)$data['product_amount']);
+//                    $product_data = [
+//                        'amount' => (int)$data['amount'] + (int)$data['product_amount']
+//                    ];
+//                    db_query('UPDATE ?:products SET ?u WHERE product_id = ?i', $product_data, $product_id);
                 }
 
             } else {

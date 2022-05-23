@@ -39,7 +39,7 @@ function fn_fargo_uz_install()
         $from = preg_replace("/[^a-zA-Z0-9]+/", "", $data[0]);
         $from = db_get_field("SELECT `id` FROM ?:fargo_countries WHERE city_id = 0 AND city_name = ?s", $from);
 
-        $to  = preg_replace("/[^a-zA-Z0-9]+/", "", $data[1]);
+        $to = preg_replace("/[^a-zA-Z0-9]+/", "", $data[1]);
         $to = db_get_field("SELECT `id` FROM ?:fargo_countries WHERE city_id = 0 AND city_name =?s", $to);
 
 
@@ -158,5 +158,18 @@ function fn_fargo_uz_charge_items($charge_type = "service_custom", $payer, $paid
     ];
 
     return $data;
+}
+
+function addDeliveryDate($order_id, $day = 0)
+{
+    $check = db_get_row("select * from ?:fargo_order_deliver_time where order_id = ?i ", $order_id);
+    if (!$check) {
+        $data = [
+            "order_id" => $order_id,
+            "day" => $day,
+            "fargo_status" => "close"
+        ];
+        db_query('INSERT INTO ?:fargo_order_deliver_time ?e', $data);
+    }
 }
 

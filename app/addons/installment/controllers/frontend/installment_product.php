@@ -173,6 +173,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         Registry::get('ajax')->assign('result', showErrors('user_not_authorized'));
         exit();
     }
+
     if ($mode == 'set_contracts') {
 
         if (!$auth['user_id']) {
@@ -219,7 +220,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
     if ($mode == "set_confirm_contract") {
-           fn_print_die($_REQUEST);
+
         if (!$auth['user_id']) {
             Registry::get('ajax')->assign('result', showErrors('user_not_authorized'));
             exit();
@@ -261,6 +262,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $params['address']["building"] = $_REQUEST['building'];
                 $params['address']["street"] = $_REQUEST['street'];
                 $params['address']['address_type'] = $_REQUEST['address_type'];
+                $params['address']['delivery_day'] = $_REQUEST['delivery_day'];
 
                 $neighborhood = [];
 
@@ -281,9 +283,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             } else {
 
                 $params['address']['address_type'] = $_REQUEST['address_type'];
+                $params['address']['delivery_day'] = 0;
 
             }
-            $data = createOrder($products_data, $user, $company, $params, $_REQUEST['contract_id'], $total_price, $total_amount);
+            $order_id = createOrder($products_data, $user, $company, $params, $_REQUEST['contract_id'], $total_price, $total_amount);
+            addDeliveryDate($order_id, $params['address']['delivery_day']);
+
 
             unset(Tygh::$app['session']['product_info']);
             unset(Tygh::$app['session']['installment_data']);
@@ -671,10 +676,17 @@ if ($mode == 'profile-contracts') {
         }
 
         foreach ($result->contracts as $item) {
+            $order_id = db_get_array('select * from ?:orders as order1
+                                               inner join ?:fargo_order_deliver_time as order_deliver on order1.order_id = order_deliver.order_id
+                                               where order1.p_contract_id  = ?i', $item->order_id);
+
+            $item->test = $order_id;
 
             if ($item->status == 'active') {
+
                 $check = db_get_row("select * from ?:returned_products where contract_id = ?i ", $item->order_id);
                 if ($check) {
+
                     $item->descriptions['user'] = db_get_field(" select `description` from ?:returned_product_descriptions 
                                                                where `from` = ?i and `to`=?i", $auth['user_id'], $check['vendor_id']);
 
@@ -692,7 +704,7 @@ if ($mode == 'profile-contracts') {
                 $contracts[] = $item;
             }
         }
-
+        fn_print_die($contracts);
         Tygh::$app['view']->assign('contracts', $contracts);
         Tygh::$app['view']->assign('group_by', $payed_list_group_by_contract_id);
         Tygh::$app['view']->assign('user_api_token', $user['api_key']);
