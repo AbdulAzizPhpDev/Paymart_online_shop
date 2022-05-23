@@ -69,7 +69,6 @@
           variation_name: variationName,
         },
         callback: function (response) {
-
           if (!response.hasOwnProperty('result')) {
             document.write(response);
             return false;
@@ -79,7 +78,7 @@
             $.ceNotification('show', {
               type: 'E',
               title: _.tr('error'),
-              message: response.result.errors[0],
+              message: response.result.response.message,
               message_state: 'I',
             });
 
