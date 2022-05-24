@@ -1,14 +1,16 @@
 (function (_, $) {
-  const $form = $('#auth-form');
+  const id = $('.form-id').val();
+  const $form = $(`#auth-form-${id}`);
+  const $beforeCheckoutForm = $('#auth-form-auth_login');
   const $errorContainer = $('.ty-error-text');
   const $phoneContainer = $('.phone-container');
   const $codeContainer = $('.code-container');
 
-  const $userPhoneSmsSent = $('.user-auth-phone-sms-sent');
+  let $userPhoneSmsSent = $('.user-auth-phone-sms-sent');
   const $changePhoneNumberBtn = $('.auth-change-phone-number');
 
-  const $timerSlot = $('.phone-timer');
-  const $resendSms = $('.resend-sms-phone');
+  let $timerSlot = $('.phone-timer');
+  let $resendSms = $('.resend-sms-phone');
 
   const $buyerPhone = $('#buyer-phone');
   const $code = $('.auth-confirmation-code');
@@ -17,6 +19,8 @@
     userPhoneNumber: '99899*****99',
     interval: null,
     timer: 60,
+    phone: null,
+    code: null,
   };
 
   const authMethods = {
@@ -75,15 +79,15 @@
         confirmCode();
       }
     },
-    sendSMS: function () {
+    sendSMS: function (phone = null) {
       $resendSms.removeClass('active');
       const unmaskedPhoneNumber = Inputmask.unmask($buyerPhone.val(), { mask: '999 ## ###-##-##' });
-      authState.userPhoneNumber = unmaskedPhoneNumber;
+      authState.userPhoneNumber = phone || unmaskedPhoneNumber;
 
       $.ceAjax('request', fn_url('profiles.send_sms'), {
         method: 'POST',
         data: {
-          phone: unmaskedPhoneNumber,
+          phone: phone || unmaskedPhoneNumber,
         },
         callback: function (response) {
           if (response.hasOwnProperty('result')) {
@@ -106,18 +110,24 @@
         },
       });
     },
-    confirmCode: function () {
+    confirmCode: function (phone = null, code = null, redirectUrl = '') {
       $.ceAjax('request', fn_url('profiles.confirm'), {
         method: 'POST',
         data: {
-          phone: Inputmask.unmask($buyerPhone.val(), { mask: '999 ## ###-##-##' }),
-          code: $code.val(),
+          phone: phone || Inputmask.unmask($buyerPhone.val(), { mask: '999 ## ###-##-##' }),
+          code: code || $code.val(),
         },
         callback: function (response) {
           if (response && response.hasOwnProperty('result')) {
             const { result } = response;
 
             if (result.status === 'success') {
+
+              if (redirectUrl !== '') {
+                window.location.href = redirectUrl;
+                return false;
+              }
+
               window.location.reload();
             } else {
               authMethods.showErrors(result.response.message);
@@ -131,6 +141,7 @@
   };
 
   $form.on('submit', authMethods.submit);
+  $beforeCheckoutForm.on('submit', authMethods.submit);
 
   $.mask.definitions['#'] = $.mask.definitions['9'];
   delete $.mask.definitions['9'];
@@ -139,24 +150,64 @@
     placeholder: '*',
   });
 
+  // before checkout auth form
+  $.ceEvent('on', 'ce.ajaxdone', function (elms, inline_scripts, params) {
+    for (let i in elms) {
+      const form_id = elms[i].find('.form-id').val();
+      const $formCheckout = elms[i].find(`form#auth-form-${form_id}`);
+      const $buyerPhone = $formCheckout.find('input#buyer-phone');
+      $resendSms = $formCheckout.find('.resend-sms-phone').remove();
+
+      $buyerPhone.mask('998 ## ###-##-##', {
+        placeholder: '*',
+      });
+
+      $formCheckout.on('submit', function (e) {
+        e.preventDefault();
+        const { sendSMS, confirmCode } = authMethods;
+
+        const action = e.target.action;
+
+        const $codeInput = $(this).find('input.auth-confirmation-code');
+        const $codeContainer = $(this).find('.code-container');
+        const $phoneContainer = $(this).find('.phone-container');
+        $userPhoneSmsSent = $(this).find('.user-auth-phone-sms-sent');
+        $timerSlot = $(this).find('.phone-timer');
+
+        const code = $codeInput.val();
+        const unmaskedBuyerPhone = Inputmask.unmask($buyerPhone.val(), { mask: '999 ## ###-##-##' });
+
+
+        $(this).find('.auth-change-phone-number').remove();
+
+        if (action === fn_url('profiles.send_sms')) {
+          if (!unmaskedBuyerPhone) {
+            return alert('Введите номер телефона.');
+          }
+
+          sendSMS(unmaskedBuyerPhone);
+
+          $(this).removeAttr('action');
+
+          $codeContainer.removeClass('d-none');
+          $phoneContainer.addClass('d-none');
+          $codeInput.attr('type', 'number');
+          $codeInput.attr('maxlength', 4);
+        } else {
+
+          if (!code) {
+            return alert('Введите SMS код пожалуйста.');
+          }
+
+          confirmCode(unmaskedBuyerPhone, code, '/checkout');
+        }
+      });
+    }
+
+  });
+
   $changePhoneNumberBtn.on('click', authMethods.changePhoneNumber);
   $resendSms.on('click', authMethods.sendSMS);
-
-  // $(_.doc).on('click', '#sendSMSBtn', methods.sendSMS);
-
-  // $(_.doc).on('click', '#confirmCodeBtn', methods.confirmCode);
-
-  // (function ($) {
-  //   $(function () {
-  //
-  //     $('ul.tabs__caption').on('click', 'li:not(.active)', function () {
-  //       $(this)
-  //         .addClass('active').siblings().removeClass('active')
-  //         .closest('div.tabs').find('div.tabs__content').removeClass('active').eq($(this).index()).addClass('active');
-  //     });
-  //
-  //   });
-  // })(Tygh);
 
 })(Tygh, Tygh.$);
 
