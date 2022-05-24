@@ -2,9 +2,11 @@
 {script src="js/addons/authentication/func.js"}
 {script src="https://cdn.jsdelivr.net/npm/jquery-pinlogin@1.0.3/src/jquery.pinlogin.min.js"}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-pinlogin@1.0.3/src/jquery.pinlogin.css">
+{assign var="id" value=$id|default:"main_login"}
 
 {capture name="login"}
-    <form action="{"profiles.send_sms"|fn_url}" id="auth-form" method="post">
+    <form action="{"profiles.send_sms"|fn_url}" id="auth-form-{$id}" method="post">
+        <input class="form-id" type="hidden" value="{$id}">
         <div class="ty-control-group phone-container">
 
             <label for="buyer-phone" class="ty-login__filed-label ty-control-group__label">
@@ -13,7 +15,7 @@
 
             <input id="buyer-phone"
                    type="text"
-                   value="998"
+                   name="phone"
                    placeholder="{__('rapidaphone')}"
                    class="ty-login__input"
             />
