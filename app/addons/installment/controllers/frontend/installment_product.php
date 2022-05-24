@@ -675,12 +675,92 @@ if ($mode == 'profile-contracts') {
             $payed_list_group_by_contract_id[$item] = count($value);
         }
 
-        foreach ($result->contracts as $item) {
-            $order_id = db_get_array('select * from ?:orders as order1
-                                               inner join ?:fargo_order_deliver_time as order_deliver on order1.order_id = order_deliver.order_id
-                                               where order1.p_contract_id  = ?i', $item->order_id);
 
-            $item->test = $order_id;
+        foreach ($result->contracts as $item) {
+            $order_deliver_data = db_get_row('select * from ?:orders as order1
+                                    inner join ?:fargo_order_deliver_time as order_deliver 
+                                    on order1.order_id = order_deliver.order_id
+                                    where order1.p_contract_id  = ?i', $item->order_id);
+
+            if (!empty($order_deliver_data)) {
+
+                if ($order_deliver_data['fargo_status'] == "stopped") {
+                    $item->deliver_time_status = "close";
+                } else {
+                    $fargo_address = @unserialize($order_deliver_data['fargo_address']);
+
+                    if ($fargo_address['address']['address_type'] == "shipping") {
+                        $added_day = 0;
+                        $timestamp = 0;
+                        $status = '';
+                        if ($order_deliver_data['limit_time'] == 0) {
+                            $added_day = $order_deliver_data['day'];
+                            $timestamp = $order_deliver_data['timestamp'];
+                            $status = "close";
+                        } else {
+                            $added_day = 10;
+                            $timestamp = $order_deliver_data['limit_time'];
+                            $status = "open";
+                        }
+
+                        [$day, $hours, $minutes] = dateDifference($timestamp, $added_day);
+                        $total_date = $day + $hours + $minutes;
+
+                        if ($total_date > 0) {
+                            $item->deliver_time_status = $status;
+                        } else {
+                            if ($order_deliver_data['limit_time'] != 0) {
+
+                                $fargo_order_deliver_time = [
+                                    "fargo_status" => "stopped"
+                                ];
+                                db_query('UPDATE ?:fargo_order_deliver_time SET ?u WHERE order_id = ?i', $fargo_order_deliver_time, $order_deliver_data['order_id']);
+                                $item->deliver_time_status = "close";
+
+                            } else {
+
+                                $url = FARGO_URL . "/v1/customer/order/9937887724470/history_items";
+                                $track_order = php_curl($url, [], "GET", fargoAuth());
+
+                                $fargo_date = $track_order->data->list[0]->date;
+                                $fargo_status = $track_order->data->list[0]->status;
+                                if ($fargo_status == "completed") {
+                                    $new_time = new DateTime($fargo_date);
+                                    $new_deliver = strtotime($new_time->format('d-m-Y H:i:s'));
+
+                                    $fargo_order_deliver_time = [
+                                        "limit_time" => $new_deliver,
+                                        "fargo_status" => "open"
+                                    ];
+                                    db_query('UPDATE ?:fargo_order_deliver_time SET ?u WHERE order_id = ?i', $fargo_order_deliver_time, $order_deliver_data['order_id']);
+
+                                } else {
+                                    $item->deliver_time_status = "close";
+                                }
+
+                            }
+
+                        }
+
+                    }
+                }
+            } else {
+
+                $order_deliver_data = db_get_row('select * from ?:orders where p_contract_id  = ?i', 64746);
+
+
+                $added_day = 10;
+                $timestamp = $order_deliver_data['timestamp'];
+                [$day, $hours, $minutes] = dateDifference($timestamp, $added_day);
+                $total_date = $day + $hours + $minutes;
+
+                if ($total_date < 0) {
+                    $item->deliver_time_status = "close";
+                } else {
+                    $item->deliver_time_status = "open";
+                }
+            }
+
 
             if ($item->status == 'active') {
 
@@ -704,7 +784,8 @@ if ($mode == 'profile-contracts') {
                 $contracts[] = $item;
             }
         }
-        fn_print_die($contracts);
+
+
         Tygh::$app['view']->assign('contracts', $contracts);
         Tygh::$app['view']->assign('group_by', $payed_list_group_by_contract_id);
         Tygh::$app['view']->assign('user_api_token', $user['api_key']);

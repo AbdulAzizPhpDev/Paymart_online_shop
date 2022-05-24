@@ -345,6 +345,25 @@ function test()
     return $var;
 }
 
+function dateDifference($timestamp,$added_day)
+{
+    $delivered_time = date("d-m-Y H:i:s", strtotime(date('d-m-Y H:i:s', $timestamp) . " + $added_day day"));
+    $current_time = date('d-m-Y H:i:s', TIME);
+
+    $delivered_date = date_create($delivered_time);
+    $current_date = date_create($current_time);
+    $diff = date_diff($current_date, $delivered_date);
+
+    $day = $diff->format('%r%d');
+    $hours = $diff->format('%r%H');
+    $minutes = $diff->format('%r%I');
+    return [
+       $day,
+       $hours,
+       $minutes
+    ];
+}
+
 
 
 
