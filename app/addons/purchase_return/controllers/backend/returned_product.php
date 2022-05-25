@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     "sender_data" => fn_fargo_uz_sender_recipient_data(
                         "residential",
                         (!empty($user['lastname']) || !empty($user['firstname'])) ? $user['lastname'] . ' ' . $user['firstname'] : "user",
-                        263947002,
+                        $product_shipping_data['city_id'],
                         234,
                         '+' . $user['phone'],
                         null,
@@ -209,7 +209,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $fargo_order_deliver_time = [
             "limit_time" => TIME,
-            "fargo_status" => "stopped"
+            "fargo_status" => "open"
         ];
 
         db_query('UPDATE ?:fargo_order_deliver_time SET ?u WHERE order_id = ?i', $fargo_order_deliver_time, $order_id);

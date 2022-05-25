@@ -810,10 +810,10 @@ if ($mode == 'profile-contracts') {
                 if ($check) {
 
                     $item->descriptions['user'] = db_get_field(" select `description` from ?:returned_product_descriptions 
-                                                               where `from` = ?i and `to`=?i", $auth['user_id'], $check['vendor_id']);
+                                                               where `from` = ?i and `to`=?i and  `order_id`", $auth['user_id'], $check['vendor_id'], $check['order_id']);
 
                     $item->descriptions['vendor'] = db_get_field(" select `description` from ?:returned_product_descriptions 
-                                                               where `from` = ?i and `to`=?i", $check['vendor_id'], $auth['user_id']);
+                                                               where `from` = ?i and `to`=?i and  `order_id` ", $check['vendor_id'], $auth['user_id'], $check['order_id']);
 
                     $item->return_status = true;
 
