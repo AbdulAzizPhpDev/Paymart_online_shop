@@ -712,7 +712,7 @@ if ($mode == 'profile-contracts') {
 
                     } else {
 
-                        $added_day = 0;
+                        $added_day = 10;
                         $timestamp = $order_deliver_data['limit_time'];
                         $status = "open";
 
@@ -807,14 +807,15 @@ if ($mode == 'profile-contracts') {
             if ($item->status == 'active') {
 
                 $check = db_get_row("select * from ?:returned_products where contract_id = ?i ", $item->order_id);
+
                 if ($check) {
 
-                    $item->descriptions['user'] = db_get_field(" select `description` from ?:returned_product_descriptions 
-                                                               where `from` = ?i and `to`=?i and  `order_id`", $auth['user_id'], $check['vendor_id'], $check['order_id']);
+                    $item->descriptions['user'] = db_get_field(" select description from ?:returned_product_descriptions 
+                                                               where order_id = ?i and `from` = ?i and `to`=?i ", $check['order_id'] , $auth['user_id'], $check['vendor_id']);
 
-                    $item->descriptions['vendor'] = db_get_field(" select `description` from ?:returned_product_descriptions 
-                                                               where `from` = ?i and `to`=?i and  `order_id` ", $check['vendor_id'], $auth['user_id'], $check['order_id']);
-
+                    $item->descriptions['vendor'] = db_get_field(" select description from ?:returned_product_descriptions 
+                                                               where  order_id = ?i and `from` = ?i and `to`=?i ", $check['order_id']    , $check['vendor_id'], $auth['user_id']);
+//                    fn_print_r($item->descriptions, $check['order_id']);
                     $item->return_status = true;
 
                 } else {
