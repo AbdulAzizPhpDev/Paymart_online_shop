@@ -129,6 +129,9 @@ $(document).ready(function () {
 
   let selectedOptionAdress = $('#formAddress2 :selected').val();
 
+  /*
+  * Default City and Region selection
+  * */
   $.ceAjax('request', fn_url('get_city.city'), {
     method: 'post',
     data: {
@@ -144,6 +147,9 @@ $(document).ready(function () {
 
         calculateDeliveryDate(deliveryDays, 0);
 
+        otpState.city_name = response.result[0].city_name;
+        otpState.city_id = response.result[0].city_id;
+
         response.result.forEach(number => {
           const option = `<option value="${number.city_id}" data-extra-days="${number.extra_days}">${number.city_name}</option>`;
           $select.append(option);
@@ -152,6 +158,9 @@ $(document).ready(function () {
     },
   });
 
+  /*
+  * City selection
+  * */
   $('#formAddress2').change(function () {
     var selectedOptionAdress = formAdress.options[formAdress.selectedIndex].value;
     otpState.selectedFirstAdress = selectedOptionAdress;
@@ -175,6 +184,9 @@ $(document).ready(function () {
 
         calculateDeliveryDate(deliveryDays, 0);
 
+        otpState.city_name = response.result[0].city_name;
+        otpState.city_id = response.result[0].city_id;
+
         $($select).empty();
 
         response.result.forEach(number => {
@@ -186,10 +198,12 @@ $(document).ready(function () {
     });
   });
 
+  /*
+  * Regions selection
+  * */
   $($select).change(function () {
     var selectedOptionAdress3 = formAdress3.options[formAdress3.selectedIndex].value;
     otpState.selectedFirstAdress3 = selectedOptionAdress3;
-    otpState.city_name = $(formAdress3.options[formAdress3.selectedIndex]).html();
 
     const extraDays = $(formAdress3.options[formAdress3.selectedIndex]).data('extra-days');
 
@@ -198,6 +212,9 @@ $(document).ready(function () {
     }
 
     calculateDeliveryDate(deliveryDays, extraDays);
+
+    otpState.city_name = $(formAdress3.options[formAdress3.selectedIndex]).html();
+    otpState.city_id = $(formAdress3.options[formAdress3.selectedIndex]).val();
 
   });
 });
@@ -257,7 +274,7 @@ myBtn.onclick = function () {
           type: 'E',
           title: Tygh.tr('error'),
           message: response.result.response.message,
-          message_state: 'I'
+          message_state: 'I',
         });
 
         return false;
@@ -310,8 +327,8 @@ const confirmContract = () => {
     data: {
       code: otpInputVal,
       contract_id: otpState.contractId,
-      city_id: 503982910,
-      city_name: "Andijon",
+      city_id: otpState.city_id,
+      city_name: otpState.city_name,
       region: region,
       apartment: apartment,
       building: building,
