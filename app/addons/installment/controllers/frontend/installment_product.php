@@ -226,8 +226,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit();
         }
 
-        fn_print_die($_REQUEST);
-
         $user = db_get_row('select * from ?:users where user_id=?i', $auth['user_id']);
 
         $company = Tygh::$app['session']['installment_data']['company'];

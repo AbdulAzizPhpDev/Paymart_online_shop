@@ -35,7 +35,8 @@
                                      data-order-id="{$contract->order_id}"
                                      style="cursor: pointer;"
                                 />
-                                {if ($contract->delivery_time_status == 'open')}
+{*                                {fn_print_r($contract->deliver_time_status)}*}
+                                {if ($contract->deliver_time_status == 'open')}
                                     {if !$contract->return_status}
                                         <span style="font-size: 18px; margin-left: 16px; color: red; cursor: pointer"
                                               class="cm-dialog-opener cm-dialog-auto-size cancelling-order"
@@ -60,8 +61,9 @@
                                 </div>
                             </div>
                             <div class="show-comments">
-                                <h5 style="cursor: pointer">Показать комментарии <span
-                                            class="comment-icon">&downarrow;</span>
+                                <h5 style="cursor: pointer">
+                                    Показать комментарии
+                                    <strong class="comment-icon">&downarrow;</strong>
                                 </h5>
                                 <dl class="return-comments" style="margin: 0; display: none">
                                     {if !empty($contract->descriptions['user'])}
@@ -84,7 +86,7 @@
             {* Show Tracking Modal  *}
             <div class="hidden tracking-contract-modal" id="tracking-contract-modal" title="{__('track_my_order')}"
                  data-tracking-title="{__('track_my_order')}">
-                <div class="tracking-modal-body" style="overflow-y: auto"></div>
+                <div class="tracking-modal-body" style="overflow-y: auto; max-height: 400px;"></div>
             </div>
             <div class="hidden cause-cancel-contract-modal" id="cause-cancel-contract-modal" title="Причина отказа"
                  data-cause-cancel-title="Причина отказа">

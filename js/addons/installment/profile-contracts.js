@@ -82,7 +82,7 @@
 
       } else if (e.target.localName === 'h5') {
         const $this = $(this);
-        const $arrowIcon = $this.find('span.comment-icon');
+        const $arrowIcon = $this.find('.comment-icon');
 
         $this.find('dl').slideToggle('fast');
 
@@ -291,10 +291,10 @@
             return false;
           }
 
-          if (response.result.status === 'error') {
-            console.error('result status is error');
-            return false;
-          }
+          // if (response.result.status === 'error') {
+          //   console.error('result status is error');
+          //   return false;
+          // }
 
           window.location.reload();
         },

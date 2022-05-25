@@ -251,9 +251,9 @@ function createFargoOrder($order, $user_address)
         "username" => FARGO_USERNAME,
         "password" => FARGO_PASSWORD
     ];
+
     $url = FARGO_URL . "/v1/customer/authenticate";
     $fargo_auth_res = php_curl($url, $fargo_data_auth, 'POST', '');
-
 
     $url = FARGO_URL . '/v2/customer/order';
 
