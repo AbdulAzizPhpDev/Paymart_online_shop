@@ -170,6 +170,7 @@ function createFargoOrder($order, $user_address)
     $product_ids = [];
     $total_weight = 0;
     $total_amount = 0;
+
     foreach ($user_address['shipping_params'] as $product_id => $product) {
         $box_width += $product['box_width'];
         $box_height += $product['box_height'];
@@ -181,6 +182,7 @@ function createFargoOrder($order, $user_address)
         $total_weight += $data['weight'] * $data['amount'];
         $total_amount += $data['amount'];
     }
+
     $category_name = null;
     $user = db_get_row('select * from ?:users where user_id=?i', $order['user_id']);
     $category_names = db_get_array('select category.category as name from ?:products_categories as product 
@@ -192,9 +194,11 @@ function createFargoOrder($order, $user_address)
     }
 
     $product_shipping_data = $user_address['address'];
+
     $neighborhood = [
         "name" => $product_shipping_data['neighborhood']
     ];
+
     $fargo_data = [
         "sender_data" => fn_fargo_uz_sender_recipient_data(
             "residential",
@@ -252,15 +256,14 @@ function createFargoOrder($order, $user_address)
 
 
     $url = FARGO_URL . '/v2/customer/order';
+
     $fargo_order_res = php_curl($url, $fargo_data, 'POST', $fargo_auth_res->data->id_token);
 
-    if ($fargo_order_res->status != "success") {
+    if (!isset($fargo_order_res->status) || $fargo_order_res->status != "success") {
         $errors_data = [
             'error_test' => $fargo_order_res->message
         ];
-        $errors = showErrors("service_error", $errors_data, "error");
-        Registry::get('ajax')->assign('result', $errors);
-        exit();
+        return showErrors("service_error", $errors_data);
     } else {
         $data_order = [
             'fargo_order_id' => $fargo_order_res->data->order_number,
@@ -276,12 +279,19 @@ function createFargoOrder($order, $user_address)
         'GET',
         $fargo_auth_res->data->id_token
     );
+
     $data_label = [
         "fargo_contract_label" => $fargo_label_res->data->value
     ];
+
     db_query('UPDATE ?:fargo_orders SET ?u WHERE fargo_order_id = ?i', $data_label, $fargo_order_res->data->order_number);
 
-    return true;
+    $fargo_response = [
+        "id" => $fargo_order_res->data->id,
+        "order_number" => $fargo_order_res->data->order_number,
+    ];
+
+    return showErrors('success', $fargo_response, 'success');
 }
 
 
@@ -345,7 +355,7 @@ function test()
     return $var;
 }
 
-function dateDifference($timestamp,$added_day)
+function dateDifference($timestamp, $added_day)
 {
     $delivered_time = date("d-m-Y H:i:s", strtotime(date('d-m-Y H:i:s', $timestamp) . " + $added_day day"));
     $current_time = date('d-m-Y H:i:s', TIME);
@@ -358,9 +368,9 @@ function dateDifference($timestamp,$added_day)
     $hours = $diff->format('%r%H');
     $minutes = $diff->format('%r%I');
     return [
-       $day,
-       $hours,
-       $minutes
+        $day,
+        $hours,
+        $minutes
     ];
 }
 

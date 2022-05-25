@@ -255,7 +255,7 @@ myBtn.onclick = function () {
 
         $.ceNotification('show', {
           type: 'E',
-          title: _.tr('error'),
+          title: Tygh.tr('error'),
           message: response.result.response.message,
           message_state: 'I'
         });
@@ -310,8 +310,8 @@ const confirmContract = () => {
     data: {
       code: otpInputVal,
       contract_id: otpState.contractId,
-      city_id: otpState.selectedFirstAdress3,
-      city_name: otpState.city_name,
+      city_id: 503982910,
+      city_name: "Andijon",
       region: region,
       apartment: apartment,
       building: building,
