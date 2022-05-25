@@ -60,7 +60,7 @@
         <item for="uninstall">DROP TABLE IF EXISTS `?:fargo_orders`</item>
         <item for="uninstall">DROP TABLE IF EXISTS `?:fargo_price_list`</item>
         <item for="uninstall">DROP TABLE IF EXISTS `?:fargo_deliver_time`</item>
-        <item for="uninstall">DROP TABLE IF EXISTS `?:fargo_order_deliver_time`</item>
+<!--        <item for="uninstall">DROP TABLE IF EXISTS `?:fargo_order_deliver_time`</item>-->
     </queries>
     <functions>
         <item for="install">fn_fargo_uz_install</item>
