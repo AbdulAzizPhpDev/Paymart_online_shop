@@ -43,7 +43,7 @@
         },
       });
     },
-    getRegionsByCityId: function (event) {
+    onSelectCity: function (event) {
       const selectedCityId = event.target.value;
       addressState.deliveryDays = $(this).find(':selected').data('delivery-days') || 0;
 
@@ -58,7 +58,7 @@
     },
   };
 
-  $('#formAddress__select').on('change', addressMethods.getRegionsByCityId);
+  $('#formAddress__select').on('change', addressMethods.onSelectCity);
 
   $regions.on('change', addressMethods.onSelectRegion);
 
