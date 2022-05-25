@@ -207,6 +207,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         db_query("delete from ?:returned_product_descriptions where order_id = ?i", $order_id);
         db_query("delete from ?:returned_product_images where order_id = ?i", $order_id);
 
+        $fargo_order_deliver_time = [
+            "limit_time" => TIME,
+            "fargo_status" => "stopped"
+        ];
+
+        db_query('UPDATE ?:fargo_order_deliver_time SET ?u WHERE order_id = ?i', $fargo_order_deliver_time, $order_id);
+
         Registry::get('ajax')->assign('result', showErrors('status_change_successfully', [], "success"));
         exit();
 

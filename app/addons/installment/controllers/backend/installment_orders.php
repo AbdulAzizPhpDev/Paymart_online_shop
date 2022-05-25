@@ -12,6 +12,7 @@ if (!defined('BOOTSTRAP')) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($mode == "change_status") {
+
         $errors = [];
         $order_id = $_REQUEST['order_id'];
         $contract_status = $_REQUEST['status'];
@@ -24,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $address = unserialize($order['fargo_address']);
 
         if (filter_var($contract_status, FILTER_VALIDATE_BOOLEAN)) {
-
+            $fargo_response = null;
             $order_data = [
                 "status" => OrderStatuses::PAID
             ];
@@ -34,21 +35,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 "online" => 1
             ];
 
+            if (isset($address['address']['address_type']) && $address['address']['address_type'] == 'shipping') {
+                $fargo_response = createFargoOrder($order, $address);
+
+                if ($fargo_response['status'] == "error") {
+                    $errors = showErrors($fargo_response['response']['message'], $fargo_response['response'], "error");
+                    Registry::get('ajax')->assign('result', $errors);
+                    exit();
+                }
+            }
+
             $confirm_res = php_curl('/buyers/partner-confirm', $data_confirm, "POST", $order['p_c_token'], 1);
 
-            if ($confirm_res->status) {
+            if (isset($confirm_res->status) && $confirm_res->status) {
 
-                if (isset($address['address']['address_type']) && $address['address']['address_type'] !== 'self') {
-                    createFargoOrder($order, $address);
-
-                }
-
+                addDeliveryDate($order['order_id'], $address['address']['delivery_day']);
                 db_query("UPDATE ?:orders SET ?u WHERE p_contract_id=?i", $order_data, $order_id);
 
                 $errors = showErrors('success', $_REQUEST, "success");
 
             } else {
-
+                $fargo_order_id = $fargo_response['$data']['order_number'];
+                $url = FARGO_URL . "/v1/customer/order/$fargo_order_id/status?status=cancelled";
                 $errors = showErrors('error', [], "error");
 
             }
@@ -56,15 +64,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit();
 
         } else {
+
             $order_data = [
                 "status" => OrderStatuses::CANCELED
             ];
+
             $cancel_contract_data = [
                 "contract_id" => $order['p_contract_id'],
                 "buyer_phone" => $order['user_phone'],
                 "api_token" => $order['p_c_token'],
                 "online" => 1
             ];
+
             $contract_cancel_res = php_curl('/buyers/credit/cancel', $cancel_contract_data, 'POST', null);
 
             if ($contract_cancel_res->result->status === 1) {
@@ -87,22 +98,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             } else {
 
                 $errors = showErrors('error', $contract_cancel_res, "error");
+
                 Registry::get('ajax')->assign('result', $errors);
                 exit();
             }
+
             $fargo_data = db_get_row("select *  from ?:fargo_orders where paymart_contract_id=?i ", (int)$order_id);
+
             if (empty($fargo_data)) {
+
                 $errors = showErrors('success', $_REQUEST, "success");
+
             } else {
+
                 $fargo_order_id = $fargo_data['fargo_contract_id'];
+
                 $url = FARGO_URL . "/v1/customer/order/$fargo_order_id/status?status=cancelled";
+
                 $cancel_order = php_curl($url, [], "PUT", fargoAuth());
+
                 if ($cancel_order->status == "success") {
+
                     $errors = showErrors('success', $_REQUEST, "success");
+
                 } else {
+
                     $errors = showErrors('error', $cancel_order);
+
                 }
+
             }
+
             Registry::get('ajax')->assign('result', $errors);
             exit();
         }
@@ -221,7 +247,6 @@ if ($mode == "index") {
 
     Tygh::$app['view']->assign('paymart_orders', $order_res);
 
-//    fn_print_die($data);
 }
 
 if ($mode == 'vendor') {
@@ -325,6 +350,7 @@ if ($mode == 'vendor') {
         "orderByDesc" => "created_at",
         "api_token" => $company_data['p_c_token']
     ];
+
     $order_res = php_curl('/orders/list', $data, 'POST', null);
 
     Tygh::$app['view']->assign('paymart_orders', $order_res);

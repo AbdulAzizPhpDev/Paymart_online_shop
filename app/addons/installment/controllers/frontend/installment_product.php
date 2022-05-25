@@ -210,7 +210,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             Registry::get('ajax')->assign('result', showErrors("service_error"));
             exit();
         } elseif ($response->status == 1) {
-            Registry::get('ajax')->assign('result', showErrors('success', $response->paymart_client), 'success');
+            Registry::get('ajax')->assign('result', showErrors('success', $response->paymart_client, 'success'));
             exit();
         } else {
             Registry::get('ajax')->assign('result', showErrors("service_error"));
@@ -245,52 +245,57 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $response = php_curl('/buyers/check-user-sms', $data_contract, 'POST', $user['api_key']);
 
+        if (!isset($response->result)) {
+            Registry::get('ajax')->assign('result', showErrors('service_error'));
+            exit();
+        }
+
         if ($response->result->status == 1) {
+
             foreach ($products_data as $product) {
-                $product_data = db_get_row('SELECT amount,shipping_params FROM ?:products WHERE product_id = ?i', $product['product_id']);
+
+                $product_data = db_get_row('SELECT amount,shipping_params FROM ?:products 
+                                            WHERE product_id = ?i', $product['product_id']);
+
                 $product_quantity = $product_data['amount'] - $product['amount'];
+
                 $data = [
                     'amount' => $product_quantity
                 ];
-                $params["shipping_params"][$product['product_id']] = unserialize($product_data['shipping_params']);
+
                 db_query('UPDATE ?:products SET ?u WHERE product_id = ?i', $data, $product['product_id']);
+
+                $params["shipping_params"][$product['product_id']] = unserialize($product_data['shipping_params']);
+
             }
 
             if ($_REQUEST['address_type'] === 'shipping') {
 
                 $params['address']["apartment"] = $_REQUEST['apartment'];
+
                 $params['address']["building"] = $_REQUEST['building'];
+
                 $params['address']["street"] = $_REQUEST['street'];
+
                 $params['address']['address_type'] = $_REQUEST['address_type'];
+
                 $params['address']['delivery_day'] = $_REQUEST['delivery_day'];
 
-                $neighborhood = [];
+                $params['address']["city_id"] = (int)$_REQUEST['city_id'];
 
-                if ((int)$_REQUEST['region'] == 228171787) {
-
-                    $address = db_get_row("select * from ?:fargo_countries where  city_id=?i ", $_REQUEST['city']);
-
-                    $params['address']["city_id"] = 228171787;
-                    $params['address']["neighborhood"] = $address['city_name'];
-
-                } else {
-
-                    $params['address']["city_id"] = (int)$_REQUEST['region'];
-                    $params['address']["neighborhood"] = $_REQUEST['city'];
-
-                }
+                $params['address']["neighborhood"] = $_REQUEST['city_name'];
 
             } else {
 
                 $params['address']['address_type'] = $_REQUEST['address_type'];
+
                 $params['address']['delivery_day'] = 0;
 
             }
             $order_id = createOrder($products_data, $user, $company, $params, $_REQUEST['contract_id'], $total_price, $total_amount);
-            addDeliveryDate($order_id, $params['address']['delivery_day']);
-
 
             unset(Tygh::$app['session']['product_info']);
+
             unset(Tygh::$app['session']['installment_data']);
 
             $errors = showErrors('contract_create_successfully', [], "success");
@@ -675,12 +680,129 @@ if ($mode == 'profile-contracts') {
             $payed_list_group_by_contract_id[$item] = count($value);
         }
 
-        foreach ($result->contracts as $item) {
-            $order_id = db_get_array('select * from ?:orders as order1
-                                               inner join ?:fargo_order_deliver_time as order_deliver on order1.order_id = order_deliver.order_id
-                                               where order1.p_contract_id  = ?i', $item->order_id);
 
-            $item->test = $order_id;
+        foreach ($result->contracts as $item) {
+
+
+            $order_deliver_data = db_get_row('select * from ?:orders as order1
+                                    inner join ?:fargo_order_deliver_time as order_deliver 
+                                    on order1.order_id = order_deliver.order_id
+                                    where order1.p_contract_id  = ?i', $item->order_id);
+
+            if (!empty($order_deliver_data)) {
+
+                if ($order_deliver_data['fargo_status'] == "stopped") {
+
+                    $item->deliver_time_status = "close";
+
+                } else {
+                    $fargo_address = @unserialize($order_deliver_data['fargo_address']);
+
+                    $added_day = 0;
+
+                    $timestamp = 0;
+
+                    $status = '';
+
+                    if ($order_deliver_data['limit_time'] == 0) {
+
+                        $added_day = $order_deliver_data['day'];
+                        $timestamp = $order_deliver_data['timestamp'];
+                        $status = "close";
+
+                    } else {
+
+                        $added_day = 0;
+                        $timestamp = $order_deliver_data['limit_time'];
+                        $status = "open";
+
+                    }
+
+                    [$day, $hours, $minutes] = dateDifference($timestamp, $added_day);
+
+                    $total_date = $day + $hours + $minutes;
+
+                    if ($total_date > 0) {
+
+                        $item->deliver_time_status = $status;
+
+                    } else {
+
+                        if ($order_deliver_data['limit_time'] != 0) {
+                            $fargo_order_deliver_time = [
+                                "fargo_status" => "stopped"
+                            ];
+
+                            db_query('UPDATE ?:fargo_order_deliver_time SET ?u WHERE order_id = ?i', $fargo_order_deliver_time, $order_deliver_data['order_id']);
+
+                            $item->deliver_time_status = "close";
+
+
+                        } else {
+
+                            $fargo_order_data = db_get_row("select * from ?:fargo_orders where `paymart_contract_id` = ?i ", $item->order_id);
+                            $fargo_order_id = $fargo_order_data['fargo_order_id'];
+
+                            $url = FARGO_URL . "/v1/customer/order/$fargo_order_id/history_items";
+                            $track_order = php_curl($url, [], "GET", fargoAuth());
+
+
+                            $fargo_date = $track_order->data->list[0]->date;
+                            $fargo_status = $track_order->data->list[0]->status;
+
+                            if ($fargo_status == "completed") {
+                                $new_time = new DateTime($fargo_date);
+                                $new_deliver = strtotime($new_time->format('d-m-Y H:i:s'));
+
+
+                                $fargo_order_deliver_time = [
+                                    "limit_time" => $new_deliver,
+                                    "fargo_status" => "open"
+                                ];
+                                db_query('UPDATE ?:fargo_order_deliver_time SET ?u WHERE order_id = ?i', $fargo_order_deliver_time, $order_deliver_data['order_id']);
+
+                                $order_data = [
+                                    "status" => "C",
+                                    "updated_at" => TIME
+                                ];
+
+                                db_query('UPDATE ?:orders SET ?u WHERE order_id = ?i', $order_data, $order_deliver_data['order_id']);
+
+                                $item->deliver_time_status = "open";
+
+                            } else {
+                                $item->deliver_time_status = "close";
+                            }
+
+                        }
+
+                    }
+
+
+                }
+            } else {
+
+                $order = db_get_row('select * from ?:orders where p_contract_id  = ?i', $item->order_id);
+
+                $added_day = 10;
+
+                $timestamp = $order['timestamp'];
+
+                [$day, $hours, $minutes] = dateDifference($timestamp, $added_day);
+
+                $total_date = $day + $hours + $minutes;
+
+                if ($total_date < 0) {
+
+                    $item->deliver_time_status = "close";
+
+                } else {
+
+                    $item->deliver_time_status = "open";
+
+                }
+            }
+
 
             if ($item->status == 'active') {
 
@@ -704,7 +826,8 @@ if ($mode == 'profile-contracts') {
                 $contracts[] = $item;
             }
         }
-        fn_print_die($contracts);
+
+
         Tygh::$app['view']->assign('contracts', $contracts);
         Tygh::$app['view']->assign('group_by', $payed_list_group_by_contract_id);
         Tygh::$app['view']->assign('user_api_token', $user['api_key']);
