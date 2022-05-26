@@ -57,7 +57,7 @@
         </item>
 
         <item for="uninstall">DROP TABLE IF EXISTS `?:fargo_countries`</item>
-        <item for="uninstall">DROP TABLE IF EXISTS `?:fargo_orders`</item>
+<!--        <item for="uninstall">DROP TABLE IF EXISTS `?:fargo_orders`</item>-->
         <item for="uninstall">DROP TABLE IF EXISTS `?:fargo_price_list`</item>
         <item for="uninstall">DROP TABLE IF EXISTS `?:fargo_deliver_time`</item>
 <!--        <item for="uninstall">DROP TABLE IF EXISTS `?:fargo_order_deliver_time`</item>-->

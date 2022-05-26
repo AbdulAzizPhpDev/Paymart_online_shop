@@ -711,10 +711,10 @@ if ($mode == 'profile-contracts') {
                         $status = "close";
 
                     } else {
-
                         $added_day = 10;
                         $timestamp = $order_deliver_data['limit_time'];
                         $status = "open";
+
 
                     }
 
