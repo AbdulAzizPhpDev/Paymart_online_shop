@@ -62,14 +62,14 @@
 {/if}
 
 <script>
-$('#confirmation-pin-code').pinlogin({
-  placeholder: '*',
-  hideinput: false,
-  fields: 4,
-  reset: false,
-  complete: function (pin) {
-    $('.auth-confirmation-code').attr('value', pin);
-    $('.auth-confirm-btn').click();
-  },
-});
+    $('#confirmation-pin-code').pinlogin({
+        placeholder: '*',
+        hideinput: false,
+        fields: 4,
+        reset: false,
+        complete: function (pin) {
+            $('.auth-confirmation-code').attr('value', pin);
+            $('.auth-confirm-btn').click();
+        },
+    });
 </script>
