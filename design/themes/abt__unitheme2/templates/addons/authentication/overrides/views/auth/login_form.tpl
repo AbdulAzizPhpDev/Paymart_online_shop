@@ -48,7 +48,7 @@
                 {__("continue")}
             </button>
 
-            <button type="button" style="width: 100%" class="ty-btn ty-btn__secondary auth-change-phone-number">
+            <button type="button" style="width: 100%; margin-left: 0; margin-top: 8px;" class="ty-btn ty-btn__secondary auth-change-phone-number">
                 {__("text_change_number")}
             </button>
         </div>

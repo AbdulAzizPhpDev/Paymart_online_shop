@@ -31,7 +31,7 @@
                         id="formAddress__select"
                 >
                     {foreach $cities as $value}
-                        <option value="{$value['id']}" data-delivery-days="{$value['days']}">{$value['city_name']}</option>
+                        <option value="{$value['id']}" data-delivery-days="{$value['days']}">{$value['city_name']|capitalize}</option>
                     {/foreach}
                 </select>
             </div>
