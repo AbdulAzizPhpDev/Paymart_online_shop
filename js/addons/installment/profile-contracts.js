@@ -50,14 +50,13 @@
 
       $.each($radios, function (index, radio) {
         $(radio).on('change', function (event) {
-          console.log(event.target.id);
           profileContractsState.returningStatus = event.target.id;
         });
       });
     },
     showTrackingModal: function (e) {
       const { cancellingOrder, trackingContract } = profileContractsMethods;
-      console.log(e.target);
+
       if (e.target.localName === 'span') {
         const orderId = $(this).find('span.cancelling-order').data('order-id');
         const uploaderLabel = $(this).find('span.cancelling-order').data('uploader-label');
@@ -117,7 +116,7 @@
 
           $.each($selectedProducts, function (index, checkbox) {
             $(checkbox).on('change', profileContractsMethods.selectProduct);
-          });
+          });a
 
           $.each($photoUploader, function (index, fileInput) {
             $(fileInput).on('change', profileContractsMethods.selectPhoto);
