@@ -21,10 +21,6 @@ function cat_hide()
 {
     try {
 
-        //disable all empty categories
-        db_query("UPDATE ?:categories SET status = 'H' where product_amount = 0");
-
-
         $category = db_get_fields("select distinct(parent_id) as category_id from cscart_categories where status = 'A' and parent_id !=0");
 //
 //        //enable parent categories
@@ -47,21 +43,35 @@ function cat_hide()
 
 function categories_hide($product_id = 0)
 {
+
     //изменение категорий
     if ($product_id != 0 && is_numeric($product_id)) {
 
         //если передан product_id то меняем для категорий продукта
 
-        $category_id = db_get_field("select category_id from  ?:products_categories where product_id = " . $product_id);
+        $category_id = db_get_field("select category_id from  ?:products_categories where product_id = ?i ", $product_id);
 
         if ($category_id) {
 
             //получение кл-во остатка категорий
-            $amount = db_get_field("SELECT sum(p.amount) as amount FROM ?:products p join ?:products_categories c
-                on c.product_id = p.product_id where c.category_id = " . $category_id);
+            $amount = db_get_field("SELECT sum(p.amount) as amount  FROM ?:products p join ?:products_categories c
+                on c.product_id = p.product_id where c.category_id = ?i", $category_id);
 
             //запись на основную категорию
-            db_query("UPDATE ?:categories SET product_amount = " . $amount . " where category_id = " . $category_id);
+
+
+            $status = "A";
+
+            if ($amount == 0) {
+                $status = "H";
+            }
+
+            $product_amount = [
+                "product_amount" => $amount,
+                "status" => $status
+            ];
+
+            db_query("UPDATE ?:categories SET ?u where category_id = ?i ", $product_amount, $category_id);
 
             //скрывание категория с 0 остатком
             cat_hide();
@@ -73,11 +83,27 @@ function categories_hide($product_id = 0)
         //иначе меняем все
 
         //получение кл-во остатка по категориям
-        $categorys = db_get_array("SELECT c.category_id, sum(p.amount) as amount FROM ?:products p join ?:products_categories c
-            on c.product_id = p.product_id group by c.category_id", array('category_id', 'amount'));
+        $categories = db_get_array("SELECT c.category_id, sum(p.amount) as amount FROM ?:products p 
+                                    INNER JOIN ?:products_categories c  
+                                    on c.product_id = p.product_id 
+                                    group by c.category_id", array('category_id', 'amount'));
 
-        foreach ($categorys as $category) {
-            db_query("UPDATE ?:categories SET product_amount = " . $category['amount'] . " where category_id = " . $category['category_id']);//запись на основную категорию
+        foreach ($categories as $category) {
+
+            $status = "A";
+
+            if ($category['amount'] == 0) {
+                $status = "H";
+            }
+
+            //запись на основную категорию
+
+            $product_amount = [
+                "product_amount" => $category['amount'],
+                "status" => $status
+            ];
+
+            db_query("UPDATE ?:categories SET ?u  where category_id = ?i", $product_amount, $category['category_id']);
         }
 
         //скрывание категория с 0 остатком
@@ -87,9 +113,13 @@ function categories_hide($product_id = 0)
 
 function fn_demons_update_product_pre(&$product_data, $product_id, $lang_code, $can_update)
 {
-    //check price product and change status
+
     categories_hide($product_id);
-    if (isset($product_data['price']) && $product_data['price'] == 0) $product_data['status'] = 'H';
+
+    if (isset($product_data['price']) && $product_data['price'] > 0)
+        $product_data['status'] = 'A';
+    else
+        $product_data['status'] = 'H';
 
 }
 
