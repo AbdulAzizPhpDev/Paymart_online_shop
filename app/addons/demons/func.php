@@ -111,16 +111,26 @@ function categories_hide($product_id = 0)
     }
 }
 
+//function fn_demons_update_product_pre(&$product_data, $product_id, $lang_code, $can_update)
+//{
+//
+//    categories_hide($product_id);
+//
+//    if (isset($product_data['price']) && $product_data['price'] > 0)
+//        $product_data['status'] = 'A';
+//    else
+//        $product_data['status'] = 'H';
+//
+//}
+
 function fn_demons_update_product_pre(&$product_data, $product_id, $lang_code, $can_update)
 {
-
+    //check price product and change status
     categories_hide($product_id);
-
-    if (isset($product_data['price']) && $product_data['price'] > 0)
-        $product_data['status'] = 'A';
-    else
-        $product_data['status'] = 'H';
-
+    if (isset($product_data['amount']) && isset($product_data['price'])) {//если передано кол-во
+        if ($product_data['amount'] == 0 || $product_data['price'] == 0) $product_data['status'] = 'H';
+        else  $product_data['status'] = 'A';
+    }
 }
 
 function product_check_status($product_id, $amount, $type = true)
