@@ -116,8 +116,7 @@
 
           $.each($selectedProducts, function (index, checkbox) {
             $(checkbox).on('change', profileContractsMethods.selectProduct);
-          });a
-
+          });
           $.each($photoUploader, function (index, fileInput) {
             $(fileInput).on('change', profileContractsMethods.selectPhoto);
           });

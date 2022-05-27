@@ -48,8 +48,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $confirm_res = php_curl('/buyers/partner-confirm', $data_confirm, "POST", $order['p_c_token'], 1);
 
             if (isset($confirm_res->status) && $confirm_res->status) {
+                if ($address['address']['address_type'] == 'shipping') {
+                    addDeliveryDate($order['order_id'], $address['address']['delivery_day']);
+                }
 
-                addDeliveryDate($order['order_id'], $address['address']['delivery_day']);
                 db_query("UPDATE ?:orders SET ?u WHERE p_contract_id=?i", $order_data, $order_id);
 
                 $errors = showErrors('success', $_REQUEST, "success");
